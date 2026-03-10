@@ -1,3 +1,5 @@
+import RecordNewScreen from "@/components/features/record-new/RecordNewScreen";
+
 export default function NewRecordPage() {
-  return <div>New Record Page</div>;
+  return <RecordNewScreen />;
 }
