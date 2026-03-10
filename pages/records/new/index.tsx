@@ -1,5 +1,5 @@
-import RecordNewScreen from "@/components/features/record-new/RecordNewScreen";
+import RecordWriteScreen from "@/components/features/record-write/RecordWriteScreen";
 
 export default function NewRecordPage() {
-  return <RecordNewScreen />;
+  return <RecordWriteScreen />;
 }
