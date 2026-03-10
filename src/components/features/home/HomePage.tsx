@@ -3,7 +3,7 @@ import HomeDashBoard from "./HomeDashBoard/HomeDashBoard";
 import BestRecords from "./BestRecords";
 import { useRecoilValue } from "recoil";
 import MyDashBoard from "./HomeDashBoard/MyDashBoard/MyDashBoard";
-import { loggedInUserState } from "@/shared/stores/user";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function HomePage(): JSX.Element {
   const me = useRecoilValue(loggedInUserState);

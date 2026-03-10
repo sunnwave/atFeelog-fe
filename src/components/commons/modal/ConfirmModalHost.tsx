@@ -2,8 +2,8 @@
 
 import { useCallback } from "react";
 import { useRecoilState } from "recoil";
-import { confirmModalState } from "@/shared/stores/confirmModal";
 import { ConfirmModal } from "./ConfirmModal";
+import { confirmModalState } from "@/shared/stores";
 
 export default function ConfirmModalHost() {
   const [state, setState] = useRecoilState(confirmModalState);

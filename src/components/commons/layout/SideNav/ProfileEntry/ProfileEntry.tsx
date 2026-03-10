@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 import { JSX } from "react";
 import { Button } from "@/components/ui/button/Button";
 import { useRecoilValue } from "recoil";
-import { loggedInUserState } from "@/shared/stores/user";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function ProfileEntry(): JSX.Element {
   const me = useRecoilValue(loggedInUserState);

@@ -1,9 +1,6 @@
+import { confirmModalState, ConfirmPayload } from "@/shared/stores";
 import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
-import {
-  confirmModalState,
-  type ConfirmPayload,
-} from "@/shared/stores/confirmModal";
 
 export type OpenArgs = Omit<ConfirmPayload, "open" | "loading">;
 

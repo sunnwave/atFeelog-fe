@@ -1,6 +1,6 @@
-import { atom } from "recoil";
+import { atomWithDevCache } from "./atomWithDevCache";
 
-export const accessTokenState = atom<string | null>({
+export const accessTokenState = atomWithDevCache<string | null>({
   key: "accessTokenState",
   default: null,
 });

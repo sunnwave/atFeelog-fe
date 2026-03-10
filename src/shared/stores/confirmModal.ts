@@ -1,5 +1,5 @@
 import { LucideIcon } from "lucide-react";
-import { atom } from "recoil";
+import { atomWithDevCache } from "./atomWithDevCache";
 
 export type ConfirmVariant = "default" | "primary" | "destructive" | "success";
 
@@ -26,7 +26,7 @@ export type ConfirmPayload = {
   loading?: boolean;
 };
 
-export const confirmModalState = atom<ConfirmPayload>({
+export const confirmModalState = atomWithDevCache<ConfirmPayload>({
   key: "confirmModalState",
   default: { open: false, loading: false, variant: "default" },
 });
