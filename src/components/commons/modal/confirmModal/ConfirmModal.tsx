@@ -6,7 +6,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import IconBadge from "@/components/ui/icons/IconBadge";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/components/ui/button/Button";
-import { ModalProps } from "./type";
+import { ModalProps } from "./ConfirmModalTypes";
 
 export function ConfirmModal({
   open,
