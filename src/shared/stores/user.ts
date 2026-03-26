@@ -1,9 +1,9 @@
 import { IQuery } from "@/shared/graphql/generated/types";
-import { atomWithDevCache } from "./atomWithDevCache";
+import { atom } from "recoil";
 
 export type LoggedInUser = IQuery["fetchUserLoggedIn"] | null;
 
-export const loggedInUserState = atomWithDevCache<LoggedInUser>({
+export const loggedInUserState = atom<LoggedInUser>({
   key: "loggedInUserState",
   default: null,
 });

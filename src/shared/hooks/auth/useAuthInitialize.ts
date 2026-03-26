@@ -24,7 +24,7 @@ export function useAuthInitialize() {
 
     (async () => {
       try {
-        const token = await getAccessToken();
+        const token = await getAccessToken().catch(() => null);
 
         if (cancelled) return;
 
@@ -56,7 +56,8 @@ export function useAuthInitialize() {
           setUser(null);
         }
       } catch (e) {
-        console.error("Failed to initialize auth", e);
+        // console.error("Failed to initialize auth", e);
+
         if (cancelled) return;
         setAccessToken("");
         setUser(null);
