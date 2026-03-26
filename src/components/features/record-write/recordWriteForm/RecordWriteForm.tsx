@@ -1,13 +1,14 @@
 // src/components/features/records/write/RecordWriteForm.tsx
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import {
-  type KakaoPlace,
-  type RecordWriteFormValues,
-  RECORD_WRITE_DEFAULTS,
-} from "./types";
+import { type RecordWriteFormValues, RECORD_WRITE_DEFAULTS } from "./types";
 import { recordWriteSchema } from "./schema";
 import { FormLabel, TextField } from "@/components/ui/form";
+import { Button } from "@/components/ui/button/Button";
+import { MapPin } from "lucide-react";
+import { useState } from "react";
+import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceSearchModal";
+import { KakaoPlace } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
 
 export default function RecordWriteForm({
   formId = "record-write-form",
@@ -26,6 +27,8 @@ export default function RecordWriteForm({
     mode: "onChange",
     defaultValues: RECORD_WRITE_DEFAULTS,
   });
+
+  const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
 
   // 카카오 장소 선택 시 폼 채우기
   const onPickPlace = (p: KakaoPlace) => {
@@ -95,11 +98,31 @@ export default function RecordWriteForm({
           <FormLabel htmlFor="placeName" required={false}>
             공연 장소
           </FormLabel>
-          <TextField
-            name="placeName"
-            register={register}
-            error={errors.placeName}
-            className={errors.placeName ? "animate-shake" : ""}
+          <div className="flex min-w-0 gap-2">
+            <div className="flex-1 min-">
+              <TextField
+                name="placeName"
+                register={register}
+                error={errors.placeName}
+                className={errors.placeName ? "animate-shake" : ""}
+              />
+            </div>
+            <Button
+              variant="indigo"
+              className="h-11 rounded-xl shrink-0"
+              aria-label="장소 검색 버튼"
+              onClick={() => setIsPlaceSearchOpen(true)}
+            >
+              <MapPin className="size-5" />
+              검색
+            </Button>
+          </div>
+
+          <PlaceSearchModal
+            open={isPlaceSearchOpen}
+            onOpenChange={setIsPlaceSearchOpen}
+            onConfirm={(p) => onPickPlace(p)}
+            // onPickPlace={onPickPlace}
           />
         </div>
 
@@ -109,11 +132,13 @@ export default function RecordWriteForm({
           <FormLabel htmlFor="images" required={false}>
             사진 추가
           </FormLabel>
+          {/* <div className="flex flex-1 gap-2"> */}
           <TextField
             name="images"
             register={register}
             className={errors.images ? "animate-shake" : ""}
           />
+          {/* </div> */}
         </div>
 
         {/* TODO: tiptap 구현 */}
