@@ -1,15 +1,15 @@
 "use client";
 
-import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { cn } from "@/shared/utils";
 import { MapPin, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button/Button";
-import {
-  KakaoPlace,
-  useKakaoPlaceSearch,
-} from "@/shared/hooks/kakao/useKakaoPlaceSearch";
+import { useKakaoPlaceSearch } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
+import { KakaoPlace } from "@/shared/hooks/kakao/types";
+import PlaceItem from "./PlaceItem";
+import PlaceMessage from "./PlaceMessage";
+import { FormEvent, useCallback, useEffect } from "react";
 
 export default function PlaceSearchModal({
   open,
@@ -31,28 +31,28 @@ export default function PlaceSearchModal({
     loading,
     error,
     hasMore,
+    hasSearched,
+    isEmpty,
     search,
     loadMore,
     reset,
   } = useKakaoPlaceSearch({ size: 10 });
 
-  // ✅ (중요) form submit 핸들러 정의
-  const onSubmitSearch = React.useCallback(
-    (e: React.FormEvent) => {
+  const onSubmitSearch = useCallback(
+    (e: FormEvent) => {
       e.preventDefault();
       search(); // 내부에서 query.trim() 체크하도록 훅에서 처리하는 게 베스트
     },
     [search]
   );
 
-  // ✅ (중요) loadMore는 안정적인 함수여야 함(훅에서 useCallback 처리 권장)
   const targetRef = useInfiniteScroll({
     hasMore,
     isLoading: loading,
     onLoadMore: loadMore,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!open) reset();
   }, [open, reset]);
 
@@ -112,48 +112,44 @@ export default function PlaceSearchModal({
             </div>
 
             {/* Results */}
+
             <div className="px-2 py-2 overflow-y-auto">
-              {items.length === 0 && !loading ? (
-                <div className="py-10 text-center text-sm text-muted-foreground">
+              {/* ✅ 검색 전 */}
+              {!hasSearched && !loading ? (
+                <PlaceMessage>
                   검색어를 입력하고 장소를 찾아보세요.
-                </div>
-              ) : (
+                </PlaceMessage>
+              ) : null}
+
+              {/* ✅ 검색했는데 결과 0 */}
+              {isEmpty && (
+                <PlaceMessage>
+                  검색 결과가 없어요. 다른 키워드로 검색해보세요.
+                </PlaceMessage>
+              )}
+
+              {/* ✅ 결과 있음 */}
+              {!isEmpty && items.length > 0 ? (
                 <ul className="space-y-2 px-4 pb-4">
                   {items.map((p) => (
-                    <li key={p.id}>
-                      <button
-                        className="w-full rounded-2xl border border-border bg-card p-4 text-left hover:bg-muted/40 transition-colors"
-                        onClick={() => {
-                          onConfirm(p);
-                          onOpenChange(false);
-                        }}
-                      >
-                        <div className="font-semibold text-foreground">
-                          {p.place_name}
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {p.road_address_name || p.address_name}
-                        </div>
-                      </button>
-                    </li>
+                    <PlaceItem
+                      key={p.id}
+                      place={p}
+                      onConfirm={onConfirm}
+                      onOpenChange={onOpenChange}
+                    />
                   ))}
 
-                  {/* ✅ sentinel: threshold 0.5라서 높이 넉넉히 줘야 안정적 */}
+                  {/* sentinel */}
                   <li>
-                    <div ref={targetRef} className="h-24" />
-                    {loading && (
-                      <div className="py-2 text-center text-xs text-muted-foreground">
-                        로딩 중…
-                      </div>
-                    )}
-                    {!hasMore && items.length > 0 && (
-                      <div className="py-2 text-center text-xs text-muted-foreground">
-                        마지막 결과입니다.
-                      </div>
+                    {hasMore && <div ref={targetRef} className="h-6"></div>}
+                    {loading && <PlaceMessage>불러오는 중...</PlaceMessage>}
+                    {!hasMore && !loading && items.length > 0 && (
+                      <PlaceMessage>마지막 결과입니다.</PlaceMessage>
                     )}
                   </li>
                 </ul>
-              )}
+              ) : null}
             </div>
           </Dialog.Content>
         </div>
