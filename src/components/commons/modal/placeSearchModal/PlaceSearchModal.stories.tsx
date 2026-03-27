@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PlaceSearchModal from "./PlaceSearchModal";
 import { Button } from "@/components/ui/button/Button";
 

@@ -1,42 +1,26 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+import { KakaoPlace, KakaoSearchResponse } from "./types";
 
-export type KakaoPlace = {
-  id: string;
-  place_name: string;
-  address_name: string;
-  road_address_name: string;
-  x: string;
-  y: string;
-};
-
-export type KakaoSearchResponse = {
-  documents: KakaoPlace[];
-  meta: { is_end: boolean; total_count: number; pageable_count: number };
-};
-
-export function useKakaoPlaceSearch(opts?: { size?: number }) {
-  const size = opts?.size ?? 10;
-
+export function useKakaoPlaceSearch({ size = 10 }: { size?: number } = {}) {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<KakaoPlace[]>([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const abortRef = useRef<AbortController | null>(null);
+  // ✅ 검색 상태 구분용
+  const [hasSearched, setHasSearched] = useState(false);
 
-  const request = useCallback(
-    async (q: string, nextPage: number, mode: "reset" | "append") => {
-      const keyword = q.trim();
-      if (!keyword) return;
+  // ✅ 페이징/결과 유무 판단용
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [totalCount, setTotalCount] = useState<number | null>(null);
 
-      // 이전 요청 취소
-      abortRef.current?.abort();
-      const ac = new AbortController();
-      abortRef.current = ac;
+  const runFetch = useCallback(
+    async (nextPage: number, mode: "replace" | "append") => {
+      const q = query.trim();
+      if (!q) return;
 
       setLoading(true);
       setError(null);
@@ -44,9 +28,8 @@ export function useKakaoPlaceSearch(opts?: { size?: number }) {
       try {
         const res = await fetch(
           `/api/kakao/places?q=${encodeURIComponent(
-            keyword
-          )}&page=${nextPage}&size=${size}`,
-          { signal: ac.signal }
+            q
+          )}&size=${size}&page=${nextPage}`
         );
 
         if (!res.ok) {
@@ -55,52 +38,60 @@ export function useKakaoPlaceSearch(opts?: { size?: number }) {
         }
 
         const data = (await res.json()) as KakaoSearchResponse;
-        const docs = data.documents ?? [];
 
-        setItems((prev) => (mode === "reset" ? docs : [...prev, ...docs]));
-        setHasMore(!data?.meta?.is_end);
+        const docs = data?.documents ?? [];
+        const meta = data?.meta;
+
+        setTotalCount(
+          typeof meta?.total_count === "number" ? meta.total_count : null
+        );
+        setHasMore(meta ? !meta.is_end : docs.length >= size);
+
+        setItems((prev) => (mode === "append" ? [...prev, ...docs] : docs));
         setPage(nextPage);
       } catch (e) {
-        // abort는 에러로 취급 X
-        if (e instanceof DOMException && e.name === "AbortError") return;
-
         setError(e instanceof Error ? e.message : "검색 실패");
-        if (mode === "reset") setItems([]);
-        setHasMore(false);
+        if (mode === "replace") {
+          setItems([]);
+          setHasMore(false);
+          setTotalCount(0);
+        }
       } finally {
         setLoading(false);
       }
     },
-    [size]
+    [query, size]
   );
 
+  // ✅ 새 검색(1페이지부터)
   const search = useCallback(async () => {
-    setItems([]);
-    setHasMore(false);
-    setPage(1);
-    await request(query, 1, "reset");
-  }, [query, request]);
+    const q = query.trim();
+    if (!q) return;
+    setHasSearched(true);
+    await runFetch(1, "replace");
+  }, [query, runFetch]);
 
+  // ✅ 더 불러오기
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
-    await request(query, page + 1, "append");
-  }, [hasMore, loading, page, query, request]);
+    await runFetch(page + 1, "append");
+  }, [loading, hasMore, page, runFetch]);
 
+  // ✅ 상태 초기화
   const reset = useCallback(() => {
-    abortRef.current?.abort();
-    abortRef.current = null;
-
     setQuery("");
     setItems([]);
-    setPage(1);
-    setHasMore(false);
     setLoading(false);
     setError(null);
+    setHasSearched(false);
+    setPage(1);
+    setHasMore(false);
+    setTotalCount(null);
   }, []);
 
-  useEffect(() => {
-    return () => abortRef.current?.abort();
-  }, []);
+  // ✅ “검색 결과 없음” 판단 (검색을 한 뒤에만)
+  const isEmpty = hasSearched && !loading && !error && items.length === 0;
+
   return {
     query,
     setQuery,
@@ -108,8 +99,12 @@ export function useKakaoPlaceSearch(opts?: { size?: number }) {
     items,
     loading,
     error,
+
     hasMore,
-    page,
+    totalCount,
+
+    hasSearched,
+    isEmpty,
 
     search,
     loadMore,
