@@ -1,4 +1,3 @@
-// src/components/features/records/write/RecordWriteForm.tsx
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { type RecordWriteFormValues, RECORD_WRITE_DEFAULTS } from "./types";
@@ -6,9 +5,10 @@ import { recordWriteSchema } from "./schema";
 import { FormLabel, TextField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button/Button";
 import { MapPin } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceSearchModal";
-import { KakaoPlace } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
+import { KakaoPlace } from "@/shared/hooks/kakao/types";
+import { ImageUploader } from "@/components/commons/imageUploader/ImageUploader";
 
 export default function RecordWriteForm({
   formId = "record-write-form",
@@ -20,8 +20,9 @@ export default function RecordWriteForm({
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
     setValue,
+    watch,
+    formState: { errors, isSubmitting, isValid },
   } = useForm<RecordWriteFormValues>({
     resolver: yupResolver(recordWriteSchema),
     mode: "onChange",
@@ -29,6 +30,8 @@ export default function RecordWriteForm({
   });
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+
+  const imageFiles = watch("imageFiles") ?? [];
 
   // 카카오 장소 선택 시 폼 채우기
   const onPickPlace = (p: KakaoPlace) => {
@@ -40,6 +43,15 @@ export default function RecordWriteForm({
     setValue("x", p.x ?? undefined, { shouldValidate: false });
     setValue("y", p.y ?? undefined, { shouldValidate: false });
   };
+
+  const onImagesChange = useCallback(
+    (next: File[]) => {
+      setValue("imageFiles", next, { shouldValidate: true });
+    },
+    [setValue]
+  );
+
+  //TODO: 장소검색 로직, 사진 업로드 로직 구현하기
 
   return (
     <form
@@ -85,6 +97,7 @@ export default function RecordWriteForm({
             공연 날짜
           </FormLabel>
           <TextField
+            type="date"
             name="showDate"
             register={register}
             error={errors.showDate}
@@ -92,7 +105,6 @@ export default function RecordWriteForm({
           />
         </div>
 
-        {/* TODO: 다음 로컬 API 이용해서 장소 검색 후 입력되도록 */}
         {/* 공연 장소 */}
         <div className="flex flex-col space-y-2">
           <FormLabel htmlFor="placeName" required={false}>
@@ -108,6 +120,7 @@ export default function RecordWriteForm({
               />
             </div>
             <Button
+              type="button"
               variant="indigo"
               className="h-11 rounded-xl shrink-0"
               aria-label="장소 검색 버튼"
@@ -126,19 +139,12 @@ export default function RecordWriteForm({
           />
         </div>
 
-        {/* TODO: 사진 업로드 컴포넌트 구현 */}
         {/* 사진 업로드 */}
         <div className="flex flex-col space-y-2">
           <FormLabel htmlFor="images" required={false}>
             사진 추가
           </FormLabel>
-          {/* <div className="flex flex-1 gap-2"> */}
-          <TextField
-            name="images"
-            register={register}
-            className={errors.images ? "animate-shake" : ""}
-          />
-          {/* </div> */}
+          <ImageUploader value={imageFiles} onImagesChange={onImagesChange} />
         </div>
 
         {/* TODO: tiptap 구현 */}
