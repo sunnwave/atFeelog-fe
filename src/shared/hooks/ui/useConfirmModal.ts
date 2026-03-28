@@ -1,4 +1,5 @@
-import { confirmModalState, ConfirmPayload } from "@/shared/stores";
+import { ConfirmPayload } from "@/components/commons/modal/confirmModal/ConfirmModalTypes";
+import { confirmModalState } from "@/shared/stores";
 import { useCallback } from "react";
 import { useSetRecoilState } from "recoil";
 
