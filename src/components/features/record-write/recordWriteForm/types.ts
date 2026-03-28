@@ -13,8 +13,8 @@ export type RecordWriteFormValues = {
   x?: string; // longitude
   y?: string; // latitude
 
-  // 업로드 후 URL/키 배열
-  images: string[];
+  images: string[]; //서버로 보낼 이미지 URL 목록
+  imageFiles: File[]; // 업로드할 이미지 파일 목록
 };
 
 export const RECORD_WRITE_DEFAULTS: RecordWriteFormValues = {
@@ -32,4 +32,5 @@ export const RECORD_WRITE_DEFAULTS: RecordWriteFormValues = {
   y: undefined,
 
   images: [],
+  imageFiles: [],
 };
