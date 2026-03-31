@@ -1,40 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# atFeelog 🎫
 
-## Getting Started
+공연·전시 관람 후 느낀 감정을 기록하고 공유할 수 있는 서비스입니다.
+관람 경험을 단순 후기에서 끝내지 않고, 기록으로 남기고 관련 거래 정보까지 함께 볼 수 있도록 기획했습니다.
 
-First, run the development server:
+## ✨ 소개
+atFeelog는 기존 학습형 게시판 프로젝트를 새로운 서비스 도메인으로 재구성한 개인 프로젝트입니다.
+공연·전시 기록 서비스에 맞게 정보 구조와 UI를 다시 설계하고, 프론트엔드 구현을 진행하고 있습니다.
 
+## 🚧 프로젝트 상태
+현재 개발 진행 중인 프로젝트입니다.
+핵심 기능 구현과 UI 개선을 우선 진행하고 있으며, 배포 후 링크와 시연 이미지를 추가할 예정입니다.
+
+### 🛠 주요 기능
+	•	공연/전시 기록 조회
+	•	기록 작성 / 수정 / 삭제
+	•	이미지형 / 텍스트형 기록 카드 제공
+	•	거래글 조회 및 등록
+	•	마이페이지에서 사용자 활동 확인
+	•	로그인 상태에 따른 기능 분기
+
+### 🧰 기술 스택
+	•	Next.js
+	•	React
+	•	TypeScript
+	•	GraphQL
+	•	Apollo Client
+	•	Tailwind CSS
+
+### 🤔 구현하면서 중점적으로 고민한 부분
+	•	공연·전시 기록 서비스에 맞는 IA 재구성
+	•	재사용 가능한 카드 및 버튼 컴포넌트 설계
+	•	API 응답 구조를 고려한 데이터 연결
+	•	로그인 여부에 따른 사용 흐름 분리
+  
+## 폴더구조
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+.
+├── pages              # 라우트 및 페이지 구성
+├── public             # 정적 파일
+├── src
+│   ├── components     # 공통 / 기능 / UI 컴포넌트
+│   ├── lib            # Apollo 설정 및 공통 라이브러리
+│   ├── shared         # GraphQL, 훅, 전역 상태, 유틸리티
+│   └── styles         # 전역 스타일 및 테마
+├── codegen.yaml       # GraphQL Code Generator 설정
+├── next.config.ts     # Next.js 설정
+├── package.json
+└── tsconfig.json
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
