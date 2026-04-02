@@ -19,7 +19,7 @@ export default function RecordCard({
   const s = UI_SIZE[size];
   const router = useRouter();
 
-  const hasImages = !!(board.images && board.images.length > 0);
+  const hasImages = board.images?.some((image) => !!image?.trim()) ?? false;
 
   const onClick = () => {
     void router.push(`/records/${board._id}`);
