@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import { useFetchBestRecords } from "./hooks/queries/useFetchBestRecords";
-import RecordCard from "../records/RecordCard/RecordCard";
+import RecordCard from "../record/list/RecordCard/RecordCard";
 import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
