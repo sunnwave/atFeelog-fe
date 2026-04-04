@@ -6,10 +6,10 @@ import { MapPin, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button/Button";
 import { useKakaoPlaceSearch } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { KakaoPlace } from "@/shared/hooks/kakao/types";
 import PlaceItem from "./PlaceItem";
 import PlaceMessage from "./PlaceMessage";
 import { FormEvent, useCallback, useEffect } from "react";
+import { KakaoPlace } from "@/shared/types/kakao";
 
 export default function PlaceSearchModal({
   open,
@@ -82,7 +82,12 @@ export default function PlaceSearchModal({
                 <h2 className="text-lg font-bold">공연 장소 검색</h2>
               </div>
               <Dialog.Close asChild>
-                <Button variant="ghost" size="icon" aria-label="닫기">
+                <Button
+                  variant="ghost"
+                  type="button"
+                  size="icon"
+                  aria-label="닫기"
+                >
                   <X className="w-5 h-5" />
                 </Button>
               </Dialog.Close>
