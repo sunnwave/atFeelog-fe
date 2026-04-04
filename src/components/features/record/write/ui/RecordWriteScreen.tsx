@@ -1,4 +1,3 @@
-import RecordWriteForm from "./recordWriteForm/RecordWriteForm";
 import RecordWriteTop from "./RecordWriteTop";
 import RecordWriteSubmitButtons from "./RecordWriteSubmitButtons";
 import { RecordWriteFormValues } from "../model/types";
@@ -10,6 +9,7 @@ import { useCreateRecord } from "../hooks/mutations/useCreateRecord";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useRouter } from "next/router";
 import { submitRecordWrite } from "../lib/submitRecordWrite";
+import RecordWriteForm from "./RecordWriteForm/RecordWriteForm";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
