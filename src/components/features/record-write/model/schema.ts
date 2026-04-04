@@ -8,11 +8,13 @@ export const recordWriteSchema: yup.ObjectSchema<RecordWriteFormValues> = yup
       .trim()
       .required("공연명을 입력해주세요.")
       .max(60, "공연명은 60자 이하여야 해요."),
+
     artistName: yup
       .string()
       .trim()
       .required("아티스트명을 입력해주세요.")
       .max(60, "아티스트명은 60자 이하여야 해요."),
+
     showDate: yup
       .string()
       .required("공연 날짜를 선택해주세요.")
@@ -24,19 +26,22 @@ export const recordWriteSchema: yup.ObjectSchema<RecordWriteFormValues> = yup
       .required("후기를 입력해주세요.")
       .min(5, "후기는 5자 이상 입력해주세요."),
 
-    placeName: yup.string().trim().max(80).default(""),
-    roadAddress: yup.string().trim().max(120).default(""),
-    jibunAddress: yup.string().trim().max(120).default(""),
+    placeName: yup.string().trim().max(80).defined(),
+    roadAddress: yup.string().trim().max(120).defined(),
+    jibunAddress: yup.string().trim().max(120).defined(),
 
     x: yup
       .string()
-      .transform((v) => (v === "" || v == null ? undefined : String(v)))
-      .optional(),
-    y: yup
-      .string()
-      .transform((v) => (v === "" || v == null ? undefined : String(v)))
+      .transform((value) => (value === "" || value == null ? undefined : value))
       .optional(),
 
-    images: yup.array().of(yup.string().trim().required()).default([]),
+    y: yup
+      .string()
+      .transform((value) => (value === "" || value == null ? undefined : value))
+      .optional(),
+
+    images: yup.array().of(yup.string().trim().required()).defined(),
+
+    imageFiles: yup.array().of(yup.mixed<File>().required()).defined(),
   })
   .required();

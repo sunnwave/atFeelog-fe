@@ -1,14 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
-import { type RecordWriteFormValues, RECORD_WRITE_DEFAULTS } from "./types";
-import { recordWriteSchema } from "./schema";
+import { Controller, useForm } from "react-hook-form";
+import {
+  type RecordWriteFormValues,
+  RECORD_WRITE_DEFAULTS,
+} from "../../model/types";
+import { recordWriteSchema } from "../../model/schema";
 import { FormLabel, TextField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button/Button";
 import { MapPin } from "lucide-react";
 import { useCallback, useState } from "react";
 import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceSearchModal";
-import { KakaoPlace } from "@/shared/hooks/kakao/types";
 import { ImageUploader } from "@/components/commons/imageUploader/ImageUploader";
+import { TiptapEditor } from "@/components/ui/editor/TiptapEditor";
+import { KakaoPlace } from "@/shared/types/kakao";
 
 export default function RecordWriteForm({
   formId = "record-write-form",
@@ -18,6 +22,7 @@ export default function RecordWriteForm({
   onSubmitValid: (values: RecordWriteFormValues) => Promise<void> | void;
 }) {
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -153,11 +158,17 @@ export default function RecordWriteForm({
           <FormLabel htmlFor="contents" required={false}>
             후기/감상
           </FormLabel>
-          <TextField
+          <Controller
             name="contents"
-            register={register}
-            error={errors.contents}
-            className={errors.contents ? "animate-shake" : ""}
+            control={control}
+            render={({ field }) => (
+              <TiptapEditor
+                content={field.value ?? ""} // ✅ 폼 값
+                onChange={(next) => field.onChange(next)} // ✅ 폼에 반영
+                maxLength={1000}
+                error={errors.contents?.message}
+              />
+            )}
           />
         </div>
 

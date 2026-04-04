@@ -7,9 +7,9 @@ export type RecordWriteFormValues = {
   contents: string; // 후기(필수)
 
   // 카카오 장소 검색 결과(선택/권장)
-  placeName: string; // place_name
-  roadAddress: string; // road_address_name
-  jibunAddress: string; // address_name
+  placeName: string;
+  roadAddress: string;
+  jibunAddress: string;
   x?: string; // longitude
   y?: string; // latitude
 
@@ -27,10 +27,15 @@ export const RECORD_WRITE_DEFAULTS: RecordWriteFormValues = {
   placeName: "",
   roadAddress: "",
   jibunAddress: "",
-
   x: undefined,
   y: undefined,
 
   images: [],
   imageFiles: [],
+};
+
+export type RecordMeta = {
+  showDate: string;
+  x?: string;
+  y?: string;
 };
