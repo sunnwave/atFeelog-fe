@@ -56,8 +56,6 @@ export default function RecordWriteForm({
     [setValue]
   );
 
-  //TODO: 장소검색 로직, 사진 업로드 로직 구현하기
-
   return (
     <form
       id={formId}
@@ -152,7 +150,6 @@ export default function RecordWriteForm({
           <ImageUploader value={imageFiles} onImagesChange={onImagesChange} />
         </div>
 
-        {/* TODO: tiptap 구현 */}
         {/* 후기 */}
         <div className="flex flex-col space-y-2">
           <FormLabel htmlFor="contents" required={false}>

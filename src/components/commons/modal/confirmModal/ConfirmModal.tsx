@@ -24,6 +24,7 @@ export function ConfirmModal({
   loading = false,
 }: ModalProps) {
   return (
+    // TODO: confirm 모달 너비 수정
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         {/* ✅ Overlay */}

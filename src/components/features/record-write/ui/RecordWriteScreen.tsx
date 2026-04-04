@@ -1,16 +1,15 @@
-// RecordWriteScreen.tsx
 import RecordWriteForm from "./recordWriteForm/RecordWriteForm";
 import RecordWriteTop from "./RecordWriteTop";
 import RecordWriteSubmitButtons from "./RecordWriteSubmitButtons";
 import { RecordWriteFormValues } from "../model/types";
 import BackButton from "@/components/commons/backButton/BackButton";
-import { mapRecordWriteToCreateBoardInput } from "../lib/map-record-write-to-create-board-input";
 import { loggedInUserState } from "@/shared/stores";
 import { useRecoilValue } from "recoil";
 import { useUploadImages } from "@/shared/hooks/image/useUploadImages";
 import { useCreateRecord } from "../hooks/mutations/useCreateRecord";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useRouter } from "next/router";
+import { submitRecordWrite } from "../lib/submitRecordWrite";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
@@ -23,20 +22,19 @@ export default function RecordWriteScreen() {
 
   const onSubmitValid = async (values: RecordWriteFormValues) => {
     if (isUploading || loading) return;
-    const uploadedUrls = await uploadImages(values.imageFiles);
-
-    const createBoardInput = mapRecordWriteToCreateBoardInput({
-      values: { ...values, images: uploadedUrls },
-      writer: me?.name || "익명",
-      password: me?._id || "1234", // 로그인한 사용자는 빈 문자열, 비로그인 사용자는 임시 비밀번호
-    });
 
     try {
-      const res = await onCreateRecord(createBoardInput);
-      success("필로그가 기록되었습니다📖");
-      router.push(`/records/${res}`);
+      const id = await submitRecordWrite({
+        values,
+        me,
+        uploadImages,
+        createRecord: onCreateRecord,
+      });
+      success("필로그를 기록했어요📖✨");
+      await router.push(`/records/${id}`);
     } catch (e) {
-      const message = e instanceof Error ? e.message : "레코드 생성 실패";
+      const message =
+        e instanceof Error ? e.message : "필로그 기록에 실패했어요😢";
       error(message);
     }
   };
