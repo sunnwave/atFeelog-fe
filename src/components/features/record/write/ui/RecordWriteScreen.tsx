@@ -1,6 +1,5 @@
 import RecordWriteTop from "./RecordWriteTop";
 import RecordWriteSubmitButtons from "./RecordWriteSubmitButtons";
-import { RecordWriteFormValues } from "../model/types";
 import BackButton from "@/components/commons/backButton/BackButton";
 import { loggedInUserState } from "@/shared/stores";
 import { useRecoilValue } from "recoil";
@@ -8,8 +7,9 @@ import { useUploadImages } from "@/shared/hooks/image/useUploadImages";
 import { useCreateRecord } from "../hooks/mutations/useCreateRecord";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useRouter } from "next/router";
-import { submitRecordWrite } from "../lib/submitRecordWrite";
-import RecordWriteForm from "./RecordWriteForm/RecordWriteForm";
+import RecordWriteForm from "../../editor/ui/RecordEditorForm/RecordEditorForm";
+import { submitRecordWrite } from "../../editor/lib/submitRecordWrite";
+import { RecordWriteFormValues } from "../../model/types";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";

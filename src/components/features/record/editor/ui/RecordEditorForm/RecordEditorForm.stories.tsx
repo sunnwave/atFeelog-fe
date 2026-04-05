@@ -1,9 +1,8 @@
-// src/components/features/records/write/recordWriteForm/RecordWriteForm.stories.tsx
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { MockedProvider } from "@apollo/client/testing";
 
-import RecordWriteForm from "./RecordWriteForm";
 import { UPLOAD_FILE } from "@/shared/hooks/image/useUploadImages";
+import RecordEditorForm from "./RecordEditorForm";
 
 const apolloMocks = [
   {
@@ -12,9 +11,9 @@ const apolloMocks = [
   },
 ];
 
-const meta: Meta<typeof RecordWriteForm> = {
-  title: "features/record-write/RecordWriteForm",
-  component: RecordWriteForm,
+const meta: Meta<typeof RecordEditorForm> = {
+  title: "features/record/editor/RecordEditorForm",
+  component: RecordEditorForm,
   parameters: { layout: "padded" },
   args: {
     formId: "record-write-form",
@@ -36,6 +35,6 @@ const meta: Meta<typeof RecordWriteForm> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof RecordWriteForm>;
+type Story = StoryObj<typeof RecordEditorForm>;
 
 export const Default: Story = {};

@@ -1,10 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Controller, useForm } from "react-hook-form";
-import {
-  type RecordWriteFormValues,
-  RECORD_WRITE_DEFAULTS,
-} from "../../model/types";
-import { recordWriteSchema } from "../../model/schema";
 import { FormLabel, TextField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button/Button";
 import { MapPin } from "lucide-react";
@@ -13,8 +8,13 @@ import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceS
 import { ImageUploader } from "@/components/commons/imageUploader/ImageUploader";
 import { TiptapEditor } from "@/components/ui/editor/TiptapEditor";
 import { KakaoPlace } from "@/shared/types/kakao";
+import {
+  RECORD_WRITE_DEFAULTS,
+  RecordWriteFormValues,
+} from "../../../model/types";
+import { recordWriteSchema } from "../../../model/recordWriteSchema";
 
-export default function RecordWriteForm({
+export default function RecordEditorForm({
   formId = "record-write-form",
   onSubmitValid,
 }: {

@@ -1,9 +1,21 @@
+// src/components/features/record/editor/lib/metaBlock.ts
 import type { RecordMeta, RecordWriteFormValues } from "../model/types";
-import { buildRecordMetaBlock } from "./buildRecordMetaBlock";
 
 const META_START = "<!--META";
 const META_END = "-->";
 
+/** meta 객체 -> META 블록 문자열 */
+export function buildRecordMetaBlock(meta: RecordMeta): string {
+  const lines: string[] = [];
+
+  if (meta.showDate) lines.push(`showDate: ${meta.showDate}`);
+  if (meta.x) lines.push(`x: ${meta.x}`);
+  if (meta.y) lines.push(`y: ${meta.y}`);
+
+  return `${META_START}\n${lines.join("\n")}\n${META_END}`;
+}
+
+/** contents 앞에 META 블록을 붙인다 (작성 시) */
 export function attachMetaToContents(values: RecordWriteFormValues): string {
   const meta: RecordMeta = {
     showDate: values.showDate,
@@ -17,6 +29,7 @@ export function attachMetaToContents(values: RecordWriteFormValues): string {
   return `${block}\n\n${body}`;
 }
 
+/** 저장된 contents에서 META 블록을 파싱한다 (조회 시) */
 export function parseRecordMetaBlock(contents: string): RecordMeta | null {
   const start = contents.indexOf(META_START);
   const end = contents.indexOf(META_END);
@@ -45,6 +58,7 @@ export function parseRecordMetaBlock(contents: string): RecordMeta | null {
   return meta.showDate ? meta : null;
 }
 
+/** contents에서 META 블록을 제거하고 본문만 반환 (조회/수정 화면 표시용) */
 export function stripMetaFromContents(contents: string): string {
   const start = contents.indexOf(META_START);
   const end = contents.indexOf(META_END);
