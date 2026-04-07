@@ -2,10 +2,10 @@ import { useUploadImages } from "@/shared/hooks/image/useUploadImages";
 import { loggedInUserState } from "@/shared/stores";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
-import { useCreateRecord } from "../../editor";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { RecordWriteFormValues } from "../../model";
 import { submitRecordWrite } from "../lib/submitRecordWrite";
+import { useCreateRecord } from "./mutations/useCreateRecord";
 
 export default function useRecordWriteSubmit() {
   const me = useRecoilValue(loggedInUserState);
