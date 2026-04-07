@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { accessTokenState } from "@/shared/stores/authToken";
-import { loggedInUserState } from "@/shared/stores/user";
-import { authInitializedState } from "@/shared/stores/auth";
 import { getAccessToken } from "@/lib/getAccessToken";
 import { useFetchUserLoggedInLazy } from "./useFetchUserLoggedInLazy";
+import {
+  accessTokenState,
+  authInitializedState,
+  loggedInUserState,
+} from "@/shared/stores";
 
 export function useAuthInitialize() {
   const initialized = useRecoilValue(authInitializedState);
@@ -22,7 +24,7 @@ export function useAuthInitialize() {
 
     (async () => {
       try {
-        const token = await getAccessToken();
+        const token = await getAccessToken().catch(() => null);
 
         if (cancelled) return;
 
@@ -54,7 +56,8 @@ export function useAuthInitialize() {
           setUser(null);
         }
       } catch (e) {
-        console.error("Failed to initialize auth", e);
+        // console.error("Failed to initialize auth", e);
+
         if (cancelled) return;
         setAccessToken("");
         setUser(null);

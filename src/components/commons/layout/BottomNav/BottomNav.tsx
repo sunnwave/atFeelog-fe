@@ -3,13 +3,13 @@ import { useRecoilValue } from "recoil";
 import BottomNavItem from "./BottomNavItem";
 import { FileText, Home, Plus, Ticket, User } from "lucide-react";
 import Avatar from "@/components/ui/avatar/Avatar";
-import { loggedInUserState } from "@/shared/stores/user";
 import { Button } from "@/components/ui/button/Button";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useState } from "react";
 import { buildWriteActionSheetOptions } from "@/shared/constants";
 import { ActionSheet } from "../../actionSheet/ActionSheet";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function BottomNav() {
   const me = useRecoilValue(loggedInUserState);

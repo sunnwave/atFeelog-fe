@@ -1,3 +1,5 @@
+import RecordWriteScreen from "@/components/features/record/write/ui/RecordWriteScreen";
+
 export default function NewRecordPage() {
-  return <div>New Record Page</div>;
+  return <RecordWriteScreen />;
 }

@@ -1,5 +1,5 @@
-import { atom } from "recoil";
 import { IQuery } from "@/shared/graphql/generated/types";
+import { atom } from "recoil";
 
 export type LoggedInUser = IQuery["fetchUserLoggedIn"] | null;
 

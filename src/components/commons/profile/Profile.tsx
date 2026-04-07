@@ -37,12 +37,13 @@ export default function Profile({
     <div className={`flex items-center ${s.gap}`}>
       <Avatar
         user={record.user || undefined}
+        writer={record.writer || undefined}
         size={s.avatar}
         type={Tone[tone].avatar}
       />
       <div className={`flex flex-col ${Tone[tone].text}`}>
         <p className={`${s.meta} font-bold max-w-[140px] truncate`}>
-          {record.user?.name || "익명"}
+          {record.user?.name ?? record.writer ?? "익명"}
         </p>
         <p className={`${s.caption} ${Tone[tone].subText}`}>
           {formatDate(record.createdAt)}

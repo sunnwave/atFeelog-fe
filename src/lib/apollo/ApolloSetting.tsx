@@ -15,7 +15,7 @@ import { createUploadLink } from "apollo-upload-client";
 
 import { getAccessToken } from "../getAccessToken";
 import { useRouter } from "next/router";
-import { accessTokenState } from "@/shared/stores/authToken";
+import { accessTokenState } from "@/shared/stores";
 
 const cache = new InMemoryCache();
 

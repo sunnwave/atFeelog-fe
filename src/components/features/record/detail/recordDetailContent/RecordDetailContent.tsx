@@ -7,7 +7,7 @@ import WriterMenu from "@/components/commons/writerMenu/WriterMenu";
 import { cn } from "@/shared/utils";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useDeleteBoard } from "../hooks/mutations/useDeleteRecord";
-import RecordComments from "../../record-comments/RecordComments";
+import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
 export default function RecordDetailContent({
   record,

@@ -1,6 +1,6 @@
 import AuthInitialize from "@/components/commons/auth/AuthInitialize";
 import Layout from "@/components/commons/layout/Layout";
-import ConfirmModalHost from "@/components/commons/modal/ConfirmModalHost";
+import ConfirmModalHost from "@/components/commons/modal/confirmModal/ConfirmModalHost";
 import { ToastProvider } from "@/components/commons/toast/ToastProvider";
 import ApolloSetting from "@/lib/apollo/ApolloSetting";
 import "@/styles/globals.css";

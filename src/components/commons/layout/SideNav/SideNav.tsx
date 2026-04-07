@@ -11,7 +11,7 @@ import { SIDE_NAV_ITEMS } from "@/shared/constants/navigation";
 import { Button } from "@/components/ui/button/Button";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import useLogoutUser from "@/shared/hooks/auth/useLogoutUser";
-import { loggedInUserState } from "@/shared/stores/user";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function SideNav() {
   const me = useRecoilValue(loggedInUserState);

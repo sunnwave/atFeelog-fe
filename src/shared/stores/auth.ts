@@ -1,6 +1,6 @@
-import { atom } from "recoil";
+import { atomWithDevCache } from "./atomWithDevCache";
 
-export const authInitializedState = atom<boolean>({
+export const authInitializedState = atomWithDevCache<boolean>({
   key: "authInitializedState",
   default: false,
 });

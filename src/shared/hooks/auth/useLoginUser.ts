@@ -7,8 +7,7 @@ import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useFetchUserLoggedInLazy } from "./useFetchUserLoggedInLazy";
-import { loggedInUserState } from "@/shared/stores/user";
-import { accessTokenState } from "@/shared/stores/authToken";
+import { accessTokenState, loggedInUserState } from "@/shared/stores";
 
 const LOGIN_USER = gql`
   mutation loginUser($email: String!, $password: String!) {
