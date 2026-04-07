@@ -1,7 +1,7 @@
 import { ICreateBoardInput } from "@/shared/graphql/generated/types";
-import type { RecordWriteFormValues } from "../model/types";
-import { attachMetaToContents } from "./attachMetaToContents";
-import { toBoardTitle } from "./toBoardTitle";
+import { RecordWriteFormValues } from "../../model/types";
+import { toBoardTitle } from "../../lib/recordTitle";
+import { attachMetaToContents } from "../../lib/metaBlock";
 
 export function mapRecordWriteToCreateBoardInput(args: {
   values: RecordWriteFormValues;
