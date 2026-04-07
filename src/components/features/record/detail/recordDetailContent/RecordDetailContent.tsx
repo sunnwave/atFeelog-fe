@@ -9,6 +9,7 @@ import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useDeleteBoard } from "../hooks/mutations/useDeleteRecord";
 import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
+import { parseRecordMetaBlock, stripMetaFromContents } from "../../lib";
 export default function RecordDetailContent({
   record,
   isWriter,
@@ -21,6 +22,7 @@ export default function RecordDetailContent({
   const { openConfirmPreset } = useConfirmPreset();
   const { onDeleteRecord } = useDeleteBoard();
 
+  // TODO: 수정 기능 구현하기
   const onEdit = () => {};
 
   const onDelete = () => {
@@ -29,6 +31,12 @@ export default function RecordDetailContent({
         await onDeleteRecord(record._id);
       },
     });
+  };
+
+  const recordDetail = {
+    ...record,
+    meta: parseRecordMetaBlock(record.contents),
+    contents: stripMetaFromContents(record.contents),
   };
 
   return (
@@ -46,9 +54,12 @@ export default function RecordDetailContent({
             )}
           </div>
           {/* sub info */}
-          <RecordDetailContentSubInfo record={record} />
+          <RecordDetailContentSubInfo
+            record={record}
+            meta={recordDetail?.meta}
+          />
           {/* main */}
-          <RecordDetailContentMain record={record} />
+          <RecordDetailContentMain contents={recordDetail.contents} />
 
           <div className="flex flex-row gap-6 items-center justify-end p-4">
             {/* TODO: isLiked, isSaved 값 설정하기 */}
