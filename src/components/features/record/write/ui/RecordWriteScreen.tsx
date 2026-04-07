@@ -1,47 +1,27 @@
-import RecordWriteTop from "./RecordWriteTop";
-import RecordWriteSubmitButtons from "./RecordWriteSubmitButtons";
 import BackButton from "@/components/commons/backButton/BackButton";
-import { loggedInUserState } from "@/shared/stores";
-import { useRecoilValue } from "recoil";
-import { useUploadImages } from "@/shared/hooks/image/useUploadImages";
-import { useCreateRecord } from "../hooks/mutations/useCreateRecord";
-import { useToast } from "@/components/commons/toast/ToastProvider";
-import { useRouter } from "next/router";
-import RecordWriteForm from "../../editor/ui/RecordEditorForm/RecordEditorForm";
-import { submitRecordWrite } from "../../editor/lib/submitRecordWrite";
-import { RecordWriteFormValues } from "../../model/types";
+
+import {
+  RecordEditorBottomBar,
+  RecordEditorForm,
+} from "@/components/features/record";
+import RecordWriteTop from "./RecordWriteTop";
+import RecordWriteActions from "./RecordWriteActions";
+import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
+import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
-  const me = useRecoilValue(loggedInUserState);
-  const router = useRouter();
 
-  const { uploadImages, isUploading } = useUploadImages();
-  const { onCreateRecord, loading } = useCreateRecord();
-  const { error, success } = useToast();
+  const { onSubmitValid, isBusy } = useRecordWriteSubmit();
 
-  const onSubmitValid = async (values: RecordWriteFormValues) => {
-    if (isUploading || loading) return;
-
-    try {
-      const id = await submitRecordWrite({
-        values,
-        me,
-        uploadImages,
-        createRecord: onCreateRecord,
-      });
-      success("필로그를 기록했어요📖✨");
-      await router.push(`/records/${id}`);
-    } catch (e) {
-      const message =
-        e instanceof Error ? e.message : "필로그 기록에 실패했어요😢";
-      error(message);
-    }
-  };
-
+  // TODO: 임시 저장 기능 구현
   const onTempSave = () => {
     console.log("temp save");
   };
+
+  const { form, ...editorProps } = useRecordEditorForm(onSubmitValid);
+
+  const disabled = isBusy || form.formState.isSubmitting;
 
   return (
     <div className="min-h-screen bg-background ">
@@ -49,10 +29,16 @@ export default function RecordWriteScreen() {
       {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
       <div className="max-w-lg mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
         <RecordWriteTop />
-        <RecordWriteForm formId={formId} onSubmitValid={onSubmitValid} />
+        <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>
 
-      <RecordWriteSubmitButtons formId={formId} onTempSave={onTempSave} />
+      <RecordEditorBottomBar>
+        <RecordWriteActions
+          formId={formId}
+          disabled={disabled}
+          onTempSave={onTempSave}
+        />
+      </RecordEditorBottomBar>
     </div>
   );
 }
