@@ -1,19 +1,17 @@
-import { IBoard } from "@/shared/graphql/generated/types";
 import { useMemo, useState } from "react";
+import DOMPurify from "dompurify";
 
-export default function RecordContents({ record }: { record: IBoard }) {
+export default function RecordContents({ contents }: { contents: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // ✅ "더 보기" 버튼을 띄울지(대충 길이 기준)
-  //    필요하면 실제로 line-clamp가 잘렸는지 DOM으로 측정하는 방식으로도 바꿀 수 있어.
-  const shouldShowMoreButton = useMemo(
-    () => record.contents.length > 180,
-    [record.contents]
-  );
+  const sanitizedContents = DOMPurify.sanitize(contents);
+
+  const shouldShowMoreButton = useMemo(() => contents.length > 180, [contents]);
 
   return (
     <div className="p-4 border-b border-border prose prose-base max-w-none">
       <p
+        dangerouslySetInnerHTML={{ __html: sanitizedContents }} // ✅ HTML 태그가 포함된 콘텐츠를 렌더링
         className={[
           "whitespace-pre-wrap leading-relaxed text-foreground",
           !isExpanded &&
@@ -21,9 +19,7 @@ export default function RecordContents({ record }: { record: IBoard }) {
         ]
           .filter(Boolean)
           .join(" ")}
-      >
-        {record.contents}
-      </p>
+      ></p>
 
       {shouldShowMoreButton && (
         <button
