@@ -3,7 +3,7 @@ export { default as RecordEditorForm } from "./ui/RecordEditorForm/RecordEditorF
 export { default as RecordEditorBottomBar } from "./ui/RecordEditorBottomBar";
 
 // hooks
-export { useCreateRecord } from "./hooks/mutations/useCreateRecord";
+export { useRecordEditorForm } from "./hooks/useRecordEditorForm";
 
 // lib
-export * from "./lib/mapRecordWriteToCreateBoardInput";
+export * from "./lib/mappers";
