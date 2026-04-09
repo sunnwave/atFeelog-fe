@@ -11,7 +11,6 @@ export default function RecordDetailContentSubInfo({
   record: IBoard;
   meta?: RecordMeta | null;
 }): JSX.Element {
-  console.log(record, meta);
   return (
     <div className="p-4 border-b border-border">
       <div className="flex flex-wrap gap-4">
