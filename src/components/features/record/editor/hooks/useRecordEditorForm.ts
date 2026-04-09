@@ -19,7 +19,7 @@ export function useRecordEditorForm(
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
 
-  const { setValue } = form;
+  const { setValue, reset } = form;
 
   const onPickPlace = (p: KakaoPlace) => {
     setValue("placeName", p.place_name, { shouldValidate: true });
@@ -40,6 +40,7 @@ export function useRecordEditorForm(
 
   return {
     form,
+    resetForm: reset,
     isPlaceSearchOpen,
     setIsPlaceSearchOpen,
     onPickPlace,
