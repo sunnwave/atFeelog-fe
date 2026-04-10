@@ -4,12 +4,14 @@ import { Save, ScrollText } from "lucide-react";
 interface RecordWriteActionsProps {
   formId: string;
   disabled?: boolean;
+  isDirty?: boolean;
   onTempSave: () => void;
 }
 
 export default function RecordWriteActions({
   formId,
   disabled,
+  isDirty,
   onTempSave,
 }: RecordWriteActionsProps) {
   return (
@@ -20,7 +22,7 @@ export default function RecordWriteActions({
         size="lg"
         className="flex-1"
         onClick={onTempSave}
-        disabled={disabled}
+        disabled={!isDirty || disabled}
       >
         <Save className="w-5 h-5" />
         임시 저장
