@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { useUpdateRecord } from "./useUpdateRecord";
 import { useToast } from "@/components/commons/toast/ToastProvider";
-import { RecordWriteFormValues } from "../../model";
+import { RecordEditFormValues } from "../../model";
 import { mapRecordUpdateToUpdateBoardInput } from "../../editor";
 
 export default function useRecordUpdateSubmit() {
@@ -18,7 +18,7 @@ export default function useRecordUpdateSubmit() {
   const isBusy = isUploading || loading;
 
   const onSubmitValid = async (
-    values: RecordWriteFormValues,
+    values: RecordEditFormValues,
     boardId: string
   ) => {
     const uploadedUrls = await uploadImages(values.imageFiles);

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import {
   RECORD_WRITE_DEFAULTS,
-  RecordWriteFormValues,
+  RecordEditFormValues,
   recordWriteSchema,
 } from "../../model";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,9 +9,9 @@ import { useCallback, useState } from "react";
 import { KakaoPlace } from "@/shared/types/kakao";
 
 export function useRecordEditorForm(
-  onSubmitValid: (v: RecordWriteFormValues) => Promise<void> | void
+  onSubmitValid: (v: RecordEditFormValues) => Promise<void> | void
 ) {
-  const form = useForm<RecordWriteFormValues>({
+  const form = useForm<RecordEditFormValues>({
     resolver: yupResolver(recordWriteSchema),
     mode: "onChange",
     defaultValues: RECORD_WRITE_DEFAULTS,

@@ -1,6 +1,6 @@
 import { UseFormReturn } from "react-hook-form";
 import { useFetchRecord } from "../../hooks/useFetchRecord";
-import { RecordWriteFormValues } from "../../model";
+import { RecordEditFormValues } from "../../model";
 import { useEffect } from "react";
 import {
   parseBoardTitle,
@@ -10,7 +10,7 @@ import {
 
 export const useRecordUpdateInit = (
   boardId: string | undefined,
-  form: UseFormReturn<RecordWriteFormValues>
+  form: UseFormReturn<RecordEditFormValues>
 ) => {
   const { data, loading, error } = useFetchRecord(boardId);
 

@@ -1,5 +1,5 @@
 // src/components/features/record/editor/lib/metaBlock.ts
-import type { RecordMeta, RecordWriteFormValues } from "../model/types";
+import type { RecordMeta, RecordEditFormValues } from "../model/types";
 
 const META_START = "<!--META";
 const META_END = "-->";
@@ -16,7 +16,7 @@ export function buildRecordMetaBlock(meta: RecordMeta): string {
 }
 
 /** contents 앞에 META 블록을 붙인다 (작성 시) */
-export function attachMetaToContents(values: RecordWriteFormValues): string {
+export function attachMetaToContents(values: RecordEditFormValues): string {
   const meta: RecordMeta = {
     showDate: values.showDate,
     x: values.x,

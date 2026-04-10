@@ -3,7 +3,7 @@ import { loggedInUserState } from "@/shared/stores";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { useToast } from "@/components/commons/toast/ToastProvider";
-import { RecordWriteFormValues } from "../../model";
+import { RecordEditFormValues } from "../../model";
 import { useCreateRecord } from "./mutations/useCreateRecord";
 import { mapRecordWriteToCreateBoardInput } from "../../editor";
 
@@ -17,7 +17,7 @@ export default function useRecordWriteSubmit() {
 
   const isBusy = isUploading || loading;
 
-  const onSubmitValid = async (values: RecordWriteFormValues) => {
+  const onSubmitValid = async (values: RecordEditFormValues) => {
     const uploadedUrls = await uploadImages(values.imageFiles);
 
     const args = mapRecordWriteToCreateBoardInput({

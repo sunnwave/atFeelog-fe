@@ -1,7 +1,7 @@
 import * as yup from "yup";
-import type { RecordWriteFormValues } from "./types";
+import type { RecordEditFormValues } from "./types";
 
-export const recordWriteSchema: yup.ObjectSchema<RecordWriteFormValues> = yup
+export const recordWriteSchema: yup.ObjectSchema<RecordEditFormValues> = yup
   .object({
     showName: yup
       .string()

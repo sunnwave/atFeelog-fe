@@ -3,12 +3,12 @@ import {
   IMutationUpdateBoardArgs,
   IUpdateBoardInput,
 } from "@/shared/graphql/generated/types";
-import { RecordWriteFormValues } from "../../model/types";
 import { toBoardTitle } from "../../lib/recordTitle";
 import { attachMetaToContents } from "../../lib/metaBlock";
+import { RecordEditFormValues } from "../../model";
 
 export function mapRecordWriteToCreateBoardInput(args: {
-  values: RecordWriteFormValues;
+  values: RecordEditFormValues;
   writer: string;
   password: string;
 }): ICreateBoardInput {
@@ -41,7 +41,7 @@ export function mapRecordWriteToCreateBoardInput(args: {
 }
 
 export function mapRecordUpdateToUpdateBoardInput(args: {
-  values: RecordWriteFormValues;
+  values: RecordEditFormValues;
   password?: string;
   boardId: string;
 }): IMutationUpdateBoardArgs {

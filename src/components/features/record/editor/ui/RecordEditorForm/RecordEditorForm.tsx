@@ -8,11 +8,11 @@ import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceS
 import { ImageUploader } from "@/components/commons/imageUploader/ImageUploader";
 import { TiptapEditor } from "@/components/ui/editor/TiptapEditor";
 import { KakaoPlace } from "@/shared/types/kakao";
-import { RecordWriteFormValues } from "../../../model/types";
+import { RecordEditFormValues } from "../../../model";
 
 interface RecordEditorFormProps {
   formId?: string;
-  form: UseFormReturn<RecordWriteFormValues>;
+  form: UseFormReturn<RecordEditFormValues>;
   onPickPlace: (p: KakaoPlace) => void;
   onImagesChange: (next: File[]) => void;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
