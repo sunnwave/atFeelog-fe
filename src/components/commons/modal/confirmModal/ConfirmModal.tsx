@@ -62,7 +62,7 @@ export function ConfirmModal({
                   </Dialog.Title>
                 ) : null}
                 {description ? (
-                  <Dialog.Description className=" text-muted-foreground">
+                  <Dialog.Description className="whitespace-pre-line text-muted-foreground">
                     {description}
                   </Dialog.Description>
                 ) : null}
