@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import {
   RECORD_WRITE_DEFAULTS,
-  RecordWriteFormValues,
+  RecordEditFormValues,
   recordWriteSchema,
 } from "../../model";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -9,9 +9,9 @@ import { useCallback, useState } from "react";
 import { KakaoPlace } from "@/shared/types/kakao";
 
 export function useRecordEditorForm(
-  onSubmitValid: (v: RecordWriteFormValues) => Promise<void> | void
+  onSubmitValid: (v: RecordEditFormValues) => Promise<void> | void
 ) {
-  const form = useForm<RecordWriteFormValues>({
+  const form = useForm<RecordEditFormValues>({
     resolver: yupResolver(recordWriteSchema),
     mode: "onChange",
     defaultValues: RECORD_WRITE_DEFAULTS,
@@ -19,18 +19,23 @@ export function useRecordEditorForm(
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
 
-  const { setValue } = form;
+  const { setValue, reset } = form;
 
   const onPickPlace = (p: KakaoPlace) => {
-    setValue("placeName", p.place_name, { shouldValidate: true });
+    setValue("placeName", p.place_name, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     setValue("roadAddress", p.road_address_name ?? "", {
       shouldValidate: true,
+      shouldDirty: true,
     });
     setValue("jibunAddress", p.address_name ?? "", {
       shouldValidate: true,
+      shouldDirty: true,
     });
-    setValue("x", p.x ?? undefined);
-    setValue("y", p.y ?? undefined);
+    setValue("x", p.x ?? undefined, { shouldDirty: true });
+    setValue("y", p.y ?? undefined, { shouldDirty: true });
   };
 
   const onImagesChange = useCallback(
@@ -40,6 +45,7 @@ export function useRecordEditorForm(
 
   return {
     form,
+    resetForm: reset,
     isPlaceSearchOpen,
     setIsPlaceSearchOpen,
     onPickPlace,

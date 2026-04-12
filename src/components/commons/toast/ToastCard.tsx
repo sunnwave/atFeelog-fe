@@ -37,7 +37,9 @@ export default function ToastCard({
             {toast.title ? <AlertTitle>{toast.title}</AlertTitle> : null}
             {toast.description ? (
               <AlertDescription>
-                <p className="line-clamp-2">{toast.description}</p>
+                <p className="line-clamp-2 whitespace-pre-line">
+                  {toast.description}
+                </p>
               </AlertDescription>
             ) : null}
           </div>

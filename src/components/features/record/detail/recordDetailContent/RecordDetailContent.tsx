@@ -10,6 +10,7 @@ import { useDeleteBoard } from "../hooks/mutations/useDeleteRecord";
 import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
 import { parseRecordMetaBlock, stripMetaFromContents } from "../../lib";
+import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 export default function RecordDetailContent({
   record,
   isWriter,
@@ -21,9 +22,7 @@ export default function RecordDetailContent({
 }): JSX.Element {
   const { openConfirmPreset } = useConfirmPreset();
   const { onDeleteRecord } = useDeleteBoard();
-
-  // TODO: 수정 기능 구현하기
-  const onEdit = () => {};
+  const { onClickNavigation } = useNavigation();
 
   const onDelete = () => {
     openConfirmPreset("deleteRecord", {
@@ -50,7 +49,10 @@ export default function RecordDetailContent({
           <div className="flex items-center justify-between p-4 border-b border-border">
             <Profile record={record} tone="primary" size="sm" />
             {isWriter && (
-              <WriterMenu onEditClick={onEdit} onDeleteClick={onDelete} />
+              <WriterMenu
+                onEditClick={onClickNavigation(`/records/update/${record._id}`)}
+                onDeleteClick={onDelete}
+              />
             )}
           </div>
           {/* sub info */}

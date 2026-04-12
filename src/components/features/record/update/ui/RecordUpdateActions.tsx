@@ -1,19 +1,18 @@
 import { Button } from "@/components/ui/button/Button";
-import { Save, ScrollText } from "lucide-react";
+import { FilePenLine, Save } from "lucide-react";
 
-interface RecordWriteActionsProps {
+interface RecordUpdateActionsProps {
   formId: string;
   disabled?: boolean;
   isDirty?: boolean;
   onTempSave: () => void;
 }
-
-export default function RecordWriteActions({
+export default function RecordUpdateActions({
   formId,
   disabled,
   isDirty,
   onTempSave,
-}: RecordWriteActionsProps) {
+}: RecordUpdateActionsProps) {
   return (
     <div className="flex gap-3">
       <Button
@@ -35,8 +34,8 @@ export default function RecordWriteActions({
         className="flex-1"
         disabled={disabled}
       >
-        <ScrollText className="w-5 h-5" />
-        {disabled ? "저장 중..." : "기록 저장"}
+        <FilePenLine className="w-5 h-5" />
+        {disabled ? "저장 중..." : "수정하기"}
       </Button>
     </div>
   );

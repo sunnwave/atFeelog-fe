@@ -1,4 +1,4 @@
-export type RecordWriteFormValues = {
+export type RecordEditFormValues = {
   // UI 입력
   showName: string; // 공연명(필수)
   artistName?: string; // 아티스트명(선택)
@@ -17,7 +17,7 @@ export type RecordWriteFormValues = {
   imageFiles: File[]; // 업로드할 이미지 파일 목록
 };
 
-export const RECORD_WRITE_DEFAULTS: RecordWriteFormValues = {
+export const RECORD_WRITE_DEFAULTS: RecordEditFormValues = {
   showName: "",
   artistName: "",
   showDate: "",

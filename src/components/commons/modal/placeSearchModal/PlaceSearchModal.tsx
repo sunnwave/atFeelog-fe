@@ -41,6 +41,7 @@ export default function PlaceSearchModal({
   const onSubmitSearch = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
+      e.stopPropagation();
       search(); // 내부에서 query.trim() 체크하도록 훅에서 처리하는 게 베스트
     },
     [search]

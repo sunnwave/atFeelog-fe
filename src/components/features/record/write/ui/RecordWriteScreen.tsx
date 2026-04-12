@@ -1,6 +1,8 @@
 import BackButton from "@/components/commons/backButton/BackButton";
 
 import {
+  RECORD_WRITE_DEFAULTS,
+  RecordEditFormValues,
   RecordEditorBottomBar,
   RecordEditorForm,
 } from "@/components/features/record";
@@ -8,20 +10,47 @@ import RecordWriteTop from "./RecordWriteTop";
 import RecordWriteActions from "./RecordWriteActions";
 import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
+import { useDraftStorage } from "@/shared/hooks/record/useDraftStorage";
+import { DRAFT_KEY } from "@/shared/constants/draftKeys";
+import { useToast } from "@/components/commons/toast/ToastProvider";
+import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
+import { useEffect } from "react";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
 
   const { onSubmitValid, isBusy } = useRecordWriteSubmit();
+  const { saveDraft, loadDraft, clearDraft } =
+    useDraftStorage<RecordEditFormValues>(DRAFT_KEY.record.write);
+  const { success } = useToast();
 
-  // TODO: 임시 저장 기능 구현
+  const { openConfirmPreset } = useConfirmPreset();
+
   const onTempSave = () => {
-    console.log("temp save");
+    const values = form.getValues();
+    saveDraft(values);
+    success("텍스트 내용이 임시저장됐어요.\n(이미지는 저장되지 않아요😢)");
   };
 
   const { form, ...editorProps } = useRecordEditorForm(onSubmitValid);
 
   const disabled = isBusy || form.formState.isSubmitting;
+  const isDirty = form.formState.isDirty;
+
+  useEffect(() => {
+    const draft = loadDraft();
+    if (!draft) return;
+
+    openConfirmPreset("loadDraft", {
+      onConfirm: () => {
+        form.reset({ ...RECORD_WRITE_DEFAULTS, ...draft });
+        success("임시 저장된 내용을 불러왔어요.");
+      },
+      onCancel: () => {
+        clearDraft();
+      },
+    });
+  }, []);
 
   return (
     <div className="min-h-screen bg-background ">
@@ -36,6 +65,7 @@ export default function RecordWriteScreen() {
         <RecordWriteActions
           formId={formId}
           disabled={disabled}
+          isDirty={isDirty}
           onTempSave={onTempSave}
         />
       </RecordEditorBottomBar>
