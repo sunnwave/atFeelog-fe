@@ -22,15 +22,20 @@ export function useRecordEditorForm(
   const { setValue, reset } = form;
 
   const onPickPlace = (p: KakaoPlace) => {
-    setValue("placeName", p.place_name, { shouldValidate: true });
+    setValue("placeName", p.place_name, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     setValue("roadAddress", p.road_address_name ?? "", {
       shouldValidate: true,
+      shouldDirty: true,
     });
     setValue("jibunAddress", p.address_name ?? "", {
       shouldValidate: true,
+      shouldDirty: true,
     });
-    setValue("x", p.x ?? undefined);
-    setValue("y", p.y ?? undefined);
+    setValue("x", p.x ?? undefined, { shouldDirty: true });
+    setValue("y", p.y ?? undefined, { shouldDirty: true });
   };
 
   const onImagesChange = useCallback(
