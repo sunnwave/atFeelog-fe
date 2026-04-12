@@ -1,7 +1,7 @@
 import { UseFormReturn } from "react-hook-form";
 import { useFetchRecord } from "../../hooks/useFetchRecord";
 import { RecordEditFormValues } from "../../model";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   parseBoardTitle,
   parseRecordMetaBlock,
@@ -10,10 +10,10 @@ import {
 
 export const useRecordUpdateInit = (
   boardId: string | undefined,
-  form: UseFormReturn<RecordEditFormValues>
+  form: UseFormReturn<RecordEditFormValues>,
+  onRecordLoaded?: () => void
 ) => {
   const { data, loading, error } = useFetchRecord(boardId);
-
   const record = data?.fetchBoard;
 
   useEffect(() => {
@@ -39,7 +39,9 @@ export const useRecordUpdateInit = (
       imageFiles: [],
       images: (record.images ?? []).filter((v): v is string => !!v?.trim()),
     });
-  }, [record, form]);
+
+    onRecordLoaded?.();
+  }, [record]);
 
   return {
     record,

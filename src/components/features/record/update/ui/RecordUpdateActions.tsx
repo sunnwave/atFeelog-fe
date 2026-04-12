@@ -4,11 +4,13 @@ import { FilePenLine, Save } from "lucide-react";
 interface RecordUpdateActionsProps {
   formId: string;
   disabled?: boolean;
+  isDirty?: boolean;
   onTempSave: () => void;
 }
 export default function RecordUpdateActions({
   formId,
   disabled,
+  isDirty,
   onTempSave,
 }: RecordUpdateActionsProps) {
   return (
@@ -19,7 +21,7 @@ export default function RecordUpdateActions({
         size="lg"
         className="flex-1"
         onClick={onTempSave}
-        disabled={disabled}
+        disabled={!isDirty || disabled}
       >
         <Save className="w-5 h-5" />
         임시 저장

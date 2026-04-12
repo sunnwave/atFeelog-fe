@@ -6,6 +6,11 @@ import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
 import { useRouter } from "next/router";
 import { useRecordUpdateInit } from "../hooks/useRecordUpdateInit";
+import { useDraftStorage } from "@/shared/hooks/record/useDraftStorage";
+import { DRAFT_KEY } from "@/shared/constants/draftKeys";
+import { RecordEditFormValues } from "../../model";
+import { useToast } from "@/components/commons/toast/ToastProvider";
+import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 
 export default function RecordUpdateScreen() {
   const formId = "record-update-form";
@@ -16,21 +21,43 @@ export default function RecordUpdateScreen() {
       : undefined;
 
   const { onSubmitValid, isBusy } = useRecordUpdateSubmit();
+  const { saveDraft, loadDraft, clearDraft } =
+    useDraftStorage<RecordEditFormValues>(
+      DRAFT_KEY.record.update(recordId ?? "")
+    );
 
+  const { success } = useToast();
+
+  const { openConfirmPreset } = useConfirmPreset();
   const { form, ...editorProps } = useRecordEditorForm((values) => {
     if (!recordId) return;
     return onSubmitValid(values, recordId!);
   });
 
-  const { loading, error } = useRecordUpdateInit(recordId, form);
+  const { loading, error } = useRecordUpdateInit(recordId, form, () => {
+    const draft = loadDraft();
+    if (!draft) return;
 
-  // TODO: 임시 저장 기능 구현
+    openConfirmPreset("loadDraft", {
+      onConfirm: () => {
+        form.reset({ ...draft });
+        success("임시 저장된 내용을 불러왔어요.");
+      },
+      onCancel: () => clearDraft(),
+    });
+  });
+
   const onTempSave = () => {
-    console.log("temp save");
+    const values = form.getValues();
+    saveDraft(values);
+    success("텍스트 내용이 임시저장됐어요.\n(이미지는 저장되지 않아요😢)");
   };
 
-  if (!recordId) return <div>잘못된 접근입니다.</div>;
   const disabled = isBusy || form.formState.isSubmitting;
+  const isDirty = form.formState.isDirty;
+
+  if (!recordId) return <div>잘못된 접근입니다.</div>;
+
   return (
     <div className="min-h-screen bg-background ">
       <BackButton fallbackHref="/records" label="뒤로가기" />
@@ -44,6 +71,7 @@ export default function RecordUpdateScreen() {
         <RecordUpdateActions
           formId={formId}
           disabled={disabled}
+          isDirty={isDirty}
           onTempSave={onTempSave}
         />
       </RecordEditorBottomBar>
