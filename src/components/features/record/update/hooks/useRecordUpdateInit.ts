@@ -16,8 +16,14 @@ export const useRecordUpdateInit = (
   const { data, loading, error } = useFetchRecord(boardId);
   const record = data?.fetchBoard;
 
+  const initializedRef = useRef<string | null>(null);
+
   useEffect(() => {
     if (!record) return;
+    if (!boardId) return;
+
+    if (initializedRef.current === boardId) return;
+    initializedRef.current = boardId;
 
     const meta = parseRecordMetaBlock(record.contents);
     const contents = stripMetaFromContents(record.contents);
@@ -33,15 +39,19 @@ export const useRecordUpdateInit = (
         "",
       roadAddress: record.boardAddress?.address ?? "",
       jibunAddress: record.boardAddress?.address ?? "",
-      x: meta?.x ?? "",
-      y: meta?.y ?? "",
+      x: meta?.x ?? undefined,
+      y: meta?.y ?? undefined,
       contents,
       imageFiles: [],
       images: (record.images ?? []).filter((v): v is string => !!v?.trim()),
     });
 
     onRecordLoaded?.();
-  }, [record]);
+  }, [boardId, record, form, onRecordLoaded]);
+
+  useEffect(() => {
+    initializedRef.current = null;
+  }, [boardId]);
 
   return {
     record,

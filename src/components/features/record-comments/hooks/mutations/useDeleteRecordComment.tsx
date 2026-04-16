@@ -4,6 +4,7 @@ import {
   IMutationDeleteBoardCommentArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
+import type { Reference, StoreObject } from "@apollo/client";
 
 const DELETE_RECORD_COMMENT = gql`
   mutation deleteBoardComment($password: String, $boardCommentId: ID!) {
@@ -26,9 +27,12 @@ export const useDeleteRecordComment = ({ password }: { password: string }) => {
         update(cache) {
           cache.modify({
             fields: {
-              fetchBoardComments(existing = [], { readField }) {
+              fetchBoardComments(
+                existing: ReadonlyArray<Reference | StoreObject> = [],
+                { readField }
+              ) {
                 return existing.filter(
-                  (ref: any) => readField("_id", ref) !== commentId
+                  (ref) => readField("_id", ref) !== commentId
                 );
               },
             },
