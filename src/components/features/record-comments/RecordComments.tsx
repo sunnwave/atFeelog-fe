@@ -11,6 +11,7 @@ import {
   useUpdateRecordComment,
 } from "./hooks";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
+import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 
 export default function RecordComments() {
   const router = useRouter();
@@ -27,9 +28,7 @@ export default function RecordComments() {
 
   const { openConfirmPreset } = useConfirmPreset();
 
-  // TODO: 댓글 무한스크롤 처리 (fetchMore, hasMore 등)
-  const { data, fetchMore, refetch, loading } =
-    useFetchRecordComments(recordId);
+  const { data, loading, hasMore, loadMore } = useFetchRecordComments(recordId);
 
   const { onCreateRecordComment } = useCreateRecordComment({
     recordId,
@@ -42,7 +41,6 @@ export default function RecordComments() {
   const comments = data?.fetchBoardComments ?? [];
 
   const requestDeleteComment = (commentId: string) => {
-    // setTargetCommentId(commentId);
     openConfirmPreset("deleteComment", {
       onConfirm: async () => {
         await onDeleteRecordComment(commentId);
@@ -54,6 +52,12 @@ export default function RecordComments() {
     if (!IsLoggedIn) return;
     onCreateRecordComment({ contents });
   };
+
+  const targetRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: loadMore,
+  });
 
   return (
     <>
@@ -71,7 +75,14 @@ export default function RecordComments() {
         >
           <CommentList isLoading={loading} comments={comments} />
         </CommentActionsProvider>
-        <CommentInput onSubmit={onSubmit} isLoggedIn={true} />
+        {hasMore && <div ref={targetRef} className="h-6" />}
+        {loading && (
+          <p className="text-xs text-center text-muted-foreground py-2">
+            댓글을 불러오는 중...
+          </p>
+        )}
+
+        <CommentInput onSubmit={onSubmit} isLoggedIn={IsLoggedIn} />
       </div>
     </>
   );

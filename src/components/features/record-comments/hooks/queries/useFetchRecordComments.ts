@@ -3,6 +3,7 @@ import {
   IQueryFetchBoardCommentsArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useQuery } from "@apollo/client";
+import { useState } from "react";
 
 const FETCH_RECORD_COMMENTS = gql`
   query fetchBoardComments($page: Int, $boardId: ID!) {
@@ -23,8 +24,13 @@ const FETCH_RECORD_COMMENTS = gql`
   }
 `;
 
+const PAGE_SIZE = 10;
+
 export const useFetchRecordComments = (recordId?: string) => {
-  return useQuery<
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const { data, loading, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoardComments">,
     IQueryFetchBoardCommentsArgs
   >(FETCH_RECORD_COMMENTS, {
@@ -33,5 +39,42 @@ export const useFetchRecordComments = (recordId?: string) => {
       page: 1,
     },
     skip: !recordId,
+    onCompleted: (result) => {
+      if ((result.fetchBoardComments?.length ?? 0) < PAGE_SIZE) {
+        setHasMore(false);
+      }
+    },
   });
+
+  const loadMore = async () => {
+    if (!hasMore || loading) return;
+
+    const nextPage = page + 1;
+    const result = await fetchMore({
+      variables: { boardId: recordId ?? "", page: nextPage },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+
+        const newComments = fetchMoreResult.fetchBoardComments ?? [];
+        if (newComments.length < PAGE_SIZE) setHasMore(false);
+
+        return {
+          fetchBoardComments: [
+            ...(prev.fetchBoardComments ?? []),
+            ...newComments,
+          ],
+        };
+      },
+    });
+
+    if (result) setPage(nextPage);
+  };
+
+  return {
+    data,
+    loading,
+    hasMore,
+    loadMore,
+    refetch,
+  };
 };

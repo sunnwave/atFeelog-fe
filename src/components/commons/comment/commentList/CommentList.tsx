@@ -3,17 +3,18 @@ import { MessageCircle } from "lucide-react";
 import CommentItem from "../commentItem/CommentItem";
 
 export default function CommentList({
-  // isLoading,
+  isLoading,
   comments,
   subText = "이 기록에 대한 생각을 공유해주세요",
 }: {
-  isLoading: boolean;
+  isLoading?: boolean;
   comments: Array<IBoardComment>;
   subText?: string;
 }) {
   // TODO: skeleton 구현
-  // if (isLoading) {
-  // }
+  if (isLoading) {
+    <div>로딩 중...</div>;
+  }
 
   if (comments.length === 0) {
     return (
