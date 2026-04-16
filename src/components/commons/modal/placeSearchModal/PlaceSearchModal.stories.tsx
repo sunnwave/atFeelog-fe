@@ -2,14 +2,13 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import React, { useEffect, useState } from "react";
 import PlaceSearchModal from "./PlaceSearchModal";
 import { Button } from "@/components/ui/button/Button";
+import { KakaoPlace } from "@/shared/types/kakao";
 
-type KakaoPlace = {
-  id: string;
-  place_name: string;
-  address_name: string;
-  road_address_name: string;
-  x: string;
-  y: string;
+// ✅ 스토리 전용 타입 분리
+type MockMode = "success" | "error" | "empty" | "slow";
+
+type StoryArgs = React.ComponentProps<typeof PlaceSearchModal> & {
+  mockMode: MockMode;
 };
 
 const MOCK_PLACES: KakaoPlace[] = [
@@ -39,20 +38,20 @@ const MOCK_PLACES: KakaoPlace[] = [
   },
 ];
 
-function installFetchMock({
-  mode,
-}: {
-  mode: "success" | "error" | "empty" | "slow";
-}) {
+function installFetchMock(mode: MockMode) {
   const original = window.fetch.bind(window);
 
-  window.fetch = (async (input: any, init?: any) => {
-    const url = typeof input === "string" ? input : input?.url ?? "";
+  window.fetch = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    const url =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+        ? input.href
+        : (input as Request).url;
 
     if (url.startsWith("/api/kakao/places")) {
-      if (mode === "slow") {
-        await new Promise((r) => setTimeout(r, 1200));
-      }
+      if (mode === "slow") await new Promise((r) => setTimeout(r, 1200));
+
       if (mode === "error") {
         return new Response(JSON.stringify({ message: "Mock 검색 실패" }), {
           status: 500,
@@ -65,7 +64,6 @@ function installFetchMock({
           headers: { "Content-Type": "application/json" },
         });
       }
-      // success
       return new Response(JSON.stringify({ documents: MOCK_PLACES }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
@@ -73,14 +71,15 @@ function installFetchMock({
     }
 
     return original(input, init);
-  }) as any;
+  }) as typeof window.fetch;
 
   return () => {
     window.fetch = original;
   };
 }
 
-const meta: Meta<typeof PlaceSearchModal> = {
+// ✅ StoryArgs 타입 사용
+const meta: Meta<StoryArgs> = {
   title: "commons/modal/PlaceSearchModal",
   component: PlaceSearchModal,
   parameters: { layout: "fullscreen" },
@@ -88,20 +87,16 @@ const meta: Meta<typeof PlaceSearchModal> = {
     open: { control: false },
     onOpenChange: { control: false },
     onConfirm: { action: "confirm(place)" },
-    closeOnOverlayClick: { control: "boolean" },
     className: { control: "text" },
-    // story 전용
-    __mockMode: {
-      name: "mockMode",
+    mockMode: {
       control: "inline-radio",
-      options: ["success", "empty", "error", "slow"],
+      options: ["success", "empty", "error", "slow"] satisfies MockMode[],
     },
-  } as any,
+  },
   args: {
-    closeOnOverlayClick: true,
     className: "",
-    __mockMode: "success",
-  } as any,
+    mockMode: "success",
+  },
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
@@ -115,17 +110,17 @@ const meta: Meta<typeof PlaceSearchModal> = {
     ),
   ],
 };
+
 export default meta;
 
-type Story = StoryObj<typeof PlaceSearchModal>;
+type Story = StoryObj<StoryArgs>;
 
-function Demo(props: any) {
+function Demo({ mockMode, ...props }: StoryArgs) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const uninstall = installFetchMock({ mode: props.__mockMode });
-    return uninstall;
-  }, [props.__mockMode]);
+    return installFetchMock(mockMode);
+  }, [mockMode]);
 
   return (
     <>
@@ -134,14 +129,13 @@ function Demo(props: any) {
           장소 검색 모달 열기
         </Button>
       </div>
-
       <PlaceSearchModal
+        {...props}
         open={open}
         onOpenChange={setOpen}
-        closeOnOverlayClick={props.closeOnOverlayClick}
-        className={props.className}
         onConfirm={(place) => {
           props.onConfirm?.(place);
+          setOpen(false);
         }}
       />
     </>
@@ -152,22 +146,17 @@ export const Playground: Story = {
   render: (args) => <Demo {...args} />,
 };
 
-export const OverlayLocked: Story = {
-  args: { closeOnOverlayClick: false, __mockMode: "success" } as any,
-  render: (args) => <Demo {...args} />,
-};
-
 export const EmptyResult: Story = {
-  args: { __mockMode: "empty" } as any,
+  args: { mockMode: "empty" },
   render: (args) => <Demo {...args} />,
 };
 
 export const ErrorState: Story = {
-  args: { __mockMode: "error" } as any,
+  args: { mockMode: "error" },
   render: (args) => <Demo {...args} />,
 };
 
 export const SlowNetwork: Story = {
-  args: { __mockMode: "slow" } as any,
+  args: { mockMode: "slow" },
   render: (args) => <Demo {...args} />,
 };

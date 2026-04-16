@@ -14,13 +14,11 @@ import { KakaoPlace } from "@/shared/types/kakao";
 export default function PlaceSearchModal({
   open,
   onOpenChange,
-  closeOnOverlayClick = true,
   onConfirm,
   className,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  closeOnOverlayClick?: boolean;
   onConfirm: (place: KakaoPlace) => void;
   className?: string;
 }) {
@@ -60,12 +58,7 @@ export default function PlaceSearchModal({
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
-        <Dialog.Overlay
-          className="fixed inset-0 z-50 bg-black/50"
-          onPointerDown={(e) => {
-            if (!closeOnOverlayClick) e.preventDefault();
-          }}
-        />
+        <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
 
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center sm:justify-center p-0 sm:p-4">
           <Dialog.Content
