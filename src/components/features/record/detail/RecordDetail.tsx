@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import RecordDetailContent from "./recordDetailContent/RecordDetailContent";
 import ImageCarousel from "@/components/commons/imageCarousel/ImageCarousel";
 import BackButton from "@/components/commons/backButton/BackButton";
-import { useRecoilValue } from "recoil";
-import { loggedInUserState } from "@/shared/stores";
-import { useFetchRecordsOfMine } from "@/shared/hooks/record/useFetchRecordsOfMine";
+// import { useRecoilValue } from "recoil";
+// import { loggedInUserState } from "@/shared/stores";
+// import { useFetchRecordsOfMine } from "@/shared/hooks/record/useFetchRecordsOfMine";
 import { useFetchRecord } from "../hooks/useFetchRecord";
 
 export default function RecordDetail(): JSX.Element | null {

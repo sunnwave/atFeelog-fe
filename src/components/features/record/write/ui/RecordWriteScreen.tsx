@@ -26,13 +26,13 @@ export default function RecordWriteScreen() {
 
   const { openConfirmPreset } = useConfirmPreset();
 
+  const { form, ...editorProps } = useRecordEditorForm(onSubmitValid);
+
   const onTempSave = () => {
     const values = form.getValues();
     saveDraft(values);
     success("텍스트 내용이 임시저장됐어요.\n(이미지는 저장되지 않아요😢)");
   };
-
-  const { form, ...editorProps } = useRecordEditorForm(onSubmitValid);
 
   const disabled = isBusy || form.formState.isSubmitting;
   const isDirty = form.formState.isDirty;
@@ -50,7 +50,7 @@ export default function RecordWriteScreen() {
         clearDraft();
       },
     });
-  }, []);
+  }, [loadDraft, openConfirmPreset, form, success, clearDraft]);
 
   return (
     <div className="min-h-screen bg-background ">

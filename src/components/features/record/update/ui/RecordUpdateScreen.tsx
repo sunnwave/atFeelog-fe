@@ -26,7 +26,7 @@ export default function RecordUpdateScreen() {
       DRAFT_KEY.record.update(recordId ?? "")
     );
 
-  const { success } = useToast();
+  const { success, error } = useToast();
 
   const { openConfirmPreset } = useConfirmPreset();
   const { form, ...editorProps } = useRecordEditorForm((values) => {
@@ -34,18 +34,26 @@ export default function RecordUpdateScreen() {
     return onSubmitValid(values, recordId!);
   });
 
-  const { loading, error } = useRecordUpdateInit(recordId, form, () => {
-    const draft = loadDraft();
-    if (!draft) return;
+  const { loading, error: initError } = useRecordUpdateInit(
+    recordId,
+    form,
+    () => {
+      const draft = loadDraft();
+      if (!draft) return;
+      if (initError) {
+        error("기록을 불러오는 중 에러가 발생했어요");
+        return;
+      }
 
-    openConfirmPreset("loadDraft", {
-      onConfirm: () => {
-        form.reset({ ...draft });
-        success("임시 저장된 내용을 불러왔어요.");
-      },
-      onCancel: () => clearDraft(),
-    });
-  });
+      openConfirmPreset("loadDraft", {
+        onConfirm: () => {
+          form.reset({ ...draft });
+          success("임시 저장된 내용을 불러왔어요.");
+        },
+        onCancel: () => clearDraft(),
+      });
+    }
+  );
 
   const onTempSave = () => {
     const values = form.getValues();
@@ -57,7 +65,7 @@ export default function RecordUpdateScreen() {
   const isDirty = form.formState.isDirty;
 
   if (!recordId) return <div>잘못된 접근입니다.</div>;
-
+  if (loading) return <div>로딩 중..</div>;
   return (
     <div className="min-h-screen bg-background ">
       <BackButton fallbackHref="/records" label="뒤로가기" />

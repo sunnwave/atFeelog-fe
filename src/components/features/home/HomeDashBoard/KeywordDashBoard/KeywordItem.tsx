@@ -42,7 +42,9 @@ export default function KeywordItem({
   variant: KeywordVariant;
 }): JSX.Element {
   // TODO: 키워드 클릭 시 해당 키워드로 검색 페이지 이동 (현재는 클릭 이벤트만 정의)
-  const onKeywordClick = (name: string) => {};
+  const onKeywordClick = (name: string) => {
+    console.log(name);
+  };
 
   const c = colors[variant];
 
