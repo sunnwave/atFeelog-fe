@@ -3,7 +3,7 @@ import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import SignupTop from "./SignupTop";
 import SignupBottom from "./SignupBottom";
 import { useCreateUser } from "./hooks/useCreateUser";
-import SignupForm from "./signupForm/SignupForm";
+import SignupForm from "./signUpForm/SignupForm";
 
 export default function SignupPage() {
   const { onClickNavigation } = useNavigation();
