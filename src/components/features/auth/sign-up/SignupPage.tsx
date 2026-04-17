@@ -1,9 +1,9 @@
 import BackButton from "@/components/commons/backButton/BackButton";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
-import SignupForm from "./signupForm/SignupForm";
 import SignupTop from "./SignupTop";
 import SignupBottom from "./SignupBottom";
 import { useCreateUser } from "./hooks/useCreateUser";
+import SignupForm from "./signupForm/SignupForm";
 
 export default function SignupPage() {
   const { onClickNavigation } = useNavigation();
