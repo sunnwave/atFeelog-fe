@@ -1,7 +1,7 @@
 "use client";
 
+import { KakaoPlace, KakaoSearchResponse } from "@/shared/types/kakao";
 import { useCallback, useState } from "react";
-import { KakaoPlace, KakaoSearchResponse } from "./types";
 
 export function useKakaoPlaceSearch({ size = 10 }: { size?: number } = {}) {
   const [query, setQuery] = useState("");

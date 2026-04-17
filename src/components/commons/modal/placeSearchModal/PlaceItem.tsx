@@ -1,4 +1,4 @@
-import { KakaoPlace } from "@/shared/hooks/kakao/types";
+import { KakaoPlace } from "@/shared/types/kakao";
 
 export default function PlaceItem({
   place: p,

@@ -23,6 +23,11 @@ export default defineConfig({
        * ✅ 1) 일반(unit/component) 테스트 (jsdom)
        */
       {
+        resolve: {
+          alias: {
+            "@": path.join(dirname, "src"),
+          },
+        },
         test: {
           name: "unit",
           environment: "jsdom",
