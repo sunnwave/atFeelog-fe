@@ -16,7 +16,9 @@ export default function ComingSoon({
     <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4 px-6 text-center">
       <Construction className="w-16 h-16 text-yellow-400" />
       <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
-      <p className="text-gray-500 max-w-sm">{description}</p>
+      <p className="text-gray-500 max-w-sm whitespace-pre-wrap">
+        {description}
+      </p>
       <button
         onClick={() => router.back()}
         className="mt-2 px-5 py-2 rounded-full border border-gray-300 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
