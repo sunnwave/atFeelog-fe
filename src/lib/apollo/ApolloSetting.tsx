@@ -110,7 +110,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
   const uploadLink = useMemo(
     () =>
       createUploadLink({
-        uri: process.env.NEXT_PUBLIC_GRAPHQL_URI,
+        uri: "/api/graphql",
         credentials: "include",
       }),
     []
