@@ -22,10 +22,13 @@ export function getAccessToken(): Promise<string | null> {
   if (refreshingPromise) return refreshingPromise;
 
   refreshingPromise = (async () => {
-    // ✅ 쿠키 기반 refresh는 "브라우저"에서만 의미가 있음
-    if (typeof window === "undefined") return null;
+    // Browser: route through the Next.js proxy to avoid CORS.
+    // SSR: call the backend directly (no browser cookie jar, proxy not available).
+    const uri =
+      typeof window !== "undefined"
+        ? "/api/graphql"
+        : process.env.NEXT_PUBLIC_GRAPHQL_URI;
 
-    const uri = process.env.NEXT_PUBLIC_GRAPHQL_URI;
     if (!uri) {
       console.error("NEXT_PUBLIC_GRAPHQL_URI is not set");
       return null;
