@@ -26,7 +26,7 @@ export function getAccessToken(): Promise<string | null> {
     // SSR: call the backend directly (no browser cookie jar, proxy not available).
     const uri =
       typeof window !== "undefined"
-        ? "/api/graphql"
+        ? `${window.location.origin}/api/graphql`
         : process.env.NEXT_PUBLIC_GRAPHQL_URI;
 
     if (!uri) {
