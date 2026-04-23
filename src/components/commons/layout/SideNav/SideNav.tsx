@@ -48,7 +48,7 @@ export default function SideNav() {
       <div className="p-6 border-b border-border">
         <Logo size="lg" showSubtitle />
       </div>
-      <ProfileEntry />
+      <ProfileEntry user={me} />
       <nav className="flex flex-col overflow-y-auto p-4 space-y-2">
         <Button
           variant="outline"

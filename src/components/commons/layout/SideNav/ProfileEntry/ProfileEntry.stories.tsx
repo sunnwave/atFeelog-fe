@@ -1,16 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { IUser } from "@/shared/graphql/generated/types";
 import ProfileEntry from "./ProfileEntry";
-// import { vi } from "vitest";
-
-// // ✅ UI 확인용 Avatar mock
-// vi.mock("@/components/commons/avatar/Avatar", () => ({
-//   default: () => (
-//     <div className="h-9 w-9 rounded-full bg-white/20 border border-white/30 text-white font-bold flex items-center justify-center">
-//       A
-//     </div>
-//   ),
-// }));
 
 const baseUser: IUser = {
   __typename: "User",
@@ -41,12 +31,11 @@ export default meta;
 type Story = StoryObj<typeof ProfileEntry>;
 
 export const LoggedOut: Story = {
-  args: { user: baseUser, variant: "loggedOut" },
+  args: { user: null },
 };
 
 export const LoggedIn_LongName: Story = {
   args: {
     user: { ...baseUser, name: "아주아주아주긴이름테스트아주아주아주긴이름" },
-    variant: "loggedIn",
   },
 };

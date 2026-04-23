@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import CommentItem from "./CommentItem";
 import type { IBoardComment } from "@/shared/graphql/generated/types";
+import { CommentActionsProvider } from "../context/CommentActionsContext";
+
+const mockActions = {
+  canEdit: () => false,
+  onSave: async () => {},
+  onRequestDelete: () => {},
+};
 
 const meta: Meta<typeof CommentItem> = {
   title: "commons/comment/CommentItem",
@@ -8,9 +15,11 @@ const meta: Meta<typeof CommentItem> = {
   parameters: { layout: "padded" },
   decorators: [
     (Story) => (
-      <div className="max-w-2xl p-6 bg-background">
-        <Story />
-      </div>
+      <CommentActionsProvider value={mockActions}>
+        <div className="max-w-2xl p-6 bg-background">
+          <Story />
+        </div>
+      </CommentActionsProvider>
     ),
   ],
 };

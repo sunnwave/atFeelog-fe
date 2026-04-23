@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { IBoard } from "@/shared/graphql/generated/types";
+import { MockedProvider } from "@apollo/client/testing";
+import { RecoilRoot } from "recoil";
+import { ToastProvider } from "@/components/commons/toast/ToastProvider";
 import RecordDetailContent from "./RecordDetailContent";
 
 const baseRecord = {
@@ -36,11 +39,17 @@ const meta: Meta<typeof RecordDetailContent> = {
   parameters: { layout: "centered" },
   decorators: [
     (Story) => (
-      <div className="min-h-screen w-full bg-background p-8 flex justify-center">
-        <div className="w-full max-w-[720px]">
-          <Story />
-        </div>
-      </div>
+      <MockedProvider mocks={[]} addTypename={false}>
+        <RecoilRoot>
+          <ToastProvider>
+            <div className="min-h-screen w-full bg-background p-8 flex justify-center">
+              <div className="w-full max-w-[720px]">
+                <Story />
+              </div>
+            </div>
+          </ToastProvider>
+        </RecoilRoot>
+      </MockedProvider>
     ),
   ],
 };
