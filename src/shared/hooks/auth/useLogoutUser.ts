@@ -21,7 +21,9 @@ export default function useLogoutUser() {
       await logoutUser({
         context: { credentials: "include" },
       });
+    } catch {
     } finally {
+      await fetch("/api/logout", { method: "POST" });
       setAccessToken("");
       setUser(null);
     }
