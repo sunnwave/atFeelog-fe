@@ -25,6 +25,7 @@ export type TextFieldProps<TFieldValues extends FieldValues> = Omit<
   "name" | "value" | "defaultValue" | "onChange"
 > & {
   id?: string;
+  testId?: string;
   name: Path<TFieldValues>;
   rightSlot?: React.ReactNode;
   register: UseFormRegister<TFieldValues>;

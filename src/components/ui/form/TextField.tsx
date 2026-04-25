@@ -5,6 +5,7 @@ import { TextFieldProps } from "./types";
 
 export function TextField<TFieldValues extends FieldValues>({
   id,
+  testId,
   name,
   type = "text",
   rightSlot,
@@ -18,6 +19,7 @@ export function TextField<TFieldValues extends FieldValues>({
   return (
     <div className="relative">
       <input
+        data-testid={testId}
         id={inputId}
         type={type}
         {...register(name)}
@@ -34,7 +36,7 @@ export function TextField<TFieldValues extends FieldValues>({
               : "border-border hover:border-primary/50"
           }
         `,
-          className
+          className,
         )}
       />
 
