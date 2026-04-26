@@ -10,6 +10,16 @@ const config: StorybookConfig = {
   ],
   framework: { name: "@storybook/nextjs-vite", options: {} },
   staticDirs: ["../public"],
+  viteFinal: (config) => ({
+    ...config,
+    resolve: {
+      ...config.resolve,
+      // Ensure a single React + Recoil instance across all Storybook bundles.
+      // Without this, Recoil's cached ESM bundle uses a different React copy
+      // and crashes when accessing __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.
+      dedupe: ["react", "react-dom", "recoil"],
+    },
+  }),
 };
 
 export default config;

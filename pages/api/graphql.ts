@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import http from "http";
 import https from "https";
+import { transformSetCookies } from "@/lib/proxy/transformSetCookies";
 
 export const config = { api: { bodyParser: false } };
 
@@ -34,38 +35,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
           filteredHeaders[key] = value as string | string[];
       }
 
-      // ✅ Set-Cookie 수정
       const setCookies = proxyRes.headers["set-cookie"];
       if (setCookies) {
         const arr = Array.isArray(setCookies) ? setCookies : [setCookies];
-
-        filteredHeaders["set-cookie"] = arr.map((cookie) => {
-          let c = cookie;
-
-          // 1) Domain 제거 (서비스 도메인에 저장 가능하게)
-          c = c.replace(/;\s*domain=[^;]+/gi, "");
-
-          // 2) SameSite 제거 후 Lax로 통일
-          c = c.replace(/;\s*SameSite=\w+/gi, "");
-
-          // 3) 중복 세미콜론 정리 (Domain, SameSite 제거 후 발생할 수 있는 ;;)
-          c = c.replace(/;;+/g, ";");
-
-          // 4) SameSite=Lax 추가
-          c += "; SameSite=Lax";
-
-          // 5) Path=/ 없으면 추가
-          if (!/;\s*Path=/i.test(c)) {
-            c += "; Path=/";
-          }
-
-          // 6) https면 Secure 없으면 추가
-          if (url.protocol === "https:" && !/;\s*Secure/i.test(c)) {
-            c += "; Secure";
-          }
-
-          return c;
-        });
+        filteredHeaders["set-cookie"] = transformSetCookies(arr, url.protocol);
       }
 
       res.writeHead(proxyRes.statusCode ?? 200, filteredHeaders);

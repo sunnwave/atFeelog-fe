@@ -3,11 +3,13 @@ import Avatar from "@/components/ui/avatar/Avatar";
 import { ChevronRight } from "lucide-react";
 import { JSX } from "react";
 import { Button } from "@/components/ui/button/Button";
-import { useRecoilValue } from "recoil";
-import { loggedInUserState } from "@/shared/stores";
+import type { LoggedInUser } from "@/shared/stores";
 
-export default function ProfileEntry(): JSX.Element {
-  const me = useRecoilValue(loggedInUserState);
+interface ProfileEntryProps {
+  user?: LoggedInUser;
+}
+
+export default function ProfileEntry({ user: me = null }: ProfileEntryProps): JSX.Element {
   const isLoggedIn = !!me?._id;
 
   const { onClickNavigation } = useNavigation();

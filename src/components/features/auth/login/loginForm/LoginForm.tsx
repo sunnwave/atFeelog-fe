@@ -48,6 +48,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
         </FormLabel>
         <TextField
           name="email"
+          testId="login-email"
           type="email"
           autoComplete="email"
           placeholder="example@atfeelog.com"
@@ -63,6 +64,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
         </FormLabel>
         <PasswordField
           id="password"
+          testId="login-password"
           name="password"
           register={register}
           watch={watch}
@@ -74,6 +76,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
 
       <Button
         type="submit"
+        data-testid="login-submit"
         disabled={!isValid || isSubmitting}
         size={"lg"}
         className="w-full font-semibold mt-3"

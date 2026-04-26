@@ -7,6 +7,7 @@ import TextField from "./TextField";
 
 export function PasswordField<TFieldValues extends FieldValues>({
   id,
+  testId,
   name,
   placeholder = "8자 이상",
   autoComplete = "new-password",
@@ -23,6 +24,7 @@ export function PasswordField<TFieldValues extends FieldValues>({
   return (
     <TextField<TFieldValues>
       {...props}
+      testId={testId}
       id={id}
       type={show ? "text" : "password"}
       name={name}

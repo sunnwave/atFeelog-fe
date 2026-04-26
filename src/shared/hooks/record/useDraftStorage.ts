@@ -1,11 +1,16 @@
+import { useCallback } from "react";
+
 export function useDraftStorage<T extends Record<string, unknown>>(
   key: string
 ) {
-  const saveDraft = (values: T) => {
-    localStorage.setItem(key, JSON.stringify(values));
-  };
+  const saveDraft = useCallback(
+    (values: T) => {
+      localStorage.setItem(key, JSON.stringify(values));
+    },
+    [key]
+  );
 
-  const loadDraft = (): Partial<T> | null => {
+  const loadDraft = useCallback((): Partial<T> | null => {
     const raw = localStorage.getItem(key);
     if (!raw) return null;
     try {
@@ -13,9 +18,9 @@ export function useDraftStorage<T extends Record<string, unknown>>(
     } catch {
       return null;
     }
-  };
+  }, [key]);
 
-  const clearDraft = () => localStorage.removeItem(key);
+  const clearDraft = useCallback(() => localStorage.removeItem(key), [key]);
 
   return { saveDraft, loadDraft, clearDraft };
 }
