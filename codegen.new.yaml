@@ -1,12 +1,12 @@
 schema:
-  - ${NEXT_PUBLIC_GRAPHQL_URI_LEGACY}
+  - ${NEXT_PUBLIC_GRAPHQL_URI_NEW}
 
 generates:
-  ./src/commons/graphql/schema.json:
+  ./src/commons/graphql/schema.new.json:
     plugins:
       - introspection
 
-  ./src/commons/graphql/generated/types.ts:
+  ./src/shared/graphql/generated/types.new.ts:
     plugins:
       - typescript
       - typescript-operations
