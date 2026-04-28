@@ -1,9 +1,12 @@
+import { IS_NEW_API } from "@/lib/config";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import {
   IMutation,
   IMutationUpdateBoardCommentArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 const UPDATE_RECORD_COMMENT = gql`
   mutation updateBoardComment(
@@ -16,7 +19,7 @@ const UPDATE_RECORD_COMMENT = gql`
       password: $password
       boardCommentId: $boardCommentId
     ) {
-      _id
+      _id: ${idField}
       writer
       contents
       user {

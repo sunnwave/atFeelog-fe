@@ -1,8 +1,11 @@
+import { IS_NEW_API } from "@/lib/config";
 import {
   IMutation,
   IMutationUpdateBoardArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 export const UPDATE_RECORD = gql`
   mutation updateBoard(
@@ -15,7 +18,7 @@ export const UPDATE_RECORD = gql`
       password: $password
       boardId: $boardId
     ) {
-      _id
+      _id: ${idField}
       writer
       title
       contents

@@ -1,9 +1,12 @@
+import { IS_NEW_API } from "@/lib/config";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import {
   IMutation,
   IMutationCreateBoardCommentArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 const CREATE_RECORD_COMMENT = gql`
   mutation createBoardComment(
@@ -14,12 +17,12 @@ const CREATE_RECORD_COMMENT = gql`
       createBoardCommentInput: $createBoardCommentInput
       boardId: $boardId
     ) {
-      _id
+      _id: ${idField}
       writer
       contents
       user {
         name
-        _id
+        _id: ${idField}
         picture
       }
       createdAt

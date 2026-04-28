@@ -1,10 +1,13 @@
+import { IS_NEW_API } from "@/lib/config";
 import { IQuery, IQueryFetchBoardArgs } from "@/shared/graphql/generated/types";
 import { gql, useQuery } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 const FETCH_RECORD = gql`
   query fetchBoard($boardId: ID!) {
     fetchBoard(boardId: $boardId) {
-      _id
+      _id: ${idField}
       writer
       title
       contents

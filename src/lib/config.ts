@@ -1,5 +1,7 @@
 const isLegacy = process.env.NEXT_PUBLIC_API_VERSION !== "new";
 
+export const IS_NEW_API = !isLegacy;
+
 export const GRAPHQL_URI =
   (isLegacy
     ? process.env.NEXT_PUBLIC_GRAPHQL_URI_LEGACY

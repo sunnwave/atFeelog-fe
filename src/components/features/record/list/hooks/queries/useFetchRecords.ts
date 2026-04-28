@@ -1,8 +1,11 @@
+import { IS_NEW_API } from "@/lib/config";
 import {
   IQuery,
   IQueryFetchBoardsArgs,
 } from "@/shared/graphql/generated/types";
 import { gql, useQuery } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 const FETCH_RECORDS = gql`
   query fetchBoards(
@@ -17,7 +20,7 @@ const FETCH_RECORDS = gql`
       endDate: $endDate
       search: $search
     ) {
-      _id
+      _id: ${idField}
       writer
       title
       contents

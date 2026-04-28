@@ -1,3 +1,4 @@
+import { IS_NEW_API } from "@/lib/config";
 import {
   IQuery,
   IQueryFetchBoardCommentsArgs,
@@ -5,15 +6,17 @@ import {
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
 
+const idField = IS_NEW_API ? "id" : "_id";
+
 const FETCH_RECORD_COMMENTS = gql`
   query fetchBoardComments($page: Int, $boardId: ID!) {
     fetchBoardComments(page: $page, boardId: $boardId) {
-      _id
+      _id: ${idField}
       writer
       contents
       user {
         name
-        _id
+        _id: ${idField}
         email
         picture
       }
