@@ -3,9 +3,11 @@ import {
   IMutationUpdateBoardArgs,
   IUpdateBoardInput,
 } from "@/shared/graphql/generated/types";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
 import { toBoardTitle } from "../../lib/recordTitle";
 import { attachMetaToContents } from "../../lib/metaBlock";
 import { RecordEditFormValues } from "../../model";
+import { localDateToRfc3339NoonUtc } from "@/shared/utils";
 
 export function mapRecordWriteToCreateBoardInput(args: {
   values: RecordEditFormValues;
@@ -37,6 +39,26 @@ export function mapRecordWriteToCreateBoardInput(args: {
             addressDetail,
           }
         : undefined,
+  };
+}
+
+export function mapRecordWriteToCreateBoardInputNew(
+  values: RecordEditFormValues,
+): ICreateBoardInputNew {
+  const { showName, artistName, showDate, contents, images } = values;
+  return {
+    artistName: artistName || "익명",
+    showName,
+    showDate: showDate ? localDateToRfc3339NoonUtc(showDate) : undefined,
+    contents,
+    images: images.filter((url) => url.trim() !== ""),
+    boardAddressInput: {
+      placeName: values.placeName,
+      roadAddress: values.roadAddress,
+      jibunAddress: values.jibunAddress,
+      x: values.x,
+      y: values.y,
+    },
   };
 }
 

@@ -5,7 +5,13 @@ import { useRecoilValue } from "recoil";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { RecordEditFormValues } from "../../model";
 import { useCreateRecord } from "./mutations/useCreateRecord";
-import { mapRecordWriteToCreateBoardInput } from "../../editor";
+import {
+  mapRecordWriteToCreateBoardInput,
+  mapRecordWriteToCreateBoardInputNew,
+} from "../../editor";
+import { IS_NEW_API } from "@/lib/config";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
+import { ICreateBoardInput } from "@/shared/graphql/generated/types";
 
 export default function useRecordWriteSubmit() {
   const me = useRecoilValue(loggedInUserState);
@@ -20,16 +26,20 @@ export default function useRecordWriteSubmit() {
   const onSubmitValid = async (values: RecordEditFormValues) => {
     const uploadedUrls = await uploadImages(values.imageFiles);
 
-    const args = mapRecordWriteToCreateBoardInput({
-      values: { ...values, images: uploadedUrls },
-      writer: me?.name || "익명",
-      password: me?._id || "1234",
-    });
+    const createBoardInput = IS_NEW_API
+      ? mapRecordWriteToCreateBoardInputNew({ ...values, images: uploadedUrls })
+      : mapRecordWriteToCreateBoardInput({
+          values: { ...values, images: uploadedUrls },
+          writer: me?.name || "익명",
+          password: me?._id || "1234",
+        });
 
     if (isBusy) return;
 
     try {
-      const id = await onCreateRecord(args);
+      const id = await onCreateRecord(
+        createBoardInput as ICreateBoardInput | ICreateBoardInputNew
+      );
       success("필로그를 기록했어요📖✨");
       await router.push(`/records/${id}`);
     } catch (e) {

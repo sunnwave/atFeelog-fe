@@ -1,40 +1,41 @@
-import {
-  ICreateBoardInput,
-  IMutation,
-  IMutationCreateBoardArgs,
-} from "@/shared/graphql/generated/types";
+import { IS_NEW_API } from "@/lib/config";
+import { ICreateBoardInput } from "@/shared/graphql/generated/types";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
 import { gql, useMutation } from "@apollo/client";
 
 export const CREATE_RECORD_LEGACY = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
     createBoard(createBoardInput: $createBoardInput) {
       _id
-      writer
-      title
-      contents
-      youtubeUrl
-      likeCount
-      images
-      createdAt
-      updatedAt
-      deletedAt
-      boardAddress {
-        zipcode
-        address
-        addressDetail
-      }
     }
   }
 `;
 
-export const useCreateRecord = () => {
-  const [createRecordLegacy, { loading }] = useMutation<
-    Pick<IMutation, "createBoard">,
-    IMutationCreateBoardArgs
-  >(CREATE_RECORD_LEGACY);
+export const CREATE_RECORD_NEW = gql`
+  mutation createBoard($createBoardInput: CreateBoardInput!) {
+    createBoard(createBoardInput: $createBoardInput) {
+      _id: id
+    }
+  }
+`;
 
-  const onCreateRecord = async (createBoardInput: ICreateBoardInput) => {
-    const res = await createRecordLegacy({ variables: { createBoardInput } });
+const CREATE_RECORD = IS_NEW_API ? CREATE_RECORD_NEW : CREATE_RECORD_LEGACY;
+
+type CreateRecordResponse = { createBoard: { _id: string } };
+type CreateRecordVars = {
+  createBoardInput: ICreateBoardInput | ICreateBoardInputNew;
+};
+
+export const useCreateRecord = () => {
+  const [createRecord, { loading }] = useMutation<
+    CreateRecordResponse,
+    CreateRecordVars
+  >(CREATE_RECORD);
+
+  const onCreateRecord = async (
+    createBoardInput: ICreateBoardInput | ICreateBoardInputNew,
+  ) => {
+    const res = await createRecord({ variables: { createBoardInput } });
 
     const id = res.data?.createBoard._id;
 
