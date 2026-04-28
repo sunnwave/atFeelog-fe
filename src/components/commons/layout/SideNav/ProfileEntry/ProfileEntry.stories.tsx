@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IUser } from "@/shared/graphql/generated/types";
+import type { IUser } from "@/api/graphql/generated/types";
 import ProfileEntry from "./ProfileEntry";
 
 const baseUser: IUser = {

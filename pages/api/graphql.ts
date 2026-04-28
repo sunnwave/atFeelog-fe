@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import http from "http";
 import https from "https";
-import { transformSetCookies } from "@/lib/proxy/transformSetCookies";
-import { GRAPHQL_URI } from "@/lib/config";
+import { transformSetCookies } from "@/api/server/proxy/transformSetCookies";
+import { GRAPHQL_URI } from "@/api/config";
 
 export const config = { api: { bodyParser: false } };
 

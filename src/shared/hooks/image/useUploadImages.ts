@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import type {
   IMutation,
   IMutationUploadFileArgs,
-} from "@/shared/graphql/generated/types";
+} from "@/api/graphql/generated/types";
 
 export const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {

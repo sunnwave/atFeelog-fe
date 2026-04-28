@@ -9,9 +9,9 @@ import {
   mapRecordWriteToCreateBoardInput,
   mapRecordWriteToCreateBoardInputNew,
 } from "../../editor";
-import { IS_NEW_API } from "@/lib/config";
-import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
-import { ICreateBoardInput } from "@/shared/graphql/generated/types";
+import { IS_NEW_API } from "@/api/config";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/api/graphql/generated/types.new";
+import { ICreateBoardInput } from "@/api/graphql/generated/types";
 
 export default function useRecordWriteSubmit() {
   const me = useRecoilValue(loggedInUserState);

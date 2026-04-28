@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Avatar from "./Avatar";
-import { IUser } from "@/shared/graphql/generated/types";
+import { IUser } from "@/api/graphql/generated/types";
 
 const IMG = "https://picsum.photos/id/64/200/200";
 

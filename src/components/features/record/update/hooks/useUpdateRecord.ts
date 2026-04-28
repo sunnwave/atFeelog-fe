@@ -1,8 +1,8 @@
-import { IS_NEW_API } from "@/lib/config";
+import { IS_NEW_API } from "@/api/config";
 import {
   IMutation,
   IMutationUpdateBoardArgs,
-} from "@/shared/graphql/generated/types";
+} from "@/api/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
 
 const idField = IS_NEW_API ? "id" : "_id";

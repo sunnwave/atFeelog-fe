@@ -2,8 +2,8 @@ import {
   ICreateBoardInput,
   IMutationUpdateBoardArgs,
   IUpdateBoardInput,
-} from "@/shared/graphql/generated/types";
-import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
+} from "@/api/graphql/generated/types";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/api/graphql/generated/types.new";
 import { toBoardTitle } from "../../lib/recordTitle";
 import { attachMetaToContents } from "../../lib/metaBlock";
 import { RecordEditFormValues } from "../../model";

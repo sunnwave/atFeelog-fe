@@ -1,4 +1,4 @@
-import { IBoard } from "@/shared/graphql/generated/types";
+import { IBoard } from "@/api/graphql/generated/types";
 import Profile from "@/components/commons/profile/Profile";
 import { JSX } from "react";
 import RecordDetailContentSubInfo from "./RecordDetailContentSubInfo";

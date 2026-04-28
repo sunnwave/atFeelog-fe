@@ -1,4 +1,4 @@
-import { IBoard } from "@/shared/graphql/generated/types";
+import { IBoard } from "@/api/graphql/generated/types";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { JSX } from "react";

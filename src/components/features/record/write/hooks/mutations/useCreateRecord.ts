@@ -1,6 +1,6 @@
-import { IS_NEW_API } from "@/lib/config";
-import { ICreateBoardInput } from "@/shared/graphql/generated/types";
-import { ICreateBoardInput as ICreateBoardInputNew } from "@/shared/graphql/generated/types.new";
+import { IS_NEW_API } from "@/api/config";
+import { ICreateBoardInput } from "@/api/graphql/generated/types";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/api/graphql/generated/types.new";
 import { gql, useMutation } from "@apollo/client";
 
 export const CREATE_RECORD_LEGACY = gql`

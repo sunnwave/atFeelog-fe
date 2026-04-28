@@ -1,6 +1,6 @@
 import WriterMenu from "@/components/commons/writerMenu/WriterMenu";
 import Avatar from "@/components/ui/avatar/Avatar";
-import { IBoardComment } from "@/shared/graphql/generated/types";
+import { IBoardComment } from "@/api/graphql/generated/types";
 import { useState } from "react";
 import { CommentUpdate } from "../commentUpdate/CommentUpdate";
 import { useCommentActions } from "../context/CommentActionsContext";

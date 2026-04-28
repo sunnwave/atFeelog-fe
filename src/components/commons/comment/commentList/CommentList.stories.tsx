@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IBoardComment } from "@/shared/graphql/generated/types";
+import type { IBoardComment } from "@/api/graphql/generated/types";
 import {
   CommentActionsProvider,
   type CommentActions,

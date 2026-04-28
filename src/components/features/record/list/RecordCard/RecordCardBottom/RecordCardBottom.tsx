@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { IBoard } from "@/shared/graphql/generated/types";
+import { IBoard } from "@/api/graphql/generated/types";
 import CommentIcon from "@/components/ui/icons/commentIcon/CommentIcon";
 import HeartIcon from "@/components/ui/icons/heartIcon/HeartIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";

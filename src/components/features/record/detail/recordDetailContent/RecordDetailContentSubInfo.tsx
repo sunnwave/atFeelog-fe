@@ -1,4 +1,4 @@
-import { IBoard } from "@/shared/graphql/generated/types";
+import { IBoard } from "@/api/graphql/generated/types";
 import { formatDate } from "@/shared/utils";
 import { Calendar, MapPin } from "lucide-react";
 import { JSX } from "react";

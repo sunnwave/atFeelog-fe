@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IBoard } from "@/shared/graphql/generated/types";
+import type { IBoard } from "@/api/graphql/generated/types";
 import { MockedProvider } from "@apollo/client/testing";
 import { RecoilRoot } from "recoil";
 import { ToastProvider } from "@/components/commons/toast/ToastProvider";

@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { IBoardComment } from "@/shared/graphql/generated/types";
+import type { IBoardComment } from "@/api/graphql/generated/types";
 
 export type CommentActions = {
   canEdit: (comment: IBoardComment) => boolean;

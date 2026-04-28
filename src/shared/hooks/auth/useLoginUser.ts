@@ -2,7 +2,7 @@ import { useToast } from "@/components/commons/toast/ToastProvider";
 import {
   IMutation,
   IMutationLoginUserArgs,
-} from "@/shared/graphql/generated/types";
+} from "@/api/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useRecoilState, useSetRecoilState } from "recoil";

@@ -1,4 +1,4 @@
-import { IUser } from "@/shared/graphql/generated/types";
+import { IUser } from "@/api/graphql/generated/types";
 import { getProfileImage, pickAvatarGradient } from "@/shared/utils";
 import Image from "next/image";
 import { JSX } from "react";

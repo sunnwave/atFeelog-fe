@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { getAccessToken } from "@/lib/getAccessToken";
+import { getAccessToken } from "@/api/auth/getAccessToken";
 import { useFetchUserLoggedInLazy } from "./useFetchUserLoggedInLazy";
 import {
   accessTokenState,

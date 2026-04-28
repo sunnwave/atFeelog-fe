@@ -13,8 +13,8 @@ import { onError } from "@apollo/client/link/error";
 import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 
-import { getAccessToken } from "../getAccessToken";
-import { IS_NEW_API } from "../config";
+import { getAccessToken } from "../../auth/getAccessToken";
+import { IS_NEW_API } from "../../config";
 import { useRouter } from "next/router";
 import { accessTokenState } from "@/shared/stores";
 import { makeTypePolicy, TYPE_NAMES_WITH_ID } from "./cachePolicies";

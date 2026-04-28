@@ -15,7 +15,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "src/shared/graphql/generated/**",
+    "src/api/graphql/generated/**",
   ]),
   ...storybook.configs["flat/recommended"],
 ]);

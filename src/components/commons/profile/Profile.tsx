@@ -1,4 +1,4 @@
-import { IBoard } from "@/shared/graphql/generated/types";
+import { IBoard } from "@/api/graphql/generated/types";
 import Avatar, { AvatarType } from "@/components/ui/avatar/Avatar";
 import { JSX } from "react";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";

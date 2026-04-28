@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from "@apollo/client";
-import { IQuery } from "@/shared/graphql/generated/types";
+import { IQuery } from "@/api/graphql/generated/types";
 import { useCallback } from "react";
-import { IS_NEW_API } from "@/lib/config";
+import { IS_NEW_API } from "@/api/config";
 
 const idField = IS_NEW_API ? "id" : "_id";
 

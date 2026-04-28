@@ -1,4 +1,4 @@
-import { IBoardComment } from "@/shared/graphql/generated/types";
+import { IBoardComment } from "@/api/graphql/generated/types";
 import { MessageCircle } from "lucide-react";
 import CommentItem from "../commentItem/CommentItem";
 
