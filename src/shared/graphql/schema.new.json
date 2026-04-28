@@ -17,7 +17,7 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "artist",
+            "name": "artistName",
             "description": null,
             "args": [],
             "type": {
@@ -70,22 +70,6 @@
               "ofType": {
                 "kind": "OBJECT",
                 "name": "BoardComment",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "concert",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
                 "ofType": null
               }
             },
@@ -161,6 +145,22 @@
             "deprecationReason": null
           },
           {
+            "name": "isLiked",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "likeCount",
             "description": null,
             "args": [],
@@ -170,6 +170,34 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showDate",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showName",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
                 "ofType": null
               }
             },
@@ -217,18 +245,6 @@
         "isOneOf": null,
         "fields": [
           {
-            "name": "addressName",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "createdAt",
             "description": null,
             "args": [],
@@ -261,6 +277,18 @@
             "deprecationReason": null
           },
           {
+            "name": "jibunAddress",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "placeName",
             "description": null,
             "args": [],
@@ -273,7 +301,7 @@
             "deprecationReason": null
           },
           {
-            "name": "roadAddressName",
+            "name": "roadAddress",
             "description": null,
             "args": [],
             "type": {
@@ -338,7 +366,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "addressName",
+            "name": "jibunAddress",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -362,7 +390,7 @@
             "deprecationReason": null
           },
           {
-            "name": "roadAddressName",
+            "name": "roadAddress",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -537,7 +565,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "artist",
+            "name": "artistName",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -559,22 +587,6 @@
               "kind": "INPUT_OBJECT",
               "name": "BoardAddressInput",
               "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "concertName",
-            "description": null,
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -610,6 +622,34 @@
                   "name": "String",
                   "ofType": null
                 }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showDate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showName",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
               }
             },
             "defaultValue": null,
@@ -1596,6 +1636,30 @@
             "deprecationReason": null
           },
           {
+            "name": "fetchBoardsLike",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "Board",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "fetchBoardsOfMine",
             "description": null,
             "args": [],
@@ -1688,7 +1752,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "artist",
+            "name": "artistName",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -1705,18 +1769,6 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BoardAddressInput",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "concertName",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -1750,6 +1802,30 @@
                   "ofType": null
                 }
               }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showDate",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "DateTime",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "showName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,

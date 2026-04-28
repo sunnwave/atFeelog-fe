@@ -17,36 +17,38 @@ export type Scalars = {
 
 export type IBoard = {
   __typename?: 'Board';
-  artist: Scalars['String']['output'];
+  artistName: Scalars['String']['output'];
   boardAddress?: Maybe<IBoardAddress>;
   commentCount: Scalars['Int']['output'];
   comments?: Maybe<Array<Maybe<IBoardComment>>>;
-  concert: Scalars['String']['output'];
   contents: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
+  isLiked: Scalars['Boolean']['output'];
   likeCount: Scalars['Int']['output'];
+  showDate?: Maybe<Scalars['DateTime']['output']>;
+  showName: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user?: Maybe<IUser>;
 };
 
 export type IBoardAddress = {
   __typename?: 'BoardAddress';
-  addressName?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
+  jibunAddress?: Maybe<Scalars['String']['output']>;
   placeName?: Maybe<Scalars['String']['output']>;
-  roadAddressName?: Maybe<Scalars['String']['output']>;
+  roadAddress?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
   x?: Maybe<Scalars['String']['output']>;
   y?: Maybe<Scalars['String']['output']>;
 };
 
 export type IBoardAddressInput = {
-  addressName?: InputMaybe<Scalars['String']['input']>;
+  jibunAddress?: InputMaybe<Scalars['String']['input']>;
   placeName?: InputMaybe<Scalars['String']['input']>;
-  roadAddressName?: InputMaybe<Scalars['String']['input']>;
+  roadAddress?: InputMaybe<Scalars['String']['input']>;
   x?: InputMaybe<Scalars['String']['input']>;
   y?: InputMaybe<Scalars['String']['input']>;
 };
@@ -65,11 +67,12 @@ export type ICreateBoardCommentInput = {
 };
 
 export type ICreateBoardInput = {
-  artist: Scalars['String']['input'];
+  artistName: Scalars['String']['input'];
   boardAddressInput?: InputMaybe<IBoardAddressInput>;
-  concertName: Scalars['String']['input'];
   contents: Scalars['String']['input'];
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  showDate?: InputMaybe<Scalars['DateTime']['input']>;
+  showName: Scalars['String']['input'];
 };
 
 export type ICreateUserInput = {
@@ -179,6 +182,7 @@ export type IQuery = {
   fetchBoards: Array<IBoard>;
   fetchBoardsCount: Scalars['Int']['output'];
   fetchBoardsCountOfMine: Scalars['Int']['output'];
+  fetchBoardsLike: Array<IBoard>;
   fetchBoardsOfMine: Array<IBoard>;
   fetchUserLoggedIn: IUser;
 };
@@ -215,11 +219,12 @@ export type IToken = {
 };
 
 export type IUpdateBoardInput = {
-  artist?: InputMaybe<Scalars['String']['input']>;
+  artistName?: InputMaybe<Scalars['String']['input']>;
   boardAddressInput?: InputMaybe<IBoardAddressInput>;
-  concertName?: InputMaybe<Scalars['String']['input']>;
   contents?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  showDate?: InputMaybe<Scalars['DateTime']['input']>;
+  showName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IUpdateUserInput = {
