@@ -14,10 +14,16 @@ import { setContext } from "@apollo/client/link/context";
 import { createUploadLink } from "apollo-upload-client";
 
 import { getAccessToken } from "../getAccessToken";
+import { IS_NEW_API } from "../config";
 import { useRouter } from "next/router";
 import { accessTokenState } from "@/shared/stores";
+import { makeTypePolicy, TYPE_NAMES_WITH_ID } from "./cachePolicies";
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+  typePolicies: Object.fromEntries(
+    TYPE_NAMES_WITH_ID.map((name) => [name, makeTypePolicy(IS_NEW_API)]),
+  ),
+});
 
 interface IApolloSettingProps {
   children: React.ReactNode;
@@ -52,7 +58,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
 
         return { headers: nextHeaders };
       }),
-    [accessToken]
+    [accessToken],
   );
 
   /**
@@ -65,7 +71,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
     () =>
       onError(({ graphQLErrors, operation, forward }) => {
         const isUnauthenticated = graphQLErrors?.some(
-          (e) => e.extensions?.code === "UNAUTHENTICATED"
+          (e) => e.extensions?.code === "UNAUTHENTICATED",
         );
         if (!isUnauthenticated) return;
 
@@ -79,7 +85,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
             // 이미 로그인 상태였던 경우에만 튕기고 싶다면 조건 추가 가능
             if (accessToken) {
               router.replace(
-                `/login?redirect=${encodeURIComponent(redirectPath)}`
+                `/login?redirect=${encodeURIComponent(redirectPath)}`,
               );
             }
 
@@ -100,7 +106,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
           return forward(operation);
         });
       }),
-    [router, setAccessToken, accessToken]
+    [router, setAccessToken, accessToken],
   );
 
   /**
@@ -113,7 +119,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
         uri: "/api/graphql",
         credentials: "include",
       }),
-    []
+    [],
   );
 
   const client = useMemo(
@@ -126,7 +132,7 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
         ]),
         cache,
       }),
-    [errorLink, authLink, uploadLink]
+    [errorLink, authLink, uploadLink],
   );
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
