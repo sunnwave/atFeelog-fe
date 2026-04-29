@@ -38,6 +38,20 @@ export default function RecordEditorForm({
   return (
     <form id={formId} onSubmit={onSubmit} className="space-y-4">
       <div className="flex flex-col space-y-6 pb-28">
+        {/* 제목 */}
+        <div className="flex flex-col space-y-2">
+          <FormLabel htmlFor="title" required>
+            제목
+          </FormLabel>
+          <TextField
+            name="title"
+            placeholder="예) 잔나비 콘서트 후기"
+            register={register}
+            error={errors.title}
+            className={errors.title ? "animate-shake" : ""}
+          />
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* 공연명 */}
           <div className="flex flex-col space-y-2">

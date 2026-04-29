@@ -3,6 +3,12 @@ import type { RecordEditFormValues } from "./types";
 
 export const recordWriteSchema: yup.ObjectSchema<RecordEditFormValues> = yup
   .object({
+    title: yup
+      .string()
+      .trim()
+      .required("제목을 입력해주세요.")
+      .max(100, "제목은 100자 이하여야 해요."),
+
     showName: yup
       .string()
       .trim()
