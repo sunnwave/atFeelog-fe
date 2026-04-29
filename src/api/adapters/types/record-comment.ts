@@ -5,5 +5,5 @@ export interface RecordComment {
   content: string; // legacy: contents, new: content
   user?: User;
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }

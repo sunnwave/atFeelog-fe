@@ -1,6 +1,6 @@
-import { IBoardComment } from "@/api/graphql/generated/types";
 import { MessageCircle } from "lucide-react";
 import CommentItem from "../commentItem/CommentItem";
+import { RecordComment } from "@/api/adapters/types/record-comment";
 
 export default function CommentList({
   isLoading,
@@ -8,7 +8,7 @@ export default function CommentList({
   subText = "이 기록에 대한 생각을 공유해주세요",
 }: {
   isLoading?: boolean;
-  comments: Array<IBoardComment>;
+  comments: Array<RecordComment>;
   subText?: string;
 }) {
   // TODO: skeleton 구현
@@ -33,7 +33,7 @@ export default function CommentList({
   return (
     <div className="space-y-4">
       {comments.map((comment) => (
-        <CommentItem key={comment._id} comment={comment} />
+        <CommentItem key={comment.id} comment={comment} />
       ))}
     </div>
   );
