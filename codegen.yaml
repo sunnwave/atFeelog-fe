@@ -2,7 +2,7 @@ schema:
   - ${NEXT_PUBLIC_GRAPHQL_URI_LEGACY}
 
 generates:
-  ./src/shared/graphql/schema.json:
+  ./src/api/graphql/schema.json:
     plugins:
       - introspection
 

@@ -2,7 +2,7 @@ schema:
   - ${NEXT_PUBLIC_GRAPHQL_URI_NEW}
 
 generates:
-  ./src/shared/graphql/schema.new.json:
+  ./src/api/graphql/schema.new.json:
     plugins:
       - introspection
 
