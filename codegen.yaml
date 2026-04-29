@@ -6,7 +6,7 @@ generates:
     plugins:
       - introspection
 
-  ./src/shared/graphql/generated/types.ts:
+  ./src/api/graphql/generated/types.ts:
     plugins:
       - typescript
       - typescript-operations

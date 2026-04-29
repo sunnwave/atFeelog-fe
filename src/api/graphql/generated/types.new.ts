@@ -29,6 +29,7 @@ export type IBoard = {
   likeCount: Scalars['Int']['output'];
   showDate?: Maybe<Scalars['DateTime']['output']>;
   showName: Scalars['String']['output'];
+  title: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user?: Maybe<IUser>;
 };
@@ -73,6 +74,7 @@ export type ICreateBoardInput = {
   images?: InputMaybe<Array<Scalars['String']['input']>>;
   showDate?: InputMaybe<Scalars['DateTime']['input']>;
   showName: Scalars['String']['input'];
+  title: Scalars['String']['input'];
 };
 
 export type ICreateUserInput = {
@@ -225,6 +227,7 @@ export type IUpdateBoardInput = {
   images?: InputMaybe<Array<Scalars['String']['input']>>;
   showDate?: InputMaybe<Scalars['DateTime']['input']>;
   showName?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IUpdateUserInput = {
