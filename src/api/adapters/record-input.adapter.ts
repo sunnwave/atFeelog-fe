@@ -22,6 +22,7 @@ export function toCreateBoardInput(args: {
 
   if (IS_NEW_API) {
     return {
+      title: values.title,
       artistName: values.artistName ?? "",
       showName: values.showName,
       showDate: values.showDate
