@@ -1,4 +1,4 @@
-import { IBoard } from "@/api/graphql/generated/types";
+import { RecordDetail } from "@/api/adapters/types/record";
 import Profile from "@/components/commons/profile/Profile";
 import { JSX } from "react";
 import RecordDetailContentSubInfo from "./RecordDetailContentSubInfo";
@@ -9,14 +9,15 @@ import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useDeleteBoard } from "../hooks/mutations/useDeleteRecord";
 import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
-import { parseRecordMetaBlock, stripMetaFromContents } from "../../lib";
+import { stripMetaFromContents } from "../../lib";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
+
 export default function RecordDetailContent({
   record,
   isWriter,
   className,
 }: {
-  record: IBoard;
+  record: RecordDetail;
   isWriter: boolean;
   className?: string;
 }): JSX.Element {
@@ -27,16 +28,12 @@ export default function RecordDetailContent({
   const onDelete = () => {
     openConfirmPreset("deleteRecord", {
       onConfirm: async () => {
-        await onDeleteRecord(record._id);
+        await onDeleteRecord(record.id);
       },
     });
   };
 
-  const recordDetail = {
-    ...record,
-    meta: parseRecordMetaBlock(record.contents),
-    contents: stripMetaFromContents(record.contents),
-  };
+  const contents = stripMetaFromContents(record.contents);
 
   return (
     <div className={cn(className)}>
@@ -50,23 +47,19 @@ export default function RecordDetailContent({
             <Profile record={record} tone="primary" size="sm" />
             {isWriter && (
               <WriterMenu
-                onEditClick={onClickNavigation(`/records/update/${record._id}`)}
+                onEditClick={onClickNavigation(`/records/update/${record.id}`)}
                 onDeleteClick={onDelete}
               />
             )}
           </div>
           {/* sub info */}
-          <RecordDetailContentSubInfo
-            record={record}
-            meta={recordDetail?.meta}
-          />
+          <RecordDetailContentSubInfo record={record} />
           {/* main */}
-          <RecordDetailContentMain contents={recordDetail.contents} />
+          <RecordDetailContentMain contents={contents} />
 
           <div className="flex flex-row gap-6 items-center justify-end p-4">
-            {/* TODO: isLiked, isSaved 값 설정하기 */}
             <HeartIcon
-              isLiked={false}
+              isLiked={record.isLiked ?? false}
               likeCount={record.likeCount ?? 0}
               direction="row"
               iconSize="md"

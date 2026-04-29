@@ -19,7 +19,7 @@ export function toRecordDetail(dto: ILegacyBoard | INewBoard): RecordDetail {
       showDate: board.showDate,
       images: board.images ?? [],
       likeCount: board.likeCount,
-      isLiked: board.isLiked,
+      isLiked: board.isLiked ?? false,
       user: board.user ? toUser(board.user) : undefined,
       boardAddress: board.boardAddress
         ? toAddress(board.boardAddress)
