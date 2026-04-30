@@ -1,4 +1,4 @@
-import { IUser } from "@/api/graphql/generated/types";
+import { User } from "@/api/adapters/types/user";
 import { getProfileImage, pickAvatarGradient } from "@/shared/utils";
 import Image from "next/image";
 import { JSX } from "react";
@@ -16,19 +16,17 @@ const AVATAR_SIZE: Record<AvatarSize, { px: number; cls: string }> = {
 
 export default function Avatar({
   user,
-  writer,
   size = "sm",
   type = "outlined",
 }: {
-  user?: IUser;
-  writer?: string;
+  user?: User | null;
   size?: AvatarSize;
   type?: AvatarType;
 }): JSX.Element {
   const avatarUrl = getProfileImage(user?.picture);
   const s = AVATAR_SIZE[size];
 
-  const key = user?._id || writer || "anonymous";
+  const key = user?.id || "anonymous";
   const g = pickAvatarGradient(key);
   const filledStyle =
     type === "filled"
@@ -52,7 +50,7 @@ export default function Avatar({
       }`}
       style={filledStyle}
     >
-      {user?.name?.[0] || writer?.[0] || "익"}
+      {user?.name?.[0] || "익"}
     </div>
   );
 }
