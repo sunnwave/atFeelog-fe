@@ -1,6 +1,5 @@
 import { Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { LoggedIn } from "./CommentInput.stories";
 import { Button } from "@/components/ui/button/Button";
 
 interface CommentInputProps {
@@ -101,7 +100,7 @@ export default function CommentInput({
         <Button
           type="submit"
           size="icon"
-          disabled={!LoggedIn || !comment.trim()}
+          disabled={!isLoggedIn || !comment.trim()}
           variant={isLoggedIn && comment.trim() ? "default" : "ghost"}
           className={`
           absolute right-3 top-1/2 -translate-y-1/2

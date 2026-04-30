@@ -1,14 +1,15 @@
-import { IS_NEW_API } from "@/api/config";
-import { useToast } from "@/components/commons/toast/ToastProvider";
-import {
-  IMutation,
-  IMutationCreateBoardCommentArgs,
-} from "@/api/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
 
-const idField = IS_NEW_API ? "id" : "_id";
+import { IS_NEW_API } from "@/api/config";
+import { useToast } from "@/components/commons/toast/ToastProvider";
+import type { User } from "@/api/adapters/types/user";
+import {
+  toCreateCommentVariables,
+  type CreateCommentInput,
+  type CreateCommentVars,
+} from "@/api/adapters/record-comment-input.adapter";
 
-const CREATE_RECORD_COMMENT = gql`
+const CREATE_RECORD_COMMENT_LEGACY = gql`
   mutation createBoardComment(
     $createBoardCommentInput: CreateBoardCommentInput!
     $boardId: ID!
@@ -17,76 +18,103 @@ const CREATE_RECORD_COMMENT = gql`
       createBoardCommentInput: $createBoardCommentInput
       boardId: $boardId
     ) {
-      _id: ${idField}
+      _id
       writer
       contents
       user {
+        _id
         name
-        _id: ${idField}
         picture
       }
       createdAt
       updatedAt
-      deletedAt
       __typename
     }
   }
 `;
 
-type CreateCommentForm = {
-  contents: string;
+const CREATE_RECORD_COMMENT_NEW = gql`
+  mutation createBoardComment(
+    $createBoardCommentInput: CreateBoardCommentInput!
+    $boardId: ID!
+  ) {
+    createBoardComment(
+      createBoardCommentInput: $createBoardCommentInput
+      boardId: $boardId
+    ) {
+      id
+      content
+      user {
+        id
+        name
+        picture
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+`;
+
+const CREATE_RECORD_COMMENT = IS_NEW_API
+  ? CREATE_RECORD_COMMENT_NEW
+  : CREATE_RECORD_COMMENT_LEGACY;
+
+type CreateCommentResponse = {
+  createBoardComment: {
+    id: string;
+    content: string;
+    writer?: string;
+    user?: {
+      id: string;
+      name: string;
+      picture?: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
-interface ICreateRecordCommentReturn {
-  onCreateRecordComment: (form: CreateCommentForm) => Promise<void>;
+interface UseCreateRecordCommentProps {
+  recordId?: string;
+  user?: User;
 }
 
 export const useCreateRecordComment = ({
-  writer,
-  password,
   recordId,
-}: {
-  writer: string;
-  password: string;
-  recordId?: string;
-}): ICreateRecordCommentReturn => {
+  user,
+}: UseCreateRecordCommentProps) => {
   const [createBoardComment] = useMutation<
-    Pick<IMutation, "createBoardComment">,
-    IMutationCreateBoardCommentArgs
+    CreateCommentResponse,
+    CreateCommentVars
   >(CREATE_RECORD_COMMENT);
 
   const { error } = useToast();
 
-  const onCreateRecordComment = async (form: CreateCommentForm) => {
+  const onCreateRecordComment = async ({
+    content,
+  }: Pick<CreateCommentInput, "content">) => {
     if (!recordId) {
       error("잘못된 게시글 ID입니다.");
       return;
     }
 
-    const contents = form.contents.trim();
-    if (!contents) return;
+    const trimmed = content.trim();
+    if (!trimmed) return;
 
     try {
       await createBoardComment({
-        variables: {
+        variables: toCreateCommentVariables({
           boardId: recordId,
-          createBoardCommentInput: {
-            // TODO: 로그인한 유저 정보 입력
-            writer,
-            password,
-            contents,
-            rating: 0,
-          },
-        },
+          content: trimmed,
+          user,
+        }),
         update(cache, { data }) {
           if (!data) return;
-
-          const newComment = data.createBoardComment;
-
           cache.modify({
             fields: {
               fetchBoardComments(existing = []) {
-                return [newComment, ...existing];
+                return [data.createBoardComment, ...existing];
               },
             },
           });
@@ -100,7 +128,5 @@ export const useCreateRecordComment = ({
     }
   };
 
-  return {
-    onCreateRecordComment,
-  };
+  return { onCreateRecordComment };
 };
