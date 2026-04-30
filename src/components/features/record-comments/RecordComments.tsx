@@ -12,6 +12,8 @@ import {
 } from "./hooks";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
+import { useRecoilState } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function RecordComments() {
   const router = useRouter();
@@ -20,25 +22,17 @@ export default function RecordComments() {
       ? router.query.recordId
       : undefined;
 
-  // TODO: 로그인 유저 정보 받아오기
-  const IsLoggedIn = true;
-  const meId = "test";
-  const writer = "test";
-  const password = "test";
+  const [me] = useRecoilState(loggedInUserState);
+  const IsLoggedIn = !!me;
 
   const { openConfirmPreset } = useConfirmPreset();
 
-  const { data, loading, hasMore, loadMore } = useFetchRecordComments(recordId);
+  const { comments, loading, hasMore, loadMore } =
+    useFetchRecordComments(recordId);
 
-  const { onCreateRecordComment } = useCreateRecordComment({
-    recordId,
-    writer,
-    password,
-  });
-  const { onUpdateRecordComment } = useUpdateRecordComment({ password });
-  const { onDeleteRecordComment } = useDeleteRecordComment({ password });
-
-  const comments = data?.fetchBoardComments ?? [];
+  const { onCreateRecordComment } = useCreateRecordComment({ recordId });
+  const { onUpdateRecordComment } = useUpdateRecordComment();
+  const { onDeleteRecordComment } = useDeleteRecordComment();
 
   const requestDeleteComment = (commentId: string) => {
     openConfirmPreset("deleteComment", {
@@ -48,9 +42,9 @@ export default function RecordComments() {
     });
   };
 
-  const onSubmit = (contents: string) => {
+  const onSubmit = (content: string) => {
     if (!IsLoggedIn) return;
-    onCreateRecordComment({ contents });
+    onCreateRecordComment({ content });
   };
 
   const targetRef = useInfiniteScroll({
@@ -67,8 +61,8 @@ export default function RecordComments() {
         </h2>
         <CommentActionsProvider
           value={{
-            // TODO:작성자 판별
-            canEdit: (c) => meId && c.writer === meId,
+            canEdit: (c) =>
+              IsLoggedIn && (c.user?.id === me.id || c.user?.name === me.name),
             onSave: (commentId, next) => onUpdateRecordComment(commentId, next),
             onRequestDelete: (commentId) => requestDeleteComment(commentId),
           }}

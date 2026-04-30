@@ -28,7 +28,6 @@ const CREATE_RECORD_COMMENT_LEGACY = gql`
       }
       createdAt
       updatedAt
-      __typename
     }
   }
 `;
@@ -51,7 +50,6 @@ const CREATE_RECORD_COMMENT_NEW = gql`
       }
       createdAt
       updatedAt
-      __typename
     }
   }
 `;
