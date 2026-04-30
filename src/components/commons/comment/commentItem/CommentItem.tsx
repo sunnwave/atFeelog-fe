@@ -7,10 +7,6 @@ import { fromNow } from "@/shared/utils";
 import { RecordComment } from "@/api/adapters/types/record-comment";
 
 export default function CommentItem({ comment }: { comment: RecordComment }) {
-  // TODO: 작성자 판별
-  // const isWriter=comment.user?._id
-  // const isWriter = false;
-
   const { canEdit, onSave, onStartEdit, onRequestDelete } = useCommentActions();
 
   const isWriter = canEdit(comment);
@@ -38,8 +34,8 @@ export default function CommentItem({ comment }: { comment: RecordComment }) {
           <div className="flex items-baseline gap-2">
             <span className="font-medium text-sm">{comment.user?.name}</span>
             <span className="text-xs font-regular text-muted-foreground">
-              {comment.updatedAt
-                ? `${fromNow(comment.updatedAt)} 수정됨`
+              {comment.isEdited
+                ? `${fromNow(comment.updatedAt!)} 수정됨`
                 : `${fromNow(comment.createdAt)} 작성됨`}
             </span>
           </div>

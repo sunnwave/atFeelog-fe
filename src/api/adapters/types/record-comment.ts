@@ -6,4 +6,5 @@ export interface RecordComment {
   user?: User;
   createdAt: string;
   updatedAt?: string;
+  isEdited: boolean;
 }
