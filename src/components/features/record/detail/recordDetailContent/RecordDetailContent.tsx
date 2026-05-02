@@ -55,7 +55,11 @@ export default function RecordDetailContent({
           {/* sub info */}
           <RecordDetailContentSubInfo record={record} />
           {/* main */}
-          <RecordDetailContentMain contents={contents} />
+          <RecordDetailContentMain
+            contents={contents}
+            showName={record.showName}
+            artistName={record.artistName}
+          />
 
           <div className="flex flex-row gap-6 items-center justify-end p-4">
             <HeartIcon

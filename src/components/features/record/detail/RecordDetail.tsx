@@ -4,6 +4,8 @@ import RecordDetailContent from "./recordDetailContent/RecordDetailContent";
 import BackButton from "@/components/commons/backButton/BackButton";
 import { useFetchRecord } from "../hooks/useFetchRecord";
 import ImageCarousel from "@/components/commons/imageCarousel/ImageCarousel";
+import { useRecoilState } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 
 export default function RecordDetail(): JSX.Element | null {
   const router = useRouter();
@@ -13,9 +15,15 @@ export default function RecordDetail(): JSX.Element | null {
       ? router.query.recordId
       : undefined;
 
+  const [me] = useRecoilState(loggedInUserState);
+  const isLoggedIn = !!me;
   const { record, loading, error } = useFetchRecord(recordId);
 
-  const isWriter = true; // TODO: 로그인한 유저의 id와 record의 작성자 id 비교해서 isWriter 값 설정하기
+  const isWriter = !!(
+    isLoggedIn &&
+    record &&
+    (me.id === record.user?.id || me.name === record.user?.name)
+  );
 
   if (!router.isReady) return null;
   if (!recordId) return null;

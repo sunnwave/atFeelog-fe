@@ -1,17 +1,51 @@
 import { useMemo, useState } from "react";
 import DOMPurify from "dompurify";
 
-export default function RecordContents({ contents }: { contents: string }) {
+export default function RecordContents({
+  contents,
+  showName,
+  artistName,
+}: {
+  contents: string;
+  showName?: string;
+  artistName?: string;
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const sanitizedContents = DOMPurify.sanitize(contents);
-
   const shouldShowMoreButton = useMemo(() => contents.length > 180, [contents]);
+
+  const artists = artistName
+    ? artistName
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean)
+    : [];
 
   return (
     <div className="p-4 border-b border-border prose prose-base max-w-none">
+      {(showName?.trim() || artists.length > 0) && (
+        <div className=" px-3 py-2 flex flex-wrap items-center gap-2 mb-4 not-prose">
+          {showName?.trim() && (
+            <span className="text-base font-semibold text-foreground">
+              {showName}
+            </span>
+          )}
+          {showName?.trim() && artists.length > 0 && (
+            <span className="text-muted-foreground/40 text-xs">|</span>
+          )}
+          {artists.map((name) => (
+            <span
+              key={name}
+              className="px-2 py-0.5 rounded-full bg-background text-foreground text-xs font-medium shadow-sm"
+            >
+              {name}
+            </span>
+          ))}
+        </div>
+      )}
       <p
-        dangerouslySetInnerHTML={{ __html: sanitizedContents }} // ✅ HTML 태그가 포함된 콘텐츠를 렌더링
+        dangerouslySetInnerHTML={{ __html: sanitizedContents }}
         className={[
           "whitespace-pre-wrap leading-relaxed text-foreground",
           !isExpanded &&

@@ -4,8 +4,14 @@ import type { IBoard as ILegacyBoard } from "@/api/graphql/generated/types";
 import type { IBoard as INewBoard } from "@/api/graphql/generated/types.new";
 import type { RecordDetail } from "./types/record";
 import { toUser } from "./user.adapter";
-import { parseRecordMetaBlock } from "@/components/features/record";
+import {
+  parseRecordMetaBlock,
+  stripMetaFromContents,
+} from "@/components/features/record";
 import { toAddress } from "./address.adapter";
+
+const cleanImages = (images?: (string | null | undefined)[] | null) =>
+  (images ?? []).filter((v): v is string => Boolean(v?.trim()));
 
 export function toRecordDetail(dto: ILegacyBoard | INewBoard): RecordDetail {
   if (IS_NEW_API) {
@@ -14,10 +20,10 @@ export function toRecordDetail(dto: ILegacyBoard | INewBoard): RecordDetail {
       id: board.id,
       title: board.title,
       showName: board.showName,
-      artistName: board.artistName,
+      artistName: board.artistName ?? undefined,
       contents: board.contents,
       showDate: board.showDate,
-      images: board.images ?? [],
+      images: cleanImages(board.images),
       likeCount: board.likeCount,
       isLiked: board.isLiked ?? false,
       user: board.user ? toUser(board.user) : undefined,
@@ -45,8 +51,8 @@ export function toRecordDetail(dto: ILegacyBoard | INewBoard): RecordDetail {
     showName,
     artistName,
     showDate,
-    contents: board.contents,
-    images: board.images ?? [],
+    contents: stripMetaFromContents(board.contents),
+    images: cleanImages(board.images),
     likeCount: board.likeCount,
     user: board.user
       ? toUser(board.user)
