@@ -25,7 +25,7 @@ export type IBoard = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
-  isLiked: Scalars['Boolean']['output'];
+  isLiked?: Maybe<Scalars['Boolean']['output']>;
   likeCount: Scalars['Int']['output'];
   showDate?: Maybe<Scalars['DateTime']['output']>;
   showName: Scalars['String']['output'];
@@ -184,7 +184,9 @@ export type IQuery = {
   fetchBoards: Array<IBoard>;
   fetchBoardsCount: Scalars['Int']['output'];
   fetchBoardsCountOfMine: Scalars['Int']['output'];
+  fetchBoardsKeyword: Array<Scalars['String']['output']>;
   fetchBoardsLike: Array<IBoard>;
+  fetchBoardsOfBest: Array<IBoard>;
   fetchBoardsOfMine: Array<IBoard>;
   fetchUserLoggedIn: IUser;
 };
