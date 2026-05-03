@@ -1,27 +1,26 @@
 import { JSX } from "react";
-import { IBoard } from "@/api/graphql/generated/types";
+import { RecordSummary } from "@/api/adapters/types/record-summary";
 import CommentIcon from "@/components/ui/icons/commentIcon/CommentIcon";
 import HeartIcon from "@/components/ui/icons/heartIcon/HeartIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import Profile from "@/components/commons/profile/Profile";
 
 export default function RecordCardBottom({
-  board,
+  record,
   size = "lg",
 }: {
-  board: IBoard;
+  record: RecordSummary;
   size?: CARD_UI_SIZE;
 }): JSX.Element {
   const s = UI_SIZE[size];
   return (
     <div className="flex items-center justify-between">
-      <Profile record={board} size={size} />
+      <Profile record={record} size={size} />
       <div className={`flex items-center ${s.gap}`}>
-        {/* TODO: commentcount로 변경해야 함 */}
-        <CommentIcon count={board.likeCount ?? 0} iconSize={size} />
+        <CommentIcon count={record.commentCount ?? 0} iconSize={size} />
         <HeartIcon
-          likeCount={board.likeCount}
-          isLiked={false}
+          likeCount={record.likeCount}
+          isLiked={record.isLiked ?? false}
           iconSize={size}
         />
       </div>

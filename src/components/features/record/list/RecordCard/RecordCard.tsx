@@ -1,4 +1,4 @@
-import { IBoard } from "@/api/graphql/generated/types";
+import { RecordSummary } from "@/api/adapters/types/record-summary";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { JSX } from "react";
@@ -10,19 +10,19 @@ import RecordCardContent from "./RecordCardContent";
 import { getImageUrl } from "@/shared/utils";
 
 export default function RecordCard({
-  board,
+  record,
   size = "lg",
 }: {
-  board: IBoard;
+  record: RecordSummary;
   size?: CARD_UI_SIZE;
 }): JSX.Element {
   const s = UI_SIZE[size];
   const router = useRouter();
 
-  const hasImages = board.images?.some((image) => !!image?.trim()) ?? false;
+  const hasImages = record.images?.some((image) => !!image?.trim()) ?? false;
 
   const onClick = () => {
-    void router.push(`/records/${board._id}`);
+    void router.push(`/records/${record.id}`);
   };
 
   return (
@@ -32,13 +32,13 @@ export default function RecordCard({
     >
       {hasImages ? (
         <Image
-          src={getImageUrl(board.images![0])}
-          alt={board.title}
+          src={getImageUrl(record.images![0])}
+          alt={record.title}
           fill
           className="absolute inset-0 z-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
       ) : (
-        <GradientBg boardId={board._id} />
+        <GradientBg boardId={record.id} />
       )}
       <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
       <div className={`absolute z-20 ${s.bookmarkPos}`}>
@@ -47,8 +47,8 @@ export default function RecordCard({
       <div
         className={`absolute z-10 inset-x-0 bottom-0 text-white flex flex-col ${s.pad}`}
       >
-        <RecordCardContent board={board} size={size} />
-        <RecordCardBottom board={board} size={size} />
+        <RecordCardContent record={record} size={size} />
+        <RecordCardBottom record={record} size={size} />
       </div>
     </article>
   );

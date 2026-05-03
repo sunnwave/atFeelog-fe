@@ -3,6 +3,7 @@ import { JSX } from "react";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import { formatDate } from "@/shared/utils";
 import { RecordDetail } from "@/api/adapters/types/record";
+import { RecordSummary } from "@/api/adapters/types/record-summary";
 
 type ProfileTone = "primary" | "white";
 
@@ -11,7 +12,7 @@ export default function Profile({
   size = "lg",
   tone = "white",
 }: {
-  record: RecordDetail;
+  record: RecordDetail | RecordSummary;
   tone?: ProfileTone;
   size?: CARD_UI_SIZE;
 }): JSX.Element {

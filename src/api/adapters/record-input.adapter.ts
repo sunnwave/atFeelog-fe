@@ -71,6 +71,7 @@ export function toUpdateBoardInput(args: {
 
   if (IS_NEW_API) {
     const updateBoardInput: INewUpdateBoardInput = {
+      title: values.title,
       showName: values.showName,
       artistName: values.artistName ?? "",
       showDate: values.showDate

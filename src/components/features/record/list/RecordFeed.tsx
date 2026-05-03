@@ -17,10 +17,7 @@ export default function RecordFeed(): JSX.Element {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // TODO: search 적용, URL query 적용
-  const { data, fetchMore } = useFetchRecords();
-
-  const records = data?.fetchBoards ?? [];
+  const { records, data, fetchMore } = useFetchRecords();
   const isEmpty = records.length === 0;
 
   const onLoadMore = useCallback(() => {
@@ -40,7 +37,8 @@ export default function RecordFeed(): JSX.Element {
 
         return {
           fetchBoards: [...(prev.fetchBoards ?? []), ...newRecords],
-        };
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any;
       },
     }).finally(() => {
       setIsLoading(false);
@@ -67,8 +65,8 @@ export default function RecordFeed(): JSX.Element {
   return (
     <ResponsiveLayout contentType="app" className="py-4">
       <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={3}>
-        {records?.map((board) => (
-          <RecordFeedCard key={board._id} board={board} size={cardSize} />
+        {records.map((record) => (
+          <RecordFeedCard key={record.id} record={record} size={cardSize} />
         ))}
       </ResponsiveGrid>
 

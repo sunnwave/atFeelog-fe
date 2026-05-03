@@ -65,7 +65,7 @@ const FETCH_RECORD_NEW = gql`
   }
 `;
 
-const FETCH_RECORD = IS_NEW_API ? FETCH_RECORD_NEW : FETCH_RECORD_LEGACY;
+export const FETCH_RECORD = IS_NEW_API ? FETCH_RECORD_NEW : FETCH_RECORD_LEGACY;
 
 export const useFetchRecord = (recordId?: string) => {
   const { data, loading, error } = useQuery<
