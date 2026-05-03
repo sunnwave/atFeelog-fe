@@ -66,10 +66,6 @@ export const useFetchRecordComments = (recordId?: string) => {
     variables: { boardId: recordId ?? "", page: 1 },
     skip: !recordId || IS_NEW_API,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (result) => {
-      if ((result.fetchBoardComments?.length ?? 0) < PAGE_SIZE)
-        setHasMore(false);
-    },
   });
 
   const newQuery = useQuery<
@@ -79,13 +75,17 @@ export const useFetchRecordComments = (recordId?: string) => {
     variables: { boardId: recordId ?? "", page: 1 },
     skip: !recordId || !IS_NEW_API,
     notifyOnNetworkStatusChange: true,
-    onCompleted: (result) => {
-      if ((result.fetchBoardComments?.length ?? 0) < PAGE_SIZE)
-        setHasMore(false);
-    },
   });
 
   const active = IS_NEW_API ? newQuery : legacyQuery;
+
+  const [prevData, setPrevData] = useState(active.data);
+  if (prevData !== active.data) {
+    setPrevData(active.data);
+    if ((active.data?.fetchBoardComments?.length ?? 0) < PAGE_SIZE) {
+      setHasMore(false);
+    }
+  }
 
   const comments: RecordComment[] = useMemo(() => {
     return (active.data?.fetchBoardComments ?? []).map((c) =>
