@@ -217,6 +217,12 @@ export type IQueryFetchBoardsCountArgs = {
   startDate?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
+
+export type IQueryFetchBoardsOfBestArgs = {
+  isTop5?: InputMaybe<Scalars['Boolean']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type IToken = {
   __typename?: 'Token';
   accessToken: Scalars['String']['output'];
