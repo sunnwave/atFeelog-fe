@@ -69,11 +69,18 @@ const FETCH_RECORDS_NEW = gql`
 
 const FETCH_RECORDS = IS_NEW_API ? FETCH_RECORDS_NEW : FETCH_RECORDS_LEGACY;
 
-export const useFetchRecords = () => {
+export type RecordFilterVars = Pick<
+  IQueryFetchBoardsArgs,
+  "search" | "startDate" | "endDate"
+>;
+
+export const useFetchRecords = (filter: RecordFilterVars = {}) => {
   const { data, loading, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoards"> | Pick<INewQuery, "fetchBoards">,
     IQueryFetchBoardsArgs
-  >(FETCH_RECORDS);
+  >(FETCH_RECORDS, {
+    variables: { page: 1, ...filter },
+  });
 
   const seen = new Set<string>();
   const records = (data?.fetchBoards ?? [])

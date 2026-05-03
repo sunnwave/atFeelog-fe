@@ -4,20 +4,33 @@ import RecordFeedCard from "./RecordCard/RecordCard";
 import { Sparkles } from "lucide-react";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useBreakpoint } from "@/shared/hooks/ui/useBreakpoint";
-import { useFetchRecords } from "./hooks/queries/useFetchRecords";
+import { useFetchRecords, RecordFilterVars } from "./hooks/queries/useFetchRecords";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { CARD_SIZE_BY_BP } from "@/shared/tokens";
 
 const RECORDS_PER_PAGE = 10;
 
-export default function RecordFeed(): JSX.Element {
+export default function RecordFeed({
+  filter = {},
+}: {
+  filter?: RecordFilterVars;
+}): JSX.Element {
   const bp = useBreakpoint();
   const cardSize = CARD_SIZE_BY_BP[bp];
 
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { records, data, fetchMore } = useFetchRecords();
+  // filter 변경 시 페이지네이션 상태를 렌더 중 동기 리셋 (React 권장 패턴)
+  const filterKey = `${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (lastFilterKey !== filterKey) {
+    setLastFilterKey(filterKey);
+    setHasMore(true);
+    setIsLoading(false);
+  }
+
+  const { records, data, fetchMore } = useFetchRecords(filter);
   const isEmpty = records.length === 0;
 
   const onLoadMore = useCallback(() => {
@@ -28,7 +41,7 @@ export default function RecordFeed(): JSX.Element {
     const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
 
     fetchMore({
-      variables: { page: nextPage },
+      variables: { page: nextPage, ...filter },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult?.fetchBoards) return prev;
         const newRecords = fetchMoreResult.fetchBoards ?? [];
@@ -43,7 +56,7 @@ export default function RecordFeed(): JSX.Element {
     }).finally(() => {
       setIsLoading(false);
     });
-  }, [data, fetchMore, isLoading, hasMore]);
+  }, [data, fetchMore, isLoading, hasMore, filter]);
 
   const sentinelRef = useInfiniteScroll({
     hasMore,
