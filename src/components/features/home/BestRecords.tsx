@@ -6,7 +6,7 @@ import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 
 export default function BestRecords(): JSX.Element {
-  const { data } = useFetchBestRecords();
+  const { records } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
 
   return (
@@ -28,10 +28,10 @@ export default function BestRecords(): JSX.Element {
       </div>
       <div className="w-full max-w-full min-w-0 overflow-x-auto">
         <div className="flex flex-nowrap gap-5">
-          {data?.fetchBoardsOfTheBest.map((board) => (
-            <div key={board._id} className="shrink-0 w-[220px] md:w-[260px]">
+          {records.map((board) => (
+            <div key={board.id} className="shrink-0 w-55 md:w-65">
               <div className="w-full aspect-[3/4]">
-                <RecordCard board={board} size="sm" />
+                <RecordCard record={board} size="sm" />
               </div>
             </div>
           ))}
