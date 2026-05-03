@@ -8,7 +8,8 @@ import { useKakaoPlaceSearch } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import PlaceItem from "./PlaceItem";
 import PlaceMessage from "./PlaceMessage";
-import { FormEvent, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useDebounce } from "@/shared/hooks/ui/useDebounce";
 import { KakaoPlace } from "@/shared/types/kakao";
 
 export default function PlaceSearchModal({
@@ -36,11 +37,18 @@ export default function PlaceSearchModal({
     reset,
   } = useKakaoPlaceSearch({ size: 10 });
 
+  const debouncedQuery = useDebounce(query, 400);
+  const searchRef = useRef(search);
+  useEffect(() => { searchRef.current = search; }, [search]);
+  useEffect(() => {
+    if (debouncedQuery.trim()) void searchRef.current();
+  }, [debouncedQuery]);
+
   const onSubmitSearch = useCallback(
-    (e: FormEvent) => {
+    (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       e.stopPropagation();
-      search(); // 내부에서 query.trim() 체크하도록 훅에서 처리하는 게 베스트
+      search();
     },
     [search]
   );
@@ -62,6 +70,7 @@ export default function PlaceSearchModal({
 
         <div className="fixed inset-0 z-[60] flex items-end sm:items-center sm:justify-center p-0 sm:p-4">
           <Dialog.Content
+            aria-describedby={undefined}
             className={cn(
               "w-full bg-background shadow-2xl flex flex-col",
               "rounded-t-3xl max-h-[85vh]",
@@ -73,7 +82,7 @@ export default function PlaceSearchModal({
             <div className="flex items-center justify-between px-6 py-5 border-b border-border">
               <div className="flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-point-indigo" />
-                <h2 className="text-lg font-bold">공연 장소 검색</h2>
+                <Dialog.Title className="text-lg font-bold">공연 장소 검색</Dialog.Title>
               </div>
               <Dialog.Close asChild>
                 <Button
