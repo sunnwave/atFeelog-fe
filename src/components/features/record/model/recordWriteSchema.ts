@@ -24,7 +24,11 @@ export const recordWriteSchema: yup.ObjectSchema<RecordEditFormValues> = yup
     showDate: yup
       .string()
       .required("공연 날짜를 선택해주세요.")
-      .matches(/^\d{4}-\d{2}-\d{2}$/, "날짜 형식이 올바르지 않아요."),
+      .matches(/^\d{4}-\d{2}-\d{2}$/, "날짜 형식이 올바르지 않아요.")
+      .test("not-future", "공연 날짜는 오늘 이후로 설정할 수 없어요.", (value) => {
+        if (!value) return true;
+        return value <= new Date().toISOString().slice(0, 10);
+      }),
 
     contents: yup
       .string()

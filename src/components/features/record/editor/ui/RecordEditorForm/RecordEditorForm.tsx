@@ -90,6 +90,7 @@ export default function RecordEditorForm({
           <TextField
             type="date"
             name="showDate"
+            max={new Date().toISOString().slice(0, 10)}
             register={register}
             error={errors.showDate}
             className={errors.showDate ? "animate-shake" : ""}

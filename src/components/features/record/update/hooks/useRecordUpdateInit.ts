@@ -2,19 +2,15 @@ import { UseFormReturn } from "react-hook-form";
 import { useFetchRecord } from "../../hooks/useFetchRecord";
 import { RecordEditFormValues } from "../../model";
 import { useEffect, useRef } from "react";
-import {
-  parseBoardTitle,
-  parseRecordMetaBlock,
-  stripMetaFromContents,
-} from "../../lib";
+import { stripMetaFromContents } from "../../lib";
+import { toDateInputValue } from "@/shared/utils";
 
 export const useRecordUpdateInit = (
   boardId: string | undefined,
   form: UseFormReturn<RecordEditFormValues>,
-  onRecordLoaded?: () => void
+  onRecordLoaded?: () => void,
 ) => {
-  const { data, loading, error } = useFetchRecord(boardId);
-  const record = data?.fetchBoard;
+  const { record, loading, error } = useFetchRecord(boardId);
 
   const initializedRef = useRef<string | null>(null);
 
@@ -25,22 +21,18 @@ export const useRecordUpdateInit = (
     if (initializedRef.current === boardId) return;
     initializedRef.current = boardId;
 
-    const meta = parseRecordMetaBlock(record.contents);
     const contents = stripMetaFromContents(record.contents);
-    const { showName, artistName } = parseBoardTitle(record.title);
 
     form.reset({
-      showName: showName ?? "",
-      artistName: artistName ?? "",
-      showDate: meta?.showDate ?? "",
-      placeName:
-        record.boardAddress?.addressDetail?.trim() ||
-        record.boardAddress?.address?.trim() ||
-        "",
-      roadAddress: record.boardAddress?.address ?? "",
-      jibunAddress: record.boardAddress?.address ?? "",
-      x: meta?.x ?? undefined,
-      y: meta?.y ?? undefined,
+      title: record.title,
+      showName: record.showName ?? "",
+      artistName: record.artistName ?? "",
+      showDate: toDateInputValue(record.showDate),
+      placeName: record.boardAddress?.placeName ?? "",
+      roadAddress: record.boardAddress?.roadAddress ?? "",
+      jibunAddress: record.boardAddress?.jibunAddress ?? "",
+      x: record.boardAddress?.x ?? undefined,
+      y: record.boardAddress?.y ?? undefined,
       contents,
       imageFiles: [],
       images: (record.images ?? []).filter((v): v is string => !!v?.trim()),
@@ -53,9 +45,5 @@ export const useRecordUpdateInit = (
     initializedRef.current = null;
   }, [boardId]);
 
-  return {
-    record,
-    loading,
-    error,
-  };
+  return { record, loading, error };
 };
