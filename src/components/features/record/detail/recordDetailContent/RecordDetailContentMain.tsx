@@ -34,9 +34,9 @@ export default function RecordContents({
           {showName?.trim() && artists.length > 0 && (
             <span className="text-muted-foreground/40 text-xs">|</span>
           )}
-          {artists.map((name) => (
+          {artists.map((name, i) => (
             <span
-              key={name}
+              key={`${i}-${name}`}
               className="px-2 py-0.5 rounded-full bg-background text-foreground text-xs font-medium shadow-sm"
             >
               {name}

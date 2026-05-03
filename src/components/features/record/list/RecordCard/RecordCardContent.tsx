@@ -27,9 +27,9 @@ export default function RecordCardContent({
 
       {artists.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-1">
-          {artists.map((name) => (
+          {artists.map((name, i) => (
             <span
-              key={name}
+              key={`${i}-${name}`}
               className="px-2 py-0.5 rounded-full bg-white/20 text-white text-xs font-medium backdrop-blur-sm"
             >
               {name}
