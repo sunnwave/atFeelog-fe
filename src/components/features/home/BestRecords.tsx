@@ -20,7 +20,7 @@ export default function BestRecords(): JSX.Element {
         <Button
           variant="ghost"
           className="justify-end hover:bg-background"
-          onClick={onClickNavigation("/records")}
+          onClick={onClickNavigation("/records?view=best")}
         >
           더보기
           <ChevronRight className="w-5 h-5" />

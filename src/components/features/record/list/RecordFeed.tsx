@@ -5,6 +5,7 @@ import { Sparkles } from "lucide-react";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useBreakpoint } from "@/shared/hooks/ui/useBreakpoint";
 import { useFetchRecords, RecordFilterVars } from "./hooks/queries/useFetchRecords";
+import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { CARD_SIZE_BY_BP } from "@/shared/tokens";
 
@@ -12,8 +13,10 @@ const RECORDS_PER_PAGE = 10;
 
 export default function RecordFeed({
   filter = {},
+  best = false,
 }: {
   filter?: RecordFilterVars;
+  best?: boolean;
 }): JSX.Element {
   const bp = useBreakpoint();
   const cardSize = CARD_SIZE_BY_BP[bp];
@@ -21,8 +24,8 @@ export default function RecordFeed({
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // filter 변경 시 페이지네이션 상태를 렌더 중 동기 리셋 (React 권장 패턴)
-  const filterKey = `${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
+  // filter 변경 시 페이지네이션 리셋
+  const filterKey = `${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
   const [lastFilterKey, setLastFilterKey] = useState(filterKey);
   if (lastFilterKey !== filterKey) {
     setLastFilterKey(filterKey);
@@ -30,39 +33,55 @@ export default function RecordFeed({
     setIsLoading(false);
   }
 
-  const { records, data, fetchMore } = useFetchRecords(filter);
+  // 두 훅 모두 항상 호출 (조건부 훅 금지) — 사용하지 않는 쪽은 skip됨
+  const regularResult = useFetchRecords(best ? undefined : filter);
+  const bestResult = useFetchBestRecords({ isTop5: false });
+
+  const records = best ? bestResult.records : regularResult.records;
+
   const isEmpty = records.length === 0;
 
   const onLoadMore = useCallback(() => {
-    if (!data || isLoading || !hasMore) return;
-    setIsLoading(true);
+    if (isLoading || !hasMore) return;
 
-    const currentLength = data.fetchBoards.length;
-    const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+    if (best) {
+      const currentLength = bestResult.data?.fetchBoardsOfBest?.length ?? 0;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
 
-    fetchMore({
-      variables: { page: nextPage, ...filter },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult?.fetchBoards) return prev;
-        const newRecords = fetchMoreResult.fetchBoards ?? [];
+      bestResult.fetchMore({
+        variables: { isTop5: false, page: nextPage },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult?.fetchBoardsOfBest) return prev;
+          const next = fetchMoreResult.fetchBoardsOfBest;
+          if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+          return {
+            fetchBoardsOfBest: [...(prev.fetchBoardsOfBest ?? []), ...next],
+          };
+        },
+      }).finally(() => setIsLoading(false));
+    } else {
+      if (!regularResult.data) return;
+      const currentLength = regularResult.data.fetchBoards.length;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
 
-        if (newRecords.length < RECORDS_PER_PAGE) setHasMore(false);
+      regularResult.fetchMore({
+        variables: { page: nextPage, ...filter },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult?.fetchBoards) return prev;
+          const next = fetchMoreResult.fetchBoards ?? [];
+          if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+          return {
+            fetchBoards: [...(prev.fetchBoards ?? []), ...next],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any;
+        },
+      }).finally(() => setIsLoading(false));
+    }
+  }, [best, isLoading, hasMore, bestResult, regularResult, filter]);
 
-        return {
-          fetchBoards: [...(prev.fetchBoards ?? []), ...newRecords],
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } as any;
-      },
-    }).finally(() => {
-      setIsLoading(false);
-    });
-  }, [data, fetchMore, isLoading, hasMore, filter]);
-
-  const sentinelRef = useInfiniteScroll({
-    hasMore,
-    isLoading,
-    onLoadMore,
-  });
+  const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
 
   if (isEmpty) {
     return (
