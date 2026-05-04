@@ -1,53 +1,59 @@
 import { Search, X } from "lucide-react";
 import { JSX } from "react";
-import DateFilter from "./DateFilter";
+import DateRangePicker from "./DateRangePicker";
 
-type SearchVariant = "withDate" | "onlySearch";
-
-export default function SearchBar({
-  variant,
-  search,
-  startDate,
-  endDate,
-  onSearchChange,
-  onStartDateChange,
-  onEndDateChange,
-}: {
-  variant: SearchVariant;
+type SearchBarBaseProps = {
   search: string;
+  onSearchChange: (v: string) => void;
+};
+
+type SearchBarOnlySearchProps = SearchBarBaseProps & {
+  variant: "onlySearch";
+};
+
+type SearchBarWithDateProps = SearchBarBaseProps & {
+  variant: "withDate";
   startDate: string;
   endDate: string;
-  onSearchChange: (v: string) => void;
   onStartDateChange: (v: string) => void;
   onEndDateChange: (v: string) => void;
-}): JSX.Element {
+};
+
+type SearchBarProps = SearchBarOnlySearchProps | SearchBarWithDateProps;
+
+export default function SearchBar(props: SearchBarProps): JSX.Element {
+  const { variant, search, onSearchChange } = props;
+
   return (
-    <div className="w-full flex flex-col md:flex-row gap-2">
-      <div className="relative w-full flex items-center">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-        <input
-          type="text"
-          placeholder="제목, 작성자, 내용 검색..."
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-12 pr-4 py-2 rounded-xl text-sm border border-border bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
-        />
-        {search && (
-          <button
-            onClick={() => onSearchChange("")}
-            className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-muted transition-colors"
-          >
-            <X className="w-4 h-4 text-muted-foreground" />
-          </button>
-        )}
-      </div>
+    <div className="flex items-center gap-2 w-full px-4 py-2.5 rounded-full border border-border bg-background shadow-sm focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+      <Search className="w-4 h-4 text-muted-foreground shrink-0" />
+      <input
+        type="text"
+        placeholder="제목, 공연명, 아티스트명, 내용 검색..."
+        value={search}
+        onChange={(e) => onSearchChange(e.target.value)}
+        className="flex-1 text-sm bg-transparent outline-none min-w-0"
+      />
+      {search && (
+        <button
+          type="button"
+          onClick={() => onSearchChange("")}
+          className="p-0.5 rounded-full hover:bg-muted transition-colors shrink-0"
+          aria-label="검색어 초기화"
+        >
+          <X className="w-3.5 h-3.5 text-muted-foreground" />
+        </button>
+      )}
       {variant === "withDate" && (
-        <DateFilter
-          startDate={startDate}
-          endDate={endDate}
-          onStartDateChange={onStartDateChange}
-          onEndDateChange={onEndDateChange}
-        />
+        <>
+          <div className="w-px h-4 bg-border shrink-0" />
+          <DateRangePicker
+            startDate={props.startDate}
+            endDate={props.endDate}
+            onStartDateChange={props.onStartDateChange}
+            onEndDateChange={props.onEndDateChange}
+          />
+        </>
       )}
     </div>
   );

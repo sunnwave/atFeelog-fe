@@ -1,6 +1,7 @@
 // RecordEditorForm.tsx
 import { Controller, UseFormReturn } from "react-hook-form";
 import { FormLabel, TextField } from "@/components/ui/form";
+import DatePickerInput from "@/components/commons/datePicker/DatePickerInput";
 import { Button } from "@/components/ui/button/Button";
 import { MapPin } from "lucide-react";
 import { useState } from "react";
@@ -87,13 +88,17 @@ export default function RecordEditorForm({
           <FormLabel htmlFor="showDate" required={false}>
             공연 날짜
           </FormLabel>
-          <TextField
-            type="date"
+          <Controller
             name="showDate"
-            max={new Date().toISOString().slice(0, 10)}
-            register={register}
-            error={errors.showDate}
-            className={errors.showDate ? "animate-shake" : ""}
+            control={control}
+            render={({ field }) => (
+              <DatePickerInput
+                value={field.value ?? ""}
+                onChange={field.onChange}
+                error={errors.showDate}
+                className={errors.showDate ? "animate-shake" : ""}
+              />
+            )}
           />
         </div>
 
