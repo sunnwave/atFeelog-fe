@@ -1,6 +1,9 @@
 import { IS_NEW_API } from "@/api/config";
 import { IQuery as ILegacyQuery } from "@/api/graphql/generated/types";
-import { IQuery as INewQuery } from "@/api/graphql/generated/types.new";
+import {
+  IQuery as INewQuery,
+  IQueryFetchBoardsOfBestArgs,
+} from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 import { toRecordSummary } from "@/api/adapters/record-summary.adapter";
 
@@ -24,8 +27,8 @@ const FETCH_BEST_RECORDS_LEGACY = gql`
 `;
 
 const FETCH_BEST_RECORDS_NEW = gql`
-  query fetchBoardsOfBest {
-    fetchBoardsOfBest {
+  query fetchBoardsOfBest($isTop5: Boolean, $page: Int) {
+    fetchBoardsOfBest(isTop5: $isTop5, page: $page) {
       id
       title
       showName
@@ -44,20 +47,40 @@ const FETCH_BEST_RECORDS_NEW = gql`
   }
 `;
 
-const FETCH_BEST_RECORDS = IS_NEW_API
-  ? FETCH_BEST_RECORDS_NEW
-  : FETCH_BEST_RECORDS_LEGACY;
+export const useFetchBestRecords = (
+  vars: IQueryFetchBoardsOfBestArgs = { isTop5: true },
+) => {
+  const legacyResult = useQuery<Pick<ILegacyQuery, "fetchBoardsOfTheBest">>(
+    FETCH_BEST_RECORDS_LEGACY,
+    { skip: IS_NEW_API },
+  );
 
-export const useFetchBestRecords = () => {
-  const { data, refetch } = useQuery<
-    Pick<ILegacyQuery, "fetchBoardsOfTheBest"> | Pick<INewQuery, "fetchBoardsOfBest">
-  >(FETCH_BEST_RECORDS);
+  const newResult = useQuery<
+    Pick<INewQuery, "fetchBoardsOfBest">,
+    IQueryFetchBoardsOfBestArgs
+  >(FETCH_BEST_RECORDS_NEW, {
+    variables: vars,
+    skip: !IS_NEW_API,
+  });
 
   const raw = IS_NEW_API
-    ? (data as Pick<INewQuery, "fetchBoardsOfBest">)?.fetchBoardsOfBest ?? []
-    : (data as Pick<ILegacyQuery, "fetchBoardsOfTheBest">)?.fetchBoardsOfTheBest ?? [];
+    ? (newResult.data?.fetchBoardsOfBest ?? [])
+    : (legacyResult.data?.fetchBoardsOfTheBest ?? []);
 
-  const records = raw.map(toRecordSummary);
+  const seen = new Set<string>();
+  const records = raw
+    .map(toRecordSummary)
+    .filter((r) => {
+      if (seen.has(r.id)) return false;
+      seen.add(r.id);
+      return true;
+    });
 
-  return { records, refetch };
+  return {
+    records,
+    data: newResult.data,
+    loading: IS_NEW_API ? newResult.loading : legacyResult.loading,
+    fetchMore: newResult.fetchMore,
+    refetch: IS_NEW_API ? newResult.refetch : legacyResult.refetch,
+  };
 };
