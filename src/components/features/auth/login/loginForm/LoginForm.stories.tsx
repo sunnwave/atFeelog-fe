@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import LoginForm from "./LoginForm";
 
 const meta: Meta<typeof LoginForm> = {
-  title: "Features/auth/LoginForm",
+  title: "features/auth/LoginForm",
   component: LoginForm,
   parameters: {
     layout: "fullscreen",
@@ -10,7 +10,7 @@ const meta: Meta<typeof LoginForm> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[520px]">
+        <div className="mx-auto w-full max-w-130">
           <Story />
         </div>
       </div>

@@ -21,6 +21,8 @@ const meta: Meta<typeof Button> = {
       control: "inline-radio",
       options: [
         "default",
+        "emerald",
+        "indigo",
         "destructive",
         "outline",
         "secondary",
@@ -30,7 +32,7 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: "inline-radio",
-      options: ["default", "sm", "lg", "icon"],
+      options: ["default", "sm", "md", "lg", "icon"],
     },
     asChild: { control: "boolean" },
     onClick: { action: "clicked" },
@@ -39,7 +41,7 @@ const meta: Meta<typeof Button> = {
   },
   decorators: [
     (Story) => (
-      <div className="min-h-[240px] w-[520px] rounded-2xl border border-border bg-background p-6 flex items-center justify-center">
+      <div className="min-h-60 w-130 rounded-2xl border border-border bg-background p-6 flex items-center justify-center">
         <Story />
       </div>
     ),
@@ -51,7 +53,7 @@ type Story = StoryObj<typeof Button>;
 
 export const SizeShowcase: Story = {
   render: () => (
-    <div className="w-[520px] space-y-3">
+    <div className="w-130 space-y-3">
       <div className="flex items-center gap-3">
         <Button size="sm">size=sm</Button>
         <Button size="default">size=default</Button>
@@ -70,7 +72,7 @@ export const SizeShowcase: Story = {
 
 export const VariantShowcase: Story = {
   render: () => (
-    <div className="w-[520px] grid grid-cols-2 gap-3">
+    <div className="w-130 grid grid-cols-2 gap-3">
       <Button variant="default">default</Button>
       <Button variant="secondary">secondary</Button>
       <Button variant="outline">outline</Button>

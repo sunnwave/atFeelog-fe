@@ -1,34 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IBoard } from "@/api/graphql/generated/types";
+import type { RecordSummary } from "@/api/adapters/types/record-summary";
 import Profile from "./Profile";
 
 const IMG = "https://picsum.photos/id/64/200/200";
 
-const boardWithUser = {
-  __typename: "Board",
-  _id: "board_1",
+const recordWithUser: RecordSummary = {
+  id: "record_1",
   title: "테스트",
-  contents: "내용",
+  showName: "아이유 콘서트",
   createdAt: "2026-02-06T00:00:00.000Z",
-  updatedAt: "2026-02-06T00:00:00.000Z",
-  deletedAt: null,
   user: {
-    __typename: "User",
-    _id: "user_1",
-    email: "alice@example.com",
     name: "Alice",
     picture: IMG,
-    createdAt: "2026-02-06T00:00:00.000Z",
-    updatedAt: "2026-02-06T00:00:00.000Z",
-    deletedAt: null,
-    userPoint: null,
   },
-} as unknown as IBoard;
+};
 
-const boardAnonymous = {
-  ...boardWithUser,
-  user: null,
-} as unknown as IBoard;
+const recordAnonymous: RecordSummary = {
+  ...recordWithUser,
+  user: undefined,
+};
 
 const meta: Meta<typeof Profile> = {
   title: "commons/Profile",
@@ -50,17 +40,17 @@ type Story = StoryObj<typeof Profile>;
 
 export const DefaultProfile: Story = {
   args: {
-    record: boardWithUser,
+    record: recordWithUser,
     tone: "white",
     size: "lg",
   },
 };
 
 export const WhiteAnonymous: Story = {
-  args: { record: boardAnonymous, tone: "primary", size: "sm" },
+  args: { record: recordAnonymous, tone: "primary", size: "sm" },
   decorators: [
     (Story) => (
-      <div className="w-[360px] p-6 rounded-2xl border border-white/10 bg-white">
+      <div className="w-90 p-6 rounded-2xl border border-white/10 bg-white">
         <Story />
       </div>
     ),
@@ -69,11 +59,10 @@ export const WhiteAnonymous: Story = {
 
 export const SizeGallery: Story = {
   args: {
-    record: boardWithUser,
+    record: recordWithUser,
   },
   render: (args) => (
     <div className="w-full min-h-screen bg-background p-8 space-y-10">
-      {/* Primary tone (밝은 배경) */}
       <section className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">tone: primary</h3>
         <div className="grid gap-4 md:grid-cols-2">
@@ -88,7 +77,6 @@ export const SizeGallery: Story = {
         </div>
       </section>
 
-      {/* White tone (어두운 배경) */}
       <section className="space-y-4">
         <h3 className="text-lg font-semibold text-foreground">tone: white</h3>
         <div className="grid gap-4 md:grid-cols-2">

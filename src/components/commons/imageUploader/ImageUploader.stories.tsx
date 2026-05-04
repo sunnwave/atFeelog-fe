@@ -17,8 +17,8 @@ const meta: Meta<typeof ImageUploader> = {
   },
   decorators: [
     (Story) => (
-      <div className="min-h-[520px] bg-background p-8">
-        <div className="mx-auto w-full max-w-[520px] rounded-2xl border border-border bg-card p-6">
+      <div className="min-h-130 bg-background p-8">
+        <div className="mx-auto w-full max-w-130 rounded-2xl border border-border bg-card p-6">
           <Story />
         </div>
       </div>

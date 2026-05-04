@@ -1,12 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import CommentItem from "./CommentItem";
-import type { IBoardComment } from "@/api/graphql/generated/types";
 import { CommentActionsProvider } from "../context/CommentActionsContext";
+import type { RecordComment } from "@/api/adapters/types/record-comment";
 
 const mockActions = {
   canEdit: () => false,
-  onSave: async () => {},
-  onRequestDelete: () => {},
+  onStartEdit: (id: string) => console.log("startEdit:", id),
+  onSave: async (id: string, next: string) => console.log("save:", id, next),
+  onRequestDelete: (id: string) => console.log("requestDelete:", id),
 };
 
 const meta: Meta<typeof CommentItem> = {
@@ -27,28 +28,20 @@ const meta: Meta<typeof CommentItem> = {
 export default meta;
 type Story = StoryObj<typeof CommentItem>;
 
-const baseComment = {
-  __typename: "BoardComment",
-  _id: "comment_1",
-  writer: "긴닉네임유저_아주길게길게길게",
-  contents:
-    "댓글 내용입니다.\n줄바꿈도 테스트해볼게요!\n공백/줄바꿈 유지되는지 확인.",
-  rating: 12,
+const baseComment: RecordComment = {
+  id: "comment_1",
+  content: "댓글 내용입니다.\n줄바꿈도 테스트해볼게요!\n공백/줄바꿈 유지되는지 확인.",
+  isEdited: false,
   createdAt: "2026-02-06T00:00:00.000Z",
   updatedAt: "2026-02-06T00:00:00.000Z",
-  deletedAt: null,
   user: {
-    __typename: "User",
-    _id: "user_1",
+    id: "user_1",
+    name: "긴닉네임유저_아주길게길게길게",
     email: "alice@example.com",
-    name: "Alice",
-    picture: null,
+    picture: undefined,
     createdAt: "2026-02-06T00:00:00.000Z",
-    updatedAt: "2026-02-06T00:00:00.000Z",
-    deletedAt: null,
-    userPoint: null,
   },
-} as unknown as IBoardComment;
+};
 
 export const Default: Story = {
   args: {
@@ -57,16 +50,26 @@ export const Default: Story = {
 };
 
 export const AnonymousUser: Story = {
-  args: { comment: { ...baseComment, user: null, writer: "익명" } },
+  args: { comment: { ...baseComment, user: undefined } },
 };
 
 export const LongContent: Story = {
   args: {
     comment: {
       ...baseComment,
-      contents:
+      content:
         "아주 긴 댓글 내용입니다. ".repeat(20) +
         "\n\n줄바꿈도 있고, 계속 길어집니다.",
+    },
+  },
+};
+
+export const Edited: Story = {
+  args: {
+    comment: {
+      ...baseComment,
+      isEdited: true,
+      updatedAt: "2026-03-01T00:00:00.000Z",
     },
   },
 };

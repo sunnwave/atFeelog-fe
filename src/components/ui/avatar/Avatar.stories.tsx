@@ -1,19 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import Avatar from "./Avatar";
-import { IUser } from "@/api/graphql/generated/types";
+import type { User } from "@/api/adapters/types/user";
 
 const IMG = "https://picsum.photos/id/64/200/200";
 
-const baseUser: IUser = {
-  __typename: "User",
-  _id: "user_1",
-  email: "Alice@example.com",
+const baseUser: User = {
+  id: "user_1",
   name: "Alice",
-  picture: null,
+  email: "alice@example.com",
+  picture: undefined,
   createdAt: "2026-02-06T00:00:00.000Z",
-  updatedAt: "2026-02-06T00:00:00.000Z",
-  deletedAt: null,
-  userPoint: null,
 };
 
 const meta: Meta<typeof Avatar> = {
@@ -43,6 +39,6 @@ export const WithImage: Story = {
 
 export const WithoutImage: Story = {
   args: {
-    user: { ...baseUser, picture: null, name: "민지" },
+    user: { ...baseUser, picture: undefined, name: "민지" },
   },
 };

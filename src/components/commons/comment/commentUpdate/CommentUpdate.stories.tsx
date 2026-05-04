@@ -5,10 +5,18 @@ const meta: Meta<typeof CommentUpdate> = {
   title: "commons/comment/CommentUpdate",
   component: CommentUpdate,
   parameters: { layout: "padded" },
+  args: {
+    onSave: (content: string) => console.log("save:", content),
+    onCancel: () => console.log("cancel"),
+  },
+  argTypes: {
+    onSave: { action: "onSave" },
+    onCancel: { action: "onCancel" },
+  },
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[720px] rounded-2xl border border-border bg-card p-6">
+        <div className="mx-auto w-full max-w-180 rounded-2xl border border-border bg-card p-6">
           <Story />
         </div>
       </div>

@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import BottomNavItem from "./BottomNavItem";
-import { FileText, Home, Plus, Ticket, User } from "lucide-react";
+import { Plus, User } from "lucide-react";
 import Avatar from "@/components/ui/avatar/Avatar";
 import { Button } from "@/components/ui/button/Button";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useState } from "react";
-import { buildWriteActionSheetOptions } from "@/shared/constants";
+import { buildWriteActionSheetOptions, SIDE_NAV_ITEMS } from "@/shared/constants";
 import { ActionSheet } from "../../actionSheet/ActionSheet";
 import { loggedInUserState } from "@/shared/stores";
 
@@ -34,8 +34,9 @@ export default function BottomNav() {
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border safe-area-inset-bottom">
       <div className="grid grid-cols-5 items-center h-16 max-w-2xl mx-auto px-2">
-        <BottomNavItem href="/" label="홈" icon={Home} />
-        <BottomNavItem href="/records" label="필로그" icon={FileText} />
+        {SIDE_NAV_ITEMS.slice(0, 2).map((item) => (
+          <BottomNavItem key={item.href} {...item} />
+        ))}
         {/* Write (+) */}
         <div className="relative flex flex-col items-center gap-1 h-full justify-center">
           <Button
@@ -46,7 +47,9 @@ export default function BottomNav() {
           </Button>
           <span className="text-xs font-semibold">작성</span>
         </div>
-        <BottomNavItem href="/trade" label="마켓" icon={Ticket} />
+        {SIDE_NAV_ITEMS.slice(2).map((item) => (
+          <BottomNavItem key={item.href} {...item} />
+        ))}
 
         {isLoggedIn ? (
           <Link

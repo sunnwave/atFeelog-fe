@@ -1,34 +1,22 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import RecordCardBottom from "./RecordCardBottom";
-import type { IBoard } from "@/api/graphql/generated/types";
+import type { RecordSummary } from "@/api/adapters/types/record-summary";
 
 const IMG = "https://picsum.photos/id/64/200/200";
 
-const baseBoard = {
-  __typename: "Board",
-  _id: "board_1",
+const baseRecord: RecordSummary = {
+  id: "board_1",
   title: "테스트",
-  contents: "내용",
-  createdAt: "2026-02-06T00:00:00.000Z",
-  updatedAt: "2026-02-06T00:00:00.000Z",
-  deletedAt: null,
-
-  // ✅ RecordCardBottom에서 쓰는 값들
+  showName: "아이유 콘서트",
+  artistName: "아이유",
   likeCount: 12,
   commentCount: 3,
-
+  createdAt: "2026-02-06T00:00:00.000Z",
   user: {
-    __typename: "User",
-    _id: "user_1",
-    email: "alice@example.com",
     name: "Alice",
     picture: IMG,
-    createdAt: "2026-02-06T00:00:00.000Z",
-    updatedAt: "2026-02-06T00:00:00.000Z",
-    deletedAt: null,
-    userPoint: null,
   },
-} as unknown as IBoard;
+};
 
 const meta: Meta<typeof RecordCardBottom> = {
   title: "features/records/RecordCardBottom",
@@ -53,22 +41,22 @@ type Story = StoryObj<typeof RecordCardBottom>;
 
 export const Default: Story = {
   args: {
-    board: baseBoard,
+    record: baseRecord,
   },
 };
 
 export const AnonymousUser: Story = {
   args: {
-    board: { ...baseBoard, user: null } as unknown as IBoard,
+    record: { ...baseRecord, user: undefined },
   },
 };
 
 export const LargeCounts: Story = {
   args: {
-    board: {
-      ...baseBoard,
+    record: {
+      ...baseRecord,
       likeCount: 999,
       commentCount: 123,
-    } as unknown as IBoard,
+    },
   },
 };

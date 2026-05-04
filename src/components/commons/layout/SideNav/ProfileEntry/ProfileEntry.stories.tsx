@@ -1,17 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IUser } from "@/api/graphql/generated/types";
+import type { User } from "@/api/adapters/types/user";
 import ProfileEntry from "./ProfileEntry";
 
-const baseUser: IUser = {
-  __typename: "User",
-  _id: "user_1",
-  email: "alice@example.com",
+const baseUser: User = {
+  id: "user_1",
   name: "Alice",
-  picture: null,
+  email: "alice@example.com",
+  picture: undefined,
   createdAt: "2026-02-06T00:00:00.000Z",
-  updatedAt: "2026-02-06T00:00:00.000Z",
-  deletedAt: null,
-  userPoint: null,
 };
 
 const meta: Meta<typeof ProfileEntry> = {
@@ -32,6 +28,10 @@ type Story = StoryObj<typeof ProfileEntry>;
 
 export const LoggedOut: Story = {
   args: { user: null },
+};
+
+export const LoggedIn: Story = {
+  args: { user: baseUser },
 };
 
 export const LoggedIn_LongName: Story = {

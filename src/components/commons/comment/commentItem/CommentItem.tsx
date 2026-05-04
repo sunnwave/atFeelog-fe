@@ -32,7 +32,9 @@ export default function CommentItem({ comment }: { comment: RecordComment }) {
       <div className="flex flex-1 justify-between">
         <div className="w-full flex flex-col gap-1">
           <div className="flex items-baseline gap-2">
-            <span className="font-medium text-sm">{comment.user?.name}</span>
+            <span className="font-medium text-sm">
+              {comment.user?.name ?? "익명"}
+            </span>
             <span className="text-xs font-regular text-muted-foreground">
               {comment.isEdited
                 ? `${fromNow(comment.updatedAt!)} 수정됨`

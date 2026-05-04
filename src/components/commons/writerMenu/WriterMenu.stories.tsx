@@ -7,7 +7,7 @@ const meta: Meta<typeof WriterMenu> = {
   parameters: { layout: "centered" },
   decorators: [
     (Story) => (
-      <div className="min-h-[220px] w-[320px] flex items-start justify-end p-6 bg-background border border-border rounded-xl">
+      <div className="min-h-55 w-80 flex items-start justify-end p-6 bg-background border border-border rounded-xl">
         <Story />
       </div>
     ),

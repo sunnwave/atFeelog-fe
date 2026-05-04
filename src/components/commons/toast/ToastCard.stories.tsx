@@ -21,7 +21,7 @@ const meta: Meta<typeof ToastCard> = {
     (Story) => (
       <div className="min-h-screen bg-background p-8">
         {/* bottom-right 토스트 느낌으로 위치 잡기 */}
-        <div className="fixed bottom-6 right-6 w-[340px]">
+        <div className="fixed bottom-6 right-6 w-85">
           <Story />
         </div>
       </div>

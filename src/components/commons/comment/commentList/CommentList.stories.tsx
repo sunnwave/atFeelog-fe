@@ -1,41 +1,32 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import type { IBoardComment } from "@/api/graphql/generated/types";
+import type { RecordComment } from "@/api/adapters/types/record-comment";
 import {
   CommentActionsProvider,
   type CommentActions,
 } from "../context/CommentActionsContext";
 import CommentList from "./CommentList";
 
-const baseComment = (over?: Partial<IBoardComment>) =>
-  ({
-    __typename: "BoardComment",
-    _id: `c_${Math.random().toString(36).slice(2, 8)}`,
-    writer: "Alice",
-    contents: "공연 너무 좋았어요! 앵콜 때 소름…",
-    rating: 4.5,
+const baseComment = (over?: Partial<RecordComment>): RecordComment => ({
+  id: `c_${Math.random().toString(36).slice(2, 8)}`,
+  content: "공연 너무 좋았어요! 앵콜 때 소름…",
+  isEdited: false,
+  createdAt: "2026-02-06T00:00:00.000Z",
+  updatedAt: "2026-02-06T00:00:00.000Z",
+  user: {
+    id: "u_1",
+    name: "Alice",
+    email: "alice@example.com",
+    picture: undefined,
     createdAt: "2026-02-06T00:00:00.000Z",
-    updatedAt: "2026-02-06T00:00:00.000Z",
-    deletedAt: null,
-    user: {
-      __typename: "User",
-      _id: "u_1",
-      email: "alice@example.com",
-      name: "Alice",
-      picture: null,
-      createdAt: "2026-02-06T00:00:00.000Z",
-      updatedAt: "2026-02-06T00:00:00.000Z",
-      deletedAt: null,
-      userPoint: null,
-    },
-    ...over,
-  } as unknown as IBoardComment);
+  },
+  ...over,
+});
 
-// ✅ Storybook 전용 더미 actions
 const actions: CommentActions = {
   canEdit: () => true,
   onStartEdit: (id) => console.log("startEdit:", id),
   onSave: async (id, next) => console.log("save:", id, next),
-  onRequestDelete: (c) => console.log("requestDelete:", c),
+  onRequestDelete: (id) => console.log("requestDelete:", id),
 };
 
 const meta: Meta<typeof CommentList> = {
@@ -45,7 +36,7 @@ const meta: Meta<typeof CommentList> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[720px] rounded-2xl border border-border bg-card p-6">
+        <div className="mx-auto w-full max-w-180 rounded-2xl border border-border bg-card p-6">
           <CommentActionsProvider value={actions}>
             <Story />
           </CommentActionsProvider>
@@ -70,13 +61,13 @@ export const Default: Story = {
   args: {
     isLoading: false,
     comments: [
-      baseComment({ _id: "c_1", writer: "Alice" }),
+      baseComment({ id: "c_1", user: { id: "u_1", name: "Alice" } }),
       baseComment({
-        _id: "c_2",
-        writer: "sun",
-        contents: "조명 연출이 진짜 미쳤다…",
+        id: "c_2",
+        user: { id: "u_2", name: "sun" },
+        content: "조명 연출이 진짜 미쳤다…",
       }),
-      baseComment({ _id: "c_3", writer: "익명", user: null }),
+      baseComment({ id: "c_3", user: undefined }),
     ],
   },
 };
@@ -86,9 +77,9 @@ export const LongContent: Story = {
     isLoading: false,
     comments: [
       baseComment({
-        _id: "c_long",
-        writer: "긴댓글유저",
-        contents:
+        id: "c_long",
+        user: { id: "u_4", name: "긴댓글유저" },
+        content:
           "아주 긴 댓글입니다. ".repeat(20) +
           "\n\n줄바꿈도 있고, 계속 길어집니다.",
       }),

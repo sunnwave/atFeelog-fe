@@ -44,7 +44,7 @@ const meta: Meta<StoryArgs> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[760px] rounded-2xl border border-border bg-card p-6">
+        <div className="mx-auto w-full max-w-190 rounded-2xl border border-border bg-card p-6">
           <Story />
         </div>
       </div>

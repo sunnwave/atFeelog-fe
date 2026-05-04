@@ -11,7 +11,7 @@ const meta: Meta<typeof ImageCarousel> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen w-full bg-background p-8 flex items-start justify-center">
-        <div className="w-[340px] md:w-[420px]">
+        <div className="w-85 md:w-105">
           <Story />
         </div>
       </div>

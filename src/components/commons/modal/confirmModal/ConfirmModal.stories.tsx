@@ -17,7 +17,6 @@ const meta: Meta<typeof ConfirmModal> = {
     onCancel: { control: false },
     icon: { control: false },
     className: { control: "text" },
-    closeOnOverlayClick: { control: "boolean" },
     loading: { control: "boolean" },
     variant: {
       control: "inline-radio",
@@ -50,7 +49,7 @@ function Demo(
   > & {
     /** 스토리에서 async confirm 시뮬레이션 */
     simulateAsyncConfirm?: boolean;
-  }
+  },
 ) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -121,19 +120,6 @@ export const LoginConfirm: Story = {
     confirmText: "로그인",
     cancelText: "나중에",
     closeOnOverlayClick: true,
-  },
-  render: (args) => <Demo {...args} />,
-};
-
-export const NoOverlayClose: Story = {
-  args: {
-    title: "닫기 제한",
-    description: "바깥 영역 클릭으로는 닫히지 않게 설정했어요.",
-    variant: "default",
-    icon: Info,
-    confirmText: "확인",
-    cancelText: "취소",
-    closeOnOverlayClick: false,
   },
   render: (args) => <Demo {...args} />,
 };
