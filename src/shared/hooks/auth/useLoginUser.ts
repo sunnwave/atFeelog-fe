@@ -62,9 +62,8 @@ export default function useLoginUser() {
         return;
       }
       setAccessToken(accessToken);
-      await Promise.resolve(); // accessToken 상태가 업데이트된 이후에 fetchMe가 실행되도록 보장
 
-      const me = await fetchMe();
+      const me = await fetchMe(accessToken);
       if (!me) {
         error("유저 정보를 불러오지 못했어요. 다시 로그인해주세요😢");
         return;

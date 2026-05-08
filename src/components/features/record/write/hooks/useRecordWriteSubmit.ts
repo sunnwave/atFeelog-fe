@@ -27,7 +27,7 @@ export default function useRecordWriteSubmit() {
       const id = await onCreateRecord({
         values: { ...values, images: uploadedUrls },
         writer: me?.name || "익명",
-        password: me?._id || "1234",
+        password: me?.id || "1234",
       });
       success("필로그를 기록했어요📖✨");
       await router.push(`/records/${id}`);

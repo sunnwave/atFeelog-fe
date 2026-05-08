@@ -2,13 +2,15 @@ import { gql, useLazyQuery } from "@apollo/client";
 import { IQuery } from "@/api/graphql/generated/types";
 import { useCallback } from "react";
 import { IS_NEW_API } from "@/api/config";
+import { toUser } from "@/api/adapters/user.adapter";
+import type { User } from "@/api/adapters/types/user";
 
 const idField = IS_NEW_API ? "id" : "_id";
 
 export const FETCH_USER_LOGGED_IN = gql`
   query fetchUserLoggedIn {
     fetchUserLoggedIn {
-      _id: ${idField}
+      ${idField}
       email
       name
       picture
@@ -24,7 +26,7 @@ export function useFetchUserLoggedInLazy() {
   );
 
   const run = useCallback(
-    async (token?: string) => {
+    async (token?: string): Promise<User | null> => {
       const res = await fetchUserLoggedIn({
         context: {
           headers: {
@@ -34,7 +36,8 @@ export function useFetchUserLoggedInLazy() {
       });
 
       if (res.error) throw res.error;
-      return res.data?.fetchUserLoggedIn ?? null;
+      const dto = res.data?.fetchUserLoggedIn;
+      return dto ? toUser(dto) : null;
     },
     [fetchUserLoggedIn],
   );

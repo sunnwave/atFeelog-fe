@@ -40,8 +40,7 @@ export function useAuthInitialize() {
 
           if (cancelled) return;
 
-          // ✅ me가 null이면 인증 실패로 간주
-          if (!me?._id) {
+          if (!me?.id) {
             setAccessToken("");
             setUser(null);
             return;

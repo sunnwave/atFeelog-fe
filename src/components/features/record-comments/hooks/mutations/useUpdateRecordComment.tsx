@@ -81,7 +81,11 @@ export const useUpdateRecordComment = () => {
     const input: UpdateCommentInput = { commentId, content: trimmed };
 
     try {
-      await updateBoardComment({ variables: toUpdateCommentVariables(input) });
+      await updateBoardComment({
+        variables: toUpdateCommentVariables(input),
+        refetchQueries: ["fetchBoardComments"],
+        awaitRefetchQueries: true,
+      });
       success("댓글이 수정되었습니다");
     } catch (err) {
       if (err instanceof Error) {
