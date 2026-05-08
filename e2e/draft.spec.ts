@@ -1,16 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
+import { login } from "./helpers";
 
-const EMAIL = process.env.E2E_TEST_EMAIL ?? "";
-const PASSWORD = process.env.E2E_TEST_PASSWORD ?? "";
 const DRAFT_KEY = "record:draft:write";
-
-async function login(page: Page) {
-  await page.goto("/login");
-  await page.getByTestId("login-email").fill(EMAIL);
-  await page.getByTestId("login-password").fill(PASSWORD);
-  await page.getByTestId("login-submit").click();
-  await page.waitForURL("/");
-}
 
 async function clearDraft(page: Page) {
   await page.evaluate((key) => localStorage.removeItem(key), DRAFT_KEY);

@@ -46,10 +46,12 @@ export default function RecordDetailContent({
           <div className="flex items-center justify-between p-4 border-b border-border">
             <Profile record={record} tone="primary" size="sm" />
             {isWriter && (
-              <WriterMenu
-                onEditClick={onClickNavigation(`/records/update/${record.id}`)}
-                onDeleteClick={onDelete}
-              />
+              <div data-testid="record-writer-menu">
+                <WriterMenu
+                  onEditClick={onClickNavigation(`/records/update/${record.id}`)}
+                  onDeleteClick={onDelete}
+                />
+              </div>
             )}
           </div>
           {/* sub info */}

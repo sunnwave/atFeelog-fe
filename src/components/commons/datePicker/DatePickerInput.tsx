@@ -72,6 +72,7 @@ export default function DatePickerInput({
     <div ref={wrapperRef} className="relative">
       <button
         type="button"
+        data-testid="date-picker-trigger"
         onClick={handleOpen}
         className={cn(
           "w-full h-11 px-4 rounded-xl border bg-background transition-all duration-200",
@@ -105,6 +106,7 @@ export default function DatePickerInput({
 
       {open && (
         <div
+          data-testid="date-picker-calendar"
           onMouseDown={(e) => e.stopPropagation()}
           className="absolute top-full left-0 mt-2 z-50 p-4 rounded-2xl border border-border bg-background shadow-lg"
         >

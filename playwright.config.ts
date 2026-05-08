@@ -13,7 +13,7 @@ export default defineConfig({
   reporter: "list",
   use: {
     baseURL: "http://localhost:3000",
-    trace: "off",
+    trace: process.env.CI ? "on-first-retry" : "off",
     screenshot: "off",
     video: "off",
   },
