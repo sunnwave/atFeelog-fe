@@ -1,7 +1,8 @@
 import type { StorybookConfig } from "@storybook/nextjs-vite";
+import { mergeConfig } from "vite";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-vitest",
@@ -10,16 +11,22 @@ const config: StorybookConfig = {
   ],
   framework: { name: "@storybook/nextjs-vite", options: {} },
   staticDirs: ["../public"],
-  viteFinal: (config) => ({
-    ...config,
-    resolve: {
-      ...config.resolve,
-      // Ensure a single React + Recoil instance across all Storybook bundles.
-      // Without this, Recoil's cached ESM bundle uses a different React copy
-      // and crashes when accessing __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.
-      dedupe: ["react", "react-dom", "recoil"],
-    },
-  }),
+  viteFinal: (baseConfig) =>
+    mergeConfig(baseConfig, {
+      optimizeDeps: {
+        include: ["@apollo/client", "@apollo/client/testing", "recoil"],
+      },
+      resolve: {
+        dedupe: [
+          "react",
+          "react-dom",
+          "react/jsx-runtime",
+          "react/jsx-dev-runtime",
+          "recoil",
+          "@apollo/client",
+        ],
+      },
+    }),
 };
 
 export default config;
