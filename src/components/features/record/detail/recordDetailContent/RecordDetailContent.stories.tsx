@@ -35,7 +35,7 @@ const baseRecord: RecordDetail = {
 };
 
 const meta: Meta<typeof RecordDetailContent> = {
-  title: "features/records/RecordDetail/RecordDetailContent",
+  title: "features/record-detail/RecordDetailContent",
   component: RecordDetailContent,
   parameters: { layout: "centered" },
   decorators: [

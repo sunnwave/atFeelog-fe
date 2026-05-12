@@ -20,7 +20,7 @@ type StoryArgs = React.ComponentProps<typeof RecordEditorForm> & {
 };
 
 const meta: Meta<StoryArgs> = {
-  title: "features/record/editor/RecordEditorForm",
+  title: "features/record-write/RecordEditorForm",
   component: RecordEditorForm,
   parameters: { layout: "fullscreen" },
   argTypes: {

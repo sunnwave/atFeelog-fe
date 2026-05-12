@@ -19,7 +19,7 @@ const baseRecord: RecordSummary = {
 };
 
 const meta: Meta<typeof RecordCardBottom> = {
-  title: "features/records/RecordCardBottom",
+  title: "features/record-list/RecordCardBottom",
   component: RecordCardBottom,
   parameters: { layout: "fullscreen" },
   decorators: [

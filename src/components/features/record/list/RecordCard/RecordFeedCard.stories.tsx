@@ -20,7 +20,7 @@ const baseRecord: RecordSummary = {
 };
 
 const meta: Meta<typeof RecordCard> = {
-  title: "features/records/RecordCard",
+  title: "features/record-list/RecordCard",
   component: RecordCard,
   parameters: { layout: "fullscreen" },
   decorators: [
