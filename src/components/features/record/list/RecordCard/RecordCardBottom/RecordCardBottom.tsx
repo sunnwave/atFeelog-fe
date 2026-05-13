@@ -3,7 +3,6 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import CommentIcon from "@/components/ui/icons/commentIcon/CommentIcon";
 import HeartIcon from "@/components/ui/icons/heartIcon/HeartIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
-import Profile from "@/components/commons/profile/Profile";
 
 export default function RecordCardBottom({
   record,
@@ -14,16 +13,19 @@ export default function RecordCardBottom({
 }): JSX.Element {
   const s = UI_SIZE[size];
   return (
-    <div className="flex items-center justify-between">
-      <Profile record={record} size={size} />
-      <div className={`flex items-center ${s.gap}`}>
-        <CommentIcon count={record.commentCount ?? 0} iconSize={size} />
-        <HeartIcon
-          likeCount={record.likeCount}
-          isLiked={record.isLiked ?? false}
-          iconSize={size}
-        />
-      </div>
+    <div className={`flex flex-col items-center ${s.gap} shrink-0`}>
+      <HeartIcon
+        likeCount={record.likeCount}
+        isLiked={record.isLiked ?? false}
+        iconSize={s.icon}
+        direction="col"
+      />
+      <CommentIcon
+        count={record.commentCount ?? 0}
+        iconSize={s.icon}
+        direction="col"
+        className="text-white"
+      />
     </div>
   );
 }

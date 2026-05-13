@@ -12,12 +12,17 @@ export default function RecordCardContent({
   const s = UI_SIZE[size];
 
   const artists = record.artistName
-    ? record.artistName.split(",").map((n) => n.trim()).filter(Boolean)
+    ? record.artistName
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean)
     : [];
 
   return (
     <div className="mb-2 truncate">
-      <h3 className={`${s.title} font-bold ${s.titleClamp}`}>{record.title}</h3>
+      <h3 className={`${s.title} text-white font-bold ${s.titleClamp}`}>
+        {record.title}
+      </h3>
 
       {record.showName?.trim() && (
         <p className={`${s.body} text-white font-medium truncate`}>
