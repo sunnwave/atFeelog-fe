@@ -61,7 +61,7 @@ export function ActionSheet({
           {/* Cancel Button */}
           <div className="px-4 pb-6 pt-2">
             <Button
-              variant="secondary"
+              variant="outline"
               size="lg"
               className="w-full"
               onClick={onClose}

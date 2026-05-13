@@ -44,14 +44,15 @@ export default function SideNav() {
   };
 
   return (
-    <div className="h-full w-full bg-card border-r border-border">
+    <div className="h-full w-full bg-background border-r border-border">
       <div className="p-6 border-b border-border">
         <Logo size="lg" showSubtitle />
       </div>
       <ProfileEntry user={me} />
       <nav className="flex flex-col overflow-y-auto p-4 space-y-2">
         <Button
-          variant="outline"
+          variant="solid"
+          tone="soft"
           size="lg"
           className="hover:scale-[0.98]"
           onClick={onClickWrite}

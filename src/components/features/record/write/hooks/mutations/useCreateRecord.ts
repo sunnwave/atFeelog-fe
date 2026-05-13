@@ -9,6 +9,7 @@ export const CREATE_RECORD_LEGACY = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
     createBoard(createBoardInput: $createBoardInput) {
       id: _id
+      images
     }
   }
 `;
@@ -17,6 +18,7 @@ export const CREATE_RECORD_NEW = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
     createBoard(createBoardInput: $createBoardInput) {
       id
+      images
     }
   }
 `;
@@ -41,7 +43,9 @@ export const useCreateRecord = () => {
     password?: string;
   }) => {
     const createBoardInput = toCreateBoardInput(args);
+    console.log("[createBoard] input:", JSON.stringify(createBoardInput, null, 2));
     const res = await createRecord({ variables: { createBoardInput } });
+    console.log("[createBoard] response:", res.data);
 
     const id = res.data?.createBoard.id;
     if (!id) throw new Error("필로그 기록에 실패했어요😢");

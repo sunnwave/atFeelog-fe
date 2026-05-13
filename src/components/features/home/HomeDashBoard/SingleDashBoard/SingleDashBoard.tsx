@@ -19,7 +19,8 @@ export default function SingleDashBoard({
           <div className="flex gap-2 mb-4">
             <Button
               size="md"
-              variant={activeKeywordType === "feelog" ? "emerald" : "secondary"}
+              variant={activeKeywordType === "feelog" ? "solid" : "outline"}
+              tone={activeKeywordType === "feelog" ? "accent" : "primary"}
               onClick={() => handleManualSwitch("feelog")}
               className="flex-1"
             >
@@ -27,7 +28,8 @@ export default function SingleDashBoard({
             </Button>
             <Button
               size="md"
-              variant={activeKeywordType === "market" ? "indigo" : "secondary"}
+              variant={activeKeywordType === "market" ? "solid" : "outline"}
+              tone={activeKeywordType === "market" ? "accent" : "primary"}
               onClick={() => handleManualSwitch("market")}
               className="flex-1"
             >
