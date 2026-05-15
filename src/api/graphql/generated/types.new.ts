@@ -94,8 +94,18 @@ export type IFileManager = {
   url: Scalars['String']['output'];
 };
 
+export type IFollow = {
+  __typename?: 'Follow';
+  createdAt: Scalars['DateTime']['output'];
+  follower?: Maybe<Array<Maybe<IUser>>>;
+  following?: Maybe<Array<Maybe<IUser>>>;
+  id: Scalars['ID']['output'];
+};
+
 export type IMutation = {
   __typename?: 'Mutation';
+  /**  팔로우 기능 */
+  addFollow?: Maybe<Scalars['Boolean']['output']>;
   createBoard: IBoard;
   createBoardComment: IBoardComment;
   /**  User mutation */
@@ -111,6 +121,11 @@ export type IMutation = {
   updateBoard: IBoard;
   updateBoardComment: IBoardComment;
   updateUser: IUser;
+};
+
+
+export type IMutationAddFollowArgs = {
+  followerId: Scalars['ID']['input'];
 };
 
 
@@ -188,7 +203,14 @@ export type IQuery = {
   fetchBoardsLike: Array<IBoard>;
   fetchBoardsOfBest: Array<IBoard>;
   fetchBoardsOfMine: Array<IBoard>;
+  fetchCountOfFollowers: Scalars['Int']['output'];
+  fetchCountOfFollowing: Scalars['Int']['output'];
+  /**  팔로우 기능 */
+  fetchFollowers?: Maybe<Array<Maybe<IUser>>>;
+  fetchFollowing?: Maybe<Array<Maybe<IUser>>>;
+  fetchFollowingFeed?: Maybe<Array<Maybe<IBoard>>>;
   fetchUserLoggedIn: IUser;
+  isConnected: Scalars['Boolean']['output'];
 };
 
 
@@ -221,6 +243,36 @@ export type IQueryFetchBoardsCountArgs = {
 export type IQueryFetchBoardsOfBestArgs = {
   isTop5?: InputMaybe<Scalars['Boolean']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type IQueryFetchCountOfFollowersArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchCountOfFollowingArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchFollowersArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchFollowingArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchFollowingFeedArgs = {
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+export type IQueryIsConnectedArgs = {
+  followerId: Scalars['ID']['input'];
 };
 
 export type IToken = {
