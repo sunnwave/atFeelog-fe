@@ -74,6 +74,7 @@ export const useFetchRecord = (recordId?: string) => {
   >(FETCH_RECORD, {
     variables: { boardId: recordId ?? "" },
     skip: !recordId,
+    fetchPolicy: "cache-and-network",
   });
 
   const rawBoard = data?.fetchBoard;

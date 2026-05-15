@@ -1,8 +1,5 @@
 import { IS_NEW_API } from "@/api/config";
-import {
-  IQuery,
-  IQueryFetchBoardsArgs,
-} from "@/api/graphql/generated/types";
+import { IQuery, IQueryFetchBoardsArgs } from "@/api/graphql/generated/types";
 import { IQuery as INewQuery } from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 import { toRecordSummary } from "@/api/adapters/record-summary.adapter";
@@ -80,16 +77,15 @@ export const useFetchRecords = (filter: RecordFilterVars = {}) => {
     IQueryFetchBoardsArgs
   >(FETCH_RECORDS, {
     variables: { page: 1, ...filter },
+    fetchPolicy: "cache-and-network",
   });
 
   const seen = new Set<string>();
-  const records = (data?.fetchBoards ?? [])
-    .map(toRecordSummary)
-    .filter((r) => {
-      if (seen.has(r.id)) return false;
-      seen.add(r.id);
-      return true;
-    });
+  const records = (data?.fetchBoards ?? []).map(toRecordSummary).filter((r) => {
+    if (seen.has(r.id)) return false;
+    seen.add(r.id);
+    return true;
+  });
 
   return {
     records,

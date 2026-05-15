@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { useRecoilState } from "recoil";
 
 import {
@@ -42,31 +42,22 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenState);
   const router = useRouter();
 
-  /**
-   * 매 요청마다 accessToken이 있을 때만 Authorization을 설정한다.
-   * accessToken이 없을 때 Authorization을 ""로 덮어쓰면,
-   * 다른 곳(context)에서 넣은 Authorization까지 지워져서 인증이 깨질 수 있음.
-   */
+  // ref로 토큰을 읽어 client/link를 재생성하지 않도록 함
+  const accessTokenRef = useRef(accessToken);
+  accessTokenRef.current = accessToken;
+
   const authLink = useMemo(
     () =>
       setContext((_, { headers }) => {
         const nextHeaders = { ...headers };
-
-        if (accessToken) {
-          nextHeaders.Authorization = `Bearer ${accessToken}`;
+        if (accessTokenRef.current) {
+          nextHeaders.Authorization = `Bearer ${accessTokenRef.current}`;
         }
-
         return { headers: nextHeaders };
       }),
-    [accessToken],
+    [],
   );
 
-  /**
-   * 토큰 만료(UNAUTHENTICATED) 처리:
-   * 1) refreshToken 쿠키로 accessToken 재발급(getAccessToken)
-   * 2) 성공: 헤더 갱신 후 실패했던 요청 1회 재시도
-   * 3) 실패: accessToken 비우고(로그아웃 처리), 필요 시 로그인 페이지로 이동
-   */
   const errorLink = useMemo(
     () =>
       onError(({ graphQLErrors, operation, forward }) => {
@@ -78,23 +69,17 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
         const redirectPath = router.asPath || "/";
 
         return fromPromise(getAccessToken()).flatMap((newAccessToken) => {
-          // refresh 실패 → 재시도하지 않고 종료
           if (!newAccessToken) {
             setAccessToken("");
-
-            // 이미 로그인 상태였던 경우에만 튕기고 싶다면 조건 추가 가능
-            if (accessToken) {
+            if (accessTokenRef.current) {
               router.replace(
                 `/login?redirect=${encodeURIComponent(redirectPath)}`,
               );
             }
-
             return new Observable((observer) => observer.complete());
           }
 
-          // refresh 성공 → 토큰 저장 + 요청 헤더 갱신 후 1회 재시도
           setAccessToken(newAccessToken);
-
           operation.setContext(({ headers = {} }) => ({
             headers: {
               ...headers,
@@ -102,17 +87,12 @@ export default function ApolloSetting({ children }: IApolloSettingProps) {
               authorization: `Bearer ${newAccessToken}`,
             },
           }));
-
           return forward(operation);
         });
       }),
-    [router, setAccessToken, accessToken],
+    [router, setAccessToken],
   );
 
-  /**
-   * 실제 네트워크 전송 링크
-   * credentials: "include" → refreshToken 쿠키가 서버로 전송됨
-   */
   const uploadLink = useMemo(
     () =>
       createUploadLink({

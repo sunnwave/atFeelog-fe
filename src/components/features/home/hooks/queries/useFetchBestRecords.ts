@@ -52,7 +52,7 @@ export const useFetchBestRecords = (
 ) => {
   const legacyResult = useQuery<Pick<ILegacyQuery, "fetchBoardsOfTheBest">>(
     FETCH_BEST_RECORDS_LEGACY,
-    { skip: IS_NEW_API },
+    { skip: IS_NEW_API, fetchPolicy: "cache-and-network" },
   );
 
   const newResult = useQuery<
@@ -61,6 +61,7 @@ export const useFetchBestRecords = (
   >(FETCH_BEST_RECORDS_NEW, {
     variables: vars,
     skip: !IS_NEW_API,
+    fetchPolicy: "cache-and-network",
   });
 
   const raw = IS_NEW_API
