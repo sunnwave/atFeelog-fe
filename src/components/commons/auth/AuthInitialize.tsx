@@ -15,7 +15,7 @@ export default function AuthInitialize() {
   const accessToken = useRecoilValue(accessTokenState);
 
   useEffect(() => {
-    if (!initialized) return;
+    if (!initialized || !accessToken) return;
     client.reFetchObservableQueries();
   }, [initialized, accessToken, client]);
 
