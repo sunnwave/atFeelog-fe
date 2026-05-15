@@ -1,46 +1,77 @@
-import Link from "next/link";
+import { cn } from "@/shared/utils/cn";
 
-type SizeVarint = "sm" | "md" | "lg";
+type LogoSize = "sm" | "md" | "lg";
 
-const sizeClasses: Record<SizeVarint, { title: string; subtitle: string }> = {
+type LogoProps = {
+  size?: LogoSize;
+  className?: string;
+};
+
+const sizeStyles: Record<
+  LogoSize,
+  {
+    root: string;
+    markBox: string;
+    content: string;
+    text: string;
+  }
+> = {
   sm: {
-    title: "text-lg",
-    subtitle: "text-[10px]",
+    root: "h-9",
+    markBox: "w-9 text-sm",
+    content: "px-2.5",
+    text: "text-lg",
   },
   md: {
-    title: "text-2xl",
-    subtitle: "text-xs",
+    root: "h-11",
+    markBox: "w-11 text-base",
+    content: "px-3",
+    text: "text-xl",
   },
   lg: {
-    title: "text-3xl",
-    subtitle: "text-sm",
+    root: "h-14",
+    markBox: "w-14 text-lg",
+    content: "px-4",
+    text: "text-[28px]",
   },
 };
 
-export default function Logo({
-  size = "sm",
-  showSubtitle = true,
-}: {
-  size: SizeVarint;
-  showSubtitle: boolean;
-}) {
-  const s = sizeClasses[size];
+export default function Logo({ size = "md", className }: LogoProps) {
+  const styles = sizeStyles[size];
+
   return (
-    <Link href="/">
-      <div className={`flex flex-col items-center justify-center`}>
-        <h1
-          className={`font-bold tracking-tight leading-none ${s.title} text-foreground`}
+    <div
+      className={cn(
+        "inline-flex items-center overflow-hidden",
+        "border-[1.5px] border-foreground bg-card text-foreground",
+        styles.root,
+        className,
+      )}
+      aria-label="atFeelog"
+    >
+      <div
+        className={cn(
+          "flex h-full shrink-0 items-center justify-center",
+          "border-r border-dashed border-foreground bg-accent",
+          "font-black tracking-[-0.08em]",
+          styles.markBox,
+        )}
+        aria-hidden="true"
+      >
+        @
+      </div>
+
+      <div className={cn("min-w-0", styles.content)}>
+        <div
+          className={cn(
+            "font-black leading-none tracking-[-0.08em]",
+            styles.text,
+          )}
         >
           atFeelog
-        </h1>
-        {showSubtitle && (
-          <p
-            className={`leading-none mt-1 font-medium ${s.subtitle} text-muted-foreground`}
-          >
-            막이 내린 뒤, 내가 남기는 에필로그
-          </p>
-        )}
+          <span className="ml-1 text-point">.</span>
+        </div>
       </div>
-    </Link>
+    </div>
   );
 }
