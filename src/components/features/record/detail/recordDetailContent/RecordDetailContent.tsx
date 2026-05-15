@@ -11,6 +11,7 @@ import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
 import { stripMetaFromContents } from "../../lib";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
+import { useLikeRecord } from "@/shared/hooks/record/useLikeRecord";
 
 export default function RecordDetailContent({
   record,
@@ -24,6 +25,7 @@ export default function RecordDetailContent({
   const { openConfirmPreset } = useConfirmPreset();
   const { onDeleteRecord } = useDeleteBoard();
   const { onClickNavigation } = useNavigation();
+  const { onLikeRecord } = useLikeRecord();
 
   const onDelete = () => {
     openConfirmPreset("deleteRecord", {
@@ -70,6 +72,7 @@ export default function RecordDetailContent({
               direction="row"
               iconSize="md"
               iconColor="neutral"
+              onToggle={() => onLikeRecord(record.id)}
             />
             <BookMarkIcon isSaved={false} iconColor="neutral" iconSize="md" />
           </div>

@@ -3,6 +3,7 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import CommentIcon from "@/components/ui/icons/commentIcon/CommentIcon";
 import HeartIcon from "@/components/ui/icons/heartIcon/HeartIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
+import { useLikeRecord } from "@/shared/hooks/record/useLikeRecord";
 
 export default function RecordCardBottom({
   record,
@@ -12,6 +13,8 @@ export default function RecordCardBottom({
   size?: CARD_UI_SIZE;
 }): JSX.Element {
   const s = UI_SIZE[size];
+  const { onLikeRecord } = useLikeRecord();
+
   return (
     <div className={`flex flex-col items-center ${s.gap} shrink-0`}>
       <HeartIcon
@@ -19,6 +22,7 @@ export default function RecordCardBottom({
         isLiked={record.isLiked ?? false}
         iconSize={s.icon}
         direction="col"
+        onToggle={() => onLikeRecord(record.id)}
       />
       <CommentIcon
         count={record.commentCount ?? 0}
