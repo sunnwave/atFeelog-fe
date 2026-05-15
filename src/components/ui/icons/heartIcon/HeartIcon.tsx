@@ -1,7 +1,7 @@
 import { ICON_COLOR, IconColor, IconSize, ICON_SIZE } from "@/shared/tokens";
 import { cn } from "@/shared/utils";
 import { Heart } from "lucide-react";
-import { JSX, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
 export default function HeartIcon({
   isLiked,
@@ -10,6 +10,7 @@ export default function HeartIcon({
   direction = "col",
   iconColor = "white",
   className,
+  onToggle,
 }: {
   isLiked: boolean;
   likeCount?: number;
@@ -17,6 +18,7 @@ export default function HeartIcon({
   iconColor?: IconColor;
   direction?: "col" | "row";
   className?: string;
+  onToggle?: (nextLiked: boolean) => void;
 }): JSX.Element {
   const s = ICON_SIZE[iconSize];
   const c = ICON_COLOR[iconColor];
@@ -24,12 +26,17 @@ export default function HeartIcon({
   const [liked, setLiked] = useState(isLiked);
   const [likes, setLikes] = useState(likeCount ?? 0);
 
+  useEffect(() => { setLiked(isLiked); }, [isLiked]);
+  useEffect(() => { setLikes(likeCount ?? 0); }, [likeCount]);
+
   const isRow = direction === "row";
 
   const handelClickLike = (e: React.MouseEvent): void => {
     e.stopPropagation();
+    const nextLiked = !liked;
     setLikes((prev) => (liked ? prev - 1 : prev + 1));
-    setLiked((prev) => !prev);
+    setLiked(nextLiked);
+    onToggle?.(nextLiked);
   };
 
   return (
