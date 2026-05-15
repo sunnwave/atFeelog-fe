@@ -105,7 +105,7 @@ export default function PlaceSearchModal({
                   placeholder="예) 올림픽공원 체조경기장"
                   className="flex-1 h-11 rounded-xl border border-border bg-background px-4 text-sm outline-none focus:ring-2 focus:ring-primary/30"
                 />
-                <Button type="submit" variant="indigo" className="h-11">
+                <Button type="submit" className="h-11">
                   <Search className="w-4 h-4" />
                   검색
                 </Button>

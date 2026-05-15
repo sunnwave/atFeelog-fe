@@ -79,7 +79,7 @@ export function ConfirmModal({
           <div className="px-5 py-4">
             <div className="mt-2 flex gap-2">
               <Button
-                variant="secondary"
+                variant="outline"
                 className="flex-1"
                 onClick={() => {
                   onCancel?.();
@@ -91,7 +91,8 @@ export function ConfirmModal({
               </Button>
 
               <Button
-                variant={variant === "destructive" ? "destructive" : "default"}
+                variant="solid"
+                tone={variant === "destructive" ? "destructive" : "primary"}
                 className="flex-1"
                 onClick={async () => {
                   await onConfirm?.();

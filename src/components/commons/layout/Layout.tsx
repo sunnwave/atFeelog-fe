@@ -1,31 +1,31 @@
 import type { ReactNode } from "react";
+
 import BottomNav from "./BottomNav/BottomNav";
 import Logo from "../../ui/logo/Logo";
 import SideNav from "./SideNav/SideNav";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-background text-[#111827]">
-      {/* ✅ Desktop Sidebar: viewport 기준 왼쪽 고정 */}
-      <aside className="hidden lg:block fixed left-0 top-0 h-screen w-[300px] z-50">
+    <div className="min-h-screen bg-background text-foreground">
+      {/* Desktop Sidebar */}
+      <aside className="fixed left-0 top-0 z-50 hidden h-screen w-[288px] lg:block">
         <SideNav />
       </aside>
 
-      {/* ✅ Mobile Header */}
-      <div className="w-full flex items-center justify-center py-3 lg:hidden bg-white/80 border-b border-border">
+      {/* Mobile Header */}
+      <header className="flex w-full items-center justify-center border-b border-border bg-card/80 py-3 lg:hidden">
         <div className="block md:hidden">
-          <Logo size="md" showSubtitle={false} />
+          <Logo size="md" />
         </div>
         <div className="hidden md:block">
-          <Logo size="lg" showSubtitle={false} />
+          <Logo size="lg" />
         </div>
-      </div>
+      </header>
 
-      {/* ✅ Main: sidebar 만큼 밀고, 내용만 컨테이너로 가운데 정렬 */}
-      <div className={`lg:pl-[300px]`}>
+      {/* Main */}
+      <div className="lg:pl-[288px]">
         <main className="w-full">
-          <div className="mx-auto w-full max-w-[1200px] pb-20">
-            {/* <div className="mx-auto w-full max-w-[1200px] pb-20 md:px-6 md:py-8 lg:px-6 lg:pb-8"> */}
+          <div className="mx-auto w-full max-w-[1200px] pb-20 md:px-6 md:py-8 lg:px-6 lg:pb-8">
             {children}
           </div>
         </main>

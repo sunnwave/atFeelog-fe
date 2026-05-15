@@ -75,7 +75,7 @@ export default function DatePickerInput({
         data-testid="date-picker-trigger"
         onClick={handleOpen}
         className={cn(
-          "w-full h-11 px-4 rounded-xl border bg-background transition-all duration-200",
+          "w-full h-11 px-4 rounded-xl border bg-card transition-all duration-200",
           "flex items-center gap-2 text-sm",
           "hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/50",
           error ? "border-red-500 focus:ring-red-500/50" : "border-border",

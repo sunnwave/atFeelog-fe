@@ -96,7 +96,7 @@ export function CommentUpdate({
         </Button>
 
         <Button
-          variant={hasChanges ? "default" : "ghost"}
+          variant={hasChanges ? "solid" : "ghost"}
           size="sm"
           type="submit"
           disabled={!hasChanges}

@@ -101,7 +101,7 @@ export default function CommentInput({
           type="submit"
           size="icon"
           disabled={!isLoggedIn || !comment.trim()}
-          variant={isLoggedIn && comment.trim() ? "default" : "ghost"}
+          variant={isLoggedIn && comment.trim() ? "solid" : "ghost"}
           className={`
           absolute right-3 top-1/2 -translate-y-1/2
           transition-all rounded-full

@@ -26,7 +26,7 @@ export function TextField<TFieldValues extends FieldValues>({
         {...props}
         className={cn(
           `
-          w-full h-11 px-4 rounded-xl border bg-background
+          w-full h-11 px-4 rounded-xl border bg-card
           transition-all duration-200
           placeholder:text-muted-foreground/50
           focus:outline-none focus:ring-2 focus:ring-primary/50

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { JSX } from "react";
 import RecordCardBottom from "./RecordCardBottom/RecordCardBottom";
 import RecordCardContent from "./RecordCardContent";
-import GradientBg from "./GradientBg";
+import GradientBg from "@/components/ui/gradient-bg/GradientBg";
 import Profile from "@/components/commons/profile/Profile";
 import FollowButton from "./FollowButton";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";

@@ -118,7 +118,7 @@ export default function RecordEditorForm({
             </div>
             <Button
               type="button"
-              variant="indigo"
+              variant="solid"
               className="h-11 rounded-xl shrink-0"
               aria-label="장소 검색 버튼"
               onClick={() => setIsPlaceSearchOpen(true)}

@@ -58,7 +58,7 @@ export const UI_SIZE: Record<CARD_UI_SIZE, UISizeToken> = {
     icon: "xl" as IconSize,
     bookmarkIcon: "w-8 h-8",
 
-    avatar: "md" as AvatarSize,
+    avatar: "sm" as AvatarSize,
     gap: "gap-4",
 
     titleClamp: "overflow-hidden whitespace-nowrap text-ellipsis",
