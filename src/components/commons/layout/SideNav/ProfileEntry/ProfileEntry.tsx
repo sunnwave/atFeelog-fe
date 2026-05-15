@@ -1,8 +1,7 @@
-import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import Avatar from "@/components/ui/avatar/Avatar";
-import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button/Button";
 import { User } from "@/api/adapters/types/user";
+import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 
 interface ProfileEntryProps {
   user?: User | null;
@@ -13,22 +12,34 @@ export default function ProfileEntry({ user: me = null }: ProfileEntryProps) {
   const { onClickNavigation } = useNavigation();
 
   return (
-    <div className="p-4 border-b border-border">
+    <div className="px-5 py-5 border-b-[1.5px] border-foreground">
       <Button
-        variant="outline"
-        onClick={isLoggedIn ? onClickNavigation("/me") : onClickNavigation("/login")}
-        className="w-full h-auto rounded-2xl !p-4 text-left flex items-center gap-3 border-border"
+        variant="ghost"
+        tone="primary"
+        onClick={
+          isLoggedIn ? onClickNavigation("/me") : onClickNavigation("/login")
+        }
+        className={[
+          "h-auto w-full rounded-none px-0! py-0!",
+          "justify-start gap-3 text-left",
+          "normal-case tracking-normal hover:bg-transparent active:bg-transparent",
+        ].join(" ")}
       >
-        {isLoggedIn && <Avatar user={me ?? undefined} size="md" type="filled" />}
-        <div className="flex-1 min-w-0">
-          <p className="w-full font-semibold text-base text-foreground truncate">
-            {isLoggedIn ? me?.name : "로그인해주세요"}
+        {isLoggedIn ? (
+          <Avatar user={me} size="md" type="filled" />
+        ) : (
+          <Avatar size="md" />
+        )}
+
+        <div className="min-w-0 flex-1">
+          <p className="w-full truncate text-base font-semibold leading-tight text-foreground">
+            {isLoggedIn ? `${me?.name} 님` : "로그인해주세요"}
           </p>
-          <p className="w-full text-sm font-medium text-muted-foreground truncate">
-            {isLoggedIn ? "마이페이지로 이동" : "로그인하고 내 기록을 관리해요"}
+
+          <p className="mt-1 w-full truncate text-sm font-medium leading-tight text-muted-foreground">
+            {isLoggedIn ? "내 프로필 관리" : "나만의 기록 공간을 시작해요"}
           </p>
         </div>
-        <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
       </Button>
     </div>
   );

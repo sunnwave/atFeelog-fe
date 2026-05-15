@@ -1,14 +1,17 @@
+import { useState } from "react";
+import { LogOut } from "lucide-react";
 import { useRecoilValue } from "recoil";
+
 import Logo from "../../../ui/logo/Logo";
 import ProfileEntry from "./ProfileEntry/ProfileEntry";
 import NavItem from "./NavItem";
-import { LogOut } from "lucide-react";
-import { useNavigation } from "@/shared/hooks/ui/useNavigation";
-import { useState } from "react";
+
 import { ActionSheet } from "../../actionSheet/ActionSheet";
+import { Button } from "@/components/ui/button/Button";
+
 import { buildWriteActionSheetOptions } from "@/shared/constants/actionSheetOptions";
 import { SIDE_NAV_ITEMS } from "@/shared/constants/navigation";
-import { Button } from "@/components/ui/button/Button";
+import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import useLogoutUser from "@/shared/hooks/auth/useLogoutUser";
 import { loggedInUserState } from "@/shared/stores";
@@ -32,6 +35,7 @@ export default function SideNav() {
       });
       return;
     }
+
     setWriteSheetOpen(true);
   };
 
@@ -44,33 +48,52 @@ export default function SideNav() {
   };
 
   return (
-    <div className="h-full w-full bg-background border-r border-border">
-      <div className="p-6 border-b border-border">
-        <Logo size="lg" showSubtitle />
+    <aside className="flex h-full w-full flex-col border-r-[1.5px] border-foreground bg-card">
+      <div className="border-b-[1.5px] border-foreground px-6 py-6">
+        <Logo size="lg" />
       </div>
+
       <ProfileEntry user={me} />
-      <nav className="flex flex-col overflow-y-auto p-4 space-y-2">
+
+      <div className="px-6 py-5">
         <Button
           variant="solid"
-          tone="soft"
+          tone="primary"
           size="lg"
-          className="hover:scale-[0.98]"
+          className={[
+            "w-full rounded-none",
+            "font-black uppercase tracking-[0.14em]",
+            "hover:translate-x-px hover:translate-y-px",
+            "active:translate-x-0.5 active:translate-y-0.5",
+            "active:shadow-none",
+          ].join(" ")}
           onClick={onClickWrite}
         >
-          작성하기
+          Write
         </Button>
+      </div>
+
+      <nav className="flex flex-1 flex-col overflow-y-auto ">
         {SIDE_NAV_ITEMS.map((item) => (
           <NavItem key={item.label} nav={item} />
         ))}
       </nav>
+
       {isLoggedIn && (
-        <div className="pt-2 px-4 border-t border-border">
+        <div className="border-t border-border px-6 py-5">
           <Button
             variant="ghost"
-            className="justify-start w-full"
+            tone="primary"
+            size="default"
+            className={[
+              "w-full justify-start rounded-none px-0",
+              "normal-case tracking-normal",
+              "text-muted-foreground",
+              "hover:bg-transparent hover:text-foreground",
+            ].join(" ")}
             onClick={onClickLogout}
           >
-            <LogOut className="w-4.5 h-4.5" />
+            <LogOut className="h-4.5 w-4.5" />
             <span>로그아웃</span>
           </Button>
         </div>
@@ -82,6 +105,6 @@ export default function SideNav() {
         onClose={() => setWriteSheetOpen(false)}
         title="무엇을 작성할까요?"
       />
-    </div>
+    </aside>
   );
 }
