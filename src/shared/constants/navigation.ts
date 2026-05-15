@@ -1,9 +1,9 @@
-import { FileText, Home, LucideIcon, Ticket } from "lucide-react";
+import { Archive, Home, LayoutGrid, LucideIcon } from "lucide-react";
 
 export const SIDE_NAV_ITEMS = [
-  { tab: "home", href: "/", label: "홈", icon: Home },
-  { tab: "records", href: "/records", label: "필로그", icon: FileText },
-  { tab: "market", href: "/market", label: "마켓", icon: Ticket },
+  { tab: "home", href: "/", label: "Home", icon: Home },
+  { tab: "records", href: "/records", label: "Feelog", icon: LayoutGrid },
+  { tab: "my-log", href: "/my-log", label: "My Log", icon: Archive },
 ] as const satisfies ReadonlyArray<{
   tab: string;
   label: string;
