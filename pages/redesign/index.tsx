@@ -4,13 +4,15 @@ import { useState } from "react";
 import LogoPreviewPage from "./previews/LogoPreview";
 import AtFeelogWebResponsivePreview from "./previews/Mood";
 import ProfileEntryPreviewPage from "./previews/ProfileEntryPreview";
+import RecordCardPreview from "./previews/record-card-preview";
 
-type PreviewTab = "profile" | "logo" | "mood";
+type PreviewTab = "profile" | "logo" | "mood" | "record-card";
 
 const tabs: { id: PreviewTab; label: string }[] = [
   { id: "profile", label: "Profile Entry" },
   { id: "logo", label: "Logo" },
   { id: "mood", label: "Web Mood" },
+  { id: "record-card", label: "Record Card" },
 ];
 
 export default function RedesignPage() {
@@ -55,6 +57,7 @@ export default function RedesignPage() {
       {active === "profile" && <ProfileEntryPreviewPage />}
       {active === "logo" && <LogoPreviewPage />}
       {active === "mood" && <AtFeelogWebResponsivePreview />}
+      {active === "record-card" && <RecordCardPreview />}
     </div>
   );
 }
