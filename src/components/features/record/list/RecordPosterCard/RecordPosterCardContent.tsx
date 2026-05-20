@@ -2,7 +2,7 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import { JSX } from "react";
 
-export default function RecordCardContent({
+export default function RecordPosterCardContent({
   record,
   size = "lg",
 }: {

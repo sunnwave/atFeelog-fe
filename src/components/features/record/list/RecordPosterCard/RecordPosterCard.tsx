@@ -2,14 +2,14 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { JSX } from "react";
-import RecordCardBottom from "./RecordCardBottom/RecordCardBottom";
+import RecordPosterCardBottom from "./RecordPosterCardBottom/RecordPosterCardBottom";
 import GradientBg from "@/components/ui/gradient-bg/GradientBg";
 import BookMarkIcon from "@/components/ui/icons/bookmarkIcon/BookMarkIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
-import RecordCardContent from "./RecordCardContent";
+import RecordPosterCardContent from "./RecordPosterCardContent";
 import { getImageUrl } from "@/shared/utils";
 
-export default function RecordCard({
+export default function RecordPosterCard({
   record,
   size = "lg",
 }: {
@@ -47,8 +47,8 @@ export default function RecordCard({
       <div
         className={`absolute z-10 inset-x-0 bottom-0 text-white flex flex-col ${s.pad}`}
       >
-        <RecordCardContent record={record} size={size} />
-        <RecordCardBottom record={record} size={size} />
+        <RecordPosterCardContent record={record} size={size} />
+        <RecordPosterCardBottom record={record} size={size} />
       </div>
     </article>
   );

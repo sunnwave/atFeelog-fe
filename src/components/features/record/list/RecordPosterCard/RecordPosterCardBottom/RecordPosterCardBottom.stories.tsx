@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import RecordCardBottom from "./RecordCardBottom";
+import RecordPosterCardBottom from "./RecordPosterCardBottom";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
 
 const IMG = "https://picsum.photos/id/64/200/200";
@@ -18,9 +18,9 @@ const baseRecord: RecordSummary = {
   },
 };
 
-const meta: Meta<typeof RecordCardBottom> = {
-  title: "features/record-list/RecordCardBottom",
-  component: RecordCardBottom,
+const meta: Meta<typeof RecordPosterCardBottom> = {
+  title: "features/record-list/RecordPosterCardBottom",
+  component: RecordPosterCardBottom,
   parameters: { layout: "fullscreen" },
   decorators: [
     (Story) => (
@@ -37,7 +37,7 @@ const meta: Meta<typeof RecordCardBottom> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof RecordCardBottom>;
+type Story = StoryObj<typeof RecordPosterCardBottom>;
 
 export const Default: Story = {
   args: {
