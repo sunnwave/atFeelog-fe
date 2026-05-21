@@ -2,7 +2,7 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { JSX } from "react";
-import RecordPosterCardBottom from "./RecordPosterCardBottom/RecordPosterCardBottom";
+import RecordPosterCardBottom from "./RecordPosterCardBottom";
 import GradientBg from "@/components/ui/gradient-bg/GradientBg";
 import BookMarkIcon from "@/components/ui/icons/bookmarkIcon/BookMarkIcon";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
@@ -47,7 +47,12 @@ export default function RecordPosterCard({
       <div
         className={`absolute z-10 inset-x-0 bottom-0 text-white flex flex-col ${s.pad}`}
       >
-        <RecordPosterCardContent record={record} size={size} />
+        <RecordPosterCardContent
+            title={record.title}
+            showName={record.showName}
+            artistName={record.artistName}
+            size={size}
+          />
         <RecordPosterCardBottom record={record} size={size} />
       </div>
     </article>

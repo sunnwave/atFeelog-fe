@@ -1,28 +1,34 @@
-import { RecordSummary } from "@/api/adapters/types/record-summary";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import { JSX } from "react";
 
-export default function RecordPosterCardContent({
-  record,
-  size = "lg",
-}: {
-  record: RecordSummary;
+type Props = {
+  title: string;
+  showName?: string | null;
+  artistName?: string | null;
   size?: CARD_UI_SIZE;
-}): JSX.Element {
+};
+
+export default function RecordPosterCardContent({
+  title,
+  showName,
+  artistName,
+  size = "lg",
+}: Props): JSX.Element {
   const s = UI_SIZE[size];
 
-  const artists = record.artistName
-    ? record.artistName.split(",").map((n) => n.trim()).filter(Boolean)
+  const artists = artistName
+    ? artistName
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean)
     : [];
 
   return (
     <div className="mb-2 truncate">
-      <h3 className={`${s.title} font-bold ${s.titleClamp}`}>{record.title}</h3>
+      <h3 className={`${s.title} font-bold ${s.titleClamp}`}>{title}</h3>
 
-      {record.showName?.trim() && (
-        <p className={`${s.body} text-white font-medium truncate`}>
-          {record.showName}
-        </p>
+      {showName?.trim() && (
+        <p className={`${s.body} text-white font-medium truncate`}>{showName}</p>
       )}
 
       {artists.length > 0 && (
