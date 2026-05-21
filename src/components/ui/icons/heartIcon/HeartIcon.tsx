@@ -38,7 +38,7 @@ export default function HeartIcon({
       className={cn(
         "flex items-center transition-colors group/like",
         isRow ? `flex-row ${s.gapRow}` : `flex-col ${s.gapCol}`,
-        className
+        className,
       )}
       aria-label="좋아요"
     >
@@ -46,16 +46,12 @@ export default function HeartIcon({
         className={cn(
           s.icon,
           "transition-colors",
-          liked
-            ? "text-point-indigo"
-            : `${c.icon} group-hover/like:text-point-indigo-light`,
-          className
+          liked ? "text-point" : `${c.icon} group-hover/like:text-point`,
+          className,
         )}
         fill={liked ? "currentColor" : "none"}
       />
-      <span
-        className={cn(s.text, liked ? "text-point-indigo" : c.text, className)}
-      >
+      <span className={cn(s.text, liked ? "text-point" : c.text, className)}>
         {likes}
       </span>
     </button>
