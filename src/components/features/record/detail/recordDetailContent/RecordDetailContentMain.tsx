@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import DOMPurify from "dompurify";
+import Badge from "@/components/ui/badge";
 
 export default function RecordContents({
   contents,
@@ -35,12 +36,7 @@ export default function RecordContents({
             <span className="text-muted-foreground/40 text-xs">|</span>
           )}
           {artists.map((name, i) => (
-            <span
-              key={`${i}-${name}`}
-              className="px-2 py-0.5 rounded-full bg-background text-foreground text-xs font-medium shadow-sm"
-            >
-              {name}
-            </span>
+            <Badge key={i}>{name}</Badge>
           ))}
         </div>
       )}

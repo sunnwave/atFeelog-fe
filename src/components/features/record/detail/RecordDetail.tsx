@@ -39,11 +39,15 @@ export default function RecordDetail(): JSX.Element | null {
   const hasImages = images.length > 0;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col px-4">
-      <BackButton fallbackHref="/records" label="목록으로" />
+    <div className="px-4 md:-mx-6 md:px-4 md:-mt-6">
+      <BackButton
+        fallbackHref="/records"
+        label="목록으로"
+        className="-mx-4 px-4"
+      />
 
       {hasImages ? (
-        <div className="mt-3 space-y-6 w-full md:px-6 lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
+        <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
           <ImageCarousel
             images={images ?? []}
             className="lg:sticky lg:top-15 lg:h-fit"
@@ -54,7 +58,7 @@ export default function RecordDetail(): JSX.Element | null {
         <RecordDetailContent
           record={record}
           isWriter={isWriter}
-          className="w-full max-w-3xl mx-auto px-2 py-2 lg:px-4"
+          className="w-full max-w-3xl mx-auto"
         />
       )}
     </div>
