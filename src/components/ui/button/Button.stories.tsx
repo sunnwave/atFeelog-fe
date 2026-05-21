@@ -29,6 +29,7 @@ const meta = {
         "alice",
         "honeydew",
         "point",
+        "neutral",
         "destructive",
       ],
     },
@@ -68,6 +69,7 @@ const tones = [
   "alice",
   "honeydew",
   "point",
+  "neutral",
   "destructive",
 ] as const;
 
@@ -79,6 +81,7 @@ const toneLabels: Record<(typeof tones)[number], string> = {
   alice: "Alice",
   honeydew: "Honeydew",
   point: "Point",
+  neutral: "Neutral",
   destructive: "Destructive",
 };
 
@@ -113,7 +116,7 @@ export const AllVariants: Story = {
               {variantLabels[variant]}
             </h3>
 
-            <div className="grid grid-cols-6 gap-3">
+            <div className="grid grid-cols-7 gap-3">
               {tones.map((tone) => (
                 <Button key={tone} variant={variant} tone={tone}>
                   {toneLabels[tone]}
@@ -148,6 +151,7 @@ export const CoreVariants: Story = {
             <Button tone="alice">LIVE</Button>
             <Button tone="honeydew">EXHIBIT</Button>
             <Button tone="point">좋아요</Button>
+            <Button tone="neutral">취소</Button>
           </div>
         </section>
 
@@ -157,6 +161,9 @@ export const CoreVariants: Story = {
           </h3>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline" tone="primary">
+              취소
+            </Button>
+            <Button variant="outline" tone="neutral">
               취소
             </Button>
             <Button variant="outline" tone="accent">
@@ -450,6 +457,20 @@ export const UseCases: Story = {
           <Button tone="destructive" variant="outline" size="sm">
             삭제
           </Button>
+        </div>
+      </section>
+
+      <section className="space-y-3">
+        <h3 className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          Cancel / Secondary Action
+        </h3>
+        <div className="flex flex-wrap gap-3">
+          <Button tone="primary">저장</Button>
+          <Button tone="neutral" variant="outline">취소</Button>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button tone="destructive" variant="solid">삭제</Button>
+          <Button tone="neutral" variant="ghost">아니요</Button>
         </div>
       </section>
     </div>

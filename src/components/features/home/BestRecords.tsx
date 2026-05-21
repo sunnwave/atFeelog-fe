@@ -1,6 +1,6 @@
 import { JSX } from "react";
 import { useFetchBestRecords } from "./hooks/queries/useFetchBestRecords";
-import RecordCard from "../record/list/RecordCard/RecordCard";
+import RecordPosterCard from "../record/list/RecordPosterCard/RecordPosterCard";
 import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
@@ -31,7 +31,7 @@ export default function BestRecords(): JSX.Element {
           {records.map((board) => (
             <div key={board.id} className="shrink-0 w-55 md:w-65">
               <div className="w-full aspect-[3/4]">
-                <RecordCard record={board} size="sm" />
+                <RecordPosterCard record={board} size="sm" />
               </div>
             </div>
           ))}

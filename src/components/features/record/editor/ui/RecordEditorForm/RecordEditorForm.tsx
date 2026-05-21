@@ -46,7 +46,7 @@ export default function RecordEditorForm({
           </FormLabel>
           <TextField
             name="title"
-            placeholder="예) 잔나비 콘서트 후기"
+            placeholder="그날을 기억하는 제목을 붙여보세요"
             register={register}
             error={errors.title}
             className={errors.title ? "animate-shake" : ""}
@@ -61,7 +61,7 @@ export default function RecordEditorForm({
             </FormLabel>
             <TextField
               name="showName"
-              placeholder="예) 서울재즈페스티벌 2026"
+              placeholder="공연 이름을 적어주세요"
               register={register}
               error={errors.showName}
               className={errors.showName ? "animate-shake" : ""}
@@ -75,7 +75,7 @@ export default function RecordEditorForm({
             </FormLabel>
             <TextField
               name="artistName"
-              placeholder="예) 김범수, 아이유, 잔나비"
+              placeholder="함께한 아티스트를 적어주세요."
               register={register}
               error={errors.artistName}
               className={errors.artistName ? "animate-shake" : ""}

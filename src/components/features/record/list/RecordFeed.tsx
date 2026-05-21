@@ -1,13 +1,13 @@
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { JSX, useCallback, useState } from "react";
-import RecordFeedCard from "./RecordCard/RecordCard";
 import { Sparkles } from "lucide-react";
-import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
-import { useBreakpoint } from "@/shared/hooks/ui/useBreakpoint";
-import { useFetchRecords, RecordFilterVars } from "./hooks/queries/useFetchRecords";
+import {
+  useFetchRecords,
+  RecordFilterVars,
+} from "./hooks/queries/useFetchRecords";
 import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { CARD_SIZE_BY_BP } from "@/shared/tokens";
+import RecordFeedCard from "./RecordFeedCard";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -18,9 +18,6 @@ export default function RecordFeed({
   filter?: RecordFilterVars;
   best?: boolean;
 }): JSX.Element {
-  const bp = useBreakpoint();
-  const cardSize = CARD_SIZE_BY_BP[bp];
-
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -49,35 +46,39 @@ export default function RecordFeed({
       const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
       setIsLoading(true);
 
-      bestResult.fetchMore({
-        variables: { isTop5: false, page: nextPage },
-        updateQuery: (prev, { fetchMoreResult }) => {
-          if (!fetchMoreResult?.fetchBoardsOfBest) return prev;
-          const next = fetchMoreResult.fetchBoardsOfBest;
-          if (next.length < RECORDS_PER_PAGE) setHasMore(false);
-          return {
-            fetchBoardsOfBest: [...(prev.fetchBoardsOfBest ?? []), ...next],
-          };
-        },
-      }).finally(() => setIsLoading(false));
+      bestResult
+        .fetchMore({
+          variables: { isTop5: false, page: nextPage },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchBoardsOfBest) return prev;
+            const next = fetchMoreResult.fetchBoardsOfBest;
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchBoardsOfBest: [...(prev.fetchBoardsOfBest ?? []), ...next],
+            };
+          },
+        })
+        .finally(() => setIsLoading(false));
     } else {
       if (!regularResult.data) return;
       const currentLength = regularResult.data.fetchBoards.length;
       const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
       setIsLoading(true);
 
-      regularResult.fetchMore({
-        variables: { page: nextPage, ...filter },
-        updateQuery: (prev, { fetchMoreResult }) => {
-          if (!fetchMoreResult?.fetchBoards) return prev;
-          const next = fetchMoreResult.fetchBoards ?? [];
-          if (next.length < RECORDS_PER_PAGE) setHasMore(false);
-          return {
-            fetchBoards: [...(prev.fetchBoards ?? []), ...next],
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } as any;
-        },
-      }).finally(() => setIsLoading(false));
+      regularResult
+        .fetchMore({
+          variables: { page: nextPage, ...filter },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchBoards) return prev;
+            const next = fetchMoreResult.fetchBoards ?? [];
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchBoards: [...(prev.fetchBoards ?? []), ...next],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any;
+          },
+        })
+        .finally(() => setIsLoading(false));
     }
   }, [best, isLoading, hasMore, bestResult, regularResult, filter]);
 
@@ -95,12 +96,31 @@ export default function RecordFeed({
   }
 
   return (
-    <ResponsiveLayout contentType="app" className="py-4">
-      <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={3}>
+    <ResponsiveLayout contentType="app">
+      {/* mobile: 단일 열 */}
+      <div className="flex flex-col gap-3 md:hidden">
         {records.map((record) => (
-          <RecordFeedCard key={record.id} record={record} size={cardSize} />
+          <RecordFeedCard key={record.id} record={record} />
         ))}
-      </ResponsiveGrid>
+      </div>
+
+      {/* desktop: 행 우선 2열 (짝수 인덱스 → 왼쪽, 홀수 인덱스 → 오른쪽) */}
+      <div className="hidden md:flex gap-3">
+        <div className="flex-1 flex flex-col gap-3">
+          {records
+            .filter((_, i) => i % 2 === 0)
+            .map((record) => (
+              <RecordFeedCard key={record.id} record={record} />
+            ))}
+        </div>
+        <div className="flex-1 flex flex-col gap-3">
+          {records
+            .filter((_, i) => i % 2 === 1)
+            .map((record) => (
+              <RecordFeedCard key={record.id} record={record} />
+            ))}
+        </div>
+      </div>
 
       <div ref={sentinelRef} className="h-6" />
       {isLoading && (

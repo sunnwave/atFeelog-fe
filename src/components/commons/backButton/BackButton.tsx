@@ -32,14 +32,16 @@ export default function BackButton({
   }, [router, fallbackHref, forceFallback]);
 
   return (
-    <div className={cn("sticky top-0 z-50  py-2 bg-white/90", className)}>
+    <div className={cn("sticky top-0 z-40 py-2 bg-background/95 backdrop-blur-sm", className)}>
       <Button
         variant="ghost"
-        className="p-0 justify-start max-w-fit hover:bg-transparent focus-visible:bg-transparent"
+        tone="neutral"
+        size="sm"
+        className="gap-1.5 px-2 -ml-2"
         onClick={onBack}
         {...props}
       >
-        <ArrowLeft className="w-4-h-4" />
+        <ArrowLeft className="w-4 h-4" />
         <span>{label}</span>
       </Button>
     </div>

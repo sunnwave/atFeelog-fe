@@ -22,6 +22,7 @@ import { cn } from "@/shared/utils/cn";
  * alice       : Alice Blue, 정보성 필터/버튼
  * honeydew    : Honeydew, 보조 필터/아카이브 계열
  * point       : Coral Point, 좋아요/강조 액션
+ * neutral     : 회색 계열, 취소/보조 액션
  * destructive : 삭제/위험 액션
  */
 const buttonVariants = cva(
@@ -66,10 +67,11 @@ const buttonVariants = cva(
         alice: "",
         honeydew: "",
         point: "",
+        neutral: "",
         destructive: "focus-visible:ring-destructive/20",
       },
       size: {
-        sm: "h-8 rounded-md px-3 text-xs has-[>svg]:px-2.5",
+        sm: "h-7 rounded-md px-3 text-xs has-[>svg]:px-2.5",
         default: "h-9 rounded-lg px-4 py-2 text-sm has-[>svg]:px-3",
         md: "h-10 rounded-lg px-5 text-sm has-[>svg]:px-4",
         lg: "h-12 rounded-xl px-7 text-base has-[>svg]:px-6",
@@ -107,6 +109,12 @@ const buttonVariants = cva(
         tone: "point",
         class:
           "border-point bg-point text-white hover:bg-feelog-coral-base active:bg-feelog-coral-point",
+      },
+      {
+        variant: "solid",
+        tone: "neutral",
+        class:
+          "border-muted-foreground/25 bg-muted-foreground/20 text-foreground hover:bg-muted-foreground/30 active:bg-muted-foreground/40",
       },
       {
         variant: "solid",
@@ -148,6 +156,12 @@ const buttonVariants = cva(
       },
       {
         variant: "outline",
+        tone: "neutral",
+        class:
+          "border-muted-foreground/40 text-muted-foreground hover:bg-muted-foreground/15 hover:text-foreground active:bg-muted-foreground/25",
+      },
+      {
+        variant: "outline",
         tone: "destructive",
         class:
           "border-destructive text-destructive hover:bg-destructive/10 active:bg-destructive/15",
@@ -183,6 +197,12 @@ const buttonVariants = cva(
       },
       {
         variant: "ghost",
+        tone: "neutral",
+        class:
+          "text-muted-foreground hover:bg-muted-foreground/15 hover:text-foreground active:bg-muted-foreground/25",
+      },
+      {
+        variant: "ghost",
         tone: "destructive",
         class:
           "text-destructive hover:bg-destructive/10 active:bg-destructive/15",
@@ -213,6 +233,11 @@ const buttonVariants = cva(
         variant: "link",
         tone: "point",
         class: "text-point hover:text-feelog-coral-base",
+      },
+      {
+        variant: "link",
+        tone: "neutral",
+        class: "text-muted-foreground hover:text-foreground",
       },
       {
         variant: "link",
@@ -250,6 +275,12 @@ const buttonVariants = cva(
         tone: "point",
         class:
           "border-feelog-coral-light bg-point-bg text-point hover:bg-feelog-coral-light/35 active:bg-feelog-coral-light/50",
+      },
+      {
+        variant: "soft",
+        tone: "neutral",
+        class:
+          "border-muted-foreground/25 bg-muted-foreground/10 text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground active:bg-muted-foreground/30",
       },
       {
         variant: "soft",
@@ -291,6 +322,12 @@ const buttonVariants = cva(
       },
       {
         variant: "ticket",
+        tone: "neutral",
+        class:
+          "border-muted-foreground/30 bg-muted-foreground/10 text-muted-foreground hover:border-primary hover:bg-muted-foreground/20 hover:text-foreground active:bg-muted-foreground/30",
+      },
+      {
+        variant: "ticket",
         tone: "destructive",
         class:
           "border-destructive bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground",
@@ -326,6 +363,12 @@ const buttonVariants = cva(
         tone: "point",
         class:
           "border-primary bg-point text-white hover:bg-feelog-coral-base active:bg-feelog-coral-point",
+      },
+      {
+        variant: "poster",
+        tone: "neutral",
+        class:
+          "border-muted-foreground/30 bg-muted-foreground/20 text-foreground hover:bg-muted-foreground/30 active:bg-muted-foreground/40",
       },
       {
         variant: "poster",
