@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
-import RecordCard from "./RecordCard/RecordCard";
+import RecordPosterCard from "./RecordPosterCard/RecordPosterCard";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { Sparkles } from "lucide-react";
@@ -91,7 +91,7 @@ function FeedGrid({ records }: { records: RecordSummary[] }): JSX.Element {
     <ResponsiveLayout contentType="app" className="py-4">
       <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={0}>
         {records.map((record) => (
-          <RecordCard key={record.id} record={record} size={size} />
+          <RecordPosterCard key={record.id} record={record} size={size} />
         ))}
       </ResponsiveGrid>
     </ResponsiveLayout>
@@ -213,7 +213,7 @@ export const BreakpointShowcase: Story = {
               style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
             >
               {records.map((record) => (
-                <RecordCard key={record.id} record={record} size={size} />
+                <RecordPosterCard key={record.id} record={record} size={size} />
               ))}
             </div>
           </div>
