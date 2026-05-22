@@ -22,7 +22,7 @@ const makeRecord = (
   commentCount: 0,
   isLiked: false,
   createdAt: "2026-03-10T00:00:00.000Z",
-  user: { name: "홍길동", picture: "https://picsum.photos/id/64/200/200" },
+  user: { id: "mock-user-1", name: "홍길동", picture: "https://picsum.photos/id/64/200/200" },
   ...overrides,
 });
 
@@ -43,7 +43,7 @@ const MOCK_RECORDS: RecordSummary[] = [
     commentCount: 35,
     images: ["https://picsum.photos/id/29/400/600"],
     isLiked: true,
-    user: { name: "아미", picture: "https://picsum.photos/id/91/200/200" },
+    user: { id: "mock-user-1", name: "아미", picture: "https://picsum.photos/id/91/200/200" },
   }),
   makeRecord("3", {
     title: "잔잔한 재즈의 밤",
@@ -51,7 +51,7 @@ const MOCK_RECORDS: RecordSummary[] = [
     artistName: "윤석철, 권지혜",
     likeCount: 8,
     commentCount: 2,
-    user: { name: "재즈러버" },
+    user: { id: "mock-user-1", name: "재즈러버" },
   }),
   makeRecord("4", {
     title: "처음 본 뮤지컬, 레베카",
@@ -60,7 +60,7 @@ const MOCK_RECORDS: RecordSummary[] = [
     likeCount: 17,
     commentCount: 6,
     images: ["https://picsum.photos/id/49/400/600"],
-    user: { name: "뮤지컬팬", picture: "https://picsum.photos/id/22/200/200" },
+    user: { id: "mock-user-1", name: "뮤지컬팬", picture: "https://picsum.photos/id/22/200/200" },
   }),
   makeRecord("5", {
     title: "슈가 솔로 투어",
@@ -77,7 +77,7 @@ const MOCK_RECORDS: RecordSummary[] = [
     artistName: "검정치마, YB, 이승환",
     likeCount: 55,
     commentCount: 14,
-    user: { name: "록커" },
+    user: { id: "mock-user-1", name: "록커" },
   }),
 ];
 

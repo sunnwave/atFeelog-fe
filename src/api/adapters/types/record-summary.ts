@@ -8,6 +8,7 @@ export interface RecordSummary {
   images?: string[];
   isLiked?: boolean; // legacy: 없음, new: isLiked
   user?: {
+    id: string;
     name: string;
     picture?: string;
   };

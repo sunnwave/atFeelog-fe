@@ -7,6 +7,10 @@ import ProfileEntryPreviewPage from "./previews/ProfileEntryPreview";
 import RecordCardPreview from "./previews/record-card-preview";
 import RecordListLayoutPreviewPage from "./previews/record-feed-preview";
 import SearchDesignPreviewPage from "./previews/search-bar-preview";
+import MyLogPreviewPage from "./previews/my-log-preview";
+import NonInstagramProfilePreviewPage from "./previews/my-log-ppreview";
+import ProfileConceptPreviewPage from "./previews/my-log-ppreview";
+import ProfileHeaderPreviewPage from "./previews/profile-header-preview";
 
 type PreviewTab =
   | "profile"
@@ -14,7 +18,10 @@ type PreviewTab =
   | "mood"
   | "record-card"
   | "feed"
-  | "search";
+  | "search"
+  | "my-log"
+  | "my-log2"
+  | "profile-header";
 
 const tabs: { id: PreviewTab; label: string }[] = [
   { id: "profile", label: "Profile Entry" },
@@ -23,6 +30,9 @@ const tabs: { id: PreviewTab; label: string }[] = [
   { id: "record-card", label: "Record Card" },
   { id: "feed", label: "Record Feed" },
   { id: "search", label: "Search" }, // 추가된 탭
+  { id: "my-log", label: "My Log" },
+  { id: "my-log2", label: "My Log2" },
+  { id: "profile-header", label: "Profile Header" },
 ];
 
 export default function RedesignPage() {
@@ -68,7 +78,11 @@ export default function RedesignPage() {
       {active === "mood" && <AtFeelogWebResponsivePreview />}
       {active === "record-card" && <RecordCardPreview />}
       {active === "feed" && <RecordListLayoutPreviewPage />}
-      {active === "search" && <SearchDesignPreviewPage />}{" "}
+      {active === "search" && <SearchDesignPreviewPage />}
+      {active === "my-log" && <MyLogPreviewPage />}
+      {active === "my-log2" && <ProfileConceptPreviewPage />}
+      {active === "profile-header" && <ProfileHeaderPreviewPage />}
+
       {/* 추가된 검색 탭 콘텐츠 */}
     </div>
   );

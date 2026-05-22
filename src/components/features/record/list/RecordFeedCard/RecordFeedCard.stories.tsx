@@ -15,6 +15,7 @@ const baseRecord: RecordSummary = {
   isLiked: false,
   createdAt: "2026-05-12T09:00:00.000Z",
   user: {
+    id: "mock-user-1",
     name: "선",
     picture: undefined,
   },
