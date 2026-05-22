@@ -10,6 +10,7 @@ const recordWithUser: RecordSummary = {
   showName: "아이유 콘서트",
   createdAt: "2026-02-06T00:00:00.000Z",
   user: {
+    id: "mock-user-1",
     name: "Alice",
     picture: IMG,
   },
