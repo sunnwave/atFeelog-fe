@@ -2,6 +2,7 @@ import { User } from "@/api/adapters/types/user";
 import { getProfileImage, pickAvatarColor } from "@/shared/utils";
 import { User as UserIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { JSX } from "react";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg";
@@ -22,10 +23,12 @@ export default function Avatar({
   user,
   size = "sm",
   type = "outlined",
+  clickable = false,
 }: {
   user?: User | null;
   size?: AvatarSize;
   type?: AvatarType;
+  clickable?: boolean;
 }): JSX.Element {
   const avatarUrl = getProfileImage(user?.picture);
   const s = AVATAR_SIZE[size];
@@ -38,8 +41,19 @@ export default function Avatar({
   const base =
     "rounded-full flex shrink-0 items-center justify-center overflow-hidden";
 
+  const href = clickable && user?.id ? `/feelog/${user.id}` : undefined;
+
+  const wrap = (node: JSX.Element) =>
+    href ? (
+      <Link href={href} onClick={(e) => e.stopPropagation()} className="cursor-pointer hover:opacity-80 transition-opacity shrink-0">
+        {node}
+      </Link>
+    ) : (
+      node
+    );
+
   if (isGuest) {
-    return (
+    return wrap(
       <div
         className={[
           base,
@@ -54,7 +68,7 @@ export default function Avatar({
   }
 
   if (avatarUrl) {
-    return (
+    return wrap(
       <Image
         className={`${base} object-cover`}
         src={avatarUrl}
@@ -66,7 +80,7 @@ export default function Avatar({
   }
 
   if (type === "outlined") {
-    return (
+    return wrap(
       <div
         className={[
           base,
@@ -80,7 +94,7 @@ export default function Avatar({
     );
   }
 
-  return (
+  return wrap(
     <div
       className={[base, s.cls, "border"].join(" ")}
       style={{
