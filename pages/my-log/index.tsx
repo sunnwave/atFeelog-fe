@@ -1,10 +1,19 @@
-import ComingSoon from "@/components/commons/comingSoon/ComingSoon";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 
-export default function MyLogPage() {
-  return (
-    <ComingSoon
-      title="My Log 준비 중"
-      description="내가 남긴 기록들을 모아볼 수 있는 공간을 준비하고 있어요."
-    />
-  );
+export default function MyLogRedirect() {
+  const me = useRecoilValue(loggedInUserState);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (me?.id) {
+      void router.replace(`/feelog/${me.id}`);
+    } else {
+      void router.replace("/login");
+    }
+  }, [me, router]);
+
+  return null;
 }

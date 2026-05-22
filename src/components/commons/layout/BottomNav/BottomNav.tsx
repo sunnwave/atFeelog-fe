@@ -53,7 +53,7 @@ export default function BottomNav() {
 
         {isLoggedIn ? (
           <Link
-            href="/me"
+            href="/settings"
             className="flex flex-1 flex-col items-center justify-center"
           >
             <Avatar user={me ?? undefined} size="md" type="filled" />

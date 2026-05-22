@@ -17,7 +17,7 @@ export default function ProfileEntry({ user: me = null }: ProfileEntryProps) {
         variant="ghost"
         tone="primary"
         onClick={
-          isLoggedIn ? onClickNavigation("/me") : onClickNavigation("/login")
+          isLoggedIn ? onClickNavigation("/settings") : onClickNavigation("/login")
         }
         className={[
           "h-auto w-full rounded-none px-0! py-0!",
