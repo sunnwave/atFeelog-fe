@@ -12,12 +12,13 @@ export default function ProfileHeader({
   user,
   isMe = false,
   isFollowing,
+  onFollow,
 }: ProfileHeaderProps) {
   return (
-    <section className="border border-border bg-card">
+    <section className="border-[1.5px] border-foreground bg-card">
       <div className="flex flex-col md:grid md:grid-cols-[148px_1fr]">
         {/* 좌측: 아바타 셀 */}
-        <div className="flex items-center justify-center bg-surface-soft p-6 border-b border-border md:border-b-0 md:border-r">
+        <div className="flex items-center justify-center bg-surface-soft p-6 border-r-[1.5px] border-foreground md:border-b-0 md:border-r">
           <Avatar user={user} size="lg" type="filled" />
         </div>
 
@@ -27,7 +28,7 @@ export default function ProfileHeader({
             <div className="flex items-start justify-between gap-5">
               <div className="flex flex-col min-w-0">
                 <p className="text-[11px] font-black tracking-[0.18em] text-point uppercase">
-                  {isMe ? "My Archive" : "User Archive"}
+                  {isMe ? "My Log" : `${user.name}'s Log`}
                 </p>
                 <h2 className="mt-2 text-[32px] md:text-[38px] leading-none tracking-[-0.07em] font-black text-foreground">
                   {user.name}
@@ -38,7 +39,11 @@ export default function ProfileHeader({
                   </p>
                 )}
               </div>
-              <ProfileActions isMe={isMe} isFollowing={isFollowing} />
+              <ProfileActions
+                isMe={isMe}
+                isFollowing={isFollowing}
+                onAddFollow={onFollow}
+              />
             </div>
             {user.bio && (
               <p className="mt-4.5 text-sm leading-relaxed text-foreground">

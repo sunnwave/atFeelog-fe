@@ -37,6 +37,7 @@ export default function Profile({
   return (
     <div className={`flex items-center ${s.gap}`}>
       <Avatar
+        clickable
         user={record.user || undefined}
         size={s.avatar}
         type={Tone[tone].avatar}

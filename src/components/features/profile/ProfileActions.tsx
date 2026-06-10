@@ -3,9 +3,14 @@ import { Button } from "@/components/ui/button/Button";
 type Props = {
   isMe: boolean;
   isFollowing?: boolean;
+  onAddFollow?: () => void;
 };
 
-export default function ProfileActions({ isMe, isFollowing }: Props) {
+export default function ProfileActions({
+  isMe,
+  isFollowing,
+  onAddFollow,
+}: Props) {
   if (isMe) {
     return (
       <div className="flex gap-2 shrink-0">
@@ -22,8 +27,9 @@ export default function ProfileActions({ isMe, isFollowing }: Props) {
         variant={isFollowing ? "outline" : "solid"}
         tone={isFollowing ? "neutral" : "primary"}
         size="default"
+        onClick={onAddFollow}
       >
-        {isFollowing ? "Following" : "Follow"}
+        {isFollowing ? "팔로잉" : "팔로우"}
       </Button>
     </div>
   );

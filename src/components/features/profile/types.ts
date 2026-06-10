@@ -13,4 +13,5 @@ export type ProfileHeaderProps = {
   user: ProfileUser;
   isMe?: boolean;
   isFollowing?: boolean;
+  onFollow?: () => void;
 };
