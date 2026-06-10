@@ -5,8 +5,6 @@ import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { Sparkles } from "lucide-react";
 import { JSX } from "react";
-import { useBreakpoint } from "@/shared/hooks/ui/useBreakpoint";
-import { CARD_SIZE_BY_BP, UI_SIZE, type CARD_UI_SIZE } from "@/shared/tokens";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
 
@@ -84,14 +82,11 @@ const MOCK_RECORDS: RecordSummary[] = [
 // ─── Shared components ────────────────────────────────────────────────────────
 
 function FeedGrid({ records }: { records: RecordSummary[] }): JSX.Element {
-  const bp = useBreakpoint();
-  const size = CARD_SIZE_BY_BP[bp];
-
   return (
     <ResponsiveLayout contentType="app" className="py-4">
       <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={0}>
         {records.map((record) => (
-          <RecordPosterCard key={record.id} record={record} size={size} />
+          <RecordPosterCard key={record.id} record={record} />
         ))}
       </ResponsiveGrid>
     </ResponsiveLayout>
@@ -101,86 +96,17 @@ function FeedGrid({ records }: { records: RecordSummary[] }): JSX.Element {
 // ─── Breakpoint showcase ──────────────────────────────────────────────────────
 
 const BREAKPOINT_CONFIGS = [
-  {
-    label: "Mobile",
-    range: "< 768px",
-    width: 390,
-    cols: 1,
-    size: "lg" as CARD_UI_SIZE,
-    records: MOCK_RECORDS.slice(0, 2),
-  },
-  {
-    label: "Tablet",
-    range: "768 – 1023px",
-    width: 768,
-    cols: 2,
-    size: "lg" as CARD_UI_SIZE,
-    records: MOCK_RECORDS.slice(0, 4),
-  },
-  {
-    label: "Desktop",
-    range: "≥ 1024px",
-    width: 1024,
-    cols: 3,
-    size: "sm" as CARD_UI_SIZE,
-    records: MOCK_RECORDS,
-  },
+  { label: "Mobile",  range: "< 768px",    width: 390,  cols: 1, records: MOCK_RECORDS.slice(0, 2) },
+  { label: "Tablet",  range: "768–1023px", width: 768,  cols: 2, records: MOCK_RECORDS.slice(0, 4) },
+  { label: "Desktop", range: "≥ 1024px",   width: 1024, cols: 3, records: MOCK_RECORDS },
 ] as const;
 
-type Chip = { label: string; value: string };
-
-function TokenChips({ size }: { size: CARD_UI_SIZE }): JSX.Element {
-  const t = UI_SIZE[size];
-  const chips: Chip[] = [
-    { label: "pad", value: t.pad },
-    { label: "title", value: t.title.split(" ")[0] },
-    { label: "meta", value: t.meta },
-    { label: "icon", value: t.icon },
-    { label: "avatar", value: t.avatar },
-    { label: "gap", value: t.gap },
-  ];
-
+function SectionHeader({ label, range, cols }: { label: string; range: string; cols: number }): JSX.Element {
   return (
-    <div className="flex flex-wrap gap-1.5">
-      {chips.map(({ label, value }) => (
-        <span
-          key={label}
-          className="inline-flex items-center gap-1 px-2 py-0.5 rounded border border-border bg-muted text-[11px] text-muted-foreground font-mono"
-        >
-          <span className="text-foreground/50">{label}=</span>
-          <span className="text-foreground font-medium">{value}</span>
-        </span>
-      ))}
-    </div>
-  );
-}
-
-function SectionHeader({
-  label,
-  range,
-  cols,
-  size,
-}: {
-  label: string;
-  range: string;
-  cols: number;
-  size: CARD_UI_SIZE;
-}): JSX.Element {
-  return (
-    <div className="mb-3 space-y-2">
-      <div className="flex items-center gap-2">
-        <h2 className="text-base font-bold text-foreground">{label}</h2>
-        <span className="px-2 py-0.5 rounded bg-muted text-xs text-muted-foreground font-mono">
-          {range}
-        </span>
-        <span className="px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-xs font-semibold">
-          size={size}
-        </span>
-        <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs font-semibold">
-          {cols}열
-        </span>
-      </div>
-      <TokenChips size={size} />
+    <div className="mb-3 flex items-center gap-2">
+      <h2 className="text-base font-bold text-foreground">{label}</h2>
+      <span className="px-2 py-0.5 rounded bg-muted text-xs text-muted-foreground font-mono">{range}</span>
+      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs font-semibold">{cols}열</span>
     </div>
   );
 }
@@ -204,16 +130,16 @@ export const BreakpointShowcase: Story = {
   name: "Breakpoint Showcase",
   render: () => (
     <div className="p-8 space-y-12 bg-background overflow-x-auto">
-      {BREAKPOINT_CONFIGS.map(({ label, range, width, cols, size, records }) => (
+      {BREAKPOINT_CONFIGS.map(({ label, range, width, cols, records }) => (
         <section key={label}>
-          <SectionHeader label={label} range={range} cols={cols} size={size} />
+          <SectionHeader label={label} range={range} cols={cols} />
           <div style={{ width }} className="border border-border/50">
             <div
               className="grid gap-0"
               style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
             >
               {records.map((record) => (
-                <RecordPosterCard key={record.id} record={record} size={size} />
+                <RecordPosterCard key={record.id} record={record} />
               ))}
             </div>
           </div>
