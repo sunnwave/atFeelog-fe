@@ -46,3 +46,6 @@ storybook-static
 # playwright
 /playwright-report
 /test-results
+
+# redesign preview (local only)
+/pages/redesign
