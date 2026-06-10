@@ -5,7 +5,7 @@ import RecordFeed from "./RecordFeed";
 import { useDebounce } from "@/shared/hooks/ui/useDebounce";
 import { localDateToRfc3339NoonUtc } from "@/shared/utils";
 import { useRouter } from "next/router";
-import SortToggle, { SortMode } from "./SortToggle";
+import RecordFilterBar, { FeedMode, SortMode } from "./RecordFilterBar";
 
 export default function RecordFeedPage(): JSX.Element {
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function RecordFeedPage(): JSX.Element {
   const [sortMode, setSortMode] = useState<SortMode>(
     router.query.view === "best" ? "best" : "recent",
   );
+  const [feedMode, setFeedMode] = useState<FeedMode>("all");
 
   const [search, setSearch] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -42,9 +43,15 @@ export default function RecordFeedPage(): JSX.Element {
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
         />
-        <SortToggle value={sortMode} onChange={setSortMode} />
 
-        <RecordFeed filter={filter} best={isBest} />
+        <RecordFilterBar
+          sortMode={sortMode}
+          feedMode={feedMode}
+          onSortChange={setSortMode}
+          onFeedChange={setFeedMode}
+        />
+
+        <RecordFeed filter={filter} best={isBest} feedMode={feedMode} />
       </div>
     </div>
   );

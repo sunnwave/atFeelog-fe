@@ -6,23 +6,29 @@ import {
   RecordFilterVars,
 } from "./hooks/queries/useFetchRecords";
 import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
+import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import RecordFeedCard from "./RecordFeedCard";
+import RecordPosterCard from "./RecordPosterCard/RecordPosterCard";
+import { FeedMode } from "./RecordFilterBar";
 
 const RECORDS_PER_PAGE = 10;
 
 export default function RecordFeed({
   filter = {},
   best = false,
+  feedMode = "all",
 }: {
   filter?: RecordFilterVars;
   best?: boolean;
+  feedMode?: FeedMode;
 }): JSX.Element {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // filter 변경 시 페이지네이션 리셋
-  const filterKey = `${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
+  const isFollowing = feedMode === "following";
+
+  // filter/feedMode 변경 시 페이지네이션 리셋
+  const filterKey = `${feedMode}|${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
   const [lastFilterKey, setLastFilterKey] = useState(filterKey);
   if (lastFilterKey !== filterKey) {
     setLastFilterKey(filterKey);
@@ -30,18 +36,47 @@ export default function RecordFeed({
     setIsLoading(false);
   }
 
-  // 두 훅 모두 항상 호출 (조건부 훅 금지) — 사용하지 않는 쪽은 skip됨
+  // 세 훅 모두 항상 호출 (조건부 훅 금지) — 사용하지 않는 쪽은 무시됨
   const regularResult = useFetchRecords(best ? undefined : filter);
   const bestResult = useFetchBestRecords({ isTop5: false });
+  const followingResult = useFetchFollowingFeed();
 
-  const records = best ? bestResult.records : regularResult.records;
+  const records = isFollowing
+    ? followingResult.records
+    : best
+      ? bestResult.records
+      : regularResult.records;
 
   const isEmpty = records.length === 0;
 
   const onLoadMore = useCallback(() => {
     if (isLoading || !hasMore) return;
 
-    if (best) {
+    if (isFollowing) {
+      const currentLength =
+        (followingResult.data?.fetchFollowingFeed as unknown as unknown[])
+          ?.length ?? 0;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
+
+      followingResult
+        .fetchMore({
+          variables: { page: nextPage },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchFollowingFeed) return prev;
+            const prevItems =
+              (prev.fetchFollowingFeed as unknown as unknown[]) ?? [];
+            const next =
+              fetchMoreResult.fetchFollowingFeed as unknown as unknown[];
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchFollowingFeed: [...prevItems, ...next],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any;
+          },
+        })
+        .finally(() => setIsLoading(false));
+    } else if (best) {
       const currentLength = bestResult.data?.fetchBoardsOfBest?.length ?? 0;
       const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
       setIsLoading(true);
@@ -80,7 +115,7 @@ export default function RecordFeed({
         })
         .finally(() => setIsLoading(false));
     }
-  }, [best, isLoading, hasMore, bestResult, regularResult, filter]);
+  }, [isFollowing, best, isLoading, hasMore, followingResult, bestResult, regularResult, filter]);
 
   const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
 
@@ -97,29 +132,12 @@ export default function RecordFeed({
 
   return (
     <ResponsiveLayout contentType="app">
-      {/* mobile: 단일 열 */}
-      <div className="flex flex-col gap-3 md:hidden">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
         {records.map((record) => (
-          <RecordFeedCard key={record.id} record={record} />
+          <div key={record.id} className="border-[1.5px] border-foreground">
+            <RecordPosterCard record={record} showMeta showBorder={false} />
+          </div>
         ))}
-      </div>
-
-      {/* desktop: 행 우선 2열 (짝수 인덱스 → 왼쪽, 홀수 인덱스 → 오른쪽) */}
-      <div className="hidden md:flex gap-3">
-        <div className="flex-1 flex flex-col gap-3">
-          {records
-            .filter((_, i) => i % 2 === 0)
-            .map((record) => (
-              <RecordFeedCard key={record.id} record={record} />
-            ))}
-        </div>
-        <div className="flex-1 flex flex-col gap-3">
-          {records
-            .filter((_, i) => i % 2 === 1)
-            .map((record) => (
-              <RecordFeedCard key={record.id} record={record} />
-            ))}
-        </div>
       </div>
 
       <div ref={sentinelRef} className="h-6" />
