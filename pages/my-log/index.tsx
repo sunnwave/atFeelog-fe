@@ -10,8 +10,10 @@ export default function MyLogRedirect() {
   useEffect(() => {
     if (me?.id) {
       void router.replace(`/feelog/${me.id}`);
-    } else {
+    } else if (process.env.NODE_ENV === "production") {
       void router.replace("/login");
+    } else {
+      void router.replace("/feelog/dev-user");
     }
   }, [me, router]);
 
