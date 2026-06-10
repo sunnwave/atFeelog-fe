@@ -41,7 +41,9 @@ export default function Avatar({
   const base =
     "rounded-full flex shrink-0 items-center justify-center overflow-hidden";
 
-  const href = clickable && user?.id ? `/feelog/${user.id}` : undefined;
+  const href = clickable && user?.id
+    ? `/feelog/${user.id}?name=${encodeURIComponent(user.name)}${user.picture ? `&picture=${encodeURIComponent(user.picture)}` : ""}`
+    : undefined;
 
   const wrap = (node: JSX.Element) =>
     href ? (

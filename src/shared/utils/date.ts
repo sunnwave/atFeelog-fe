@@ -17,6 +17,16 @@ export function toDateInputValue(dateString: string | undefined | null): string 
   return dateString.slice(0, 10);
 }
 
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] as const;
+
+export function parseDateLabel(iso: string): { mon: string; day: string } {
+  const d = new Date(iso);
+  return {
+    mon: MONTHS[d.getMonth()],
+    day: String(d.getDate()).padStart(2, "0"),
+  };
+}
+
 export function localDateToRfc3339NoonUtc(localDate: string): string {
   // 엄격 체크(간단 버전)
   if (!/^\d{4}-\d{2}-\d{2}$/.test(localDate)) return localDate;
