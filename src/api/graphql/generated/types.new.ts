@@ -197,18 +197,24 @@ export type IQuery = {
   fetchBoard: IBoard;
   fetchBoardComments: Array<IBoardComment>;
   fetchBoards: Array<IBoard>;
+  fetchBoardsByUser?: Maybe<Array<Maybe<IBoard>>>;
   fetchBoardsCount: Scalars['Int']['output'];
+  fetchBoardsCountByUser?: Maybe<Scalars['Int']['output']>;
   fetchBoardsCountOfMine: Scalars['Int']['output'];
   fetchBoardsKeyword: Array<Scalars['String']['output']>;
   fetchBoardsLike: Array<IBoard>;
+  fetchBoardsLikeByUser?: Maybe<Array<Maybe<IBoard>>>;
+  fetchBoardsLikeCountByUser?: Maybe<Scalars['Int']['output']>;
   fetchBoardsOfBest: Array<IBoard>;
   fetchBoardsOfMine: Array<IBoard>;
   fetchCountOfFollowers: Scalars['Int']['output'];
   fetchCountOfFollowing: Scalars['Int']['output'];
   /**  팔로우 기능 */
   fetchFollowers?: Maybe<Array<Maybe<IUser>>>;
+  fetchFollowersOfMine?: Maybe<Array<Maybe<IUser>>>;
   fetchFollowing?: Maybe<Array<Maybe<IUser>>>;
   fetchFollowingFeed?: Maybe<Array<Maybe<IBoard>>>;
+  fetchFollowingOfMine?: Maybe<Array<Maybe<IUser>>>;
   fetchUserLoggedIn: IUser;
   isConnected: Scalars['Boolean']['output'];
 };
@@ -233,6 +239,11 @@ export type IQueryFetchBoardsArgs = {
 };
 
 
+export type IQueryFetchBoardsByUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
 export type IQueryFetchBoardsCountArgs = {
   endDate?: InputMaybe<Scalars['DateTime']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
@@ -240,8 +251,23 @@ export type IQueryFetchBoardsCountArgs = {
 };
 
 
+export type IQueryFetchBoardsCountByUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchBoardsLikeByUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
+export type IQueryFetchBoardsLikeCountByUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
 export type IQueryFetchBoardsOfBestArgs = {
-  isTop5?: InputMaybe<Scalars['Boolean']['input']>;
+  isTop5: Scalars['Boolean']['input'];
   page?: InputMaybe<Scalars['Int']['input']>;
 };
 
