@@ -27,12 +27,10 @@ export default function BestRecords(): JSX.Element {
         </Button>
       </div>
       <div className="w-full max-w-full min-w-0 overflow-x-auto">
-        <div className="flex flex-nowrap gap-5">
+        <div className="flex flex-nowrap border-l-[1.5px] border-foreground">
           {records.map((board) => (
-            <div key={board.id} className="shrink-0 w-55 md:w-65">
-              <div className="w-full aspect-[3/4]">
-                <RecordPosterCard record={board} size="sm" />
-              </div>
+            <div key={board.id} className="shrink-0 w-55 md:w-65 border-t-[1.5px] border-foreground">
+              <RecordPosterCard record={board} />
             </div>
           ))}
         </div>

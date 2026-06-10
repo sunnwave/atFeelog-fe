@@ -27,7 +27,7 @@ const FETCH_BEST_RECORDS_LEGACY = gql`
 `;
 
 const FETCH_BEST_RECORDS_NEW = gql`
-  query fetchBoardsOfBest($isTop5: Boolean, $page: Int) {
+  query fetchBoardsOfBest($isTop5: Boolean!, $page: Int) {
     fetchBoardsOfBest(isTop5: $isTop5, page: $page) {
       id
       title
@@ -81,6 +81,7 @@ export const useFetchBestRecords = (
     records,
     data: newResult.data,
     loading: IS_NEW_API ? newResult.loading : legacyResult.loading,
+    error: IS_NEW_API ? newResult.error : legacyResult.error,
     fetchMore: newResult.fetchMore,
     refetch: IS_NEW_API ? newResult.refetch : legacyResult.refetch,
   };
