@@ -7,13 +7,17 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
 
+type AppComponent = AppProps["Component"] & { noPadding?: boolean };
+
 export default function App({ Component, pageProps }: AppProps) {
+  const { noPadding } = Component as AppComponent;
+
   return (
     <RecoilRoot>
       <ToastProvider>
         <ApolloSetting>
           <AuthInitialize />
-          <Layout>
+          <Layout noPadding={noPadding}>
             <Component {...pageProps} />
             <ConfirmModalHost />
           </Layout>

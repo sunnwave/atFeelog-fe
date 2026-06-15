@@ -3,3 +3,5 @@ import RecordWriteScreen from "@/components/features/record/write/ui/RecordWrite
 export default function NewRecordPage() {
   return <RecordWriteScreen />;
 }
+
+NewRecordPage.noPadding = true;
