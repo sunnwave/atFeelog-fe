@@ -1,12 +1,10 @@
-import BackButton from "@/components/commons/backButton/BackButton";
-
+import PageHeader from "@/components/commons/pageHeader/PageHeader";
 import {
   RECORD_WRITE_DEFAULTS,
   RecordEditFormValues,
   RecordEditorBottomBar,
   RecordEditorForm,
 } from "@/components/features/record";
-import RecordWriteTop from "./RecordWriteTop";
 import RecordWriteActions from "./RecordWriteActions";
 import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
@@ -53,11 +51,13 @@ export default function RecordWriteScreen() {
   }, [loadDraft, openConfirmPreset, form, success, clearDraft]);
 
   return (
-    <div className="min-h-screen bg-background ">
-      <BackButton fallbackHref="/records" label="뒤로가기" />
-      {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
-      <div className="max-w-lg mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
-        <RecordWriteTop />
+    <div className="min-h-screen bg-background">
+      <div>
+        <PageHeader
+          label="New Record"
+          statusText={isDirty ? "저장 안 됨" : "임시 저장됨"}
+          fallbackHref="/records"
+        />
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>
 

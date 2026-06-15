@@ -25,17 +25,11 @@ export function TextField<TFieldValues extends FieldValues>({
         {...register(name)}
         {...props}
         className={cn(
-          `
-          w-full h-11 px-4 rounded-xl border bg-card
-          transition-all duration-200
-          placeholder:text-muted-foreground/50
-          focus:outline-none focus:ring-2 focus:ring-primary/50
-          ${
-            error
-              ? "border-red-500 focus:ring-red-500/50"
-              : "border-border hover:border-primary/50"
-          }
-        `,
+          "w-full h-11 px-4 rounded-none border-[1.5px] border-foreground bg-card text-sm",
+          "transition-colors duration-200",
+          "placeholder:text-muted-foreground/50",
+          "focus:outline-none focus:ring-0",
+          error ? "border-destructive" : "hover:border-foreground",
           className,
         )}
       />

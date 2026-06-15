@@ -28,7 +28,7 @@ export default function RecordEditorBottomBar({
         "lg:bottom-0 lg:right-0",
         desktopLeftOffsetClassName,
 
-        "border-t border-border bg-background/95 backdrop-blur",
+        "border-t-[1.5px] border-foreground bg-background",
         className
       )}
     >
