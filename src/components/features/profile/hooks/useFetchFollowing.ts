@@ -6,9 +6,12 @@ import {
 import { gql, useQuery } from "@apollo/client";
 import { toUser } from "@/api/adapters/user.adapter";
 
+// 서버 필드명은 fetchFollowings(복수), 생성된 타입의 fetchFollowing(단수)와 불일치
+type FetchFollowingsData = { fetchFollowings?: INewQuery["fetchFollowing"] };
+
 const FETCH_FOLLOWING = gql`
-  query fetchFollowing($userId: ID!) {
-    fetchFollowing(userId: $userId) {
+  query fetchFollowings($userId: ID!) {
+    fetchFollowings(userId: $userId) {
       id
       name
       email
@@ -20,7 +23,7 @@ const FETCH_FOLLOWING = gql`
 
 export const useFetchFollowing = (userId?: string) => {
   const { data, loading, refetch } = useQuery<
-    Pick<INewQuery, "fetchFollowing">,
+    FetchFollowingsData,
     IQueryFetchFollowingArgs
   >(FETCH_FOLLOWING, {
     variables: { userId: userId ?? "" },
@@ -28,7 +31,9 @@ export const useFetchFollowing = (userId?: string) => {
     fetchPolicy: "cache-and-network",
   });
 
-  const users = (data?.fetchFollowing ?? [])
+  console.log("[useFetchFollowing] userId:", userId, "| raw data:", data, "| loading:", loading);
+
+  const users = (data?.fetchFollowings ?? [])
     .filter((u): u is NonNullable<typeof u> => u != null)
     .map(toUser);
 

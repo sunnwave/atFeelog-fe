@@ -13,12 +13,13 @@ export default function ProfileHeader({
   isMe = false,
   isFollowing,
   onFollow,
+  onStatClick,
 }: ProfileHeaderProps) {
   return (
     <section className="border-[1.5px] border-foreground bg-card">
       <div className="flex flex-col md:grid md:grid-cols-[148px_1fr]">
         {/* 좌측: 아바타 셀 */}
-        <div className="flex items-center justify-center bg-surface-soft p-6 border-r-[1.5px] border-foreground md:border-b-0 md:border-r">
+        <div className="flex items-center justify-center bg-surface-soft p-6 border-b-[1.5px] border-foreground md:border-b-0 md:border-r-[1.5px]">
           <Avatar user={user} size="lg" type="filled" />
         </div>
 
@@ -54,19 +55,27 @@ export default function ProfileHeader({
 
           {/* 통계 스트립 */}
           <div className="grid grid-cols-3 border-t border-border">
-            {STATS.map(({ key, label }, i) => (
-              <div
-                key={key}
-                className={`px-6 py-4 ${i !== 2 ? "border-r border-border" : ""}`}
-              >
-                <div className="text-2xl font-black tracking-[-0.05em] leading-none text-foreground">
-                  {user[key]}
+            {STATS.map(({ key, label }, i) => {
+              const clickTab =
+                i === 1 ? "팔로워" : i === 2 ? "팔로잉" : undefined;
+              const isClickable = !!clickTab && !!onStatClick;
+              return (
+                <div
+                  key={key}
+                  onClick={
+                    isClickable ? () => onStatClick!(clickTab!) : undefined
+                  }
+                  className={`px-6 py-4 ${i !== 2 ? "border-r border-border" : ""} ${isClickable ? "cursor-pointer hover:bg-surface-soft transition-colors" : ""}`}
+                >
+                  <div className="text-2xl font-black tracking-[-0.05em] leading-none text-foreground">
+                    {user[key]}
+                  </div>
+                  <div className="mt-1 text-xs font-bold text-muted-foreground">
+                    {label}
+                  </div>
                 </div>
-                <div className="mt-1 text-xs font-bold text-muted-foreground">
-                  {label}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

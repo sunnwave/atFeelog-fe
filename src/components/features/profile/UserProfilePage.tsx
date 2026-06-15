@@ -1,10 +1,11 @@
-import { JSX, useEffect, useState } from "react";
+import { JSX, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import { ProfileUser } from "./types";
 import ProfileHeader from "./ProfileHeader";
 import ProfileRecordGrid from "./ProfileRecordGrid";
+import FollowListPanel from "./FollowListPanel";
 import {
   useAddFollow,
   useFetchBoardsOfMine,
@@ -31,7 +32,10 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
   const { isConnected, refetch: refetchIsConnected } = useIsConnected(userId);
 
   const [isFollowing, setIsFollowing] = useState(false);
-  useEffect(() => { setIsFollowing(isConnected); }, [isConnected]);
+  const [openTab, setOpenTab] = useState<"팔로워" | "팔로잉" | null>(null);
+  useEffect(() => {
+    setIsFollowing(isConnected);
+  }, [isConnected]);
 
   const nameFromQuery =
     typeof router.query.name === "string"
@@ -54,10 +58,24 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
   const { count: followersCount, refetch: refetchFollowers } =
     useFetchCountOfFollowers(userId);
   const { count: followingCount } = useFetchCountOfFollowing(userId);
-  const { users: followers } = useFetchFollowers(userId);
-  const { users: followings } = useFetchFollowing(userId);
-  const { refetch: refetchMyFollowings } = useFetchFollowing(loggedInUser?.id);
+  const { users: followers, loading: loadingFollowers } =
+    useFetchFollowers(userId);
+  const { users: followings, loading: loadingFollowings } =
+    useFetchFollowing(userId);
+  const { users: myFollowings, refetch: refetchMyFollowings } =
+    useFetchFollowing(loggedInUser?.id);
   const { onAddFollow } = useAddFollow();
+
+  console.log("[following] count:", followingCount, "| list length:", followings.length, "| loading:", loadingFollowings);
+  console.log("[following] list data:", followings);
+  console.log("[followers] count:", followersCount, "| list length:", followers.length, "| loading:", loadingFollowers);
+  console.log("[following] userId passed to hook:", userId, "| loggedInUser?.id:", loggedInUser?.id);
+
+  const myFollowingIds = useMemo(
+    () =>
+      new Set(myFollowings.map((u) => u.id).filter((id): id is string => !!id)),
+    [myFollowings],
+  );
 
   const records = isMe ? myRecords : userRecords;
   const recordsCount = isMe ? myRecordsCount : userRecordsCount;
@@ -73,6 +91,15 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
       }
     } catch (e) {
       console.error("[follow] error:", e);
+    }
+  };
+
+  const handleFollowUser = async (targetUserId: string) => {
+    try {
+      await onAddFollow(targetUserId);
+      void refetchMyFollowings();
+    } catch (e) {
+      console.error("[follow user] error:", e);
     }
   };
 
@@ -95,15 +122,33 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
           followingCount,
         };
 
-  // console.log("followers, followings, user:", { followers, followings, user });
   return (
     <div className="w-full space-y-6 px-4 py-6 md:px-0 md:py-8">
-      <ProfileHeader
-        user={user}
-        isMe={isMe}
-        isFollowing={isFollowing}
-        onFollow={isMe ? undefined : handleFollow}
-      />
+      <div className="lg:flex lg:items-stretch">
+        <div className="flex-1 min-w-0">
+          <ProfileHeader
+            user={user}
+            isMe={isMe}
+            isFollowing={isFollowing}
+            onFollow={isMe ? undefined : handleFollow}
+            onStatClick={setOpenTab}
+          />
+        </div>
+        <FollowListPanel
+          openTab={openTab}
+          onTabChange={setOpenTab}
+          onClose={() => setOpenTab(null)}
+          followers={followers}
+          followings={followings}
+          followersCount={followersCount}
+          followingCount={followingCount}
+          myFollowingIds={myFollowingIds}
+          loggedInUserId={loggedInUser?.id ?? undefined}
+          onFollow={handleFollowUser}
+          loadingFollowers={loadingFollowers}
+          loadingFollowings={loadingFollowings}
+        />
+      </div>
       <ProfileRecordGrid records={records} likedRecords={likedRecords} />
     </div>
   );

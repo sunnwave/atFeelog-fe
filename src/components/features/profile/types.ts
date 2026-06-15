@@ -14,4 +14,5 @@ export type ProfileHeaderProps = {
   isMe?: boolean;
   isFollowing?: boolean;
   onFollow?: () => void;
+  onStatClick?: (tab: "팔로워" | "팔로잉") => void;
 };
