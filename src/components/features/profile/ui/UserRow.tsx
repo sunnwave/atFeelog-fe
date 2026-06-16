@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { User } from "@/api/adapters/types/user";
 import Avatar from "@/components/ui/avatar/Avatar";
 import { Button } from "@/components/ui/button/Button";
+import type { UserRowProps } from "../types";
 
-interface Props {
-  user: User;
-  isFollowing: boolean;
-  isMe: boolean;
-  onFollow: () => Promise<void>;
-}
-
-export default function UserRow({ user, isFollowing, isMe, onFollow }: Props) {
+export default function UserRow({
+  user,
+  isFollowing,
+  isMe,
+  onFollow,
+}: UserRowProps) {
   const [following, setFollowing] = useState(isFollowing);
   const [loading, setLoading] = useState(false);
 

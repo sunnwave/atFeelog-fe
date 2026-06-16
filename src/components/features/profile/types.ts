@@ -1,3 +1,6 @@
+import type { User } from "@/api/adapters/types/user";
+import type { RecordSummary } from "@/api/adapters/types/record-summary";
+
 export type ProfileUser = {
   id: string;
   name: string;
@@ -14,5 +17,46 @@ export type ProfileHeaderProps = {
   isMe?: boolean;
   isFollowing?: boolean;
   onFollow?: () => void;
-  onStatClick?: (tab: "팔로워" | "팔로잉") => void;
+  onStatClick?: (tab: FollowTab) => void;
+};
+
+export type ProfileActionsProps = {
+  isMe: boolean;
+  isFollowing?: boolean;
+  onAddFollow?: () => void;
+};
+
+export type FollowTab = "팔로워" | "팔로잉";
+
+export interface FollowListPanelProps {
+  openTab: FollowTab | null;
+  onTabChange: (tab: FollowTab) => void;
+  onClose: () => void;
+  followers: User[];
+  followings: User[];
+  followersCount: number;
+  followingCount: number;
+  myFollowingIds: Set<string>;
+  loggedInUserId?: string;
+  onFollow: (userId: string) => Promise<void>;
+  loadingFollowers?: boolean;
+  loadingFollowings?: boolean;
+}
+
+export type TabKey = "log" | "likes";
+
+export interface ProfileRecordGridProps {
+  records: RecordSummary[];
+  likedRecords: RecordSummary[];
+}
+
+export interface UserRowProps {
+  user: User;
+  isFollowing: boolean;
+  isMe: boolean;
+  onFollow: () => Promise<void>;
+}
+
+export type UserProfilePageProps = {
+  userId: string;
 };

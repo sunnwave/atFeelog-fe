@@ -2,10 +2,10 @@ import { JSX, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
-import { ProfileUser } from "./types";
-import ProfileHeader from "./ProfileHeader";
-import ProfileRecordGrid from "./ProfileRecordGrid";
-import FollowListPanel from "./FollowListPanel";
+import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
+import ProfileHeader from "../ProfileHeader";
+import ProfileRecordGrid from "../ProfileRecordGrid";
+import FollowListPanel from "../FollowListPanel";
 import {
   useAddFollow,
   useFetchBoardsOfMine,
@@ -18,13 +18,11 @@ import {
   useFetchFollowers,
   useFetchFollowing,
   useIsConnected,
-} from "./hooks";
+} from "../../hooks";
 
-type Props = {
-  userId: string;
-};
-
-export default function UserProfilePage({ userId }: Props): JSX.Element {
+export default function UserProfileScreen({
+  userId,
+}: UserProfilePageProps): JSX.Element {
   const router = useRouter();
   const loggedInUser = useRecoilValue(loggedInUserState);
   const isMe = !!loggedInUser?.id && loggedInUser.id === userId;
@@ -32,7 +30,7 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
   const { isConnected, refetch: refetchIsConnected } = useIsConnected(userId);
 
   const [isFollowing, setIsFollowing] = useState(false);
-  const [openTab, setOpenTab] = useState<"팔로워" | "팔로잉" | null>(null);
+  const [openTab, setOpenTab] = useState<FollowTab | null>(null);
   useEffect(() => {
     setIsFollowing(isConnected);
   }, [isConnected]);
@@ -65,11 +63,6 @@ export default function UserProfilePage({ userId }: Props): JSX.Element {
   const { users: myFollowings, refetch: refetchMyFollowings } =
     useFetchFollowing(loggedInUser?.id);
   const { onAddFollow } = useAddFollow();
-
-  console.log("[following] count:", followingCount, "| list length:", followings.length, "| loading:", loadingFollowings);
-  console.log("[following] list data:", followings);
-  console.log("[followers] count:", followersCount, "| list length:", followers.length, "| loading:", loadingFollowers);
-  console.log("[following] userId passed to hook:", userId, "| loggedInUser?.id:", loggedInUser?.id);
 
   const myFollowingIds = useMemo(
     () =>

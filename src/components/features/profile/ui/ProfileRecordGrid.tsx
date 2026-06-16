@@ -1,18 +1,11 @@
 import { useState } from "react";
-import { RecordSummary } from "@/api/adapters/types/record-summary";
 import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
-
-type TabKey = "log" | "likes";
+import type { ProfileRecordGridProps, TabKey } from "../types";
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "log", label: "Log" },
   { key: "likes", label: "Likes" },
 ];
-
-interface ProfileRecordGridProps {
-  records: RecordSummary[];
-  likedRecords: RecordSummary[];
-}
 
 export default function ProfileRecordGrid({
   records,

@@ -1,20 +1,27 @@
 import { Button } from "@/components/ui/button/Button";
-
-type Props = {
-  isMe: boolean;
-  isFollowing?: boolean;
-  onAddFollow?: () => void;
-};
+import type { ProfileActionsProps } from "../types";
+import { useRouter } from "next/router";
 
 export default function ProfileActions({
   isMe,
   isFollowing,
   onAddFollow,
-}: Props) {
+}: ProfileActionsProps) {
+  const router = useRouter();
+
+  const handleEditProfile = () => {
+    router.push("/user/me/edit");
+  };
+
   if (isMe) {
     return (
       <div className="flex gap-2 shrink-0">
-        <Button variant="solid" tone="primary" size="default">
+        <Button
+          variant="solid"
+          tone="primary"
+          size="default"
+          onClick={handleEditProfile}
+        >
           프로필 수정
         </Button>
       </div>

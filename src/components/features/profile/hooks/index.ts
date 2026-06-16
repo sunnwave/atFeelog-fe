@@ -1,4 +1,9 @@
-export { useFetchBoardsOfMine, useFetchBoardsCountOfMine } from "./me";
+export {
+  useFetchBoardsOfMine,
+  useFetchBoardsCountOfMine,
+  useUpdateUser,
+  useResetUserPassword,
+} from "./me";
 export { useAddFollow } from "./useAddFollow";
 export { useFetchBoardsByUser } from "./useFetchBoardsByUser";
 export { useFetchBoardsCountByUser } from "./useFetchBoardsCountByUser";

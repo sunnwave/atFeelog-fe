@@ -1,24 +1,6 @@
-import { User } from "@/api/adapters/types/user";
 import { cn } from "@/shared/utils/cn";
 import UserRow from "./UserRow";
-
-type FollowTab = "팔로워" | "팔로잉";
-
-interface Props {
-  openTab: FollowTab | null;
-  onTabChange: (tab: FollowTab) => void;
-  onClose: () => void;
-  followers: User[];
-  followings: User[];
-  followersCount: number;
-  followingCount: number;
-  myFollowingIds: Set<string>;
-  loggedInUserId?: string;
-  onFollow: (userId: string) => Promise<void>;
-  loadingFollowers?: boolean;
-  loadingFollowings?: boolean;
-}
-
+import type { FollowListPanelProps } from "../types";
 
 export default function FollowListPanel({
   openTab,
@@ -33,7 +15,7 @@ export default function FollowListPanel({
   onFollow,
   loadingFollowers,
   loadingFollowings,
-}: Props) {
+}: FollowListPanelProps) {
   const users = openTab === "팔로워" ? followers : followings;
   const loading = openTab === "팔로워" ? loadingFollowers : loadingFollowings;
 
@@ -99,7 +81,10 @@ export default function FollowListPanel({
         className="lg:hidden overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
         style={{ maxHeight: openTab ? 360 : 0 }}
       >
-        <div className="flex flex-col border-[1.5px] border-t-0 border-foreground bg-card" style={{ height: 360 }}>
+        <div
+          className="flex flex-col border-[1.5px] border-t-0 border-foreground bg-card"
+          style={{ height: 360 }}
+        >
           {tabHeader}
           {listContent}
         </div>
