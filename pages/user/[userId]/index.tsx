@@ -1,4 +1,4 @@
-import UserProfileScreen from "@/components/features/profile/ui/screen/UserProfileScreen";
+import UserProfileScreen from "@/components/features/user/ui/screen/UserProfileScreen";
 import { GetServerSideProps } from "next";
 import { JSX } from "react";
 

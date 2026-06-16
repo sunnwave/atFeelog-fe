@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { authInitializedState, loggedInUserState } from "@/shared/stores";
-import UserProfileScreen from "@/components/features/profile/ui/screen/UserProfileScreen";
+import UserProfileScreen from "@/components/features/user/ui/screen/UserProfileScreen";
 
 export default function MyProfilePage() {
   const initialized = useRecoilValue(authInitializedState);

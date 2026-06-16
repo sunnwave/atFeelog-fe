@@ -1,4 +1,4 @@
-import ProfileEditScreen from "@/components/features/profile/ui/screen/ProfileEditScreen";
+import ProfileEditScreen from "@/components/features/user/ui/screen/ProfileEditScreen";
 
 export default function MyProfileEditPage() {
   return <ProfileEditScreen />;

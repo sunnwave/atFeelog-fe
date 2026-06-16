@@ -13,7 +13,7 @@ const baseUser: ProfileUser = {
 };
 
 const meta: Meta<typeof ProfileHeader> = {
-  title: "features/profile/ProfileHeader",
+  title: "features/user/ProfileHeader",
   component: ProfileHeader,
   parameters: { layout: "fullscreen" },
   args: { user: baseUser, isMe: true },
