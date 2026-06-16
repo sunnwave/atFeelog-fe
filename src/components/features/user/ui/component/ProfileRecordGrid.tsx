@@ -1,6 +1,6 @@
 import { useState } from "react";
 import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
-import type { ProfileRecordGridProps, TabKey } from "../types";
+import type { ProfileRecordGridProps, TabKey } from "../../types";
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "log", label: "Log" },

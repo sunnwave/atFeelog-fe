@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 import UserRow from "./UserRow";
-import type { FollowListPanelProps } from "../types";
+import type { FollowListPanelProps } from "../../types";
 
 export default function FollowListPanel({
   openTab,

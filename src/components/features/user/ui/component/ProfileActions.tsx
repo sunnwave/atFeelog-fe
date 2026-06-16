@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
-import type { ProfileActionsProps } from "../types";
+import type { ProfileActionsProps } from "../../types";
 import { useRouter } from "next/router";
 
 export default function ProfileActions({

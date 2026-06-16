@@ -1,6 +1,6 @@
 import Avatar from "@/components/ui/avatar/Avatar";
 import ProfileActions from "./ProfileActions";
-import { ProfileHeaderProps } from "../types";
+import { ProfileHeaderProps } from "../../types";
 
 const STATS = [
   { key: "recordsCount", label: "기록" },

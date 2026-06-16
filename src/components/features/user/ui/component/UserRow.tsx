@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Avatar from "@/components/ui/avatar/Avatar";
 import { Button } from "@/components/ui/button/Button";
-import type { UserRowProps } from "../types";
+import type { UserRowProps } from "../../types";
 
 export default function UserRow({
   user,

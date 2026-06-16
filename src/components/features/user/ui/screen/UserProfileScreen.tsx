@@ -3,9 +3,9 @@ import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
-import ProfileHeader from "../ProfileHeader";
-import ProfileRecordGrid from "../ProfileRecordGrid";
-import FollowListPanel from "../FollowListPanel";
+import ProfileHeader from "../component/ProfileHeader";
+import ProfileRecordGrid from "../component/ProfileRecordGrid";
+import FollowListPanel from "../component/FollowListPanel";
 import {
   useAddFollow,
   useFetchBoardsOfMine,
