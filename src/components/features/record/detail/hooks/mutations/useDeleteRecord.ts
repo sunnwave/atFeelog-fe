@@ -40,7 +40,7 @@ export const useDeleteBoard = () => {
       }
 
       success("게시글이 삭제되었습니다");
-      router.push("/records");
+      router.push("/feelog");
     } catch (err) {
       const msg =
         err instanceof Error ? err.message : "게시글 삭제에 실패했어요😢";

@@ -50,7 +50,7 @@ export default function RecordDetailContent({
             {isWriter && (
               <div data-testid="record-writer-menu">
                 <WriterMenu
-                  onEditClick={onClickNavigation(`/records/update/${record.id}`)}
+                  onEditClick={onClickNavigation(`/feelog/${record.id}/edit`)}
                   onDeleteClick={onDelete}
                 />
               </div>

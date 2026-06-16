@@ -30,7 +30,7 @@ export default function useRecordWriteSubmit() {
         password: me?.id || "1234",
       });
       success("필로그를 기록했어요📖✨");
-      await router.push(`/records/${id}`);
+      await router.push(`/feelog/${id}`);
     } catch (e) {
       const message =
         e instanceof Error ? e.message : "필로그 기록에 실패했어요😢";

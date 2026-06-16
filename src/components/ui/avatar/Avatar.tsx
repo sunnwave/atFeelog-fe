@@ -42,7 +42,7 @@ export default function Avatar({
     "rounded-full flex shrink-0 items-center justify-center overflow-hidden";
 
   const href = clickable && user?.id
-    ? `/feelog/${user.id}?name=${encodeURIComponent(user.name)}${user.picture ? `&picture=${encodeURIComponent(user.picture)}` : ""}`
+    ? `/user/${user.id}?name=${encodeURIComponent(user.name)}${user.picture ? `&picture=${encodeURIComponent(user.picture)}` : ""}`
     : undefined;
 
   const wrap = (node: JSX.Element) =>

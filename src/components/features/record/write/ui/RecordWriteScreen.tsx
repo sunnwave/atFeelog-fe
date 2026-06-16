@@ -56,7 +56,7 @@ export default function RecordWriteScreen() {
         <PageHeader
           label="New Record"
           statusText={isDirty ? "저장 안 됨" : "임시 저장됨"}
-          fallbackHref="/records"
+          fallbackHref="/feelog"
         />
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>

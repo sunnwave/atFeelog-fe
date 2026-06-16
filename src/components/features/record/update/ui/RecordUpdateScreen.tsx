@@ -68,7 +68,7 @@ export default function RecordUpdateScreen() {
   if (loading) return <div>로딩 중..</div>;
   return (
     <div className="min-h-screen bg-background ">
-      <BackButton fallbackHref="/records" label="뒤로가기" />
+      <BackButton fallbackHref="/feelog" label="뒤로가기" />
       {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
       <div className="max-w-lg mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
         <RecordUpdateTop />

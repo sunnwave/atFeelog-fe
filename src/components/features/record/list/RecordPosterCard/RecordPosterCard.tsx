@@ -23,7 +23,7 @@ export default function RecordPosterCard({
   const { mon, day } = parseDateLabel(record.createdAt);
   const label = record.artistName ?? record.user?.name;
 
-  const onClick = () => void router.push(`/records/${record.id}`);
+  const onClick = () => void router.push(`/feelog/${record.id}`);
 
   return (
     <div

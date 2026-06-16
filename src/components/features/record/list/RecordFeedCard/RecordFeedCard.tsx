@@ -16,7 +16,7 @@ export default function RecordFeedCard({
   const hasImage = !!imageUrl;
 
   const onClick = () => {
-    void router.push(`/records/${record.id}`);
+    void router.push(`/feelog/${record.id}`);
   };
 
   const artists =

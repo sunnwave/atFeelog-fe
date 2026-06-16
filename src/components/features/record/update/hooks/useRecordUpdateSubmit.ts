@@ -34,7 +34,7 @@ export default function useRecordUpdateSubmit() {
     try {
       const id = await onUpdateRecord({ ...args });
       success("필로그를 수정했어요📖✨");
-      await router.push(`/records/${id}`);
+      await router.push(`/feelog/${id}`);
     } catch (e) {
       const message =
         e instanceof Error ? e.message : "필로그 수정에 실패했어요😢";

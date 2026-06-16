@@ -41,7 +41,7 @@ export default function RecordDetail(): JSX.Element | null {
   return (
     <div className="px-4 md:-mx-6 md:px-4 md:-mt-6">
       <BackButton
-        fallbackHref="/records"
+        fallbackHref="/feelog"
         label="목록으로"
         className="-mx-4 px-4"
       />
