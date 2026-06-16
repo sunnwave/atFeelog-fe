@@ -1,4 +1,4 @@
-import AuthInitialize from "@/components/commons/auth/AuthInitialize";
+import AuthInitialize from "@/shared/hooks/auth/AuthInitialize";
 import Layout from "@/components/commons/layout/Layout";
 import ConfirmModalHost from "@/components/commons/modal/confirmModal/ConfirmModalHost";
 import { ToastProvider } from "@/components/commons/toast/ToastProvider";
