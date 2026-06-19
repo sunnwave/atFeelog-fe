@@ -40,7 +40,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         solid: "",
-        outline: "bg-transparent",
+        outline: "bg-transparent border-[1.5px]",
         ghost: "border-transparent bg-transparent",
         link: [
           "h-auto border-transparent bg-transparent p-0",
@@ -71,11 +71,11 @@ const buttonVariants = cva(
         destructive: "focus-visible:ring-destructive/20",
       },
       size: {
-        sm: "h-7 rounded-md px-3 text-xs has-[>svg]:px-2.5",
-        default: "h-9 rounded-lg px-4 py-2 text-sm has-[>svg]:px-3",
-        md: "h-10 rounded-lg px-5 text-sm has-[>svg]:px-4",
-        lg: "h-12 rounded-xl px-7 text-base has-[>svg]:px-6",
-        icon: "size-9 rounded-lg p-0",
+        sm: "h-7 rounded-none px-3 text-xs has-[>svg]:px-2.5",
+        default: "h-9 rounded-none px-4 py-2 text-sm has-[>svg]:px-3",
+        md: "h-10 rounded-none px-5 text-sm has-[>svg]:px-4",
+        lg: "h-12 rounded-none px-7 text-base has-[>svg]:px-6",
+        icon: "size-9 rounded-none p-0",
       },
     },
     compoundVariants: [
