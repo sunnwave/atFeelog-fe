@@ -10,5 +10,6 @@ export function toUser(dto: ILegacyUser | INewUser): User {
     name: dto.name,
     email: dto.email,
     picture: dto.picture ?? undefined,
+    createdAt: dto.createdAt ?? undefined,
   };
 }

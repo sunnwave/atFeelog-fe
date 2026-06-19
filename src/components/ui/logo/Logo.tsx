@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cn } from "@/shared/utils/cn";
 
 type LogoSize = "sm" | "md" | "lg";
@@ -40,14 +41,15 @@ export default function Logo({ size = "md", className }: LogoProps) {
   const styles = sizeStyles[size];
 
   return (
-    <div
+    <Link
+      href="/"
       className={cn(
         "inline-flex items-center overflow-hidden",
         "border-[1.5px] border-foreground bg-card text-foreground",
         styles.root,
         className,
       )}
-      aria-label="atFeelog"
+      aria-label="atFeelog 홈으로"
     >
       <div
         className={cn(
@@ -72,6 +74,6 @@ export default function Logo({ size = "md", className }: LogoProps) {
           <span className="ml-1 text-point">.</span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
