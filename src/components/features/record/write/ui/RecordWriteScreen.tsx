@@ -1,10 +1,10 @@
-import PageHeader from "@/components/commons/pageHeader/PageHeader";
+import PageHeader from "@/components/commons/layout/PageHeader";
 import {
   RECORD_WRITE_DEFAULTS,
   RecordEditFormValues,
-  RecordEditorBottomBar,
   RecordEditorForm,
 } from "@/components/features/record";
+import BottomActionBar from "@/components/commons/layout/BottomActionBar";
 import RecordWriteActions from "./RecordWriteActions";
 import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
@@ -61,14 +61,14 @@ export default function RecordWriteScreen() {
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>
 
-      <RecordEditorBottomBar>
+      <BottomActionBar>
         <RecordWriteActions
           formId={formId}
           disabled={disabled}
           isDirty={isDirty}
           onTempSave={onTempSave}
         />
-      </RecordEditorBottomBar>
+      </BottomActionBar>
     </div>
   );
 }

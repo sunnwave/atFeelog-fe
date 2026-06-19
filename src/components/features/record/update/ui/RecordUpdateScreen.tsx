@@ -1,5 +1,6 @@
-import BackButton from "@/components/commons/backButton/BackButton";
-import { RecordEditorBottomBar, RecordEditorForm } from "../../editor";
+import PageHeader from "@/components/commons/layout/PageHeader";
+import { RecordEditorForm } from "../../editor";
+import BottomActionBar from "@/components/commons/layout/BottomActionBar";
 import RecordUpdateActions from "./RecordUpdateActions";
 import RecordUpdateTop from "./RecordUpdateTop";
 import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
@@ -68,21 +69,21 @@ export default function RecordUpdateScreen() {
   if (loading) return <div>로딩 중..</div>;
   return (
     <div className="min-h-screen bg-background ">
-      <BackButton fallbackHref="/feelog" label="뒤로가기" />
+      <PageHeader label="Edit Record" fallbackHref="/feelog" />
       {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
       <div className="max-w-lg mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
         <RecordUpdateTop />
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>
 
-      <RecordEditorBottomBar>
+      <BottomActionBar>
         <RecordUpdateActions
           formId={formId}
           disabled={disabled}
           isDirty={isDirty}
           onTempSave={onTempSave}
         />
-      </RecordEditorBottomBar>
+      </BottomActionBar>
     </div>
   );
 }
