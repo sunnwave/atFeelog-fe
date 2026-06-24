@@ -43,7 +43,7 @@ export default function RecordDetailContent({
         <h1 className="text-3xl font-bold leading-tight">{record.title}</h1>
 
         {/* contents container */}
-        <div className="bg-white rounded-2xl border border-border overflow-hidden">
+        <div className="bg-card border-[1.5px] border-foreground overflow-hidden">
           {/* contents top */}
           <div className="flex items-center justify-between p-4 border-b border-border">
             <Profile record={record} tone="primary" size="sm" />

@@ -1,7 +1,7 @@
 import { JSX } from "react";
 import { useRouter } from "next/router";
 import RecordDetailContent from "./recordDetailContent/RecordDetailContent";
-import BackButton from "@/components/commons/backButton/BackButton";
+import PageHeader from "@/components/commons/layout/PageHeader";
 import { useFetchRecord } from "../hooks/useFetchRecord";
 import ImageCarousel from "@/components/commons/imageCarousel/ImageCarousel";
 import { useRecoilState } from "recoil";
@@ -39,28 +39,25 @@ export default function RecordDetail(): JSX.Element | null {
   const hasImages = images.length > 0;
 
   return (
-    <div className="px-4 md:-mx-6 md:px-4 md:-mt-6">
-      <BackButton
-        fallbackHref="/feelog"
-        label="목록으로"
-        className="-mx-4 px-4"
-      />
-
-      {hasImages ? (
-        <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
-          <ImageCarousel
-            images={images ?? []}
-            className="lg:sticky lg:top-15 lg:h-fit"
+    <div className="min-h-screen bg-background">
+      <PageHeader label="Record" fallbackHref="/feelog" />
+      <div className="px-5 py-6 mx-auto max-w-5xl lg:px-6 lg:py-8">
+        {hasImages ? (
+          <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
+            <ImageCarousel
+              images={images}
+              className="lg:sticky lg:top-15 lg:h-fit"
+            />
+            <RecordDetailContent record={record} isWriter={isWriter} />
+          </div>
+        ) : (
+          <RecordDetailContent
+            record={record}
+            isWriter={isWriter}
+            className="w-full max-w-3xl mx-auto"
           />
-          <RecordDetailContent record={record} isWriter={isWriter} />
-        </div>
-      ) : (
-        <RecordDetailContent
-          record={record}
-          isWriter={isWriter}
-          className="w-full max-w-3xl mx-auto"
-        />
-      )}
+        )}
+      </div>
     </div>
   );
 }
