@@ -1,5 +1,6 @@
 import type { StorybookConfig } from "@storybook/nextjs-vite";
 import { mergeConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -13,6 +14,7 @@ const config: StorybookConfig = {
   staticDirs: ["../public"],
   viteFinal: (baseConfig) =>
     mergeConfig(baseConfig, {
+      plugins: [tailwindcss()],
       optimizeDeps: {
         include: ["@apollo/client", "@apollo/client/testing", "recoil"],
       },
