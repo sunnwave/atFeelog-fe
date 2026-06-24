@@ -7,7 +7,10 @@ import { Button } from "@/components/ui/button/Button";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useState } from "react";
-import { buildWriteActionSheetOptions, SIDE_NAV_ITEMS } from "@/shared/constants";
+import {
+  buildWriteActionSheetOptions,
+  SIDE_NAV_ITEMS,
+} from "@/shared/constants";
 import { ActionSheet } from "../../actionSheet/ActionSheet";
 import { loggedInUserState } from "@/shared/stores";
 
@@ -53,7 +56,7 @@ export default function BottomNav() {
 
         {isLoggedIn ? (
           <Link
-            href="/settings"
+            href="/user/me/edit"
             className="flex flex-1 flex-col items-center justify-center"
           >
             <Avatar user={me ?? undefined} size="md" type="filled" />

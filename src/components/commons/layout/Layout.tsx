@@ -36,7 +36,7 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
             className={
               noPadding
                 ? "mx-auto w-full max-w-300 pb-20 lg:pb-8"
-                : "mx-auto w-full max-w-300 pb-20 md:px-6 md:py-8 lg:px-6 lg:pb-8"
+                : "mx-auto w-full max-w-300 pb-20 md:px-6 md:py-6 lg:pb-8"
             }
           >
             {children}
