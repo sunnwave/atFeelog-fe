@@ -1,34 +1,15 @@
-import { JSX, useEffect, useState } from "react";
-import TwoColumnDashboard from "./TwoColumnDashboard/TwoColumnDashboard";
-import SingleDashBoard from "./SingleDashBoard/SingleDashBoard";
+import { JSX } from "react";
+import KeywordDashBoard from "./KeywordDashBoard/KeywordDashBoard";
+import { useFetchBoardsKeyword } from "../hooks/queries/useFetchBoardsKeyword";
 
-export default function HomeDashBoard(): JSX.Element {
-  const [activeKeywordType, setActiveKeywordType] = useState<
-    "feelog" | "market"
-  >("feelog");
+export default function HomeDashBoard(): JSX.Element | null {
+  const { keywords } = useFetchBoardsKeyword();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveKeywordType((prev) => (prev === "feelog" ? "market" : "feelog"));
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleManualSwitch = (type: "feelog" | "market") => {
-    setActiveKeywordType(type);
-  };
+  if (keywords.length === 0) return null;
 
   return (
-    <>
-      {/* 모바일&태블릿 */}
-      <SingleDashBoard
-        activeKeywordType={activeKeywordType}
-        handleManualSwitch={handleManualSwitch}
-      />
-
-      {/* 데스트탑 */}
-      <TwoColumnDashboard />
-    </>
+    <div className="max-w-xs">
+      <KeywordDashBoard keywords={keywords} variant="feelog" />
+    </div>
   );
 }
