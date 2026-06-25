@@ -3,7 +3,7 @@
 import * as React from "react";
 import { X } from "lucide-react";
 import * as Dialog from "@radix-ui/react-dialog";
-import IconBadge from "@/components/ui/icons/IconBadge";
+import IconBadge from "@/components/ui/badge/IconBadge";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/components/ui/button/Button";
 import { ModalProps } from "./ConfirmModalTypes";
@@ -32,7 +32,7 @@ export function ConfirmModal({
           className={cn(
             "fixed inset-0 z-50 bg-black/50",
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
-            "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
+            "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
           )}
           // ✅ overlay 클릭 닫기 제어
           onPointerDown={(e) => {
@@ -48,7 +48,7 @@ export function ConfirmModal({
             "data-[state=open]:animate-in data-[state=closed]:animate-out",
             "data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0",
             "data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95",
-            className
+            className,
           )}
         >
           {/* Header */}
