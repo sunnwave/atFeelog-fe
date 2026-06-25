@@ -49,7 +49,7 @@ export default function SideNav() {
 
   return (
     <aside className="flex h-full w-full flex-col border-r-[1.5px] border-foreground bg-card">
-      <div className="border-b-[1.5px] border-foreground px-6 py-6">
+      <div className="border-b-[1.5px] border-foreground flex justify-center items-center px-6 py-4">
         <Logo size="lg" />
       </div>
 

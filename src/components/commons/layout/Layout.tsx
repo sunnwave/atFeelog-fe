@@ -17,17 +17,15 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
         <SideNav />
       </aside>
 
-      {/* Mobile Header */}
-      {!noPadding && (
-        <header className="flex w-full items-center justify-center border-b border-border bg-card/80 py-3 lg:hidden">
-          <div className="block md:hidden">
-            <Logo size="md" />
-          </div>
-          <div className="hidden md:block">
-            <Logo size="lg" />
-          </div>
-        </header>
-      )}
+      {/* Mobile/Tablet Header */}
+      <header className="flex w-full items-center justify-center border-b border-border bg-card/80 py-3 lg:hidden">
+        <div className="block md:hidden">
+          <Logo size="md" />
+        </div>
+        <div className="hidden md:block">
+          <Logo size="lg" />
+        </div>
+      </header>
 
       {/* Main */}
       <div className="lg:pl-[288px]">
@@ -35,8 +33,8 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
           <div
             className={
               noPadding
-                ? "mx-auto w-full max-w-300 pb-20 lg:pb-8"
-                : "mx-auto w-full max-w-300 pb-20 md:px-6 md:py-6 lg:pb-8"
+                ? "w-full"
+                : "w-full pb-20 lg:pb-8"
             }
           >
             {children}

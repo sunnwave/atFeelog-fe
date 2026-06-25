@@ -3,3 +3,5 @@ import RecordUpdateScreen from "@/components/features/record/update/ui/RecordUpd
 export default function RecordUpdatePage() {
   return <RecordUpdateScreen />;
 }
+
+RecordUpdatePage.noPadding = true;
