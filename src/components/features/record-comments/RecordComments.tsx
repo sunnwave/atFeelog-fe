@@ -30,7 +30,7 @@ export default function RecordComments() {
   const { comments, loading, hasMore, loadMore } =
     useFetchRecordComments(recordId);
 
-  const { onCreateRecordComment } = useCreateRecordComment({ recordId });
+  const { onCreateRecordComment } = useCreateRecordComment({ recordId, user: me ?? undefined });
   const { onUpdateRecordComment } = useUpdateRecordComment();
   const { onDeleteRecordComment } = useDeleteRecordComment();
 

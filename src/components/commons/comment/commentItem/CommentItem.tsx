@@ -27,7 +27,7 @@ export default function CommentItem({ comment }: { comment: RecordComment }) {
     onRequestDelete(comment.id);
   };
   return (
-    <div className="w-full flex items-start gap-3">
+    <div data-testid="comment-item" className="w-full flex items-start gap-3">
       <Avatar user={comment.user ?? undefined} size="sm" type="filled" clickable />
       <div className="flex flex-1 justify-between">
         <div className="w-full flex flex-col gap-1">
