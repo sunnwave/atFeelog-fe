@@ -60,13 +60,7 @@ test.describe.serial("기록 (E2E)", () => {
 
     await page.goto("/feelog");
 
-    // RecordCard > RecordCardContent 가 record.title 을 <h3> 으로 렌더링
-    await expect(
-      page
-        .getByRole("heading", { level: 3 })
-        .filter({ hasText: data.title })
-        .first(),
-    ).toBeVisible();
+    await expect(page.getByText(data.showName).first()).toBeVisible();
   });
 
   // ── 2. 유효성 ────────────────────────────────────────────────────────────
@@ -74,21 +68,21 @@ test.describe.serial("기록 (E2E)", () => {
   test("필수 항목 미입력 시 유효성 에러 표시됨", async ({ page }) => {
     await page.goto("/feelog/new");
 
-    await page.getByRole("button", { name: "기록 저장" }).click();
+    await page.getByRole("button", { name: "저장하기" }).click();
 
     // 폼이 제출되지 않아 URL 유지
     await expect(page).toHaveURL("/feelog/new");
 
     // TextField 에러: border-red-500 클래스 추가
     await expect(page.locator('input[name="showName"]')).toHaveClass(
-      /border-red-500/,
+      /border-destructive/,
     );
     await expect(page.locator('input[name="artistName"]')).toHaveClass(
-      /border-red-500/,
+      /border-destructive/,
     );
     // showDate는 DatePickerInput(버튼)으로 렌더링되므로 트리거 버튼의 클래스를 확인
     await expect(page.getByTestId("date-picker-trigger")).toHaveClass(
-      /border-red-500/,
+      /border-destructive/,
     );
 
     // TiptapEditor 에러: 에러 문구 직접 렌더링

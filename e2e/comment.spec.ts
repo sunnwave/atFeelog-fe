@@ -14,20 +14,24 @@ async function submitComment(page: Page, text: string) {
   await expect(
     page.locator("p").filter({ hasText: text }).first(),
   ).toBeVisible();
+  // 댓글 제출 후 페이지 재진입해 WriterMenu(isWriter) 상태를 확실히 반영
+  await page.reload({ waitUntil: "networkidle" });
+  await expect(
+    page.locator("p").filter({ hasText: text }).first(),
+  ).toBeVisible();
 }
 
-/**
- * 특정 댓글의 WriterMenu(MoreVertical 버튼)를 연다.
- * CommentItem 구조: outer-div > div.flex-1 > [content-div | WriterMenu]
- * <p> 기준으로 2번째 상위 div가 WriterMenu 버튼을 포함한다.
- */
 async function openCommentMenu(page: Page, commentText: string) {
-  await page
-    .locator("p")
-    .filter({ hasText: commentText })
-    .locator("xpath=ancestor::div[2]")
-    .locator("button:has(.lucide-ellipsis-vertical)")
-    .click();
+  // textarea 활성화 = 로그인 + me 상태 초기화 완료 신호
+  await expect(page.locator("textarea")).not.toBeDisabled({ timeout: 10000 });
+
+  const menuBtn = page
+    .getByTestId("comment-item")
+    .filter({ has: page.locator("p").filter({ hasText: commentText }) })
+    .locator("button")
+    .first();
+  await expect(menuBtn).toBeVisible({ timeout: 10000 });
+  await menuBtn.click();
 }
 
 /**
@@ -39,7 +43,7 @@ async function deleteCommentByText(
   recordId: string,
   commentText: string,
 ) {
-  await page.goto(`/records/${recordId}`);
+  await page.goto(`/feelog/${recordId}`);
   const commentP = page.locator("p").filter({ hasText: commentText }).first();
   if (!(await commentP.isVisible())) return;
 
@@ -83,7 +87,7 @@ test.describe.serial("댓글 (E2E)", () => {
   test.beforeEach(async ({ context, page }) => {
     await context.addCookies(authCookies);
     // networkidle waits for restoreAccessToken + fetchUserLoggedIn API chain to settle
-    await page.goto(`/records/${testRecordId}`, { waitUntil: "networkidle" });
+    await page.goto(`/feelog/${testRecordId}`, { waitUntil: "networkidle" });
   });
 
   // 각 테스트에서 생성한 댓글 텍스트 — afterEach에서 정리
@@ -110,7 +114,7 @@ test.describe.serial("댓글 (E2E)", () => {
     // auth 쿠키 없는 신규 컨텍스트로 직접 접근
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto(`/records/${testRecordId}`);
+    await page.goto(`/feelog/${testRecordId}`);
 
     const textarea = page.locator("textarea");
     await expect(textarea).toBeVisible();
