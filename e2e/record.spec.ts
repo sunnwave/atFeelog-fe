@@ -58,7 +58,7 @@ test.describe.serial("기록 (E2E)", () => {
 
     createdRecordId = await createRecord(page, data);
 
-    await page.goto("/records");
+    await page.goto("/feelog");
 
     // RecordCard > RecordCardContent 가 record.title 을 <h3> 으로 렌더링
     await expect(
@@ -72,12 +72,12 @@ test.describe.serial("기록 (E2E)", () => {
   // ── 2. 유효성 ────────────────────────────────────────────────────────────
 
   test("필수 항목 미입력 시 유효성 에러 표시됨", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
 
     await page.getByRole("button", { name: "기록 저장" }).click();
 
     // 폼이 제출되지 않아 URL 유지
-    await expect(page).toHaveURL("/records/new");
+    await expect(page).toHaveURL("/feelog/new");
 
     // TextField 에러: border-red-500 클래스 추가
     await expect(page.locator('input[name="showName"]')).toHaveClass(
@@ -111,7 +111,7 @@ test.describe.serial("기록 (E2E)", () => {
     // 상세 페이지 → WriterMenu → 수정하기
     await page.getByTestId("record-writer-menu").locator("button").click();
     await page.getByRole("button", { name: "수정하기" }).click();
-    await page.waitForURL(/\/records\/update\//);
+    await page.waitForURL(/\/feelog\/[^/]+\/edit$/);
 
     // 제목·공연명 수정
     const updatedTitle = "E2E 수정 후 공연 제목";
@@ -128,7 +128,7 @@ test.describe.serial("기록 (E2E)", () => {
 
     // 수정하기 제출 (RecordUpdateActions의 type="submit" 버튼)
     await page.getByRole("button", { name: "수정하기" }).click();
-    await page.waitForURL(/\/records\/(?!update\/)[^/]+$/);
+    await page.waitForURL(/\/feelog\/(?![^/]+\/edit$)[^/]+$/);
 
     // 상세 페이지 h1은 record.title 을 렌더링
     await expect(
@@ -158,7 +158,7 @@ test.describe.serial("기록 (E2E)", () => {
       .getByRole("dialog")
       .getByRole("button", { name: "삭제" })
       .click();
-    await page.waitForURL(/\/records\/?$/);
+    await page.waitForURL(/\/feelog\/?$/);
 
     await expect(
       page.getByRole("heading", { name: expectedTitle }),

@@ -75,18 +75,18 @@ export async function createRecord(
   page: Page,
   data: RecordData,
 ): Promise<string> {
-  await page.goto("/records/new");
+  await page.goto("/feelog/new");
   await fillRecordForm(page, data);
-  await page.getByRole("button", { name: "기록 저장" }).click();
-  await page.waitForURL(/\/records\/(?!new$|update\/)[^/]+$/);
+  await page.getByRole("button", { name: "저장하기" }).click();
+  await page.waitForURL(/\/feelog\/(?!new$|[^/]+\/edit$)[^/]+$/);
   return page.url().split("/").pop()!;
 }
 
 /** 상세 페이지의 WriterMenu → 삭제하기 → 확인 모달로 기록을 삭제한다. */
 export async function deleteRecord(page: Page, recordId: string) {
-  await page.goto(`/records/${recordId}`, { waitUntil: "networkidle" });
+  await page.goto(`/feelog/${recordId}`, { waitUntil: "networkidle" });
   await page.getByTestId("record-writer-menu").locator("button").click();
   await page.getByRole("button", { name: "삭제하기" }).click();
   await page.getByRole("dialog").getByRole("button", { name: "삭제" }).click();
-  await page.waitForURL(/\/records\/?$/);
+  await page.waitForURL(/\/feelog\/?$/);
 }

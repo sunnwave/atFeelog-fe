@@ -25,7 +25,7 @@ test.describe("임시저장 (E2E)", () => {
   });
 
   test("임시저장 버튼 클릭 시 토스트 메시지가 표시됨", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, "서울재즈페스티벌 2026", "정말 멋진 공연이었습니다.");
 
     await page.getByRole("button", { name: "임시 저장" }).click();
@@ -34,12 +34,12 @@ test.describe("임시저장 (E2E)", () => {
   });
 
   test("임시저장 후 재진입 시 복구 모달이 표시됨", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, "서울재즈페스티벌 2026", "정말 멋진 공연이었습니다.");
     await saveDraft(page);
 
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await expect(page.getByRole("dialog")).toBeVisible();
     await expect(page.getByText("임시 저장된 내용이 있어요")).toBeVisible();
@@ -49,12 +49,12 @@ test.describe("임시저장 (E2E)", () => {
     const showName = "서울재즈페스티벌 2026";
     const contents = "정말 멋진 공연이었습니다.";
 
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, showName, contents);
     await saveDraft(page);
 
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await page
       .getByRole("dialog")
@@ -68,12 +68,12 @@ test.describe("임시저장 (E2E)", () => {
   test("복구 후 내용 수정해도 복구 모달이 다시 뜨지 않음", async ({
     page,
   }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, "서울재즈페스티벌 2026", "정말 멋진 공연이었습니다.");
     await saveDraft(page);
 
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await page
       .getByRole("dialog")
@@ -87,12 +87,12 @@ test.describe("임시저장 (E2E)", () => {
   });
 
   test("복구 취소 시 폼이 비어있음", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, "서울재즈페스티벌 2026", "정말 멋진 공연이었습니다.");
     await saveDraft(page);
 
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await page
       .getByRole("dialog")
@@ -106,12 +106,12 @@ test.describe("임시저장 (E2E)", () => {
   });
 
   test("복구 취소 후 재진입 시 모달이 뜨지 않음", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
     await fillForm(page, "서울재즈페스티벌 2026", "정말 멋진 공연이었습니다.");
     await saveDraft(page);
 
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await page
       .getByRole("dialog")
@@ -119,15 +119,15 @@ test.describe("임시저장 (E2E)", () => {
       .click();
 
     // 취소 시 clearDraft 동작 확인 - 재진입해도 모달 미표시
-    await page.goto("/records");
-    await page.goto("/records/new");
+    await page.goto("/feelog");
+    await page.goto("/feelog/new");
 
     await expect(page.getByRole("dialog")).not.toBeVisible();
   });
 
   test("임시저장 없이 진입 시 모달이 뜨지 않음", async ({ page }) => {
     // beforeEach에서 localStorage 초기화 완료 상태
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
 
     await expect(page.getByRole("dialog")).not.toBeVisible();
   });
