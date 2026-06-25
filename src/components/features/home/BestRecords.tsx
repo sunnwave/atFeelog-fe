@@ -6,8 +6,10 @@ import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 
 export default function BestRecords(): JSX.Element {
-  const { records } = useFetchBestRecords();
+  const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
+
+  if (loading || records.length === 0) return <></>;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">
