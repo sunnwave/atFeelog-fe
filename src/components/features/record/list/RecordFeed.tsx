@@ -109,13 +109,21 @@ export default function RecordFeed({
             if (next.length < RECORDS_PER_PAGE) setHasMore(false);
             return {
               fetchBoards: [...(prev.fetchBoards ?? []), ...next],
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
           },
         })
         .finally(() => setIsLoading(false));
     }
-  }, [isFollowing, best, isLoading, hasMore, followingResult, bestResult, regularResult, filter]);
+  }, [
+    isFollowing,
+    best,
+    isLoading,
+    hasMore,
+    followingResult,
+    bestResult,
+    regularResult,
+    filter,
+  ]);
 
   const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
 

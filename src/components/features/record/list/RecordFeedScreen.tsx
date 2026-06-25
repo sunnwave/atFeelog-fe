@@ -7,7 +7,7 @@ import { localDateToRfc3339NoonUtc } from "@/shared/utils";
 import { useRouter } from "next/router";
 import RecordFilterBar, { FeedMode, SortMode } from "./RecordFilterBar";
 
-export default function RecordFeedPage(): JSX.Element {
+export default function RecordFeedScreen(): JSX.Element {
   const router = useRouter();
 
   const [sortMode, setSortMode] = useState<SortMode>(
@@ -30,10 +30,8 @@ export default function RecordFeedPage(): JSX.Element {
   const isBest = sortMode === "best";
 
   return (
-    <div className="px-4 py-4 md:px-0 md:py-0">
+    <div className="mx-auto min-h-screen bg-background overflow-x-hidden p-4">
       <div className="space-y-2 lg:space-y-4">
-        <Header text="필로그" />
-
         <SearchBar
           variant="withDate"
           search={search}
