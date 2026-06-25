@@ -9,12 +9,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { schema } from "./schema";
 import { Button } from "@/components/ui/button/Button";
+import { cn } from "@/shared/utils/cn";
 
 type LoginFormProps = {
   onSubmit?: (values: LoginValues) => Promise<void> | void;
+  className?: string;
 };
 
-export default function LoginForm({ onSubmit }: LoginFormProps) {
+export default function LoginForm({ onSubmit, className }: LoginFormProps) {
   const {
     register,
     handleSubmit,
@@ -38,10 +40,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(submit)}
-      className="w-full max-w-[420px] rounded-2xl bg-card p-2  space-y-5"
-    >
+    <form onSubmit={handleSubmit(submit)} className={cn("w-full max-w-105 space-y-5", className)}>
       <div className="flex flex-col space-y-2">
         <FormLabel htmlFor="email" required={false}>
           이메일
@@ -78,8 +77,8 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
         type="submit"
         data-testid="login-submit"
         disabled={!isValid || isSubmitting}
-        size={"lg"}
-        className="w-full font-semibold mt-3"
+        size="md"
+        className="w-full mt-3"
       >
         {isSubmitting ? "로그인 중..." : "로그인"}
       </Button>

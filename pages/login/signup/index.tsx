@@ -1,5 +1,7 @@
-import SignupPage from "@/components/features/auth/sign-up/SignupPage";
+import SignupScreen from "@/components/features/auth/sign-up/SignupScreen";
 
 export default function SignUpPage() {
-  return <SignupPage />;
+  return <SignupScreen />;
 }
+
+SignUpPage.noPadding = true;
