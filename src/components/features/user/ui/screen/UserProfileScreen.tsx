@@ -116,7 +116,7 @@ export default function UserProfileScreen({
         };
 
   return (
-    <div className="w-full space-y-6 px-4 py-6 md:px-0 md:py-8">
+    <div className="w-full space-y-6 p-4 lg:mx-auto">
       <div className="lg:flex lg:items-stretch">
         <div className="flex-1 min-w-0">
           <ProfileHeader

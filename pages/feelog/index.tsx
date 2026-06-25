@@ -1,6 +1,6 @@
-import RecordFeedPage from "@/components/features/record/list/RecordFeedPage";
+import RecordFeedScreen from "@/components/features/record/list/RecordFeedScreen";
 import { JSX } from "react";
 
 export default function RecordsPage(): JSX.Element {
-  return <RecordFeedPage />;
+  return <RecordFeedScreen />;
 }
