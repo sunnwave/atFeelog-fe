@@ -54,29 +54,46 @@ export default function ProfileHeader({
           </div>
 
           {/* 통계 스트립 */}
-          <div className="grid grid-cols-3 border-t border-border">
-            {STATS.map(({ key, label }, i) => {
-              const clickTab =
-                i === 1 ? "팔로워" : i === 2 ? "팔로잉" : undefined;
-              const isClickable = !!clickTab && !!onStatClick;
-              return (
-                <div
-                  key={key}
-                  onClick={
-                    isClickable ? () => onStatClick!(clickTab!) : undefined
-                  }
-                  className={`px-6 py-4 ${i !== 2 ? "border-r border-border" : ""} ${isClickable ? "cursor-pointer hover:bg-surface-soft transition-colors" : ""}`}
-                >
-                  <div className="text-2xl font-black tracking-[-0.05em] leading-none text-foreground">
-                    {user[key]}
-                  </div>
-                  <div className="mt-1 text-xs font-bold text-muted-foreground">
-                    {label}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          {(() => {
+            const visibleStats = STATS.filter(
+              ({ key }) => user[key] !== undefined,
+            );
+            const colClass =
+              visibleStats.length === 1
+                ? "grid-cols-1"
+                : visibleStats.length === 2
+                  ? "grid-cols-2"
+                  : "grid-cols-3";
+            return (
+              <div className={`grid ${colClass} border-t border-border`}>
+                {visibleStats.map(({ key, label }, i) => {
+                  const clickTab =
+                    key === "followersCount"
+                      ? "팔로워"
+                      : key === "followingCount"
+                        ? "팔로잉"
+                        : undefined;
+                  const isClickable = !!clickTab && !!onStatClick;
+                  return (
+                    <div
+                      key={key}
+                      onClick={
+                        isClickable ? () => onStatClick!(clickTab!) : undefined
+                      }
+                      className={`px-6 py-4 ${i !== visibleStats.length - 1 ? "border-r border-border" : ""} ${isClickable ? "cursor-pointer hover:bg-surface-soft transition-colors" : ""}`}
+                    >
+                      <div className="text-2xl font-black tracking-[-0.05em] leading-none text-foreground">
+                        {user[key]}
+                      </div>
+                      <div className="mt-1 text-xs font-bold text-muted-foreground">
+                        {label}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()}
         </div>
       </div>
     </section>

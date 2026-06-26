@@ -8,8 +8,8 @@ export type ProfileUser = {
   bio?: string;
   picture?: string;
   recordsCount: number;
-  followersCount: number;
-  followingCount: number;
+  followersCount?: number;
+  followingCount?: number;
 };
 
 export type ProfileHeaderProps = {

@@ -2,6 +2,7 @@ import { JSX, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
+import { IS_NEW_API } from "@/api/config";
 import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
 import ProfileHeader from "../component/ProfileHeader";
 import ProfileRecordGrid from "../component/ProfileRecordGrid";
@@ -103,16 +104,16 @@ export default function UserProfileScreen({
           name: loggedInUser.name,
           picture: loggedInUser.picture,
           recordsCount,
-          followersCount,
-          followingCount,
+          followersCount: IS_NEW_API ? followersCount : undefined,
+          followingCount: IS_NEW_API ? followingCount : undefined,
         }
       : {
           id: userId,
           name: nameFromQuery ?? userId,
           picture: pictureFromQuery,
           recordsCount,
-          followersCount,
-          followingCount,
+          followersCount: IS_NEW_API ? followersCount : undefined,
+          followingCount: IS_NEW_API ? followingCount : undefined,
         };
 
   return (
@@ -123,24 +124,26 @@ export default function UserProfileScreen({
             user={user}
             isMe={isMe}
             isFollowing={isFollowing}
-            onFollow={isMe ? undefined : handleFollow}
-            onStatClick={setOpenTab}
+            onFollow={IS_NEW_API && !isMe ? handleFollow : undefined}
+            onStatClick={IS_NEW_API ? setOpenTab : undefined}
           />
         </div>
-        <FollowListPanel
-          openTab={openTab}
-          onTabChange={setOpenTab}
-          onClose={() => setOpenTab(null)}
-          followers={followers}
-          followings={followings}
-          followersCount={followersCount}
-          followingCount={followingCount}
-          myFollowingIds={myFollowingIds}
-          loggedInUserId={loggedInUser?.id ?? undefined}
-          onFollow={handleFollowUser}
-          loadingFollowers={loadingFollowers}
-          loadingFollowings={loadingFollowings}
-        />
+        {IS_NEW_API && (
+          <FollowListPanel
+            openTab={openTab}
+            onTabChange={setOpenTab}
+            onClose={() => setOpenTab(null)}
+            followers={followers}
+            followings={followings}
+            followersCount={followersCount}
+            followingCount={followingCount}
+            myFollowingIds={myFollowingIds}
+            loggedInUserId={loggedInUser?.id ?? undefined}
+            onFollow={handleFollowUser}
+            loadingFollowers={loadingFollowers}
+            loadingFollowings={loadingFollowings}
+          />
+        )}
       </div>
       <ProfileRecordGrid records={records} likedRecords={likedRecords} />
     </div>
