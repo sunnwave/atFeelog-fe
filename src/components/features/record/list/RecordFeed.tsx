@@ -1,57 +1,132 @@
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { JSX, useCallback, useState } from "react";
-import RecordFeedCard from "./RecordCard/RecordCard";
 import { Sparkles } from "lucide-react";
-import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
-import { useBreakpoint } from "@/shared/hooks/ui/useBreakpoint";
-import { useFetchRecords } from "./hooks/queries/useFetchRecords";
+import {
+  useFetchRecords,
+  RecordFilterVars,
+} from "./hooks/queries/useFetchRecords";
+import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
+import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { CARD_SIZE_BY_BP } from "@/shared/tokens";
+import RecordPosterCard from "./RecordPosterCard/RecordPosterCard";
+import { FeedMode } from "./RecordFilterBar";
 
 const RECORDS_PER_PAGE = 10;
 
-export default function RecordFeed(): JSX.Element {
-  const bp = useBreakpoint();
-  const cardSize = CARD_SIZE_BY_BP[bp];
-
+export default function RecordFeed({
+  filter = {},
+  best = false,
+  feedMode = "all",
+}: {
+  filter?: RecordFilterVars;
+  best?: boolean;
+  feedMode?: FeedMode;
+}): JSX.Element {
   const [hasMore, setHasMore] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // TODO: search 적용, URL query 적용
-  const { data, fetchMore } = useFetchRecords();
+  const isFollowing = feedMode === "following";
 
-  const records = data?.fetchBoards ?? [];
+  // filter/feedMode 변경 시 페이지네이션 리셋
+  const filterKey = `${feedMode}|${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
+  if (lastFilterKey !== filterKey) {
+    setLastFilterKey(filterKey);
+    setHasMore(true);
+    setIsLoading(false);
+  }
+
+  // 세 훅 모두 항상 호출 (조건부 훅 금지) — 사용하지 않는 쪽은 무시됨
+  const regularResult = useFetchRecords(best ? undefined : filter);
+  const bestResult = useFetchBestRecords({ isTop5: false });
+  const followingResult = useFetchFollowingFeed();
+
+  const records = isFollowing
+    ? followingResult.records
+    : best
+      ? bestResult.records
+      : regularResult.records;
+
   const isEmpty = records.length === 0;
 
   const onLoadMore = useCallback(() => {
-    if (!data || isLoading || !hasMore) return;
-    setIsLoading(true);
+    if (isLoading || !hasMore) return;
 
-    const currentLength = data.fetchBoards.length;
-    const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+    if (isFollowing) {
+      const currentLength =
+        (followingResult.data?.fetchFollowingFeed as unknown as unknown[])
+          ?.length ?? 0;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
 
-    fetchMore({
-      variables: { page: nextPage },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult?.fetchBoards) return prev;
-        const newRecords = fetchMoreResult.fetchBoards ?? [];
+      followingResult
+        .fetchMore({
+          variables: { page: nextPage },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchFollowingFeed) return prev;
+            const prevItems =
+              (prev.fetchFollowingFeed as unknown as unknown[]) ?? [];
+            const next =
+              fetchMoreResult.fetchFollowingFeed as unknown as unknown[];
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchFollowingFeed: [...prevItems, ...next],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any;
+          },
+        })
+        .finally(() => setIsLoading(false));
+    } else if (best) {
+      const currentLength = bestResult.data?.fetchBoardsOfBest?.length ?? 0;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
 
-        if (newRecords.length < RECORDS_PER_PAGE) setHasMore(false);
+      bestResult
+        .fetchMore({
+          variables: { isTop5: false, page: nextPage },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchBoardsOfBest) return prev;
+            const next = fetchMoreResult.fetchBoardsOfBest;
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchBoardsOfBest: [...(prev.fetchBoardsOfBest ?? []), ...next],
+            };
+          },
+        })
+        .finally(() => setIsLoading(false));
+    } else {
+      if (!regularResult.data) return;
+      const currentLength = regularResult.data.fetchBoards.length;
+      const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
+      setIsLoading(true);
 
-        return {
-          fetchBoards: [...(prev.fetchBoards ?? []), ...newRecords],
-        };
-      },
-    }).finally(() => {
-      setIsLoading(false);
-    });
-  }, [data, fetchMore, isLoading, hasMore]);
-
-  const sentinelRef = useInfiniteScroll({
-    hasMore,
+      regularResult
+        .fetchMore({
+          variables: { page: nextPage, ...filter },
+          updateQuery: (prev, { fetchMoreResult }) => {
+            if (!fetchMoreResult?.fetchBoards) return prev;
+            const next = fetchMoreResult.fetchBoards ?? [];
+            if (next.length < RECORDS_PER_PAGE) setHasMore(false);
+            return {
+              fetchBoards: [...(prev.fetchBoards ?? []), ...next],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } as any;
+          },
+        })
+        .finally(() => setIsLoading(false));
+    }
+  }, [
+    isFollowing,
+    best,
     isLoading,
-    onLoadMore,
-  });
+    hasMore,
+    followingResult,
+    bestResult,
+    regularResult,
+    filter,
+  ]);
+
+  const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
 
   if (isEmpty) {
     return (
@@ -65,12 +140,14 @@ export default function RecordFeed(): JSX.Element {
   }
 
   return (
-    <ResponsiveLayout contentType="app" className="py-4">
-      <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={3}>
-        {records?.map((board) => (
-          <RecordFeedCard key={board._id} board={board} size={cardSize} />
+    <ResponsiveLayout contentType="app">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+        {records.map((record) => (
+          <div key={record.id} className="border-[1.5px] border-foreground">
+            <RecordPosterCard record={record} showMeta showBorder={false} />
+          </div>
         ))}
-      </ResponsiveGrid>
+      </div>
 
       <div ref={sentinelRef} className="h-6" />
       {isLoading && (

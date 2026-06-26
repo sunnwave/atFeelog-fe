@@ -9,7 +9,7 @@ export function buildWriteActionSheetOptions(
       icon: Pencil,
       label: "에필로그 쓰기",
       description: "공연 후기와 감상을 기록해보세요",
-      onClick: onClickNavigation("/records/new"),
+      onClick: onClickNavigation("/feelog/new"),
     },
     {
       icon: Ticket,

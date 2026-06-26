@@ -1,4 +1,4 @@
-import { IBoard } from "@/shared/graphql/generated/types";
+import { RecordDetail } from "@/api/adapters/types/record";
 import Profile from "@/components/commons/profile/Profile";
 import { JSX } from "react";
 import RecordDetailContentSubInfo from "./RecordDetailContentSubInfo";
@@ -9,34 +9,33 @@ import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useDeleteBoard } from "../hooks/mutations/useDeleteRecord";
 import RecordComments from "../../../record-comments/RecordComments";
 import { BookMarkIcon, HeartIcon } from "@/components/ui/icons";
-import { parseRecordMetaBlock, stripMetaFromContents } from "../../lib";
+import { stripMetaFromContents } from "../../lib";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
+import { useLikeRecord } from "@/shared/hooks/record/useLikeRecord";
+
 export default function RecordDetailContent({
   record,
   isWriter,
   className,
 }: {
-  record: IBoard;
+  record: RecordDetail;
   isWriter: boolean;
   className?: string;
 }): JSX.Element {
   const { openConfirmPreset } = useConfirmPreset();
   const { onDeleteRecord } = useDeleteBoard();
   const { onClickNavigation } = useNavigation();
+  const { onLikeRecord } = useLikeRecord();
 
   const onDelete = () => {
     openConfirmPreset("deleteRecord", {
       onConfirm: async () => {
-        await onDeleteRecord(record._id);
+        await onDeleteRecord(record.id);
       },
     });
   };
 
-  const recordDetail = {
-    ...record,
-    meta: parseRecordMetaBlock(record.contents),
-    contents: stripMetaFromContents(record.contents),
-  };
+  const contents = stripMetaFromContents(record.contents);
 
   return (
     <div className={cn(className)}>
@@ -44,33 +43,36 @@ export default function RecordDetailContent({
         <h1 className="text-3xl font-bold leading-tight">{record.title}</h1>
 
         {/* contents container */}
-        <div className="bg-white rounded-2xl border border-border overflow-hidden">
+        <div className="bg-card border-[1.5px] border-foreground overflow-hidden">
           {/* contents top */}
           <div className="flex items-center justify-between p-4 border-b border-border">
             <Profile record={record} tone="primary" size="sm" />
             {isWriter && (
-              <WriterMenu
-                onEditClick={onClickNavigation(`/records/update/${record._id}`)}
-                onDeleteClick={onDelete}
-              />
+              <div data-testid="record-writer-menu">
+                <WriterMenu
+                  onEditClick={onClickNavigation(`/feelog/${record.id}/edit`)}
+                  onDeleteClick={onDelete}
+                />
+              </div>
             )}
           </div>
           {/* sub info */}
-          <RecordDetailContentSubInfo
-            record={record}
-            meta={recordDetail?.meta}
-          />
+          <RecordDetailContentSubInfo record={record} />
           {/* main */}
-          <RecordDetailContentMain contents={recordDetail.contents} />
+          <RecordDetailContentMain
+            contents={contents}
+            showName={record.showName}
+            artistName={record.artistName}
+          />
 
           <div className="flex flex-row gap-6 items-center justify-end p-4">
-            {/* TODO: isLiked, isSaved 값 설정하기 */}
             <HeartIcon
-              isLiked={false}
+              isLiked={record.isLiked ?? false}
               likeCount={record.likeCount ?? 0}
               direction="row"
               iconSize="md"
               iconColor="neutral"
+              onToggle={() => onLikeRecord(record.id)}
             />
             <BookMarkIcon isSaved={false} iconColor="neutral" iconSize="md" />
           </div>

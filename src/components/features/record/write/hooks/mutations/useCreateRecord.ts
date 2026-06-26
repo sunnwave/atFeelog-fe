@@ -1,43 +1,51 @@
-import {
-  ICreateBoardInput,
-  IMutation,
-  IMutationCreateBoardArgs,
-} from "@/shared/graphql/generated/types";
+import { IS_NEW_API } from "@/api/config";
+import { ICreateBoardInput } from "@/api/graphql/generated/types";
+import { ICreateBoardInput as ICreateBoardInputNew } from "@/api/graphql/generated/types.new";
 import { gql, useMutation } from "@apollo/client";
+import { toCreateBoardInput } from "@/api/adapters/record-input.adapter";
+import { RecordEditFormValues } from "@/components/features/record/model";
 
-export const CREATE_BOARD = gql`
+export const CREATE_RECORD_LEGACY = gql`
   mutation createBoard($createBoardInput: CreateBoardInput!) {
     createBoard(createBoardInput: $createBoardInput) {
-      _id
-      writer
-      title
-      contents
-      youtubeUrl
-      likeCount
+      id: _id
       images
-      createdAt
-      updatedAt
-      deletedAt
-      boardAddress {
-        zipcode
-        address
-        addressDetail
-      }
     }
   }
 `;
 
+export const CREATE_RECORD_NEW = gql`
+  mutation createBoard($createBoardInput: CreateBoardInput!) {
+    createBoard(createBoardInput: $createBoardInput) {
+      id
+      images
+    }
+  }
+`;
+
+const CREATE_RECORD = IS_NEW_API ? CREATE_RECORD_NEW : CREATE_RECORD_LEGACY;
+
+type CreateRecordResponse = { createBoard: { id: string } };
+
+type CreateRecordVars = {
+  createBoardInput: ICreateBoardInput | ICreateBoardInputNew;
+};
+
 export const useCreateRecord = () => {
-  const [createBoard, { loading }] = useMutation<
-    Pick<IMutation, "createBoard">,
-    IMutationCreateBoardArgs
-  >(CREATE_BOARD);
+  const [createRecord, { loading }] = useMutation<
+    CreateRecordResponse,
+    CreateRecordVars
+  >(CREATE_RECORD);
 
-  const onCreateRecord = async (createBoardInput: ICreateBoardInput) => {
-    const res = await createBoard({ variables: { createBoardInput } });
+  const onCreateRecord = async (args: {
+    values: RecordEditFormValues;
+    writer?: string;
+    password?: string;
+  }) => {
+    const createBoardInput = toCreateBoardInput(args);
+    const res = await createRecord({ variables: { createBoardInput } });
 
-    const id = res.data?.createBoard._id;
-
+    const id = res.data?.createBoard.id;
     if (!id) throw new Error("필로그 기록에 실패했어요😢");
 
     return id;

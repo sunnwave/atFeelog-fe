@@ -1,4 +1,4 @@
-import { IMutation } from "@/shared/graphql/generated/types";
+import { IMutation } from "@/api/graphql/generated/types";
 import { accessTokenState, loggedInUserState } from "@/shared/stores";
 import { gql, useMutation } from "@apollo/client";
 import { useSetRecoilState } from "recoil";

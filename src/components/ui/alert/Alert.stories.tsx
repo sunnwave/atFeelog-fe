@@ -14,7 +14,7 @@ const meta: Meta<typeof Alert> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[720px] space-y-6">
+        <div className="mx-auto w-full max-w-180 space-y-6">
           <Story />
         </div>
       </div>

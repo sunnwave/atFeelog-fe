@@ -10,3 +10,27 @@ export function formatDate(dateString: string): string {
 export function fromNow(dateString: string): string {
   return moment(dateString).fromNow();
 }
+
+// ISO DateTime("2026-02-06T12:00:00.000Z") 또는 "YYYY-MM-DD" → input[type=date] 용 "YYYY-MM-DD"
+export function toDateInputValue(dateString: string | undefined | null): string {
+  if (!dateString) return "";
+  return dateString.slice(0, 10);
+}
+
+const MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"] as const;
+
+export function parseDateLabel(iso: string): { mon: string; day: string } {
+  const d = new Date(iso);
+  return {
+    mon: MONTHS[d.getMonth()],
+    day: String(d.getDate()).padStart(2, "0"),
+  };
+}
+
+export function localDateToRfc3339NoonUtc(localDate: string): string {
+  // 엄격 체크(간단 버전)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(localDate)) return localDate;
+
+  // ✅ 정오(12:00:00.000Z)로 고정
+  return `${localDate}T12:00:00.000Z`;
+}

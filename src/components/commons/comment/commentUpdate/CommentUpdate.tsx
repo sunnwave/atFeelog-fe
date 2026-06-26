@@ -57,7 +57,7 @@ export function CommentUpdate({
   const hasChanges = content.trim() !== initialContent && content.trim() !== "";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} className="space-y-2" data-testid="comment-edit-form">
       {/* Textarea */}
       <div className="relative">
         <textarea
@@ -96,7 +96,7 @@ export function CommentUpdate({
         </Button>
 
         <Button
-          variant={hasChanges ? "default" : "ghost"}
+          variant={hasChanges ? "solid" : "ghost"}
           size="sm"
           type="submit"
           disabled={!hasChanges}

@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 import { useUpdateRecord } from "./useUpdateRecord";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { RecordEditFormValues } from "../../model";
-import { mapRecordUpdateToUpdateBoardInput } from "../../editor";
+import { toUpdateBoardInput } from "@/api/adapters/record-input.adapter";
 
 export default function useRecordUpdateSubmit() {
   const me = useRecoilValue(loggedInUserState);
@@ -19,13 +19,13 @@ export default function useRecordUpdateSubmit() {
 
   const onSubmitValid = async (
     values: RecordEditFormValues,
-    boardId: string
+    boardId: string,
   ) => {
     const uploadedUrls = await uploadImages(values.imageFiles);
 
-    const args = mapRecordUpdateToUpdateBoardInput({
+    const args = toUpdateBoardInput({
       values: { ...values, images: uploadedUrls },
-      password: me?._id || "1234",
+      password: me?.id || "1234",
       boardId,
     });
 
@@ -34,7 +34,7 @@ export default function useRecordUpdateSubmit() {
     try {
       const id = await onUpdateRecord({ ...args });
       success("필로그를 수정했어요📖✨");
-      await router.push(`/records/${id}`);
+      await router.push(`/feelog/${id}`);
     } catch (e) {
       const message =
         e instanceof Error ? e.message : "필로그 수정에 실패했어요😢";

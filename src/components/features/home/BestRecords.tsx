@@ -1,13 +1,15 @@
 import { JSX } from "react";
 import { useFetchBestRecords } from "./hooks/queries/useFetchBestRecords";
-import RecordCard from "../record/list/RecordCard/RecordCard";
+import RecordPosterCard from "../record/list/RecordPosterCard/RecordPosterCard";
 import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 
 export default function BestRecords(): JSX.Element {
-  const { data } = useFetchBestRecords();
+  const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
+
+  if (loading || records.length === 0) return <></>;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">
@@ -20,19 +22,17 @@ export default function BestRecords(): JSX.Element {
         <Button
           variant="ghost"
           className="justify-end hover:bg-background"
-          onClick={onClickNavigation("/records")}
+          onClick={onClickNavigation("/feelog?view=best")}
         >
           더보기
           <ChevronRight className="w-5 h-5" />
         </Button>
       </div>
       <div className="w-full max-w-full min-w-0 overflow-x-auto">
-        <div className="flex flex-nowrap gap-5">
-          {data?.fetchBoardsOfTheBest.map((board) => (
-            <div key={board._id} className="shrink-0 w-[220px] md:w-[260px]">
-              <div className="w-full aspect-[3/4]">
-                <RecordCard board={board} size="sm" />
-              </div>
+        <div className="flex flex-nowrap border-l-[1.5px] border-foreground">
+          {records.map((board) => (
+            <div key={board.id} className="shrink-0 w-55 md:w-65 border-t-[1.5px] border-foreground">
+              <RecordPosterCard record={board} />
             </div>
           ))}
         </div>

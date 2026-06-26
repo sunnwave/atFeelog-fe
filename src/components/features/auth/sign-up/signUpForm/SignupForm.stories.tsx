@@ -8,7 +8,7 @@ const meta: Meta<typeof SignupForm> = {
   decorators: [
     (Story) => (
       <div className="min-h-screen bg-background p-8">
-        <div className="mx-auto w-full max-w-[520px]">
+        <div className="mx-auto w-full max-w-130">
           <Story />
         </div>
       </div>

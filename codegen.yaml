@@ -1,12 +1,12 @@
 schema:
-  - https://backendonline.codebootcamp.co.kr/graphql
+  - ${NEXT_PUBLIC_GRAPHQL_URI_LEGACY}
 
 generates:
-  ./src/commons/graphql/schema.json:
+  ./src/api/graphql/schema.json:
     plugins:
       - introspection
 
-  ./src/commons/graphql/generated/types.ts:
+  ./src/api/graphql/generated/types.ts:
     plugins:
       - typescript
       - typescript-operations

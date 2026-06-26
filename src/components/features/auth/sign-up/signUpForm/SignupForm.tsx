@@ -8,15 +8,17 @@ import {
   TextField,
 } from "@/components/ui/form";
 import PasswordField from "@/components/ui/form/PasswordField";
+import { cn } from "@/shared/utils/cn";
 import { schema } from "./schema";
 
 type Props = {
   onSubmit?: (
-    values: Omit<SignUpValues, "passwordConfirm">
+    values: Omit<SignUpValues, "passwordConfirm">,
   ) => Promise<void> | void;
+  className?: string;
 };
 
-export default function SignupForm({ onSubmit }: Props) {
+export default function SignupForm({ onSubmit, className }: Props) {
   const {
     register,
     handleSubmit,
@@ -45,7 +47,7 @@ export default function SignupForm({ onSubmit }: Props) {
   return (
     <form
       onSubmit={handleSubmit(submit)}
-      className="w-full max-w-[420px] rounded-2xl border border-border bg-card p-6 shadow-sm space-y-5"
+      className={cn("w-full max-w-105 space-y-5", className)}
     >
       {/* Email */}
       <div className="flex flex-col space-y-2">
@@ -116,7 +118,7 @@ export default function SignupForm({ onSubmit }: Props) {
       <Button
         type="submit"
         disabled={!isValid || isSubmitting}
-        size={"lg"}
+        size="md"
         className="w-full font-semibold mt-3"
       >
         {isSubmitting ? "가입 중..." : "회원가입"}

@@ -1,8 +1,9 @@
-import { IBoard } from "@/shared/graphql/generated/types";
 import Avatar, { AvatarType } from "@/components/ui/avatar/Avatar";
 import { JSX } from "react";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import { formatDate } from "@/shared/utils";
+import { RecordDetail } from "@/api/adapters/types/record";
+import { RecordSummary } from "@/api/adapters/types/record-summary";
 
 type ProfileTone = "primary" | "white";
 
@@ -11,7 +12,7 @@ export default function Profile({
   size = "lg",
   tone = "white",
 }: {
-  record: IBoard;
+  record: RecordDetail | RecordSummary;
   tone?: ProfileTone;
   size?: CARD_UI_SIZE;
 }): JSX.Element {
@@ -36,14 +37,14 @@ export default function Profile({
   return (
     <div className={`flex items-center ${s.gap}`}>
       <Avatar
+        clickable
         user={record.user || undefined}
-        writer={record.writer || undefined}
         size={s.avatar}
         type={Tone[tone].avatar}
       />
       <div className={`flex flex-col ${Tone[tone].text}`}>
-        <p className={`${s.meta} font-bold max-w-[140px] truncate`}>
-          {record.user?.name ?? record.writer ?? "익명"}
+        <p className={`${s.meta} font-bold max-w-35 truncate`}>
+          {record.user?.name ?? "익명"}
         </p>
         <p className={`${s.caption} ${Tone[tone].subText}`}>
           {formatDate(record.createdAt)}

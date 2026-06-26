@@ -1,11 +1,8 @@
 import { test, expect, type Page } from "@playwright/test";
-
-const EMAIL = process.env.E2E_TEST_EMAIL ?? "";
-const PASSWORD = process.env.E2E_TEST_PASSWORD ?? "";
+import { EMAIL, PASSWORD } from "./helpers";
 
 // Desktop Chrome viewport(1280px)는 Tailwind lg(1024px) 이상이므로 SideNav가 렌더됨
 async function login(page: Page) {
-  console.log(EMAIL, PASSWORD);
   await page.goto("/login");
   // FormLabel(htmlFor) + input(id) 매핑 기반 셀렉터
   await page.getByTestId("login-email").fill(EMAIL);

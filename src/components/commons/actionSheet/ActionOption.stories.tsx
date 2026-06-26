@@ -13,7 +13,7 @@ const meta: Meta<typeof ActionOption> = {
   },
   decorators: [
     (Story) => (
-      <div className="w-[520px] rounded-2xl border border-border bg-background p-4">
+      <div className="w-130 rounded-2xl border border-border bg-background p-4">
         <Story />
       </div>
     ),

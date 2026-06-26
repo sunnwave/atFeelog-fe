@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button/Button";
-import { Save, ScrollText } from "lucide-react";
 
 interface RecordWriteActionsProps {
   formId: string;
@@ -15,16 +14,16 @@ export default function RecordWriteActions({
   onTempSave,
 }: RecordWriteActionsProps) {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-2">
       <Button
         type="button"
         variant="outline"
+        tone="neutral"
         size="lg"
-        className="flex-1"
+        className="flex-2 rounded-none border-[1.5px] border-foreground text-sm font-black tracking-[0.12em] uppercase"
         onClick={onTempSave}
         disabled={!isDirty || disabled}
       >
-        <Save className="w-5 h-5" />
         임시 저장
       </Button>
 
@@ -32,11 +31,10 @@ export default function RecordWriteActions({
         type="submit"
         form={formId}
         size="lg"
-        className="flex-1"
+        className="flex-2 rounded-none border-[1.5px] border-foreground bg-foreground text-background text-sm font-black tracking-[0.16em] uppercase hover:bg-foreground/90"
         disabled={disabled}
       >
-        <ScrollText className="w-5 h-5" />
-        {disabled ? "저장 중..." : "기록 저장"}
+        {disabled ? "저장 중..." : "저장하기"}
       </Button>
     </div>
   );

@@ -8,6 +8,7 @@ import {
 import type { RecordMeta, RecordEditFormValues } from "../model/types";
 
 const BASE_VALUES: RecordEditFormValues = {
+  title: "",
   showName: "레베카",
   showDate: "2024-01-01",
   contents: "<p>후기 내용</p>",
@@ -20,7 +21,7 @@ const BASE_VALUES: RecordEditFormValues = {
 
 describe("buildRecordMetaBlock", () => {
   it("showDate만 있을 때 해당 필드만 포함", () => {
-    const meta: RecordMeta = { showDate: "2024-01-01" };
+    const meta: RecordMeta = { showName: "", showDate: "2024-01-01" };
     const block = buildRecordMetaBlock(meta);
     expect(block).toContain("showDate: 2024-01-01");
     expect(block).not.toContain("x:");
@@ -28,21 +29,21 @@ describe("buildRecordMetaBlock", () => {
   });
 
   it("x, y가 모두 있으면 모두 포함", () => {
-    const meta: RecordMeta = { showDate: "2024-01-01", x: "127.1", y: "37.5" };
+    const meta: RecordMeta = { showName: "", showDate: "2024-01-01", x: "127.1", y: "37.5" };
     const block = buildRecordMetaBlock(meta);
     expect(block).toContain("x: 127.1");
     expect(block).toContain("y: 37.5");
   });
 
   it("<!--META 와 --> 로 감싸져 있어야 함", () => {
-    const meta: RecordMeta = { showDate: "2024-01-01" };
+    const meta: RecordMeta = { showName: "", showDate: "2024-01-01" };
     const block = buildRecordMetaBlock(meta);
     expect(block.startsWith("<!--META")).toBe(true);
     expect(block.endsWith("-->")).toBe(true);
   });
 
   it("x만 있고 y가 없으면 x만 포함", () => {
-    const meta: RecordMeta = { showDate: "2024-01-01", x: "127.1" };
+    const meta: RecordMeta = { showName: "", showDate: "2024-01-01", x: "127.1" };
     const block = buildRecordMetaBlock(meta);
     expect(block).toContain("x: 127.1");
     expect(block).not.toContain("y:");
@@ -72,12 +73,18 @@ describe("attachMetaToContents", () => {
 describe("parseRecordMetaBlock", () => {
   it("정상 블록에서 showDate 파싱", () => {
     const contents = "<!--META\nshowDate: 2024-01-01\n-->\n\n본문";
-    expect(parseRecordMetaBlock(contents)).toEqual({ showDate: "2024-01-01" });
+    expect(parseRecordMetaBlock(contents)).toEqual({ showName: "", showDate: "2024-01-01" });
+  });
+
+  it("showName, showDate 포함된 블록 파싱", () => {
+    const contents = "<!--META\nshowName: 레베카\nshowDate: 2024-01-01\n-->\n\n본문";
+    expect(parseRecordMetaBlock(contents)).toEqual({ showName: "레베카", showDate: "2024-01-01" });
   });
 
   it("x, y 포함된 블록 파싱", () => {
     const contents = "<!--META\nshowDate: 2024-01-01\nx: 127.1\ny: 37.5\n-->\n\n본문";
     expect(parseRecordMetaBlock(contents)).toEqual({
+      showName: "",
       showDate: "2024-01-01",
       x: "127.1",
       y: "37.5",
@@ -92,12 +99,7 @@ describe("parseRecordMetaBlock", () => {
     expect(parseRecordMetaBlock("<!--META\nshowDate: 2024-01-01")).toBeNull();
   });
 
-  it("showDate가 없는 블록이면 null 반환", () => {
-    const contents = "<!--META\nx: 127.1\n-->\n\n본문";
-    expect(parseRecordMetaBlock(contents)).toBeNull();
-  });
-
-  it("빈 블록(showDate 없음)이면 null 반환", () => {
+  it("빈 블록(값 없음)이면 null 반환", () => {
     const contents = "<!--META\n\n-->\n\n본문";
     expect(parseRecordMetaBlock(contents)).toBeNull();
   });

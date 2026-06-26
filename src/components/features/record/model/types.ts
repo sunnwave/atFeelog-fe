@@ -1,5 +1,6 @@
 export type RecordEditFormValues = {
   // UI 입력
+  title: string; // 게시물 제목(필수)
   showName: string; // 공연명(필수)
   artistName?: string; // 아티스트명(선택)
   showDate: string; // 공연 날짜(필수) "YYYY-MM-DD"
@@ -18,6 +19,7 @@ export type RecordEditFormValues = {
 };
 
 export const RECORD_WRITE_DEFAULTS: RecordEditFormValues = {
+  title: "",
   showName: "",
   artistName: "",
   showDate: "",
@@ -35,7 +37,9 @@ export const RECORD_WRITE_DEFAULTS: RecordEditFormValues = {
 };
 
 export type RecordMeta = {
-  showDate: string;
-  x?: string;
-  y?: string;
+  showName: string;
+  artistName?: string;
+  showDate: string; // "YYYY-MM-DD" 같은 로컬 날짜 문자열(폼 입력값)
+  x?: string; // longitude
+  y?: string; // latitude
 };

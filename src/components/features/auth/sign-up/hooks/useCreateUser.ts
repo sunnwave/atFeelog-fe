@@ -1,15 +1,18 @@
+import { IS_NEW_API } from "@/api/config";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import {
   IMutation,
   IMutationCreateUserArgs,
-} from "@/shared/graphql/generated/types";
+} from "@/api/graphql/generated/types";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { gql, useMutation } from "@apollo/client";
+
+const idField = IS_NEW_API ? "id" : "_id";
 
 const CREATE_USER = gql`
   mutation createUser($createUserInput: CreateUserInput!) {
     createUser(createUserInput: $createUserInput) {
-      _id
+      _id: ${idField}
       email
       name
     }

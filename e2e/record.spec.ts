@@ -1,51 +1,10 @@
-import { test, expect, type Cookie, type Page } from "@playwright/test";
-
-const EMAIL = process.env.E2E_TEST_EMAIL ?? "";
-const PASSWORD = process.env.E2E_TEST_PASSWORD ?? "";
-
-// ─── 헬퍼 ──────────────────────────────────────────────────────────────────
-
-async function login(page: Page) {
-  await page.goto("/login");
-  await page.getByTestId("login-email").fill(EMAIL);
-  await page.getByTestId("login-password").fill(PASSWORD);
-  await page.getByTestId("login-submit").click();
-  await page.waitForURL("/");
-}
-
-type RecordData = {
-  showName: string;
-  artistName: string;
-  showDate: string;
-  contents: string;
-};
-
-async function fillRecordForm(page: Page, data: RecordData) {
-  await page.locator('input[name="showName"]').fill(data.showName);
-  await page.locator('input[name="artistName"]').fill(data.artistName);
-  await page.locator('input[name="showDate"]').fill(data.showDate);
-  await page.locator(".ProseMirror").click();
-  await page.locator(".ProseMirror").pressSequentially(data.contents);
-}
-
-/** 기록을 작성하고 생성된 recordId를 반환한다. */
-async function createRecord(page: Page, data: RecordData): Promise<string> {
-  await page.goto("/records/new");
-  await fillRecordForm(page, data);
-  await page.getByRole("button", { name: "기록 저장" }).click();
-  // /records/new, /records/update/* 가 아닌 /records/{id} 를 기다림
-  await page.waitForURL(/\/records\/(?!new$|update\/)[^/]+$/);
-  return page.url().split("/").pop()!;
-}
-
-/** 상세 페이지의 WriterMenu → 삭제하기 → 확인 모달로 기록을 삭제한다. */
-async function deleteRecord(page: Page, recordId: string) {
-  await page.goto(`/records/${recordId}`);
-  await page.locator("button:has(.lucide-ellipsis-vertical)").click();
-  await page.getByRole("button", { name: "삭제하기" }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "삭제" }).click();
-  await page.waitForURL(/\/records$/);
-}
+import { test, expect, type Cookie } from "@playwright/test";
+import {
+  login,
+  createRecord,
+  deleteRecord,
+  type RecordData,
+} from "./helpers";
 
 // ─── 테스트 ────────────────────────────────────────────────────────────────
 
@@ -90,6 +49,7 @@ test.describe.serial("기록 (E2E)", () => {
 
   test("기록 작성 후 목록에 표시됨", async ({ page }) => {
     const data: RecordData = {
+      title: "E2E 테스트 공연 제목",
       showName: "E2E 테스트 공연",
       artistName: "E2E 아티스트",
       showDate: "2026-01-01",
@@ -98,37 +58,31 @@ test.describe.serial("기록 (E2E)", () => {
 
     createdRecordId = await createRecord(page, data);
 
-    await page.goto("/records");
+    await page.goto("/feelog");
 
-    // RecordCard > RecordCardContent 가 board.title 을 <h3> 으로 렌더링
-    const expectedTitle = `${data.showName} - ${data.artistName}`;
-    await expect(
-      page
-        .getByRole("heading", { level: 3 })
-        .filter({ hasText: expectedTitle })
-        .first(),
-    ).toBeVisible();
+    await expect(page.getByText(data.showName).first()).toBeVisible();
   });
 
   // ── 2. 유효성 ────────────────────────────────────────────────────────────
 
   test("필수 항목 미입력 시 유효성 에러 표시됨", async ({ page }) => {
-    await page.goto("/records/new");
+    await page.goto("/feelog/new");
 
-    await page.getByRole("button", { name: "기록 저장" }).click();
+    await page.getByRole("button", { name: "저장하기" }).click();
 
     // 폼이 제출되지 않아 URL 유지
-    await expect(page).toHaveURL("/records/new");
+    await expect(page).toHaveURL("/feelog/new");
 
     // TextField 에러: border-red-500 클래스 추가
     await expect(page.locator('input[name="showName"]')).toHaveClass(
-      /border-red-500/,
+      /border-destructive/,
     );
     await expect(page.locator('input[name="artistName"]')).toHaveClass(
-      /border-red-500/,
+      /border-destructive/,
     );
-    await expect(page.locator('input[name="showDate"]')).toHaveClass(
-      /border-red-500/,
+    // showDate는 DatePickerInput(버튼)으로 렌더링되므로 트리거 버튼의 클래스를 확인
+    await expect(page.getByTestId("date-picker-trigger")).toHaveClass(
+      /border-destructive/,
     );
 
     // TiptapEditor 에러: 에러 문구 직접 렌더링
@@ -139,6 +93,7 @@ test.describe.serial("기록 (E2E)", () => {
 
   test("기록 수정 후 내용이 변경됨", async ({ page }) => {
     const initial: RecordData = {
+      title: "E2E 수정 전 공연 제목",
       showName: "E2E 수정 전 공연",
       artistName: "E2E 아티스트",
       showDate: "2026-01-01",
@@ -148,12 +103,14 @@ test.describe.serial("기록 (E2E)", () => {
     createdRecordId = await createRecord(page, initial);
 
     // 상세 페이지 → WriterMenu → 수정하기
-    await page.locator("button:has(.lucide-ellipsis-vertical)").click();
+    await page.getByTestId("record-writer-menu").locator("button").click();
     await page.getByRole("button", { name: "수정하기" }).click();
-    await page.waitForURL(/\/records\/update\//);
+    await page.waitForURL(/\/feelog\/[^/]+\/edit$/);
 
-    // 공연명 수정
+    // 제목·공연명 수정
+    const updatedTitle = "E2E 수정 후 공연 제목";
     const updatedShowName = "E2E 수정 후 공연";
+    await page.locator('input[name="title"]').fill(updatedTitle);
     await page.locator('input[name="showName"]').fill(updatedShowName);
 
     // 후기 수정: 전체 선택 후 교체
@@ -165,11 +122,11 @@ test.describe.serial("기록 (E2E)", () => {
 
     // 수정하기 제출 (RecordUpdateActions의 type="submit" 버튼)
     await page.getByRole("button", { name: "수정하기" }).click();
-    await page.waitForURL(/\/records\/(?!update\/)[^/]+$/);
+    await page.waitForURL(/\/feelog\/(?![^/]+\/edit$)[^/]+$/);
 
-    const expectedTitle = `${updatedShowName} - ${initial.artistName}`;
+    // 상세 페이지 h1은 record.title 을 렌더링
     await expect(
-      page.getByRole("heading", { level: 1, name: expectedTitle }),
+      page.getByRole("heading", { level: 1, name: updatedTitle }),
     ).toBeVisible();
   });
 
@@ -177,6 +134,7 @@ test.describe.serial("기록 (E2E)", () => {
 
   test("기록 삭제 후 목록에서 사라짐", async ({ page }) => {
     const data: RecordData = {
+      title: "E2E 삭제 공연 제목",
       showName: "E2E 삭제 공연",
       artistName: "E2E 아티스트",
       showDate: "2026-01-01",
@@ -188,13 +146,13 @@ test.describe.serial("기록 (E2E)", () => {
     const expectedTitle = `${data.showName} - ${data.artistName}`;
 
     // 상세 페이지 → WriterMenu → 삭제하기 → 모달 확인
-    await page.locator("button:has(.lucide-ellipsis-vertical)").click();
+    await page.getByTestId("record-writer-menu").locator("button").click();
     await page.getByRole("button", { name: "삭제하기" }).click();
     await page
       .getByRole("dialog")
       .getByRole("button", { name: "삭제" })
       .click();
-    await page.waitForURL(/\/records$/);
+    await page.waitForURL(/\/feelog\/?$/);
 
     await expect(
       page.getByRole("heading", { name: expectedTitle }),

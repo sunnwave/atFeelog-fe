@@ -84,7 +84,7 @@ export function TiptapEditor({
       {/* Editor Container */}
       <div
         className={`
-          rounded-2xl border bg-background overflow-hidden transition-all
+          rounded-2xl border bg-card overflow-hidden transition-all
           ${error ? "border-red-500 animate-shake" : "border-border"}
         `}
       >

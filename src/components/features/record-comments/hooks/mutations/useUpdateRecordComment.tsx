@@ -1,72 +1,92 @@
-import { useToast } from "@/components/commons/toast/ToastProvider";
-import {
-  IMutation,
-  IMutationUpdateBoardCommentArgs,
-} from "@/shared/graphql/generated/types";
 import { gql, useMutation } from "@apollo/client";
 
-const UPDATE_RECORD_COMMENT = gql`
+import { IS_NEW_API } from "@/api/config";
+import { useToast } from "@/components/commons/toast/ToastProvider";
+import {
+  toUpdateCommentVariables,
+  type UpdateCommentInput,
+  type UpdateCommentVars,
+} from "@/api/adapters/record-comment-input.adapter";
+
+const UPDATE_RECORD_COMMENT_LEGACY = gql`
   mutation updateBoardComment(
     $updateBoardCommentInput: UpdateBoardCommentInput!
-    $password: String
     $boardCommentId: ID!
   ) {
     updateBoardComment(
       updateBoardCommentInput: $updateBoardCommentInput
-      password: $password
       boardCommentId: $boardCommentId
     ) {
       _id
       writer
       contents
       user {
+        _id
         name
+        picture
       }
       createdAt
       updatedAt
-      deletedAt
     }
   }
 `;
 
-interface IUpdateRecordCommentReturn {
-  onUpdateRecordComment: (
-    commentId: string,
-    newContents: string
-  ) => Promise<void>;
-}
+const UPDATE_RECORD_COMMENT_NEW = gql`
+  mutation updateBoardComment($commentId: ID!, $content: String!) {
+    updateBoardComment(commentId: $commentId, content: $content) {
+      id
+      content
+      user {
+        id
+        name
+        picture
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
 
-export const useUpdateRecordComment = ({
-  password,
-}: {
-  password: string;
-}): IUpdateRecordCommentReturn => {
+const UPDATE_RECORD_COMMENT = IS_NEW_API
+  ? UPDATE_RECORD_COMMENT_NEW
+  : UPDATE_RECORD_COMMENT_LEGACY;
+
+type UpdateCommentResponse = {
+  updateBoardComment: {
+    id: string;
+    content: string;
+    writer?: string;
+    user?: {
+      id: string;
+      name: string;
+      picture?: string;
+    };
+    createdAt: string;
+    updatedAt: string;
+  };
+};
+
+export const useUpdateRecordComment = () => {
   const [updateBoardComment] = useMutation<
-    Pick<IMutation, "updateBoardComment">,
-    IMutationUpdateBoardCommentArgs
+    UpdateCommentResponse,
+    UpdateCommentVars
   >(UPDATE_RECORD_COMMENT);
 
   const { success, error } = useToast();
 
-  const onUpdateRecordComment = async (
-    commentId: string,
-    newContents: string
-  ) => {
-    const contents = newContents.trim();
-    if (!contents) return;
+  const onUpdateRecordComment = async (commentId: string, content: string) => {
+    const trimmed = content.trim();
+    if (!trimmed) return;
+
+    const input: UpdateCommentInput = { commentId, content: trimmed };
 
     try {
       await updateBoardComment({
-        variables: {
-          boardCommentId: commentId,
-          // TODO: 유저 비밀번호 입력
-          password,
-          updateBoardCommentInput: {
-            contents,
-          },
-        },
+        variables: toUpdateCommentVariables(input),
+        refetchQueries: ["fetchBoardComments"],
+        awaitRefetchQueries: true,
       });
-      await success("댓글이 수정되었습니다");
+      success("댓글이 수정되었습니다");
     } catch (err) {
       if (err instanceof Error) {
         error(err.message || "댓글 수정에 실패했습니다😢");
@@ -75,7 +95,5 @@ export const useUpdateRecordComment = ({
     }
   };
 
-  return {
-    onUpdateRecordComment,
-  };
+  return { onUpdateRecordComment };
 };

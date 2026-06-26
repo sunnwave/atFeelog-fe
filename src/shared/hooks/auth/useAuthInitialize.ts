@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { getAccessToken } from "@/lib/getAccessToken";
+import { getAccessToken } from "@/api/auth/getAccessToken";
 import { useFetchUserLoggedInLazy } from "./useFetchUserLoggedInLazy";
 import {
   accessTokenState,
@@ -40,8 +40,7 @@ export function useAuthInitialize() {
 
           if (cancelled) return;
 
-          // ✅ me가 null이면 인증 실패로 간주
-          if (!me?._id) {
+          if (!me?.id) {
             setAccessToken("");
             setUser(null);
             return;
@@ -56,7 +55,7 @@ export function useAuthInitialize() {
           setUser(null);
         }
       } catch (e) {
-        console.log("Failed to initialize auth", e);
+        console.warn("Failed to initialize auth", e);
 
         if (cancelled) return;
         setAccessToken("");

@@ -3,59 +3,63 @@
 :root {
   --font-size: 16px;
 
-  /* Modern Minimal color system - sophisticated slate palette */
-  /* App background: pure white */
-  --background: #ffffff;
-  --foreground: #0f172a;
+  /* ── Feelog color system ──────────────────────────────────────────────── */
 
-  /* Card/Surface: pure white */
+  /* Surface & Text */
+  --background: #f6f5fa;
+  --foreground: #212121;
+
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #212121;
 
-  /* Popover */
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #212121;
 
-  /* Primary: Deep Slate - sophisticated charcoal */
-  --primary: #1e293b;
+  --surface-soft: #f4f4ef;
+
+  /* Primary CTA — dark charcoal */
+  --primary: #212121;
   --primary-foreground: #ffffff;
-  --primary-hover: #334155;
-  --primary-pressed: #0f172a;
+  --primary-hover: #424242;
+  --primary-pressed: #0a0a0a;
 
-  /* Secondary: Soft slate background */
-  --secondary: #f8fafc;
-  --secondary-foreground: #1e293b;
+  /* Secondary / Muted */
+  --secondary: #f4f4ef;
+  --secondary-foreground: #212121;
 
-  /* Muted: subtle grays for low-emphasis content */
-  --muted: #f8fafc;
-  --muted-foreground: #64748b;
+  --muted: #f4f4ef;
+  --muted-foreground: #70736b;
 
-  /* Accent: Minimal slate tint */
-  --accent: #f1f5f9;
-  --accent-foreground: #334155;
+  /* Accent — vanilla highlight */
+  --accent: #eff0a3;
+  --accent-foreground: #7c7d00;
 
-  /* Soft accent: contemporary slate-blue */
-  --apricot: #94a3b8;
+  /* Feature tokens */
+  --info-surface: #d8dfe9;
+  --info-foreground: #4a5e78;
+  --info-border: #b8c4d5;
 
-  /* Point colors - sophisticated accents */
-  --point-indigo: #6366f1;
-  --point-indigo-light: #818cf8;
-  --point-emerald: #10b981;
-  --point-emerald-light: #34d399;
+  --aux-surface: #e3f0de;
+  --aux-foreground: #73996b;
+  --aux-border: #cfdeca;
 
-  /* Destructive: muted red */
+  --point: #ff5c34;
+  --point-light: #ffb199;
+  --point-bg: #fff6f1;
+
+  /* Status */
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
 
-  /* Success */
   --success: #10b981;
+  --success-foreground: #ffffff;
 
-  /* Borders and inputs - refined light gray */
-  --border: #e2e8f0;
-  --input: #e2e8f0;
+  /* Border & Form */
+  --border: #e8e8df;
+  --input: #e8e8df;
   --input-background: #ffffff;
-  --switch-background: #cbd5e1;
-  --ring: #1e293b;
+  --switch-background: #cfdeca;
+  --ring: #212121;
 
   /* Font weights */
   --font-weight-medium: 500;
@@ -84,16 +88,16 @@
   --grid-columns-tablet: 8;
   --grid-columns-desktop: 12;
 
-  /* Typography scale - Mobile (base 14-16px) */
-  --font-size-xs: 0.75rem; /* 12px */
-  --font-size-sm: 0.875rem; /* 14px */
-  --font-size-base: 1rem; /* 16px */
-  --font-size-lg: 1.125rem; /* 18px */
-  --font-size-xl: 1.25rem; /* 20px */
-  --font-size-2xl: 1.5rem; /* 24px */
+  /* Typography scale */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+  --font-size-2xl: 1.5rem;   /* 24px */
   --font-size-3xl: 1.875rem; /* 30px */
 
-  /* Border radius - 16px system */
+  /* Border radius */
   --radius: 16px;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -101,27 +105,27 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
 
-  /* Shadows - very subtle */
+  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
   --shadow-md: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.02);
   --shadow-lg: 0 4px 8px 0 rgb(0 0 0 / 0.05), 0 2px 4px 0 rgb(0 0 0 / 0.03);
 
-  /* Chart colors - warm Bronze Amber palette */
-  --chart-1: #b45309;
-  --chart-2: #fdba74;
-  --chart-3: #c2410c;
-  --chart-4: #fcd34d;
-  --chart-5: #9a3412;
+  /* Chart */
+  --chart-1: #7c7d00;
+  --chart-2: #4a5e78;
+  --chart-3: #b8c4d5;
+  --chart-4: #73996b;
+  --chart-5: #ff5c34;
 
-  /* Sidebar colors */
+  /* Sidebar */
   --sidebar: #ffffff;
-  --sidebar-foreground: #0f172a;
-  --sidebar-primary: #1e293b;
+  --sidebar-foreground: #212121;
+  --sidebar-primary: #212121;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f1f5f9;
-  --sidebar-accent-foreground: #334155;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #1e293b;
+  --sidebar-accent: #eff0a3;
+  --sidebar-accent-foreground: #7c7d00;
+  --sidebar-border: #e8e8df;
+  --sidebar-ring: #212121;
 }
 
 /* .dark {
@@ -165,23 +169,37 @@
 } */
 
 @theme inline {
+  /* ── Semantic → Tailwind ─────────────────────────────────────────────── */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-surface-soft: var(--surface-soft);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-pressed: var(--primary-pressed);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-info-surface: var(--info-surface);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-border: var(--info-border);
+  --color-aux-surface: var(--aux-surface);
+  --color-aux-foreground: var(--aux-foreground);
+  --color-aux-border: var(--aux-border);
+  --color-point: var(--point);
+  --color-point-light: var(--point-light);
+  --color-point-bg: var(--point-bg);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-input-background: var(--input-background);
@@ -196,10 +214,6 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-point-indigo: var(--point-indigo);
-  --color-point-indigo-light: var(--point-indigo-light);
-  --color-point-emerald: var(--point-emerald);
-  --color-point-emerald-light: var(--point-emerald-light);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -208,6 +222,46 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ── Brand palette — bg-feelog-* / text-feelog-* ─────────────────────── */
+  /* 레퍼런스: Vanilla #EFF0A3 · Alice Blue #D8DFE9 · Honeydew #CFDECA     */
+
+  /* Vanilla — accent, active state (ref: #EFF0A3) */
+  --color-feelog-vanilla-tint:  #fafbe6;
+  --color-feelog-vanilla-light: #f5f7c4;
+  --color-feelog-vanilla-soft:  #eff0a3;
+  --color-feelog-vanilla-base:  #e4e57d;
+  --color-feelog-vanilla-point: #7c7d00;
+
+  /* Alice — info surface, point text (ref: #D8DFE9) */
+  --color-feelog-alice-tint:  #f4f6f9;
+  --color-feelog-alice-light: #e4eaf2;
+  --color-feelog-alice-soft:  #d8dfe9;
+  --color-feelog-alice-base:  #b8c4d5;
+  --color-feelog-alice-point: #4a5e78;
+  --color-feelog-alice-deep:  #2c3d54;
+
+  /* Honeydew — aux surface, sub section (ref: #CFDECA) */
+  --color-feelog-honeydew-tint:  #f5faf3;
+  --color-feelog-honeydew-light: #e3f0de;
+  --color-feelog-honeydew-soft:  #cfdeca;
+  --color-feelog-honeydew-base:  #afc7a7;
+  --color-feelog-honeydew-point: #73996b;
+
+  /* Coral — likes, engagement (unchanged) */
+  --color-feelog-coral-tint:  #fff6f1;
+  --color-feelog-coral-light: #ffe0d2;
+  --color-feelog-coral-soft:  #ffb199;
+  --color-feelog-coral-base:  #ff7954;
+  --color-feelog-coral-point: #ff5c34;
+
+  /* Neutral — Eerie Black #212121 · Ghost White #F6F5FA */
+  --color-feelog-neutral-bg:      #f6f5fa;
+  --color-feelog-neutral-surface: #ffffff;
+  --color-feelog-neutral-soft:    #f4f4ef;
+  --color-feelog-neutral-border:  #e8e8df;
+  --color-feelog-neutral-text:    #212121;
+  --color-feelog-neutral-muted:   #70736b;
 }
 
 @layer base {

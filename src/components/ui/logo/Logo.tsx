@@ -1,46 +1,33 @@
 import Link from "next/link";
+import { cn } from "@/shared/utils/cn";
 
-type SizeVarint = "sm" | "md" | "lg";
+type LogoSize = "sm" | "md" | "lg";
 
-const sizeClasses: Record<SizeVarint, { title: string; subtitle: string }> = {
-  sm: {
-    title: "text-lg",
-    subtitle: "text-[10px]",
-  },
-  md: {
-    title: "text-2xl",
-    subtitle: "text-xs",
-  },
-  lg: {
-    title: "text-3xl",
-    subtitle: "text-sm",
-  },
+type LogoProps = {
+  size?: LogoSize;
+  className?: string;
+  clickable?: boolean;
 };
 
-export default function Logo({
-  size = "sm",
-  showSubtitle = true,
-}: {
-  size: SizeVarint;
-  showSubtitle: boolean;
-}) {
-  const s = sizeClasses[size];
+const sizeStyles: Record<LogoSize, string> = {
+  sm: "text-xl",
+  md: "text-2xl",
+  lg: "text-[36px]",
+};
+
+const baseClassName = "block font-black tracking-[-0.06em] text-foreground leading-none";
+
+export default function Logo({ size = "md", className, clickable = true }: LogoProps) {
+  const resolvedClassName = cn(baseClassName, sizeStyles[size], className);
+  const content = <>@atFeelog<span className="text-point">.</span></>;
+
+  if (!clickable) {
+    return <span className={resolvedClassName}>{content}</span>;
+  }
+
   return (
-    <Link href="/">
-      <div className={`flex flex-col items-center justify-center`}>
-        <h1
-          className={`font-bold tracking-tight leading-none ${s.title} text-foreground`}
-        >
-          atFeelog
-        </h1>
-        {showSubtitle && (
-          <p
-            className={`leading-none mt-1 font-medium ${s.subtitle} text-muted-foreground`}
-          >
-            막이 내린 뒤, 내가 남기는 에필로그
-          </p>
-        )}
-      </div>
+    <Link href="/" aria-label="atFeelog 홈으로" className={resolvedClassName}>
+      {content}
     </Link>
   );
 }
