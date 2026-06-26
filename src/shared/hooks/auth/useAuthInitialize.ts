@@ -55,7 +55,7 @@ export function useAuthInitialize() {
           setUser(null);
         }
       } catch (e) {
-        console.log("Failed to initialize auth", e);
+        console.warn("Failed to initialize auth", e);
 
         if (cancelled) return;
         setAccessToken("");

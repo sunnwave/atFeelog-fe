@@ -16,7 +16,9 @@ export default function AuthInitialize() {
 
   useEffect(() => {
     if (!initialized || !accessToken) return;
-    client.reFetchObservableQueries();
+    client.reFetchObservableQueries().catch((e) => {
+      console.warn("[AuthInitialize] reFetchObservableQueries failed:", e);
+    });
   }, [initialized, accessToken, client]);
 
   return null;
