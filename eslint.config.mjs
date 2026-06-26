@@ -18,6 +18,11 @@ const eslintConfig = defineConfig([
     "src/api/graphql/generated/**",
   ]),
   ...storybook.configs["flat/recommended"],
+  {
+    rules: {
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+    },
+  },
 ]);
 
 export default eslintConfig;
