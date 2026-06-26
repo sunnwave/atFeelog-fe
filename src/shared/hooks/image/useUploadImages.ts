@@ -11,6 +11,7 @@ import { accessTokenState } from "@/shared/stores";
 export const UPLOAD_FILE = gql`
   mutation uploadFile($file: Upload!) {
     uploadFile(file: $file) {
+      _id
       url
     }
   }
