@@ -109,6 +109,7 @@ export default function RecordFeed({
             if (next.length < RECORDS_PER_PAGE) setHasMore(false);
             return {
               fetchBoards: [...(prev.fetchBoards ?? []), ...next],
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } as any;
           },
         })

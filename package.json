@@ -73,7 +73,7 @@
     "dotenv": "^17.4.2",
     "dotenv-cli": "^11.0.0",
     "eslint": "^9",
-    "eslint-config-next": "^14",
+    "eslint-config-next": "15",
     "eslint-plugin-storybook": "^10.2.6",
     "husky": "^9.1.7",
     "jsdom": "^28.1.0",

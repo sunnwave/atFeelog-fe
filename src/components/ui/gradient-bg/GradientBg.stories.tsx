@@ -271,7 +271,7 @@ export const CardPreviewProposed: Story = {
   render: () => (
     <div className="p-8 bg-background space-y-3">
       <h2 className="text-base font-bold text-foreground">
-        Proposed "Stage Light" — 카드 적용 시
+        Proposed &quot;Stage Light&quot; — 카드 적용 시
       </h2>
       <div className="grid grid-cols-3 gap-0 md:grid-cols-4 lg:grid-cols-6">
         {PROPOSED.map((g, i) => (
