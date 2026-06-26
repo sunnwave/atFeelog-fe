@@ -17,8 +17,6 @@ export default function useRecordWriteSubmit() {
   const isBusy = isUploading || loading;
 
   const onSubmitValid = async (values: RecordEditFormValues) => {
-    console.log("values", values);
-
     const uploadedUrls = await uploadImages(values.imageFiles);
 
     if (isBusy) return;

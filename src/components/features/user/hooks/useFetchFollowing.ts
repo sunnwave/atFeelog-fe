@@ -31,8 +31,6 @@ export const useFetchFollowing = (userId?: string) => {
     fetchPolicy: "cache-and-network",
   });
 
-  console.log("[useFetchFollowing] userId:", userId, "| raw data:", data, "| loading:", loading);
-
   const users = (data?.fetchFollowings ?? [])
     .filter((u): u is NonNullable<typeof u> => u != null)
     .map(toUser);
