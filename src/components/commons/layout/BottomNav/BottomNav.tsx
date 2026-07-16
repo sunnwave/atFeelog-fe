@@ -6,23 +6,17 @@ import Avatar from "@/components/ui/avatar/Avatar";
 import { Button } from "@/components/ui/button/Button";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
-import { useState } from "react";
-import {
-  buildWriteActionSheetOptions,
-  SIDE_NAV_ITEMS,
-} from "@/shared/constants";
-import { ActionSheet } from "../../actionSheet/ActionSheet";
+import { SIDE_NAV_ITEMS } from "@/shared/constants";
 import { loggedInUserState } from "@/shared/stores";
+import { useRouter } from "next/router";
 
 export default function BottomNav() {
+  const router = useRouter();
   const me = useRecoilValue(loggedInUserState);
   const isLoggedIn = !!me;
 
   const { onClickNavigation } = useNavigation();
   const { openConfirmPreset } = useConfirmPreset();
-
-  const [writeSheetOpen, setWriteSheetOpen] = useState(false);
-  const options = buildWriteActionSheetOptions(onClickNavigation);
 
   const onClickWrite = () => {
     if (!isLoggedIn) {
@@ -31,7 +25,8 @@ export default function BottomNav() {
       });
       return;
     }
-    setWriteSheetOpen(true);
+
+    router.push("/feelog/new");
   };
 
   return (
@@ -65,12 +60,6 @@ export default function BottomNav() {
           <BottomNavItem href="/login" label="로그인" icon={User} />
         )}
       </div>
-      <ActionSheet
-        options={options}
-        isOpen={writeSheetOpen}
-        onClose={() => setWriteSheetOpen(false)}
-        title="무엇을 작성할까요?"
-      />
     </nav>
   );
 }
