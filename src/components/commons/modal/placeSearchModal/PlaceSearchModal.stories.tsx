@@ -75,7 +75,7 @@ function Demo({ mockMode, ...props }: StoryArgs) {
   );
 }
 
-export const Playground: Story = {
+export const Default: Story = {
   render: (args) => <Demo {...args} />,
 };
 
