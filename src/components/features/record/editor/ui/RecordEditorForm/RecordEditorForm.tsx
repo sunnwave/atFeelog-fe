@@ -2,12 +2,14 @@ import { Controller, UseFormReturn } from "react-hook-form";
 import { TextField } from "@/components/ui/form";
 import DatePickerInput from "@/components/commons/datePicker/DatePickerInput";
 import { Button } from "@/components/ui/button/Button";
-import { MapPin } from "lucide-react";
+import { Clapperboard, MapPin } from "lucide-react";
 import { useState } from "react";
 import PlaceSearchModal from "@/components/commons/modal/placeSearchModal/PlaceSearchModal";
+import PerformanceSearchModal from "@/components/commons/modal/performanceSearchModal/PerformanceSearchModal";
 import { ImageUploader } from "@/components/commons/imageUploader/ImageUploader";
 import { TiptapEditor } from "@/components/ui/editor/TiptapEditor";
 import { KakaoPlace } from "@/shared/types/kakao";
+import type { Performance } from "@/shared/types/performance";
 import { RecordEditFormValues } from "../../../model";
 import { cn } from "@/shared/utils/cn";
 
@@ -15,6 +17,7 @@ interface RecordEditorFormProps {
   formId?: string;
   form: UseFormReturn<RecordEditFormValues>;
   onPickPlace: (p: KakaoPlace) => void;
+  onPickPerformance: (p: Performance) => void;
   onImagesChange: (next: File[]) => void;
   onSubmit: (e?: React.BaseSyntheticEvent) => Promise<void>;
 }
@@ -26,6 +29,7 @@ export default function RecordEditorForm({
   formId = "record-write-form",
   form,
   onPickPlace,
+  onPickPerformance,
   onImagesChange,
   onSubmit,
 }: RecordEditorFormProps) {
@@ -37,6 +41,7 @@ export default function RecordEditorForm({
   } = form;
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);
+  const [isPerformanceSearchOpen, setIsPerformanceSearchOpen] = useState(false);
   const [showTips, setShowTips] = useState(false);
   const imageFiles = watch("imageFiles") ?? [];
 
@@ -63,15 +68,32 @@ export default function RecordEditorForm({
         <div className="px-5 py-5 border-b border-foreground/15">
           <div className="grid grid-cols-2 gap-x-5 gap-y-4">
             <div className="flex flex-col">
-              <label htmlFor="showName" className={fieldLabel}>
-                공연명
-              </label>
-              <TextField
-                name="showName"
-                placeholder="공연 이름"
-                register={register}
-                error={errors.showName}
-                className={cn(errors.showName && "animate-shake")}
+              <label className={fieldLabel}>공연명</label>
+              <div className="flex gap-2">
+                <div className="flex-1 min-w-0">
+                  <TextField
+                    name="showName"
+                    placeholder="공연 이름"
+                    register={register}
+                    error={errors.showName}
+                    className={cn(errors.showName && "animate-shake")}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant="solid"
+                  className="h-11 rounded-none shrink-0"
+                  aria-label="공연 검색 버튼"
+                  onClick={() => setIsPerformanceSearchOpen(true)}
+                >
+                  <Clapperboard className="size-4" />
+                  검색
+                </Button>
+              </div>
+              <PerformanceSearchModal
+                open={isPerformanceSearchOpen}
+                onOpenChange={setIsPerformanceSearchOpen}
+                onConfirm={onPickPerformance}
               />
             </div>
 
