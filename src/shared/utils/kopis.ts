@@ -4,9 +4,12 @@ import type {
   KopisRawPerformanceDetail,
   KopisSearchResponse,
   KopisDetailResponse,
+  KopisRawBoxOffice,
+  KopisBoxOfficeResponse,
   Performance,
   PerformanceDetail,
   PerformanceStatus,
+  BoxOffice,
 } from "@/shared/types/performance";
 
 // ─────────────────────────────────────────────
@@ -114,4 +117,27 @@ export function kopisDateToFormDate(kopisDate: string): string {
 /** 공연 검색 결과의 시작일을 폼의 showDate 초깃값으로 사용한다. */
 export function resolveShowDate(p: Performance): string {
   return kopisDateToFormDate(p.startDate);
+}
+
+// ─────────────────────────────────────────────
+// 박스오피스 파싱
+// ─────────────────────────────────────────────
+
+export function normalizeBoxOffice(raw: KopisRawBoxOffice): BoxOffice {
+  return {
+    rank: Number(raw.rnum),
+    mt20id: raw.mt20id,
+    title: raw.prfnm,
+    venueName: raw.prfplcnm,
+    posterUrl: raw.poster,
+    genre: raw.cate,
+    period: raw.prfpd,
+    area: raw.area,
+  };
+}
+
+export function parseBoxOfficeXml(xml: string): BoxOffice[] {
+  const parsed = parseKopisXml<KopisBoxOfficeResponse>(xml);
+  const boxof = parsed?.boxofs?.boxof;
+  return toArray(boxof).map(normalizeBoxOffice);
 }

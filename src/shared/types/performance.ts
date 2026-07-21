@@ -84,3 +84,40 @@ export type PerformanceSearchApiResponse = {
   page: number;
   isEnd: boolean;
 };
+
+// ─────────────────────────────────────────────
+// 박스오피스 타입 (GET /boxoffice)
+// ─────────────────────────────────────────────
+
+/** 박스오피스 API Raw 응답 단일 항목 (KOPIS 예매상황판 조회) */
+export type KopisRawBoxOffice = {
+  rnum: string;        // 순위
+  mt20id: string;      // 공연 ID
+  prfnm: string;       // 공연명
+  prfpd: string;       // 공연기간
+  prfplcnm: string;    // 공연장명 (boxoffice API는 prfplcnm 사용)
+  poster: string;      // 포스터 URL
+  cate: string;        // 장르 (boxoffice API는 cate 사용)
+  seatcnt: string;     // 좌석수
+  prfdtcnt: string;    // 상연횟수
+  area: string;        // 지역
+};
+
+/** 박스오피스 API 전체 응답 래퍼 */
+export type KopisBoxOfficeResponse = {
+  boxofs: {
+    boxof: KopisRawBoxOffice | KopisRawBoxOffice[];
+  };
+};
+
+/** 정규화된 박스오피스 항목 */
+export type BoxOffice = {
+  rank: number;
+  mt20id: string;
+  title: string;
+  venueName: string;
+  posterUrl: string;
+  genre: string;
+  period: string;
+  area: string;
+};
