@@ -31,7 +31,7 @@ export default function BottomNav() {
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border safe-area-inset-bottom">
-      <div className="grid grid-cols-5 items-center h-16 max-w-2xl mx-auto px-2">
+      <div className="grid grid-cols-6 items-center h-16 max-w-2xl mx-auto px-2">
         {SIDE_NAV_ITEMS.slice(0, 2).map((item) => (
           <BottomNavItem key={item.href} {...item} />
         ))}
