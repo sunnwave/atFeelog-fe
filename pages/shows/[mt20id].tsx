@@ -1,13 +1,31 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import ShowDetailScreen from "@/components/features/shows/ShowDetailScreen";
+import type { PerformanceDetail } from "@/shared/types/performance";
 
-/** 5단계 — 공연 상세 페이지 (미구현, placeholder) */
 const ShowDetailPage: NextPage = () => {
-  const { query } = useRouter();
+  const { query, isReady } = useRouter();
+  const mt20id = typeof query.mt20id === "string" ? query.mt20id : "";
+
+  const [detail, setDetail] = useState<PerformanceDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(true);
+
+  useEffect(() => {
+    if (!isReady || !mt20id) return;
+
+    setDetailLoading(true);
+    fetch(`/api/kopis/performances/${encodeURIComponent(mt20id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: PerformanceDetail | null) => setDetail(data))
+      .catch(() => setDetail(null))
+      .finally(() => setDetailLoading(false));
+  }, [mt20id, isReady]);
+
+  if (!isReady || !mt20id) return <></>;
+
   return (
-    <div className="min-h-screen flex items-center justify-center text-muted-foreground text-sm">
-      공연 상세 페이지 준비 중이에요. (mt20id: {query.mt20id})
-    </div>
+    <ShowDetailScreen mt20id={mt20id} detail={detail} detailLoading={detailLoading} />
   );
 };
 
