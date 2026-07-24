@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parseBoxOfficeXml } from "@/shared/utils/kopis";
+import { formatKopisDate } from "@/shared/utils/date";
 import type { BoxOffice } from "@/shared/types/performance";
 
 /**
@@ -30,8 +31,8 @@ export default async function handler(
 
   const url = new URL(`${KOPIS_BASE_URL}/boxoffice`);
   url.searchParams.set("service", API_KEY);
-  url.searchParams.set("stdate", formatDate(stDate));
-  url.searchParams.set("eddate", formatDate(edDate));
+  url.searchParams.set("stdate", formatKopisDate(stDate));
+  url.searchParams.set("eddate", formatKopisDate(edDate));
 
   const catecode = req.query.catecode as string | undefined;
   if (catecode) url.searchParams.set("catecode", catecode);
@@ -48,9 +49,3 @@ export default async function handler(
   return res.status(200).json(items);
 }
 
-function formatDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}${m}${d}`;
-}

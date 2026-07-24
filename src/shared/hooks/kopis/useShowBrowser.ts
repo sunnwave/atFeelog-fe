@@ -14,7 +14,7 @@ export type ShowFilters = {
 const DEFAULT_FILTERS: ShowFilters = {
   q: "",
   genre: "",
-  status: "",
+  status: "01", // 기본: 공연예정
   area: "",
   stdate: "",
   eddate: "",
@@ -77,7 +77,7 @@ export function useShowBrowser() {
   }, []);
 
   const applySearch = useCallback((q: string, stdate: string, eddate: string) => {
-    setFilters((prev) => ({ ...prev, q, stdate, eddate }));
+    setFilters((prev) => ({ ...prev, q, stdate, eddate, status: q ? "" : prev.status }));
   }, []);
 
   const reset = useCallback(() => setFilters(DEFAULT_FILTERS), []);

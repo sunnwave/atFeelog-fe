@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parsePerformanceSearchXml } from "@/shared/utils/kopis";
+import { formatKopisDate, toKopisDate, addMonths } from "@/shared/utils/date";
 import type { PerformanceSearchApiResponse } from "@/shared/types/performance";
 
 /**
@@ -35,9 +36,9 @@ export default async function handler(
   const page = Math.max(1, Number(req.query.page ?? 1));
   const rows = Math.min(100, Math.max(1, Number(req.query.rows ?? 20)));
 
-  // 날짜 기본값: 1개월 전 ~ 1년 후
-  const defaultStdate = formatDate(addMonths(new Date(), -1));
-  const defaultEddate = formatDate(addMonths(new Date(), 12));
+  // 검색어 있을 때: 2000-01-01 ~ 1년 후 / 없을 때: 1개월 전 ~ 1년 후
+  const defaultStdate = q ? "20000101" : formatKopisDate(addMonths(new Date(), -1));
+  const defaultEddate = formatKopisDate(addMonths(new Date(), 12));
 
   const stdate = toKopisDate(String(req.query.stdate ?? "")) || defaultStdate;
   const eddate = toKopisDate(String(req.query.eddate ?? "")) || defaultEddate;
@@ -66,20 +67,3 @@ export default async function handler(
   return res.status(200).json({ items, total: items.length, page, isEnd });
 }
 
-/** "YYYY-MM-DD" → "YYYYMMDD" (KOPIS 포맷) */
-function toKopisDate(v: string): string {
-  return v.replace(/-/g, "").slice(0, 8);
-}
-
-function formatDate(d: Date): string {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${y}${m}${day}`;
-}
-
-function addMonths(d: Date, months: number): Date {
-  const r = new Date(d);
-  r.setMonth(r.getMonth() + months);
-  return r;
-}

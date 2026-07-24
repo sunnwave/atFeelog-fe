@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parsePerformanceSearchXml } from "@/shared/utils/kopis";
+import { formatKopisDate, addYears } from "@/shared/utils/date";
 import type { PerformanceSearchApiResponse } from "@/shared/types/performance";
 
 /**
@@ -31,6 +32,7 @@ export default async function handler(
   const stdate = "20000101";
   const eddate = formatKopisDate(addYears(new Date(), 2));
 
+
   const url = new URL(`${KOPIS_BASE_URL}/pblprfr`);
   url.searchParams.set("service", API_KEY);
   url.searchParams.set("stdate", stdate);
@@ -60,20 +62,4 @@ export default async function handler(
   });
 }
 
-// ─────────────────────────────────────────────
-// 날짜 헬퍼 (date-fns 없이 인라인 처리)
-// ─────────────────────────────────────────────
-
-function formatKopisDate(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}${m}${d}`; // "YYYYMMDD"
-}
-
-function addYears(date: Date, years: number): Date {
-  const d = new Date(date);
-  d.setFullYear(d.getFullYear() + years);
-  return d;
-}
 
