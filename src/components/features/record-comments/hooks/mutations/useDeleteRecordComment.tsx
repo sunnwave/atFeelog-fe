@@ -16,8 +16,8 @@ const DELETE_RECORD_COMMENT_LEGACY = gql`
 `;
 
 const DELETE_RECORD_COMMENT_NEW = gql`
-  mutation deleteBoardComment($boardId: ID!) {
-    deleteBoardComment(boardId: $boardId)
+  mutation deleteBoardComment($commentId: ID!) {
+    deleteBoardComment(commentId: $commentId)
   }
 `;
 
