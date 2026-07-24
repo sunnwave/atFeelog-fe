@@ -2,6 +2,9 @@ export type RecordEditFormValues = {
   // UI 입력
   title: string; // 게시물 제목(필수)
   showName: string; // 공연명(필수)
+  mt20id?: string; // KOPIS 공연 ID (공연 검색으로 선택 시 저장)
+  genre?: string; // 장르 (뮤지컬/연극 등)
+  posterUrl?: string; // KOPIS 포스터 URL
   artistName?: string; // 아티스트명(선택)
   showDate: string; // 공연 날짜(필수) "YYYY-MM-DD"
 
@@ -21,6 +24,9 @@ export type RecordEditFormValues = {
 export const RECORD_WRITE_DEFAULTS: RecordEditFormValues = {
   title: "",
   showName: "",
+  mt20id: undefined,
+  genre: undefined,
+  posterUrl: undefined,
   artistName: "",
   showDate: "",
 

@@ -23,10 +23,13 @@ export type IBoard = {
   comments?: Maybe<Array<Maybe<IBoardComment>>>;
   contents: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
+  genre?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   images?: Maybe<Array<Scalars['String']['output']>>;
   isLiked?: Maybe<Scalars['Boolean']['output']>;
   likeCount: Scalars['Int']['output'];
+  mt20id?: Maybe<Scalars['String']['output']>;
+  posterUrl?: Maybe<Scalars['String']['output']>;
   showDate?: Maybe<Scalars['DateTime']['output']>;
   showName: Scalars['String']['output'];
   title: Scalars['String']['output'];
@@ -71,7 +74,10 @@ export type ICreateBoardInput = {
   artistName: Scalars['String']['input'];
   boardAddressInput?: InputMaybe<IBoardAddressInput>;
   contents: Scalars['String']['input'];
+  genre?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  mt20id?: InputMaybe<Scalars['String']['input']>;
+  posterUrl?: InputMaybe<Scalars['String']['input']>;
   showDate?: InputMaybe<Scalars['DateTime']['input']>;
   showName: Scalars['String']['input'];
   title: Scalars['String']['input'];
@@ -118,6 +124,8 @@ export type IMutation = {
   logoutUser: Scalars['Boolean']['output'];
   resetUserPassword: Scalars['Boolean']['output'];
   restoreAccessToken: IToken;
+  /**  등록되어 있으면 해제, 없으면 등록 (토글) — 로그인 필수 */
+  togglePerformanceSubscription: Scalars['Boolean']['output'];
   updateBoard: IBoard;
   updateBoardComment: IBoardComment;
   updateUser: IUser;
@@ -151,7 +159,7 @@ export type IMutationDeleteBoardArgs = {
 
 
 export type IMutationDeleteBoardCommentArgs = {
-  boardId: Scalars['ID']['input'];
+  commentId: Scalars['ID']['input'];
 };
 
 
@@ -176,6 +184,11 @@ export type IMutationResetUserPasswordArgs = {
 };
 
 
+export type IMutationTogglePerformanceSubscriptionArgs = {
+  mt20id: Scalars['String']['input'];
+};
+
+
 export type IMutationUpdateBoardArgs = {
   boardId: Scalars['ID']['input'];
   updateBoardInput: IUpdateBoardInput;
@@ -197,6 +210,7 @@ export type IQuery = {
   fetchBoard: IBoard;
   fetchBoardComments: Array<IBoardComment>;
   fetchBoards: Array<IBoard>;
+  fetchBoardsByMt20id: Array<IBoard>;
   fetchBoardsByUser?: Maybe<Array<Maybe<IBoard>>>;
   fetchBoardsCount: Scalars['Int']['output'];
   fetchBoardsCountByUser?: Maybe<Scalars['Int']['output']>;
@@ -204,7 +218,7 @@ export type IQuery = {
   fetchBoardsKeyword: Array<Scalars['String']['output']>;
   fetchBoardsLike: Array<IBoard>;
   fetchBoardsLikeByUser?: Maybe<Array<Maybe<IBoard>>>;
-  fetchBoardsLikeCountByUser?: Maybe<Scalars['Int']['output']>;
+  fetchBoardsLikeCount?: Maybe<Scalars['Int']['output']>;
   fetchBoardsOfBest: Array<IBoard>;
   fetchBoardsOfMine: Array<IBoard>;
   fetchCountOfFollowers: Scalars['Int']['output'];
@@ -212,9 +226,11 @@ export type IQuery = {
   /**  팔로우 기능 */
   fetchFollowers?: Maybe<Array<Maybe<IUser>>>;
   fetchFollowersOfMine?: Maybe<Array<Maybe<IUser>>>;
-  fetchFollowing?: Maybe<Array<Maybe<IUser>>>;
   fetchFollowingFeed?: Maybe<Array<Maybe<IBoard>>>;
   fetchFollowingOfMine?: Maybe<Array<Maybe<IUser>>>;
+  fetchFollowings?: Maybe<Array<Maybe<IUser>>>;
+  /**  현재 로그인한 사용자의 관심 공연 mt20id 목록 반환 — 로그인 필수 */
+  fetchSubscribedPerformances: Array<Scalars['String']['output']>;
   fetchUserLoggedIn: IUser;
   isConnected: Scalars['Boolean']['output'];
 };
@@ -236,6 +252,12 @@ export type IQueryFetchBoardsArgs = {
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
   startDate?: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+
+export type IQueryFetchBoardsByMt20idArgs = {
+  mt20id: Scalars['String']['input'];
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -261,8 +283,8 @@ export type IQueryFetchBoardsLikeByUserArgs = {
 };
 
 
-export type IQueryFetchBoardsLikeCountByUserArgs = {
-  userId: Scalars['ID']['input'];
+export type IQueryFetchBoardsLikeCountArgs = {
+  boardId: Scalars['ID']['input'];
 };
 
 
@@ -287,13 +309,13 @@ export type IQueryFetchFollowersArgs = {
 };
 
 
-export type IQueryFetchFollowingArgs = {
-  userId: Scalars['ID']['input'];
+export type IQueryFetchFollowingFeedArgs = {
+  page?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-export type IQueryFetchFollowingFeedArgs = {
-  page?: InputMaybe<Scalars['Int']['input']>;
+export type IQueryFetchFollowingsArgs = {
+  userId: Scalars['ID']['input'];
 };
 
 
@@ -310,13 +332,17 @@ export type IUpdateBoardInput = {
   artistName?: InputMaybe<Scalars['String']['input']>;
   boardAddressInput?: InputMaybe<IBoardAddressInput>;
   contents?: InputMaybe<Scalars['String']['input']>;
+  genre?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<Scalars['String']['input']>>;
+  mt20id?: InputMaybe<Scalars['String']['input']>;
+  posterUrl?: InputMaybe<Scalars['String']['input']>;
   showDate?: InputMaybe<Scalars['DateTime']['input']>;
   showName?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type IUpdateUserInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   picture?: InputMaybe<Scalars['String']['input']>;
@@ -325,6 +351,7 @@ export type IUpdateUserInput = {
 export type IUser = {
   __typename?: 'User';
   createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
