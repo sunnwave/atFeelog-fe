@@ -1,14 +1,17 @@
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import DOMPurify from "dompurify";
 import Badge from "@/components/ui/badge";
 
 export default function RecordContents({
   contents,
   showName,
+  mt20id,
   artistName,
 }: {
   contents: string;
   showName?: string;
+  mt20id?: string;
   artistName?: string;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -28,9 +31,18 @@ export default function RecordContents({
       {(showName?.trim() || artists.length > 0) && (
         <div className=" px-3 py-2 flex flex-wrap items-center gap-2 mb-4 not-prose">
           {showName?.trim() && (
-            <span className="text-base font-semibold text-foreground">
-              {showName}
-            </span>
+            mt20id ? (
+              <Link
+                href={`/shows/${mt20id}`}
+                className="text-base font-semibold text-foreground hover:text-point transition-colors"
+              >
+                {showName}
+              </Link>
+            ) : (
+              <span className="text-base font-semibold text-foreground">
+                {showName}
+              </span>
+            )
           )}
           {showName?.trim() && artists.length > 0 && (
             <span className="text-muted-foreground/40 text-xs">|</span>

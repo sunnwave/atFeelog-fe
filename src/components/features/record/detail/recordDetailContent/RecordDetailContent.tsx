@@ -62,6 +62,7 @@ export default function RecordDetailContent({
           <RecordDetailContentMain
             contents={contents}
             showName={record.showName}
+            mt20id={record.mt20id}
             artistName={record.artistName}
           />
 
