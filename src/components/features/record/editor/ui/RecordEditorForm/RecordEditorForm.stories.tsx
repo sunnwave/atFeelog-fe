@@ -99,6 +99,7 @@ function Demo(args: StoryArgs) {
       formId={args.formId}
       form={form}
       onPickPlace={onPickPlace}
+      onPickPerformance={async () => {}}
       onImagesChange={onImagesChange}
       onSubmit={onSubmit}
     />

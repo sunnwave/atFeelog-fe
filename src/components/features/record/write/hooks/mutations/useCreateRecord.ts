@@ -43,6 +43,7 @@ export const useCreateRecord = () => {
     password?: string;
   }) => {
     const createBoardInput = toCreateBoardInput(args);
+    console.log("[createBoard] 전송 input:", createBoardInput);
     const res = await createRecord({ variables: { createBoardInput } });
 
     const id = res.data?.createBoard.id;

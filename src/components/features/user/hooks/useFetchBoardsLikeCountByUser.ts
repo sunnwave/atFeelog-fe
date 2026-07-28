@@ -1,28 +1,28 @@
 import { IS_NEW_API } from "@/api/config";
 import {
   IQuery as INewQuery,
-  IQueryFetchBoardsLikeCountByUserArgs,
+  IQueryFetchBoardsLikeCountArgs,
 } from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 
-const FETCH_BOARDS_LIKE_COUNT_BY_USER = gql`
-  query fetchBoardsLikeCountByUser($userId: ID!) {
-    fetchBoardsLikeCountByUser(userId: $userId)
+const FETCH_BOARDS_LIKE_COUNT = gql`
+  query fetchBoardsLikeCount($boardId: ID!) {
+    fetchBoardsLikeCount(boardId: $boardId)
   }
 `;
 
-export const useFetchBoardsLikeCountByUser = (userId?: string) => {
+export const useFetchBoardsLikeCountByUser = (boardId?: string) => {
   const { data, loading, refetch } = useQuery<
-    Pick<INewQuery, "fetchBoardsLikeCountByUser">,
-    IQueryFetchBoardsLikeCountByUserArgs
-  >(FETCH_BOARDS_LIKE_COUNT_BY_USER, {
-    variables: { userId: userId ?? "" },
-    skip: !IS_NEW_API || !userId,
+    Pick<INewQuery, "fetchBoardsLikeCount">,
+    IQueryFetchBoardsLikeCountArgs
+  >(FETCH_BOARDS_LIKE_COUNT, {
+    variables: { boardId: boardId ?? "" },
+    skip: !IS_NEW_API || !boardId,
     fetchPolicy: "cache-and-network",
   });
 
   return {
-    count: data?.fetchBoardsLikeCountByUser ?? 0,
+    count: data?.fetchBoardsLikeCount ?? 0,
     loading,
     refetch,
   };

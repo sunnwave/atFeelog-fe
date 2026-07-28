@@ -5,6 +5,7 @@ export interface RecordDetail {
   id: string;
   title: string;
   showName: string;
+  mt20id?: string;
   artistName?: string;
   contents: string;
   showDate: string;

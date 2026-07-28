@@ -66,9 +66,8 @@ export function toDeleteCommentVariables(
   input: DeleteCommentInput,
 ): IMutationDeleteBoardCommentArgs | INewMutationDeleteBoardCommentArgs {
   if (IS_NEW_API) {
-    // 새 API는 boardId 필드명으로 댓글 ID를 받음
     return {
-      boardId: input.commentId,
+      commentId: input.commentId,
     } satisfies INewMutationDeleteBoardCommentArgs;
   }
 
