@@ -1,13 +1,15 @@
 import { JSX } from "react";
 import { useRouter } from "next/router";
-import RecordDetailContent from "./recordDetailContent/RecordDetailContent";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { useFetchRecord } from "../hooks/useFetchRecord";
-import ImageCarousel from "@/components/commons/imageCarousel/ImageCarousel";
 import { useRecoilState } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
+import RecordDetailDateHeader from "./recordDetailContent/RecordDetailDateHeader";
+import RecordDetailBody from "./recordDetailContent/RecordDetailBody";
+import RecordDetailShowInfo from "./recordDetailContent/RecordDetailShowInfo";
+import ImageScrollStrip from "@/components/commons/imageScrollStrip/ImageScrollStrip";
 
-export default function RecordDetail(): JSX.Element | null {
+export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
 
   const recordId =
@@ -42,7 +44,23 @@ export default function RecordDetail(): JSX.Element | null {
     <div className="min-h-screen bg-background">
       <PageHeader label="Record" fallbackHref="/feelog" />
       <div className="px-5 py-6 mx-auto max-w-5xl lg:px-6 lg:py-8">
-        {hasImages ? (
+        <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
+          <div className="space-y-4 ">
+            <RecordDetailDateHeader record={record} isWriter={isWriter} />
+
+            {hasImages && <ImageScrollStrip images={images} />}
+
+            {/* <RecordDetailContent
+              record={record}
+              isWriter={isWriter}
+              className="w-full max-w-3xl mx-auto"
+            /> */}
+            <RecordDetailShowInfo record={record} />
+            <RecordDetailBody record={record} />
+          </div>
+          <div>유저인포</div>
+        </div>
+        {/* {hasImages ? (
           <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
             <ImageCarousel
               images={images}
@@ -56,7 +74,7 @@ export default function RecordDetail(): JSX.Element | null {
             isWriter={isWriter}
             className="w-full max-w-3xl mx-auto"
           />
-        )}
+        )} */}
       </div>
     </div>
   );
