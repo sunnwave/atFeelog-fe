@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
-import { MoreVertical } from "lucide-react";
+import { Menu } from "lucide-react";
 import { useState } from "react";
 
 export default function WriterMenu({
@@ -14,7 +14,7 @@ export default function WriterMenu({
   return (
     <div className="relative">
       <Button variant="ghost" onClick={() => setShowMenu(!showMenu)}>
-        <MoreVertical className="w-4 h-4 text-muted-foreground" />
+        <Menu className="w-4 h-4 text-muted-foreground" />
       </Button>
 
       {showMenu && (
