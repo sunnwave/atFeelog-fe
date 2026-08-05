@@ -32,9 +32,8 @@ export default function RecordDetailDateHeader({
     });
   };
 
-  console.log(isWriter);
   return (
-    <div className="flex items-start gap-6 pb-4 border-b-[1.5px] ">
+    <div className="flex items-start gap-6 p-4 border-b-[1.5px] ">
       {/* 날짜 */}
       <div className="flex-shrink-0">
         <div className="text-6xl font-black tracking-tighter text-foreground leading-none">
@@ -54,7 +53,11 @@ export default function RecordDetailDateHeader({
         {/* 작성자 메뉴 */}
         {isWriter && (
           <div data-testid="record-writer-menu">
-            <WriterMenu onEditClick={onEdit} onDeleteClick={onDelete} />
+            <WriterMenu
+              onEditClick={onEdit}
+              onDeleteClick={onDelete}
+              icon="m"
+            />
           </div>
         )}
       </div>

@@ -8,6 +8,10 @@ import RecordDetailDateHeader from "./recordDetailContent/RecordDetailDateHeader
 import RecordDetailBody from "./recordDetailContent/RecordDetailBody";
 import RecordDetailShowInfo from "./recordDetailContent/RecordDetailShowInfo";
 import ImageScrollStrip from "@/components/commons/imageScrollStrip/ImageScrollStrip";
+import RecordProfile from "./recordDetailContent/RecordProfile";
+import RecordActions from "./recordDetailContent/RecordActions";
+import RecordComments from "../../record-comments/RecordComments";
+import { useAddFollow, useIsConnected } from "../../user/hooks";
 
 export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
@@ -20,6 +24,9 @@ export default function RecordDetailScreen(): JSX.Element | null {
   const [me] = useRecoilState(loggedInUserState);
   const isLoggedIn = !!me;
   const { record, loading, error } = useFetchRecord(recordId);
+  const { onAddFollow } = useAddFollow();
+  const { isConnected: isFollowing, refetch: refetchIsFollowing } =
+    useIsConnected(record?.user?.id);
 
   const isWriter = !!(
     isLoggedIn &&
@@ -27,9 +34,18 @@ export default function RecordDetailScreen(): JSX.Element | null {
     (me.id === record.user?.id || me.name === record.user?.name)
   );
 
+  const handleFollow = async () => {
+    if (!record?.user?.id) return;
+    try {
+      await onAddFollow(record.user.id);
+      void refetchIsFollowing();
+    } catch (e) {
+      console.error("[follow] error:", e);
+    }
+  };
+
   if (!router.isReady) return null;
   if (!recordId) return null;
-
   if (loading) return <div>로딩중...</div>;
   if (error) {
     console.error(error);
@@ -43,38 +59,33 @@ export default function RecordDetailScreen(): JSX.Element | null {
   return (
     <div className="min-h-screen bg-background">
       <PageHeader label="Record" fallbackHref="/feelog" />
-      <div className="px-5 py-6 mx-auto max-w-5xl lg:px-6 lg:py-8">
-        <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
-          <div className="space-y-4 ">
+      <div className="mx-auto max-w-7xl lg:px-6 lg:py-8">
+        <div className="space-y-2 w-full lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:space-y-0 lg:gap-8">
+          <article className="lg:space-y-4">
             <RecordDetailDateHeader record={record} isWriter={isWriter} />
-
-            {hasImages && <ImageScrollStrip images={images} />}
-
-            {/* <RecordDetailContent
+            <RecordProfile
               record={record}
-              isWriter={isWriter}
-              className="w-full max-w-3xl mx-auto"
-            /> */}
-            <RecordDetailShowInfo record={record} />
-            <RecordDetailBody record={record} />
-          </div>
-          <div>유저인포</div>
-        </div>
-        {/* {hasImages ? (
-          <div className="space-y-6 w-full lg:grid lg:grid-cols-2 lg:items-start lg:space-y-0 lg:gap-8">
-            <ImageCarousel
-              images={images}
-              className="lg:sticky lg:top-15 lg:h-fit"
+              isFollowing={isFollowing}
+              onFollow={handleFollow}
+              className="lg:hidden"
             />
-            <RecordDetailContent record={record} isWriter={isWriter} />
-          </div>
-        ) : (
-          <RecordDetailContent
-            record={record}
-            isWriter={isWriter}
-            className="w-full max-w-3xl mx-auto"
-          />
-        )} */}
+            <RecordDetailShowInfo record={record} />
+            {hasImages && (
+              <ImageScrollStrip images={images} className="p-2 lg:p-0" />
+            )}
+            <RecordDetailBody record={record} />
+          </article>
+          <aside className="border-t-[1.5px] lg:border-[1.5px]">
+            <RecordProfile
+              record={record}
+              isFollowing={isFollowing}
+              onFollow={handleFollow}
+              className="hidden lg:flex"
+            />
+            <RecordActions record={record} />
+            <RecordComments />
+          </aside>
+        </div>
       </div>
     </div>
   );
