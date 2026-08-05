@@ -3,7 +3,7 @@ import RecordPosterCard from "@/components/features/record/list/RecordPosterCard
 import type { ProfileRecordGridProps, TabKey } from "../../types";
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: "log", label: "Log" },
+  { key: "log", label: "My Logs" },
   { key: "likes", label: "Likes" },
 ];
 

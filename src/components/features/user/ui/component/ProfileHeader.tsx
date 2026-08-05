@@ -43,7 +43,7 @@ export default function ProfileHeader({
               <ProfileActions
                 isMe={isMe}
                 isFollowing={isFollowing}
-                onAddFollow={onFollow}
+                onFollow={onFollow}
               />
             </div>
             {user.bio && (
