@@ -8,6 +8,8 @@ interface CommentInputProps {
   isLoggedIn: boolean;
 }
 
+const MAX_HEIGHT = 120;
+
 export default function CommentInput({
   onSubmit,
   placeholder = "댓글을 입력하세요...",
@@ -17,16 +19,15 @@ export default function CommentInput({
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  placeholder = isLoggedIn ? placeholder : "로그인 후 댓글을 작성해주세요";
+  const resolvedPlaceholder = isLoggedIn
+    ? placeholder
+    : "로그인 후 댓글을 작성해주세요";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isLoggedIn) return;
-
     if (comment.trim()) {
       onSubmit(comment.trim());
       setComment("");
-      // Reset textarea height
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
@@ -34,8 +35,6 @@ export default function CommentInput({
   };
 
   const handleClear = () => {
-    if (!isLoggedIn) return;
-
     setComment("");
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -45,72 +44,68 @@ export default function CommentInput({
 
   // Auto-resize textarea
   useEffect(() => {
-    if (!isLoggedIn) return;
-
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${Math.min(
         textareaRef.current.scrollHeight,
-        120
+        MAX_HEIGHT,
       )}px`;
     }
-  }, [comment, isLoggedIn]);
+  }, [comment]);
 
   return (
     <div className="pt-4 border-t border-border">
-      <form onSubmit={handleSubmit} className="relative flex items-center">
-        <textarea
-          ref={textareaRef}
-          value={comment}
-          onChange={(e) => isLoggedIn && setComment(e.target.value)}
-          onFocus={() => isLoggedIn && setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder={placeholder}
-          rows={1}
-          readOnly={!isLoggedIn}
-          disabled={!isLoggedIn}
-          className={`
-          w-full px-4 py-3 pr-24 rounded-xl resize-none
-          border transition-all
-          focus:outline-none
-          placeholder:text-muted-foreground
-          ${
-            isFocused || comment
-              ? "bg-background border-primary"
-              : "bg-muted/50 border-border"
-          }
-        `}
-          style={{ minHeight: "48px", maxHeight: "120px" }}
-        />
+      <div
+        className={`flex items-stretch border transition-colors ${
+          isFocused || comment ? "border-primary" : "border-border"
+        }`}
+      >
+        {/* 텍스트에어리어 + Clear 버튼 */}
+        <form
+          id="comment-form"
+          onSubmit={handleSubmit}
+          className="relative flex-1 min-w-0"
+        >
+          <textarea
+            ref={textareaRef}
+            value={comment}
+            onChange={(e) => isLoggedIn && setComment(e.target.value)}
+            onFocus={() => isLoggedIn && setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder={resolvedPlaceholder}
+            rows={1}
+            readOnly={!isLoggedIn}
+            disabled={!isLoggedIn}
+            className="block w-full px-3 py-2 pr-10 rounded-none resize-none bg-white focus:outline-none text-sm placeholder:text-muted-foreground min-h-9 max-h-30"
+          />
+          {comment && (
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              tone="neutral"
+              onClick={handleClear}
+              className="absolute right-1 top-1 w-7 h-7"
+            >
+              <X className="w-3.5 h-3.5" />
+            </Button>
+          )}
+        </form>
 
-        {/* Clear Button */}
-        {comment && (
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={handleClear}
-            className="absolute right-14 top-1/2 -translate-y-1/2 w-7 h-7"
-          >
-            <X className="w-4 h-4" />
-          </Button>
-        )}
-
-        {/* Submit Button */}
-
+        {/* Submit 버튼: form 속성으로 form 외부에서 submit 연결 */}
         <Button
+          form="comment-form"
           type="submit"
           size="icon"
           disabled={!isLoggedIn || !comment.trim()}
           variant={isLoggedIn && comment.trim() ? "solid" : "ghost"}
-          className={`
-          absolute right-3 top-1/2 -translate-y-1/2
-          transition-all rounded-full
-        `}
+          tone={isLoggedIn && comment.trim() ? "primary" : "neutral"}
+          className="self-stretch w-9 h-auto rounded-none border-l border-border shrink-0 px-0"
           aria-label="Submit comment"
         >
           <Send className="w-4 h-4" />
         </Button>
-      </form>
+      </div>
     </div>
   );
 }
