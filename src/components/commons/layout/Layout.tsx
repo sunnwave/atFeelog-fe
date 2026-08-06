@@ -34,7 +34,7 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
             className={
               noPadding
                 ? "w-full"
-                : "w-full pb-20 lg:pb-8"
+                : "w-full pb-24 lg:pb-8"
             }
           >
             {children}

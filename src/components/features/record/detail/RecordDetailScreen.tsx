@@ -12,6 +12,8 @@ import RecordProfile from "./recordDetailContent/RecordProfile";
 import RecordActions from "./recordDetailContent/RecordActions";
 import RecordComments from "../../record-comments/RecordComments";
 import { useAddFollow, useIsConnected } from "../../user/hooks";
+import RecordDetailSkeleton from "./RecordDetailSkeleton";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 
 export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
@@ -46,7 +48,19 @@ export default function RecordDetailScreen(): JSX.Element | null {
 
   if (!router.isReady) return null;
   if (!recordId) return null;
-  if (loading) return <div>로딩중...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-background">
+        <PageHeader label="Record" fallbackHref="/feelog" />
+        <ResponsiveLayout
+          contentType="wide"
+          padded={false}
+          className="lg:px-6 lg:py-8"
+        >
+          <RecordDetailSkeleton />
+        </ResponsiveLayout>
+      </div>
+    );
   if (error) {
     console.error(error);
     return <div>에러!</div>;
@@ -59,16 +73,14 @@ export default function RecordDetailScreen(): JSX.Element | null {
   return (
     <div className="min-h-screen bg-background">
       <PageHeader label="Record" fallbackHref="/feelog" />
-      <div className="mx-auto max-w-7xl lg:px-6 lg:py-8">
-        <div className="space-y-2 w-full lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:space-y-0 lg:gap-8">
+      <ResponsiveLayout
+        contentType="wide"
+        padded={false}
+        className="lg:px-6 lg:py-8"
+      >
+        <div className="space-y-2 w-full pb-24 lg:pb-0 lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:space-y-0 lg:gap-8">
           <article className="lg:space-y-4">
             <RecordDetailDateHeader record={record} isWriter={isWriter} />
-            <RecordProfile
-              record={record}
-              isFollowing={isFollowing}
-              onFollow={handleFollow}
-              className="lg:hidden"
-            />
             <RecordDetailShowInfo record={record} />
             {hasImages && (
               <ImageScrollStrip images={images} className="p-2 lg:p-0" />
@@ -80,13 +92,13 @@ export default function RecordDetailScreen(): JSX.Element | null {
               record={record}
               isFollowing={isFollowing}
               onFollow={handleFollow}
-              className="hidden lg:flex"
+              className="border-b-[1.5px] bg-white"
             />
             <RecordActions record={record} />
             <RecordComments />
           </aside>
         </div>
-      </div>
+      </ResponsiveLayout>
     </div>
   );
 }

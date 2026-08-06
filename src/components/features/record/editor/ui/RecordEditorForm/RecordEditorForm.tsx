@@ -47,9 +47,9 @@ export default function RecordEditorForm({
 
   return (
     <form id={formId} onSubmit={onSubmit}>
-      <div className="pb-28 px-20">
+      <div className="pb-40 gap-y-4 lg:pb-28 lg:px-20">
         {/* 제목 */}
-        <div className="px-5 pt-5 pb-5 border-b border-foreground/15">
+        <div className="py-4 lg:p-5 border-b border-foreground/15">
           <label htmlFor="title" className={cn(fieldLabel, "text-destructive")}>
             * 제목
           </label>
@@ -65,8 +65,8 @@ export default function RecordEditorForm({
         </div>
 
         {/* 공연 정보 */}
-        <div className="px-5 py-5 border-b border-foreground/15">
-          <div className="grid grid-cols-2 gap-x-5 gap-y-4">
+        <div className="py-4 lg:px-5 lg:py-5 border-b border-foreground/15">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-2 lg:gap-x-5 lg:gap-y-4">
             <div className="flex flex-col">
               <label className={fieldLabel}>공연명</label>
               <div className="flex gap-2">
@@ -159,13 +159,13 @@ export default function RecordEditorForm({
         </div>
 
         {/* 사진 추가 */}
-        <div className="px-5 py-5 border-b border-foreground/15">
+        <div className="py-4 lg:px-5 lg:py-5 border-b border-foreground/15">
           <label className={fieldLabel}>사진 추가</label>
           <ImageUploader value={imageFiles} onImagesChange={onImagesChange} />
         </div>
 
         {/* 후기 / 감상 */}
-        <div className="px-5 py-5 border-b border-foreground/15">
+        <div className="py-4 lg:px-5 lg:py-5 border-b border-foreground/15">
           <label className={fieldLabel}>후기 / 감상</label>
           <Controller
             name="contents"

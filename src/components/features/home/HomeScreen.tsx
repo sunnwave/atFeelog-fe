@@ -6,19 +6,20 @@ import BestRecords from "./BestRecords";
 import LatestRecords from "./LatestRecords";
 import HomeHero from "./ui/HomeHero";
 import BoxOfficeSection from "./BoxOffice/BoxOfficeSection";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 
 export default function HomeScreen(): JSX.Element {
   const me = useRecoilValue(loggedInUserState);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden lg:p-4">
-      <div className="space-y-8 lg:space-y-10">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <ResponsiveLayout contentType="wide" className="py-4 space-y-8 lg:space-y-10">
         {!me && <HomeHero />}
         {/* <HomeDashBoard /> */}
         <BoxOfficeSection />
         <BestRecords />
         <LatestRecords />
-      </div>
+      </ResponsiveLayout>
     </div>
   );
 }

@@ -24,7 +24,7 @@ export default function RecordUpdateScreen() {
   const { onSubmitValid, isBusy } = useRecordUpdateSubmit();
   const { saveDraft, loadDraft, clearDraft } =
     useDraftStorage<RecordEditFormValues>(
-      DRAFT_KEY.record.update(recordId ?? "")
+      DRAFT_KEY.record.update(recordId ?? ""),
     );
 
   const { success, error } = useToast();
@@ -53,7 +53,7 @@ export default function RecordUpdateScreen() {
         },
         onCancel: () => clearDraft(),
       });
-    }
+    },
   );
 
   const onTempSave = () => {
@@ -71,7 +71,7 @@ export default function RecordUpdateScreen() {
     <div className="min-h-screen bg-background ">
       <PageHeader label="Edit Record" fallbackHref="/feelog" />
       {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
-      <div className="max-w-lg mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
+      <div className="mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
         <RecordUpdateTop />
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
       </div>
