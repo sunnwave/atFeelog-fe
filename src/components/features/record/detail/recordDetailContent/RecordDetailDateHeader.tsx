@@ -33,7 +33,7 @@ export default function RecordDetailDateHeader({
   };
 
   return (
-    <div className="flex items-start gap-6 p-4 border-b-[1.5px] ">
+    <div className="flex bg-white items-start gap-6 p-4 lg:border-[1.5px] border-b-[1.5px]">
       {/* 날짜 */}
       <div className="flex-shrink-0">
         <div className="text-6xl font-black tracking-tighter text-foreground leading-none">

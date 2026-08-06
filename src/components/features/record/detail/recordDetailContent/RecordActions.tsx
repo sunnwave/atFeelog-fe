@@ -17,13 +17,13 @@ export default function RecordActions({
           isLiked={record.isLiked ?? false}
           likeCount={record.likeCount ?? 0}
           direction="row"
-          iconSize="sm"
+          iconSize="md"
           iconColor="neutral"
           onToggle={() => onLikeRecord(record.id)}
         />
       </div>
       <div className="flex flex-1 items-center justify-center border-[1.5px] p-2">
-        <BookMarkIcon isSaved={false} iconColor="neutral" iconSize="sm" />
+        <BookMarkIcon isSaved={false} iconColor="neutral" iconSize="md" />
       </div>
     </div>
   );

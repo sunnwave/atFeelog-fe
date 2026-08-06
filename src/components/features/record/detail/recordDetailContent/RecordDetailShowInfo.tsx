@@ -1,11 +1,12 @@
 import { RecordDetail } from "@/api/adapters/types/record";
-import { formatDate } from "@/shared/utils";
+import { cn, formatDate } from "@/shared/utils";
 import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { JSX } from "react";
 
 interface Props {
   record: RecordDetail;
+  className?: string;
 }
 
 const CELLS = [
@@ -15,7 +16,10 @@ const CELLS = [
   { key: "place", label: "공연장소", accent: false },
 ] as const;
 
-export default function RecordDetailShowInfo({ record }: Props): JSX.Element {
+export default function RecordDetailShowInfo({
+  record,
+  className,
+}: Props): JSX.Element {
   const values: Record<(typeof CELLS)[number]["key"], React.ReactNode> = {
     showName: record.mt20id ? (
       <Link
@@ -34,7 +38,12 @@ export default function RecordDetailShowInfo({ record }: Props): JSX.Element {
   };
 
   return (
-    <div className="bg-white p-3 border border-border grid grid-cols-2 gap-x-6 gap-y-3">
+    <div
+      className={cn(
+        `p-3 border border-border grid grid-cols-2 gap-x-6 gap-y-3`,
+        className,
+      )}
+    >
       {CELLS.map(({ key, label, accent }) => (
         <div key={key} className="flex gap-2.5 items-stretch">
           <div

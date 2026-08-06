@@ -1,13 +1,10 @@
-import Avatar, { AvatarType } from "@/components/ui/avatar/Avatar";
+import Avatar from "@/components/ui/avatar/Avatar";
 import { JSX } from "react";
 import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
-import { cn, formatDate, fromNow } from "@/shared/utils";
+import { cn, fromNow } from "@/shared/utils";
 import { RecordDetail } from "@/api/adapters/types/record";
 import { RecordSummary } from "@/api/adapters/types/record-summary";
-import { Button } from "@/components/ui/button/Button";
 import FollowButton from "@/components/ui/button/FollowButton";
-
-type ProfileTone = "primary" | "white";
 
 export default function RecordProfile({
   record,
@@ -18,30 +15,13 @@ export default function RecordProfile({
   record: RecordDetail | RecordSummary;
   isFollowing?: boolean;
   onFollow?: () => void;
-  tone?: ProfileTone;
   size?: CARD_UI_SIZE;
   className?: string;
 }): JSX.Element {
-  const Tone = {
-    primary: {
-      text: "text-foreground",
-      subText: "text-muted-foreground",
-      avatar: "filled",
-    },
-    white: {
-      text: "text-white/90",
-      subText: "text-white/70",
-      avatar: "outlined",
-    },
-  } satisfies Record<
-    ProfileTone,
-    { text: string; subText: string; avatar: AvatarType }
-  >;
-
   return (
     <div
       className={cn(
-        `flex flex-row items-center lg:border-b-[1.5px] p-2 lg:p-4 justify-between`,
+        ` bg-white flex flex-row items-center lg:border-b-[1.5px] p-2 lg:p-4 justify-between`,
         className,
       )}
     >
