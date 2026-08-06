@@ -20,7 +20,11 @@ const makeRecord = (
   commentCount: 0,
   isLiked: false,
   createdAt: "2026-03-10T00:00:00.000Z",
-  user: { id: "mock-user-1", name: "홍길동", picture: "https://picsum.photos/id/64/200/200" },
+  user: {
+    id: "mock-user-1",
+    name: "홍길동",
+    picture: "https://picsum.photos/id/64/200/200",
+  },
   ...overrides,
 });
 
@@ -41,7 +45,11 @@ const MOCK_RECORDS: RecordSummary[] = [
     commentCount: 35,
     images: ["https://picsum.photos/id/29/400/600"],
     isLiked: true,
-    user: { id: "mock-user-1", name: "아미", picture: "https://picsum.photos/id/91/200/200" },
+    user: {
+      id: "mock-user-1",
+      name: "아미",
+      picture: "https://picsum.photos/id/91/200/200",
+    },
   }),
   makeRecord("3", {
     title: "잔잔한 재즈의 밤",
@@ -58,7 +66,11 @@ const MOCK_RECORDS: RecordSummary[] = [
     likeCount: 17,
     commentCount: 6,
     images: ["https://picsum.photos/id/49/400/600"],
-    user: { id: "mock-user-1", name: "뮤지컬팬", picture: "https://picsum.photos/id/22/200/200" },
+    user: {
+      id: "mock-user-1",
+      name: "뮤지컬팬",
+      picture: "https://picsum.photos/id/22/200/200",
+    },
   }),
   makeRecord("5", {
     title: "슈가 솔로 투어",
@@ -79,34 +91,46 @@ const MOCK_RECORDS: RecordSummary[] = [
   }),
 ];
 
-// ─── Shared components ────────────────────────────────────────────────────────
-
-function FeedGrid({ records }: { records: RecordSummary[] }): JSX.Element {
-  return (
-    <ResponsiveLayout contentType="app" className="py-4">
-      <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={0}>
-        {records.map((record) => (
-          <RecordPosterCard key={record.id} record={record} />
-        ))}
-      </ResponsiveGrid>
-    </ResponsiveLayout>
-  );
-}
-
 // ─── Breakpoint showcase ──────────────────────────────────────────────────────
+// 콘텐츠 너비 기준 (CSS Container Query) — 사이드바 제외
+// @md(640px)에서 3열, @lg(800px)에서 4열 전환
 
 const BREAKPOINT_CONFIGS = [
-  { label: "Mobile",  range: "< 768px",    width: 390,  cols: 1, records: MOCK_RECORDS.slice(0, 2) },
-  { label: "Tablet",  range: "768–1023px", width: 768,  cols: 2, records: MOCK_RECORDS.slice(0, 4) },
-  { label: "Desktop", range: "≥ 1024px",   width: 1024, cols: 3, records: MOCK_RECORDS },
+  {
+    label: "2열",
+    range: "콘텐츠 < 640px",
+    width: 500,
+    records: MOCK_RECORDS.slice(0, 4),
+  },
+  {
+    label: "3열",
+    range: "콘텐츠 640px+",
+    width: 700,
+    records: MOCK_RECORDS.slice(0, 6),
+  },
+  {
+    label: "4열",
+    range: "콘텐츠 800px+",
+    width: 900,
+    records: MOCK_RECORDS,
+  },
 ] as const;
 
-function SectionHeader({ label, range, cols }: { label: string; range: string; cols: number }): JSX.Element {
+function SectionHeader({
+  label,
+  range,
+}: {
+  label: string;
+  range: string;
+}): JSX.Element {
   return (
     <div className="mb-3 flex items-center gap-2">
-      <h2 className="text-base font-bold text-foreground">{label}</h2>
-      <span className="px-2 py-0.5 rounded bg-muted text-xs text-muted-foreground font-mono">{range}</span>
-      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs font-semibold">{cols}열</span>
+      <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-xs font-semibold">
+        {label}
+      </span>
+      <span className="px-2 py-0.5 rounded bg-muted text-xs text-muted-foreground font-mono">
+        {range}
+      </span>
     </div>
   );
 }
@@ -127,21 +151,27 @@ type Story = StoryObj;
 // ─── Breakpoint showcase ──────────────────────────────────────────────────────
 
 export const BreakpointShowcase: Story = {
-  name: "Breakpoint Showcase",
+  name: "Breakpoint Showcase (Container Query)",
   render: () => (
     <div className="p-8 space-y-12 bg-background overflow-x-auto">
-      {BREAKPOINT_CONFIGS.map(({ label, range, width, cols, records }) => (
+      {BREAKPOINT_CONFIGS.map(({ label, range, width, records }) => (
         <section key={label}>
-          <SectionHeader label={label} range={range} cols={cols} />
+          <SectionHeader label={label} range={range} />
           <div style={{ width }} className="border border-border/50">
-            <div
-              className="grid gap-0"
-              style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
-            >
+            <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
               {records.map((record) => (
-                <RecordPosterCard key={record.id} record={record} />
+                <div
+                  key={record.id}
+                  className="border-[1.5px] border-foreground"
+                >
+                  <RecordPosterCard
+                    record={record}
+                    showMeta
+                    showBorder={false}
+                  />
+                </div>
               ))}
-            </div>
+            </ResponsiveGrid>
           </div>
         </section>
       ))}
@@ -149,30 +179,53 @@ export const BreakpointShowcase: Story = {
   ),
 };
 
-// ─── Individual viewport stories ─────────────────────────────────────────────
+// ─── Container width stories (CQ 기반) ───────────────────────────────────────
+// 뷰포트가 아닌 컨테이너 너비로 열 수가 결정됨
+// @md(640px)에서 3열, @lg(800px)에서 4열 전환
 
-export const Mobile: Story = {
-  parameters: { viewport: { defaultViewport: "mobile2" } },
-  render: () => <FeedGrid records={MOCK_RECORDS} />,
+function GridWithWidth({
+  width,
+  records,
+}: {
+  width: number;
+  records: RecordSummary[];
+}): JSX.Element {
+  return (
+    <div className="p-6 bg-background">
+      <div style={{ width }} className="border border-border/40">
+        <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
+          {records.map((record) => (
+            <div key={record.id} className="border-[1.5px] border-foreground">
+              <RecordPosterCard record={record} showMeta showBorder={false} />
+            </div>
+          ))}
+        </ResponsiveGrid>
+      </div>
+    </div>
+  );
+}
+
+/** 콘텐츠 너비 500px — 2열 */
+export const Cols2: Story = {
+  name: "2열 (콘텐츠 < 640px)",
+  render: () => <GridWithWidth width={500} records={MOCK_RECORDS.slice(0, 4)} />,
 };
 
-export const Tablet: Story = {
-  parameters: { viewport: { defaultViewport: "tablet" } },
-  render: () => <FeedGrid records={MOCK_RECORDS} />,
+/** 콘텐츠 너비 700px — @md 640px+ → 3열 */
+export const Cols3: Story = {
+  name: "3열 (콘텐츠 640px+)",
+  render: () => <GridWithWidth width={700} records={MOCK_RECORDS} />,
 };
 
-export const Desktop: Story = {
-  parameters: { viewport: { defaultViewport: "desktop" } },
-  render: () => <FeedGrid records={MOCK_RECORDS} />,
-};
-
-export const SingleCard: Story = {
-  render: () => <FeedGrid records={[MOCK_RECORDS[0]]} />,
+/** 콘텐츠 너비 900px — @lg 800px+ → 4열 */
+export const Cols4: Story = {
+  name: "4열 (콘텐츠 800px+)",
+  render: () => <GridWithWidth width={900} records={MOCK_RECORDS} />,
 };
 
 export const Empty: Story = {
   render: () => (
-    <ResponsiveLayout contentType="app" className="pt-6">
+    <ResponsiveLayout contentType="wide" className="pt-6">
       <div className="flex items-center gap-2 text-muted-foreground">
         <Sparkles className="w-8 h-8" />
         <span>첫 공연의 여운을 남겨보세요</span>
@@ -183,10 +236,13 @@ export const Empty: Story = {
 
 export const Loading: Story = {
   render: () => (
-    <ResponsiveLayout contentType="app" className="py-4">
-      <ResponsiveGrid colsMobile={1} colsTablet={2} colsDesktop={3} gap={0}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="aspect-3/4 bg-muted animate-pulse" />
+    <ResponsiveLayout contentType="wide" padded={false} className="py-4">
+      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="aspect-3/4 bg-muted animate-pulse border-[1.5px] border-foreground"
+          />
         ))}
       </ResponsiveGrid>
     </ResponsiveLayout>
