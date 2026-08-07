@@ -1,9 +1,10 @@
 import { useState } from "react";
 import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
+import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import type { ProfileRecordGridProps, TabKey } from "../../types";
 
 const TABS: { key: TabKey; label: string }[] = [
-  { key: "log", label: "Log" },
+  { key: "log", label: "My Logs" },
   { key: "likes", label: "Likes" },
 ];
 
@@ -42,11 +43,11 @@ export default function ProfileRecordGrid({
             : "좋아요한 기록이 없어요."}
         </p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 border-t-[1.5px] border-l-[1.5px] border-foreground">
+        <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none" bordered>
           {displayRecords.map((record) => (
             <RecordPosterCard key={record.id} record={record} />
           ))}
-        </div>
+        </ResponsiveGrid>
       )}
     </section>
   );

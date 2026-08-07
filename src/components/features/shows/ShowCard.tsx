@@ -16,7 +16,7 @@ export default function ShowCard({ performance: p }: Props): JSX.Element {
 
   return (
     <div
-      className="group cursor-pointer border-[1.5px] border-foreground bg-card hover:bg-muted/30 transition-colors"
+      className="group cursor-pointer relative aspect-3/4 overflow-hidden border-[1.5px] bg-card hover:bg-muted/30 transition-colors"
       onClick={() => void router.push(`/shows/${p.mt20id}`)}
     >
       {/* 포스터 */}
@@ -57,7 +57,9 @@ export default function ShowCard({ performance: p }: Props): JSX.Element {
         <p className="text-sm font-bold leading-snug line-clamp-2">{p.title}</p>
         <p className="text-xs text-muted-foreground truncate">{p.venueName}</p>
         <div className="flex items-center justify-between mt-1">
-          <span className="text-[10px] font-semibold text-point">{p.genre}</span>
+          <span className="text-[10px] font-semibold text-point">
+            {p.genre}
+          </span>
           <span className="text-[10px] text-muted-foreground">
             {p.startDate.replace(/\./g, ".")} ~{" "}
             {p.isOpenRun ? "오픈런" : p.endDate.replace(/\./g, ".")}

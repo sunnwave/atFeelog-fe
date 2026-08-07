@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import PageHeader from "@/components/commons/layout/PageHeader";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import Tabs from "@/components/ui/tabs/Tabs";
 import ProfileEditForm from "../component/ProfileEditForm";
 import PasswordEditForm from "../component/PasswordEditForm";
@@ -116,8 +117,8 @@ export default function ProfileEditScreen() {
     <div className="min-h-screen bg-background">
       <PageHeader label="Profile Edit" fallbackHref="/user/me" />
 
-      <div className="px-4 py-7 pb-28 lg:px-6 lg:py-8">
-        <div className="mx-auto max-w-[680px] min-h-120 border-[1.5px] border-foreground bg-card">
+      <ResponsiveLayout contentType="narrow" className="py-6 pb-28 lg:py-8">
+        <div className="min-h-120 border-[1.5px] border-foreground bg-card">
           {/* 아바타 */}
           <ProfileAvatarEditor
             user={loggedInUser}
@@ -151,7 +152,7 @@ export default function ProfileEditScreen() {
             />
           )}
         </div>
-      </div>
+      </ResponsiveLayout>
 
       <BottomActionBar>
         <UserEditActions

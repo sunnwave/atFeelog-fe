@@ -7,6 +7,7 @@ import { getImageUrl, parseDateLabel } from "@/shared/utils";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { JSX } from "react";
+import LabelBadge from "@/components/ui/badge/LabelBadge";
 
 export default function RecordPosterCard({
   record,
@@ -42,60 +43,61 @@ export default function RecordPosterCard({
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-black/30" />
-            <div className="absolute inset-0 flex flex-col justify-between p-5">
+            <div className="absolute inset-0 flex flex-col justify-between p-3 md:p-5">
               <div className="flex items-center justify-between">
-                <span className="bg-point text-white text-xs font-black tracking-widest uppercase px-2.5 py-1">
+                <LabelBadge variant="point" size="responsive">
                   {label}
-                </span>
+                </LabelBadge>
                 <div className="flex flex-col items-end leading-none">
-                  <span className="text-[11px] font-black tracking-widest text-white/50 uppercase">
+                  <span className="text-[10px] font-black tracking-widest text-white/50 uppercase">
                     {mon}
                   </span>
-                  <span className="text-2xl font-black text-white/90 tracking-tight">
+                  <span className="text-lg md:text-2xl font-black text-white/90 tracking-tight">
                     {day}
                   </span>
                 </div>
               </div>
-              <p className="text-white text-2xl font-black leading-tight tracking-tight">
-                {record.showName ?? record.title}
+              <p className="text-white text-base md:text-2xl font-black leading-tight tracking-tight line-clamp-2">
+                {record.title}
               </p>
             </div>
           </>
         ) : (
           <div
-            className="w-full h-full flex flex-col justify-between p-5 bg-white group-hover:bg-foreground transition-all duration-300"
+            className="w-full h-full flex flex-col justify-between p-3 md:p-5 bg-white group-hover:bg-foreground transition-all duration-300"
             style={{
-              backgroundImage: "radial-gradient(circle, rgba(33,33,33,0.13) 1.5px, transparent 1.5px)",
+              backgroundImage:
+                "radial-gradient(circle, rgba(33,33,33,0.13) 1.5px, transparent 1.5px)",
               backgroundSize: "16px 16px",
             }}
           >
             <div className="flex items-center justify-between">
-              <span className="border border-point text-point text-xs font-black tracking-widest uppercase px-2.5 py-1 bg-white/90 group-hover:bg-point group-hover:border-point group-hover:text-white transition-colors duration-300">
+              <LabelBadge variant="point" size="responsive">
                 {label}
-              </span>
+              </LabelBadge>
               <div className="flex flex-col items-end leading-none">
-                <span className="text-[11px] font-black tracking-widest text-muted-foreground uppercase group-hover:text-background/50 transition-colors duration-300">
+                <span className="text-[10px] font-black tracking-widest text-muted-foreground uppercase group-hover:text-background/50 transition-colors duration-300">
                   {mon}
                 </span>
-                <span className="text-2xl font-black text-foreground tracking-tight group-hover:text-background transition-colors duration-300">
+                <span className="text-lg md:text-2xl font-black text-foreground tracking-tight group-hover:text-background transition-colors duration-300">
                   {day}
                 </span>
               </div>
             </div>
-            <p className="text-foreground text-2xl font-black leading-tight tracking-tight group-hover:text-background transition-colors duration-300">
-              {record.showName ?? record.title}
+            <p className="text-foreground text-base md:text-2xl font-black leading-tight tracking-tight line-clamp-2 group-hover:text-background transition-colors duration-300">
+              {record.title}
             </p>
           </div>
         )}
       </div>
 
       {showMeta && (
-        <div className="relative pt-6 pb-2.5 px-4 border-t-[1.5px] border-foreground bg-card">
+        <div className="relative pt-5 pb-2 px-3 md:pt-6 md:pb-2.5 md:px-4 border-t-[1.5px] border-foreground bg-card">
           <div className="absolute -top-3 left-3">
             <Avatar user={record.user ?? null} size="sm" type="filled" />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-foreground truncate max-w-[55%]">
+            <span className="text-xs md:text-sm font-bold text-foreground truncate max-w-[55%]">
               {record.user?.name}
             </span>
             <div className="flex items-center gap-3">

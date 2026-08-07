@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button/Button";
+import { Menu } from "lucide-react";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 
 export default function WriterMenu({
   onEditClick,
   onDeleteClick,
+  icon = "v",
 }: {
+  icon?: "m" | "v";
   onEditClick: () => void;
   onDeleteClick: () => void;
 }) {
@@ -14,7 +17,11 @@ export default function WriterMenu({
   return (
     <div className="relative">
       <Button variant="ghost" onClick={() => setShowMenu(!showMenu)}>
-        <MoreVertical className="w-4 h-4 text-muted-foreground" />
+        {icon === "m" ? (
+          <Menu className="w-4 h-4 text-muted-foreground" />
+        ) : (
+          <MoreVertical className="w-4 h-4 text-muted-foreground" />
+        )}
       </Button>
 
       {showMenu && (

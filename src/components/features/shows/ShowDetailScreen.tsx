@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Sparkles } from "lucide-react";
 import PageHeader from "@/components/commons/layout/PageHeader";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
@@ -55,7 +56,7 @@ export default function ShowDetailScreen({
   return (
     <div className="min-h-screen bg-background">
       <PageHeader label="About Show" fallbackHref="/shows" />
-      <div className="max-w-screen-lg mx-auto px-4 py-6 space-y-6">
+      <ResponsiveLayout contentType="default" className="py-6 space-y-6">
 
         {/* 공연 헤더 */}
         {detailLoading ? (
@@ -190,7 +191,7 @@ export default function ShowDetailScreen({
             )}
           </div>
         )}
-      </div>
+      </ResponsiveLayout>
     </div>
   );
 }

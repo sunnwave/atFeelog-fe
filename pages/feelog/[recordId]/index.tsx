@@ -1,7 +1,7 @@
-import RecordDetail from "@/components/features/record/detail/RecordDetail";
+import RecordDetailScreen from "@/components/features/record/detail/RecordDetailScreen";
 
 export default function RecordDetailPage() {
-  return <RecordDetail />;
+  return <RecordDetailScreen />;
 }
 
 RecordDetailPage.noPadding = true;
