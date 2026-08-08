@@ -27,7 +27,7 @@ export default function RecordPosterCard({
 
   return (
     <div
-      className={`group${showBorder ? " border-r-[1.5px] border-b-[1.5px] border-foreground" : ""}`}
+      className={`@container group${showBorder ? " border-r-[1.5px] border-b-[1.5px] border-foreground" : ""}`}
     >
       <div
         onClick={onClick}
@@ -42,14 +42,14 @@ export default function RecordPosterCard({
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-black/30" />
-            <div className="absolute inset-0 flex flex-col justify-between p-3 md:p-5">
+            <div className="absolute inset-0 flex flex-col justify-between p-2 @card-xs:p-3 @card-sm:p-4 @card-md:p-5 @card-lg:p-6">
               <div className="flex items-center justify-between">
-                <LabelBadge variant="point" size="responsive">
+                <LabelBadge variant="point" size="card">
                   {label}
                 </LabelBadge>
                 <RecordPosterCardDate date={record.createdAt} />
               </div>
-              <p className="text-white text-base md:text-2xl font-black leading-tight tracking-tight line-clamp-2">
+              <p className="text-white text-sm @card-xs:text-lg @card-sm:text-xl @card-md:text-2xl @card-lg:text-3xl font-black leading-tight tracking-tight line-clamp-2">
                 {record.title}
               </p>
             </div>
@@ -57,12 +57,12 @@ export default function RecordPosterCard({
         ) : (
           <NoImagePosterCard>
             <div className="flex items-center justify-between">
-              <LabelBadge variant="point" size="responsive">
+              <LabelBadge variant="point" size="card">
                 {label}
               </LabelBadge>
               <RecordPosterCardDate date={record.createdAt} variant="light" />
             </div>
-            <p className="text-foreground text-base md:text-2xl font-black leading-tight tracking-tight line-clamp-2 group-hover:text-background transition-colors duration-300">
+            <p className="text-foreground text-sm @card-xs:text-lg @card-sm:text-xl @card-md:text-2xl @card-lg:text-3xl font-black leading-tight tracking-tight line-clamp-2 group-hover:text-background transition-colors duration-300">
               {record.title}
             </p>
           </NoImagePosterCard>
