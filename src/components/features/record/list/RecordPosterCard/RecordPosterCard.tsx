@@ -43,7 +43,7 @@ export default function RecordPosterCard({
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-black/30" />
             <div className="absolute inset-0 flex flex-col justify-between p-2 @card-xs:p-3 @card-sm:p-4 @card-md:p-5 @card-lg:p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between">
                 <LabelBadge variant="point" size="card">
                   {label}
                 </LabelBadge>
@@ -56,7 +56,7 @@ export default function RecordPosterCard({
           </>
         ) : (
           <NoImagePosterCard>
-            <div className="flex items-center justify-between">
+            <div className="flex items-start justify-between">
               <LabelBadge variant="point" size="card">
                 {label}
               </LabelBadge>

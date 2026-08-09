@@ -23,14 +23,14 @@ export default function RecordPosterCardDate({
 }) {
   const { mon, day } = parseDateLabel(date);
   return (
-    <div className="flex flex-col items-end leading-none">
+    <div className="flex flex-col items-center leading-none">
       <span
-        className={`text-[10px] font-black tracking-widest uppercase ${monStyles[variant]}`}
+        className={`text-[8px] @card-xs:text-[10px] @card-sm:text-xs @card-md:text-sm @card-lg:text-base font-black tracking-widest uppercase ${monStyles[variant]}`}
       >
         {mon}
       </span>
       <span
-        className={`text-lg md:text-2xl font-black tracking-tight ${dayStyles[variant]}`}
+        className={`text-base @card-xs:text-lg @card-sm:text-xl @card-md:text-2xl @card-lg:text-3xl font-black tracking-tight ${dayStyles[variant]}`}
       >
         {day}
       </span>
