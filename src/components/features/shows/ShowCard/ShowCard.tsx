@@ -2,6 +2,7 @@ import { JSX } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import type { Performance } from "@/shared/types/performance";
+import ShowCardMeta from "./ShowCardMeta";
 
 const STATUS_STYLE: Record<string, string> = {
   공연중: "bg-green-500/10 text-green-600",
@@ -9,18 +10,26 @@ const STATUS_STYLE: Record<string, string> = {
   공연완료: "bg-muted text-muted-foreground",
 };
 
-type Props = { performance: Performance };
-
-export default function ShowCard({ performance: p }: Props): JSX.Element {
+export default function ShowCard({
+  performance: p,
+  showMeta = true,
+  showBorder = true,
+}: {
+  performance: Performance;
+  showMeta?: boolean;
+  showBorder?: boolean;
+}): JSX.Element {
   const router = useRouter();
 
   return (
     <div
-      className="group cursor-pointer relative aspect-3/4 overflow-hidden border-[1.5px] bg-card hover:bg-muted/30 transition-colors"
-      onClick={() => void router.push(`/shows/${p.mt20id}`)}
+      className={`@container group${showBorder ? " border-r-[1.5px] border-b-[1.5px] border-foreground" : ""}`}
     >
       {/* 포스터 */}
-      <div className="relative aspect-3/4 overflow-hidden border-b-[1.5px] border-foreground">
+      <div
+        className="cursor-pointer relative aspect-3/4 overflow-hidden border-b-[1.5px] border-foreground"
+        onClick={() => void router.push(`/shows/${p.mt20id}`)}
+      >
         {p.posterUrl ? (
           <Image
             src={p.posterUrl}
@@ -53,19 +62,8 @@ export default function ShowCard({ performance: p }: Props): JSX.Element {
       </div>
 
       {/* 텍스트 */}
-      <div className="p-3 flex flex-col gap-0.5">
-        <p className="text-sm font-bold leading-snug line-clamp-2">{p.title}</p>
-        <p className="text-xs text-muted-foreground truncate">{p.venueName}</p>
-        <div className="flex items-center justify-between mt-1">
-          <span className="text-[10px] font-semibold text-point">
-            {p.genre}
-          </span>
-          <span className="text-[10px] text-muted-foreground">
-            {p.startDate.replace(/\./g, ".")} ~{" "}
-            {p.isOpenRun ? "오픈런" : p.endDate.replace(/\./g, ".")}
-          </span>
-        </div>
-      </div>
+
+      {showMeta && <ShowCardMeta p={p} />}
     </div>
   );
 }
