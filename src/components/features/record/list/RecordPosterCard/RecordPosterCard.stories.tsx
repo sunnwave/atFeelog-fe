@@ -33,37 +33,66 @@ type Story = StoryObj<typeof RecordPosterCard>;
 
 // ─── 단일 카드 ────────────────────────────────────────────────────────────────
 
-function CardWrapper({ children, bg = "#111827" }: { children: React.ReactNode; bg?: string }): JSX.Element {
+function CardWrapper({
+  children,
+  bg = "#111827",
+}: {
+  children: React.ReactNode;
+  bg?: string;
+}): JSX.Element {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", padding: 24, background: bg }}>
-      <div style={{ width: 240 }}>
-        {children}
-      </div>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 24,
+        background: bg,
+      }}
+    >
+      <div style={{ width: 240 }}>{children}</div>
     </div>
   );
 }
 
 /** 이미지 있는 포스터 카드 */
 export const Poster: Story = {
-  render: (args) => <CardWrapper><RecordPosterCard {...args} /></CardWrapper>,
+  render: (args) => (
+    <CardWrapper>
+      <RecordPosterCard {...args} />
+    </CardWrapper>
+  ),
   args: { record: { ...baseRecord, images: [IMG] } },
 };
 
 /** 이미지 없는 텍스트 카드 */
 export const Quote: Story = {
-  render: (args) => <CardWrapper bg="#f6f5fa"><RecordPosterCard {...args} /></CardWrapper>,
+  render: (args) => (
+    <CardWrapper bg="#f6f5fa">
+      <RecordPosterCard {...args} />
+    </CardWrapper>
+  ),
   args: { record: { ...baseRecord, images: [] } },
 };
 
 /** 유저 정보 없음 */
 export const AnonymousUser: Story = {
-  render: (args) => <CardWrapper><RecordPosterCard {...args} /></CardWrapper>,
+  render: (args) => (
+    <CardWrapper>
+      <RecordPosterCard {...args} />
+    </CardWrapper>
+  ),
   args: { record: { ...baseRecord, images: [IMG], user: undefined } },
 };
 
 /** showMeta — Avatar + 좋아요/댓글 푸터 포함 */
 export const WithMeta: Story = {
-  render: (args) => <CardWrapper bg="#f6f5fa"><RecordPosterCard {...args} /></CardWrapper>,
+  render: (args) => (
+    <CardWrapper bg="#f6f5fa">
+      <RecordPosterCard {...args} />
+    </CardWrapper>
+  ),
   args: {
     record: { ...baseRecord, images: [IMG] },
     showMeta: true,
@@ -72,46 +101,82 @@ export const WithMeta: Story = {
 };
 
 // ─── 카드 너비별 Showcase ─────────────────────────────────────────────────────
-// CQ 적용 전 현황 확인용 — 현재는 모든 너비에서 동일하게 보임
+// card CQ 브레이크포인트 기준
+//   @card-xs : 180px — ShowsScreen 3~5열
+//   @card-sm : 220px — 3열 전환 구간
+//   @card-md : 280px — RecordFeed 4열
+//   @card-lg : 320px — RecordFeed/Profile 2열
 
 const WIDTH_CONFIGS = [
-  { label: "140px", desc: "5열 기준", width: 140 },
-  { label: "200px", desc: "3열 기준", width: 200 },
-  { label: "280px", desc: "2열 기준", width: 280 },
+  { label: "180px", desc: "@card-xs", width: 180 },
+  { label: "220px", desc: "@card-sm", width: 220 },
+  { label: "280px", desc: "@card-md", width: 280 },
+  { label: "320px", desc: "@card-lg", width: 320 },
+  { label: "380px", desc: "@card-lg+", width: 380 },
 ] as const;
 
 export const WidthShowcase: Story = {
-  name: "Width Showcase (CQ 적용 전)",
+  name: "Width Showcase — 실제 사용처 기준",
   render: () => (
-    <div className="p-8 bg-background space-y-8">
-      <div className="flex items-start gap-8 flex-wrap">
-        {WIDTH_CONFIGS.map(({ label, desc, width }) => (
-          <div key={label}>
-            <div className="mb-2 flex items-center gap-2">
-              <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded">{label}</span>
-              <span className="text-xs text-muted-foreground">{desc}</span>
-            </div>
-            <div style={{ width }} className="border border-border/40">
-              <div className="border-[1.5px] border-foreground">
-                <RecordPosterCard record={{ ...baseRecord, images: [IMG] }} showBorder={false} />
+    <div className="p-8 bg-background space-y-10">
+      {/* 이미지 있는 카드 */}
+      <div>
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
+          Poster (이미지)
+        </p>
+        <div className="flex items-start gap-6 flex-wrap">
+          {WIDTH_CONFIGS.map(({ label, desc, width }) => (
+            <div key={label}>
+              <div className="mb-2 flex flex-col gap-0.5">
+                <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">
+                  {label}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  {desc}
+                </span>
+              </div>
+              <div
+                style={{ width }}
+                className="border-[1.5px] border-foreground"
+              >
+                <RecordPosterCard
+                  record={{ ...baseRecord, images: [IMG] }}
+                  showBorder={false}
+                />
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-      <div className="flex items-start gap-8 flex-wrap">
-        {WIDTH_CONFIGS.map(({ label, width }) => (
-          <div key={label}>
-            <div className="mb-2">
-              <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded">{label} (텍스트)</span>
-            </div>
-            <div style={{ width }} className="border border-border/40">
-              <div className="border-[1.5px] border-foreground">
-                <RecordPosterCard record={{ ...baseRecord, images: [] }} showBorder={false} />
+
+      {/* 이미지 없는 카드 */}
+      <div>
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
+          Quote (텍스트)
+        </p>
+        <div className="flex items-start gap-6 flex-wrap">
+          {WIDTH_CONFIGS.map(({ label, desc, width }) => (
+            <div key={label}>
+              <div className="mb-2 flex flex-col gap-0.5">
+                <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">
+                  {label}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  {desc}
+                </span>
+              </div>
+              <div
+                style={{ width }}
+                className="border-[1.5px] border-foreground"
+              >
+                <RecordPosterCard
+                  record={{ ...baseRecord, images: [] }}
+                  showBorder={false}
+                />
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   ),
