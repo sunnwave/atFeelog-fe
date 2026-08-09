@@ -116,7 +116,7 @@ const WIDTH_CONFIGS = [
 ] as const;
 
 export const WidthShowcase: Story = {
-  name: "Width Showcase — 실제 사용처 기준",
+  name: "Width Showcase ",
   render: () => (
     <div className="p-8 bg-background space-y-10">
       {/* 이미지 있는 카드 */}
@@ -172,6 +172,75 @@ export const WidthShowcase: Story = {
                 <RecordPosterCard
                   record={{ ...baseRecord, images: [] }}
                   showBorder={false}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+};
+
+export const WithMetaWidthShowcase: Story = {
+  name: "With Meta Width Showcase ",
+  render: () => (
+    <div className="p-8 bg-background space-y-10">
+      {/* 이미지 있는 카드 */}
+      <div>
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
+          Poster (이미지)
+        </p>
+        <div className="flex items-start gap-6 flex-wrap">
+          {WIDTH_CONFIGS.map(({ label, desc, width }) => (
+            <div key={label}>
+              <div className="mb-2 flex flex-col gap-0.5">
+                <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">
+                  {label}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  {desc}
+                </span>
+              </div>
+              <div
+                style={{ width }}
+                className="border-[1.5px] border-foreground"
+              >
+                <RecordPosterCard
+                  record={{ ...baseRecord, images: [IMG] }}
+                  showBorder={false}
+                  showMeta
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 이미지 없는 카드 */}
+      <div>
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
+          Quote (텍스트)
+        </p>
+        <div className="flex items-start gap-6 flex-wrap">
+          {WIDTH_CONFIGS.map(({ label, desc, width }) => (
+            <div key={label}>
+              <div className="mb-2 flex flex-col gap-0.5">
+                <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">
+                  {label}
+                </span>
+                <span className="text-[11px] text-muted-foreground">
+                  {desc}
+                </span>
+              </div>
+              <div
+                style={{ width }}
+                className="border-[1.5px] border-foreground"
+              >
+                <RecordPosterCard
+                  record={{ ...baseRecord, images: [] }}
+                  showBorder={false}
+                  showMeta
                 />
               </div>
             </div>
