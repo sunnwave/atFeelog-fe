@@ -142,9 +142,9 @@ export default function RecordFeed({
 
   return (
     <ResponsiveLayout contentType="wide" padded={false}>
-      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
+      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {records.map((record) => (
-          <div key={record.id} className="border-[1.5px] border-foreground">
+          <div key={record.id} className="border-r-[1.5px] border-b-[1.5px] border-foreground">
             <RecordPosterCard record={record} showMeta showBorder={false} />
           </div>
         ))}
