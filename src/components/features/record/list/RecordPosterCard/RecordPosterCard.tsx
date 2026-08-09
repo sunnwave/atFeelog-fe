@@ -42,7 +42,7 @@ export default function RecordPosterCard({
               className="object-cover group-hover:scale-105 transition-transform duration-500"
             />
             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/10 to-black/30" />
-            <div className="absolute inset-0 flex flex-col justify-between p-2 @card-xs:p-3 @card-sm:p-4 @card-md:p-5 @card-lg:p-6">
+            <div className="absolute inset-0 flex flex-col justify-between p-2 pb-4 @card-xs:p-3 @card-xs:pb-5 @card-sm:p-4 @card-sm:pb-6 @card-md:p-5 @card-md:pb-7 @card-lg:p-6 @card-lg:pb-8">
               <div className="flex items-start justify-between">
                 <LabelBadge variant="point" size="card">
                   {label}
