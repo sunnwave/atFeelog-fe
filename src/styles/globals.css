@@ -6,6 +6,7 @@
 @source inline("grid-cols-{1,2,3,4,5,6,12}");
 @source inline("{@sm,@md,@lg}:grid-cols-{1,2,3,4,5,6,12}");
 
+
 @theme inline {
   --font-sans: "Pretendard Variable", Pretendard, Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
@@ -24,6 +25,19 @@
   --container-sm: 30rem;
   --container-md: 40rem;
   --container-lg: 50rem;
+
+  /*
+   * RecordPosterCard / ShowCard container query 브레이크포인트
+   * 카드 컴포넌트 자체의 너비 기준
+   *   @card-xs : 180px  — ShowsScreen 3~5열 (가장 좁은 카드)
+   *   @card-sm : 220px  — 3열 전환 구간
+   *   @card-md : 280px  — RecordFeed 4열 wide
+   *   @card-lg : 320px  — RecordFeed / ProfileGrid 2열 기본
+   */
+  --container-card-xs: 11.25rem;
+  --container-card-sm: 13.75rem;
+  --container-card-md: 17.5rem;
+  --container-card-lg: 20rem;
 }
 
 /* @media (prefers-color-scheme: dark) {

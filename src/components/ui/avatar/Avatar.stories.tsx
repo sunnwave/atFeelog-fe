@@ -13,7 +13,7 @@ const meta: Meta<typeof Avatar> = {
   argTypes: {
     size: {
       control: "select",
-      options: ["xs", "sm", "md", "lg"],
+      options: ["xs", "sm", "md", "lg", "card"],
     },
     type: {
       control: "select",
@@ -134,6 +134,61 @@ export const AllVariants: Story = {
       </div>
     );
   },
+};
+
+// ─── CQ 너비별 쇼케이스 ──────────────────────────────────────────────────────
+// 현재 RecordPosterCardMeta에서 className으로 w/h만 CQ override하는 방식 검증
+// 이미지 아바타는 object-cover로 채워지지만,
+// 이니셜/게스트 아바타는 컨테이너는 커져도 내부 텍스트·아이콘 사이즈가 고정돼 어색할 수 있음
+
+const CARD_WIDTHS = [
+  { label: "160px", desc: "< @card-xs", width: 160 },
+  { label: "180px", desc: "@card-xs", width: 180 },
+  { label: "220px", desc: "@card-sm", width: 220 },
+  { label: "280px", desc: "@card-md", width: 280 },
+] as const;
+
+const avatarCases: { label: string; user: User | undefined; type: AvatarType }[] = [
+  { label: "이미지", user: mockUserWithImage, type: "filled" },
+  { label: "이니셜 filled", user: mockUser, type: "filled" },
+  { label: "이니셜 outlined", user: mockUser, type: "outlined" },
+  { label: "guest", user: undefined, type: "filled" },
+];
+
+export const CardContextShowcase: Story = {
+  name: "Card Context — CQ w/h override 검증",
+  render: () => (
+    <div className="p-8 bg-background flex flex-col gap-8">
+      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+        className으로 w/h만 CQ override — 이니셜·게스트 내부 사이즈 확인
+      </p>
+      {avatarCases.map(({ label, user, type }) => (
+        <div key={label} className="flex flex-col gap-3">
+          <p className="text-xs font-bold text-foreground uppercase tracking-widest">{label}</p>
+          <div className="flex items-end gap-8 flex-wrap">
+            {CARD_WIDTHS.map(({ label: wLabel, desc, width }) => (
+              <div key={wLabel} className="flex flex-col gap-2">
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">{wLabel}</span>
+                  <span className="text-[11px] text-muted-foreground">{desc}</span>
+                </div>
+                {/* @container — 카드 CQ 컨텍스트 시뮬레이션 */}
+                <div className="@container border-[1.5px] border-foreground/20 bg-foreground/5 p-2" style={{ width }}>
+                  <Avatar
+                    user={user}
+                    size="sm"
+                    type={type}
+                    className="w-6 h-6 @card-xs:w-8 @card-xs:h-8 @card-md:w-10 @card-md:h-10"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+  parameters: { layout: "fullscreen" },
 };
 
 export const ProfileEntryUsage: Story = {

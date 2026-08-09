@@ -1,11 +1,14 @@
 import { cn } from "@/shared/utils/cn";
 
 type LabelBadgeVariant = "light" | "dark" | "point";
-type LabelBadgeSize = "responsive" | "fixed";
+type LabelBadgeSize = "card" | "fixed";
 
 type LabelBadgeProps = {
   variant?: LabelBadgeVariant;
-  /** responsive: 카드 안 반응형 뱃지 / fixed: 일반 고정 크기 뱃지 (default) */
+  /**
+   * card  : 카드 CQ 반응형 뱃지 — 반드시 @container card 컨텍스트 안에서 사용
+   * fixed : 고정 크기 뱃지 (default)
+   */
   size?: LabelBadgeSize;
   className?: string;
   children: React.ReactNode;
@@ -18,7 +21,7 @@ const variants: Record<LabelBadgeVariant, string> = {
 };
 
 const sizes: Record<LabelBadgeSize, string> = {
-  responsive: "text-[10px] md:text-xs px-2 py-0.5 md:px-2.5 md:py-1",
+  card: "text-[10px] @card-xs:text-xs @card-sm:text-sm @card-md:text-base  px-1.5 py-0.5 ",
   fixed: "h-6 px-2.5 text-[10px]",
 };
 
