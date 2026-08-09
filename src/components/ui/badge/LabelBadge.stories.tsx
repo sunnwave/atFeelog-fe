@@ -14,7 +14,7 @@ const meta: Meta<typeof LabelBadge> = {
     },
     size: {
       control: "inline-radio",
-      options: ["responsive", "fixed"],
+      options: ["card", "fixed"],
     },
     children: { control: "text" },
   },
@@ -28,8 +28,7 @@ const meta: Meta<typeof LabelBadge> = {
 export default meta;
 type Story = StoryObj<typeof LabelBadge>;
 
-export const Light: Story = {
-  args: { variant: "light", children: "JOIN US" },
+export const Default: Story = {
   decorators: [
     (Story) => (
       <div className="bg-background p-8 flex items-center justify-center">
@@ -39,88 +38,86 @@ export const Light: Story = {
   ],
 };
 
-export const Dark: Story = {
-  args: { variant: "dark", children: "MEMBER ONLY" },
-  decorators: [
-    (Story) => (
-      <div className="bg-foreground p-8 flex items-center justify-center">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const Point: Story = {
-  args: { variant: "point", size: "responsive", children: "BTS" },
-  decorators: [
-    (Story) => (
-      <div className="bg-background p-8 flex items-center justify-center">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const PointMobile: Story = {
-  name: "Point / responsive (모바일 뷰)",
-  args: { variant: "point", size: "responsive", children: "아이유" },
-  parameters: { viewport: { defaultViewport: "mobile1" } },
-  decorators: [
-    (Story) => (
-      <div className="bg-background p-8 flex items-center justify-center">
-        <Story />
-      </div>
-    ),
-  ],
-};
-
-export const PointDesktop: Story = {
-  name: "Point / responsive (데스크탑 뷰)",
-  args: { variant: "point", size: "responsive", children: "아이유" },
-  parameters: { viewport: { defaultViewport: "desktop" } },
-  decorators: [
-    (Story) => (
-      <div className="bg-background p-8 flex items-center justify-center">
-        <Story />
-      </div>
-    ),
-  ],
-};
+const CARD_WIDTHS = [
+  { label: "160px", desc: "< @card-xs", width: 160 },
+  { label: "180px", desc: "@card-xs", width: 180 },
+  { label: "220px", desc: "@card-sm", width: 220 },
+  { label: "280px", desc: "@card-md", width: 280 },
+] as const;
 
 export const AllVariants: Story = {
   render: () => (
     <div className="flex flex-col gap-6 p-8 bg-background">
       {/* light */}
       <div className="flex flex-col gap-2">
-        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">light</p>
+        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">
+          light · size=fixed
+        </p>
         <div className="flex flex-wrap gap-2">
-          {["JOIN US", "NEW MEMBER", "SIGN IN", "SIGN UP", "MEMBER ONLY"].map((label) => (
-            <LabelBadge key={label} variant="light">{label}</LabelBadge>
-          ))}
+          {["JOIN US", "NEW MEMBER", "SIGN IN", "SIGN UP", "MEMBER ONLY"].map(
+            (label) => (
+              <LabelBadge key={label} variant="light">
+                {label}
+              </LabelBadge>
+            ),
+          )}
         </div>
       </div>
 
       {/* dark */}
       <div className="flex flex-col gap-2">
-        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">dark</p>
+        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">
+          dark · size=fixed
+        </p>
         <div className="flex flex-wrap gap-2 bg-foreground p-4">
-          {["JOIN US", "NEW MEMBER", "SIGN IN", "SIGN UP", "MEMBER ONLY"].map((label) => (
-            <LabelBadge key={label} variant="dark">{label}</LabelBadge>
+          {["JOIN US", "NEW MEMBER", "SIGN IN", "SIGN UP", "MEMBER ONLY"].map(
+            (label) => (
+              <LabelBadge key={label} variant="dark">
+                {label}
+              </LabelBadge>
+            ),
+          )}
+        </div>
+      </div>
+
+      {/* point fixed */}
+      <div className="flex flex-col gap-2">
+        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">
+          point · size=fixed
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {["BTS", "아이유", "세븐틴", "NCT 127", "BLACKPINK"].map((label) => (
+            <LabelBadge key={label} variant="point">
+              {label}
+            </LabelBadge>
           ))}
         </div>
       </div>
 
-      {/* point — RecordCard 뱃지 용도 (size="responsive", 반응형) */}
+      {/* point card — CQ 반응형, @container 필요 */}
       <div className="flex flex-col gap-2">
-        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">point · size=responsive</p>
-        <div className="flex flex-wrap gap-2">
-          {["BTS", "아이유", "세븐틴", "NCT 127", "BLACKPINK"].map((label) => (
-            <LabelBadge key={label} variant="point" size="responsive">{label}</LabelBadge>
+        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">
+          point · size=card (CQ 반응형 — @container 안에서만 동작)
+        </p>
+        <div className="flex flex-wrap gap-4">
+          {CARD_WIDTHS.map(({ label, width }) => (
+            <div key={label} className="flex flex-col gap-1">
+              <span className="text-[11px] text-muted-foreground">{label}</span>
+              <div
+                className="@container bg-foreground/10 p-2"
+                style={{ width }}
+              >
+                <LabelBadge variant="point" size="card">
+                  아이유
+                </LabelBadge>
+              </div>
+            </div>
           ))}
         </div>
       </div>
     </div>
   ),
+  parameters: { layout: "fullscreen" },
 };
 
 export const UsageInContext: Story = {
@@ -139,18 +136,26 @@ export const UsageInContext: Story = {
       <div className="bg-foreground p-10 flex flex-col gap-3 w-72">
         <LabelBadge variant="dark">MEMBER ONLY</LabelBadge>
         <p className="text-2xl font-black tracking-tight text-white leading-tight">
-          공연의 기억은<br />여기에 있어요
+          공연의 기억은
+          <br />
+          여기에 있어요
         </p>
         <p className="text-sm text-white/55">다크 배경 컨텍스트</p>
       </div>
 
-      {/* RecordCard 컨텍스트 */}
-      <div className="relative w-48 aspect-3/4 bg-foreground overflow-hidden flex flex-col justify-between p-3">
+      {/* RecordPosterCard 컨텍스트 — @container + size="card" */}
+      <div className="@container relative w-48 aspect-3/4 bg-foreground overflow-hidden flex flex-col justify-between p-3">
         <div className="flex items-center justify-between">
-          <LabelBadge variant="point" size="responsive">아이유</LabelBadge>
+          <LabelBadge variant="point" size="card">
+            아이유
+          </LabelBadge>
           <div className="flex flex-col items-end leading-none">
-            <span className="text-[10px] font-black tracking-widest text-white/50 uppercase">JAN</span>
-            <span className="text-lg font-black text-white/90 tracking-tight">24</span>
+            <span className="text-[10px] font-black tracking-widest text-white/50 uppercase">
+              JAN
+            </span>
+            <span className="text-lg font-black text-white/90 tracking-tight">
+              24
+            </span>
           </div>
         </div>
         <p className="text-white text-base font-black leading-tight tracking-tight line-clamp-2">
