@@ -4,9 +4,8 @@ import { User as UserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { JSX } from "react";
-import { object } from "yup";
 
-export type AvatarSize = "xs" | "sm" | "md" | "lg";
+export type AvatarSize = "xs" | "sm" | "md" | "lg" | "card";
 
 export type AvatarType = "filled" | "outlined";
 
@@ -21,6 +20,11 @@ const AVATAR_SIZE: Record<
     px: 72,
     cls: "h-[72px] w-[72px] text-2xl font-bold",
     iconCls: "w-10 h-10",
+  },
+  card: {
+    px: 40,
+    cls: "w-6 h-6 @card-xs:w-8 @card-xs:h-8 @card-md:w-10 @card-md:h-10 text-xs font-medium",
+    iconCls: "w-3 h-3",
   },
 };
 
@@ -46,7 +50,7 @@ export default function Avatar({
   const color = pickAvatarColor(key);
 
   const base =
-    "rounded-full flex shrink-0 items-center justify-center overflow-hidden object-cover";
+    "rounded-full flex shrink-0 items-center justify-center overflow-hidden";
 
   const href =
     clickable && user?.id
@@ -85,7 +89,7 @@ export default function Avatar({
   if (avatarUrl) {
     return wrap(
       <Image
-        className={cn(base, className)}
+        className={cn(base, s.cls, "object-cover", className)}
         src={avatarUrl}
         alt="User Avatar"
         width={s.px}

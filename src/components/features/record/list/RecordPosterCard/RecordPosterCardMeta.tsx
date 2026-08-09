@@ -14,8 +14,8 @@ export default function RecordPosterCardMeta({
       <div className="absolute -top-3 left-2 @card-xs:-top-4 @card-xs:left-3 @card-md:-top-5 @card-md:left-4">
         <Avatar
           user={record.user ?? null}
+          size="card"
           type="filled"
-          className="w-6 h-6 @card-xs:w-8 @card-xs:h-8 @card-md:w-10 @card-md:h-10"
         />
       </div>
       <div className="flex items-center justify-between">
