@@ -1,10 +1,13 @@
 import { JSX } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import type { Performance } from "@/shared/types/performance";
+import type { Performance, PerformanceStatus } from "@/shared/types/performance";
 import LabelBadge from "@/components/ui/badge/LabelBadge";
+import RankBadge from "@/components/ui/badge/RankBadge";
 import ShowCardMeta from "./ShowCardMeta";
 import NoImageCard from "@/components/ui/NoImageCard";
+
+type ShowCardPerformance = Omit<Performance, "status"> & { status?: PerformanceStatus };
 
 const STATUS_VARIANT: Record<string, "light" | "point" | "muted"> = {
   공연예정: "light",
@@ -16,12 +19,21 @@ export default function ShowCard({
   performance: p,
   showMeta = true,
   showBorder = true,
+  rank,
 }: {
-  performance: Performance;
+  performance: ShowCardPerformance;
   showMeta?: boolean;
   showBorder?: boolean;
+  rank?: number;
 }): JSX.Element {
   const router = useRouter();
+
+  const badge =
+    rank != null ? (
+      <RankBadge rank={rank} />
+    ) : p.status ? (
+      <LabelBadge variant={STATUS_VARIANT[p.status] ?? "light"} size="card">{p.status}</LabelBadge>
+    ) : null;
 
   return (
     <div
@@ -45,18 +57,12 @@ export default function ShowCard({
         )}
         <div className="absolute inset-0 p-2 @card-xs:p-2.5 @card-sm:p-3 @card-md:p-4">
           <div className="flex items-start justify-between">
-            <LabelBadge
-              variant={STATUS_VARIANT[p.status] ?? "light"}
-              size="card"
-            >
-              {p.status}
-            </LabelBadge>
+            {badge}
           </div>
         </div>
       </div>
 
       {/* 텍스트 */}
-
       {showMeta && <ShowCardMeta p={p} />}
     </div>
   );
