@@ -6,7 +6,6 @@ import Logo from "../../../ui/logo/Logo";
 import ProfileEntry from "./ProfileEntry/ProfileEntry";
 import NavItem from "./NavItem";
 
-import { ActionSheet } from "../../actionSheet/ActionSheet";
 import { Button } from "@/components/ui/button/Button";
 
 import { buildWriteActionSheetOptions } from "@/shared/constants/actionSheetOptions";
@@ -15,8 +14,10 @@ import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import useLogoutUser from "@/shared/hooks/auth/useLogoutUser";
 import { loggedInUserState } from "@/shared/stores";
+import { useRouter } from "next/router";
 
 export default function SideNav() {
+  const router = useRouter();
   const me = useRecoilValue(loggedInUserState);
   const isLoggedIn = !!me;
 
@@ -25,9 +26,6 @@ export default function SideNav() {
 
   const { onLogoutUser } = useLogoutUser();
 
-  const [writeSheetOpen, setWriteSheetOpen] = useState(false);
-  const options = buildWriteActionSheetOptions(onClickNavigation);
-
   const onClickWrite = () => {
     if (!isLoggedIn) {
       openConfirmPreset("loginRequired", {
@@ -35,8 +33,7 @@ export default function SideNav() {
       });
       return;
     }
-
-    setWriteSheetOpen(true);
+    router.push("/feelog/new");
   };
 
   const onClickLogout = () => {
@@ -98,13 +95,6 @@ export default function SideNav() {
           </Button>
         </div>
       )}
-
-      <ActionSheet
-        options={options}
-        isOpen={writeSheetOpen}
-        onClose={() => setWriteSheetOpen(false)}
-        title="무엇을 작성할까요?"
-      />
     </aside>
   );
 }

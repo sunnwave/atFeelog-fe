@@ -23,8 +23,11 @@ export function toCreateBoardInput(args: {
   if (IS_NEW_API) {
     return {
       title: values.title,
-      artistName: values.artistName ?? "",
       showName: values.showName,
+      mt20id: values.mt20id ?? undefined,
+      genre: values.genre ?? undefined,
+      posterUrl: values.posterUrl ?? undefined,
+      artistName: values.artistName ?? "",
       showDate: values.showDate
         ? localDateToRfc3339NoonUtc(values.showDate)
         : undefined,
@@ -73,6 +76,9 @@ export function toUpdateBoardInput(args: {
     const updateBoardInput: INewUpdateBoardInput = {
       title: values.title,
       showName: values.showName,
+      mt20id: values.mt20id ?? undefined,
+      genre: values.genre ?? undefined,
+      posterUrl: values.posterUrl ?? undefined,
       artistName: values.artistName ?? "",
       showDate: values.showDate
         ? localDateToRfc3339NoonUtc(values.showDate)

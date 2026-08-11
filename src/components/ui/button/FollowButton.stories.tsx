@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import FollowButton from "./FollowButton";
 
 const meta: Meta<typeof FollowButton> = {
-  title: "ui/FollowButton",
+  title: "ui/Button/FollowButton",
   component: FollowButton,
   parameters: { layout: "centered" },
   argTypes: {
@@ -35,7 +35,9 @@ export const InContext: Story = {
       <div className="flex items-center justify-between w-64">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-muted-foreground/20" />
-          <span className="text-sm font-semibold text-foreground">재즈러버</span>
+          <span className="text-sm font-semibold text-foreground">
+            재즈러버
+          </span>
         </div>
         <FollowButton isFollowing={true} />
       </div>

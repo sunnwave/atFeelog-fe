@@ -23,7 +23,7 @@ export type ProfileHeaderProps = {
 export type ProfileActionsProps = {
   isMe: boolean;
   isFollowing?: boolean;
-  onAddFollow?: () => void;
+  onFollow?: () => void;
 };
 
 export type FollowTab = "팔로워" | "팔로잉";

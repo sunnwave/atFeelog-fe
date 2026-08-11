@@ -20,6 +20,7 @@ export function toRecordDetail(dto: ILegacyBoard | INewBoard): RecordDetail {
       id: board.id,
       title: board.title,
       showName: board.showName,
+      mt20id: board.mt20id ?? undefined,
       artistName: board.artistName ?? undefined,
       contents: board.contents,
       showDate: board.showDate,

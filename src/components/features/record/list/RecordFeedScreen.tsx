@@ -1,5 +1,5 @@
-import Header from "@/components/commons/layout/Header/Header";
 import SearchBar from "@/components/commons/search/SearchBar";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { JSX, useState } from "react";
 import RecordFeed from "./RecordFeed";
 import { useDebounce } from "@/shared/hooks/ui/useDebounce";
@@ -30,8 +30,8 @@ export default function RecordFeedScreen(): JSX.Element {
   const isBest = sortMode === "best";
 
   return (
-    <div className="mx-auto min-h-screen bg-background overflow-x-hidden p-4">
-      <div className="space-y-2 lg:space-y-4">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <ResponsiveLayout contentType="wide" className="py-4 space-y-2 lg:space-y-4">
         <SearchBar
           variant="withDate"
           search={search}
@@ -50,7 +50,7 @@ export default function RecordFeedScreen(): JSX.Element {
         />
 
         <RecordFeed filter={filter} best={isBest} feedMode={feedMode} />
-      </div>
+      </ResponsiveLayout>
     </div>
   );
 }

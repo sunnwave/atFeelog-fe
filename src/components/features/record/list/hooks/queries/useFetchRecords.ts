@@ -49,6 +49,9 @@ const FETCH_RECORDS_NEW = gql`
       id
       title
       showName
+      mt20id
+      genre
+      posterUrl
       artistName
       likeCount
       commentCount
@@ -72,7 +75,7 @@ export type RecordFilterVars = Pick<
 >;
 
 export const useFetchRecords = (filter: RecordFilterVars = {}) => {
-  const { data, loading, fetchMore, refetch } = useQuery<
+  const { data, loading, error, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoards"> | Pick<INewQuery, "fetchBoards">,
     IQueryFetchBoardsArgs
   >(FETCH_RECORDS, {
@@ -91,6 +94,7 @@ export const useFetchRecords = (filter: RecordFilterVars = {}) => {
     records,
     data,
     loading,
+    error,
     fetchMore,
     refetch,
   };

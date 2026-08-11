@@ -1,4 +1,5 @@
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
+import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { JSX, useCallback, useState } from "react";
 import { Sparkles } from "lucide-react";
 import {
@@ -130,7 +131,7 @@ export default function RecordFeed({
 
   if (isEmpty) {
     return (
-      <ResponsiveLayout contentType="app" className="pt-6">
+      <ResponsiveLayout contentType="wide" padded={false} className="pt-6">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Sparkles className="w-8 h-8" />
           <span>첫 공연의 여운을 남겨보세요</span>
@@ -140,14 +141,14 @@ export default function RecordFeed({
   }
 
   return (
-    <ResponsiveLayout contentType="app">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+    <ResponsiveLayout contentType="wide" padded={false}>
+      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {records.map((record) => (
-          <div key={record.id} className="border-[1.5px] border-foreground">
+          <div key={record.id} className="border-r-[1.5px] border-b-[1.5px] border-foreground">
             <RecordPosterCard record={record} showMeta showBorder={false} />
           </div>
         ))}
-      </div>
+      </ResponsiveGrid>
 
       <div ref={sentinelRef} className="h-6" />
       {isLoading && (

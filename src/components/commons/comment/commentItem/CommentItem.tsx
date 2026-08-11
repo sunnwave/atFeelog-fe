@@ -28,7 +28,7 @@ export default function CommentItem({ comment }: { comment: RecordComment }) {
   };
   return (
     <div data-testid="comment-item" className="w-full flex items-start gap-3">
-      <Avatar user={comment.user ?? undefined} size="sm" type="filled" clickable />
+      <Avatar user={comment.user ?? undefined} size="sm" clickable />
       <div className="flex flex-1 justify-between">
         <div className="w-full flex flex-col gap-1">
           <div className="flex items-baseline gap-2">

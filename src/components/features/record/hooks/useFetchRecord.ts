@@ -39,6 +39,7 @@ const FETCH_RECORD_NEW = gql`
       id
       title
       showName
+      mt20id
       artistName
       showDate
       contents

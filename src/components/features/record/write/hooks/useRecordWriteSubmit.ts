@@ -17,11 +17,10 @@ export default function useRecordWriteSubmit() {
   const isBusy = isUploading || loading;
 
   const onSubmitValid = async (values: RecordEditFormValues) => {
-    const uploadedUrls = await uploadImages(values.imageFiles);
-
     if (isBusy) return;
 
     try {
+      const uploadedUrls = await uploadImages(values.imageFiles);
       const id = await onCreateRecord({
         values: { ...values, images: uploadedUrls },
         writer: me?.name || "익명",

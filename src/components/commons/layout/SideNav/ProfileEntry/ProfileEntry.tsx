@@ -27,15 +27,11 @@ export default function ProfileEntry({ user: me = null }: ProfileEntryProps) {
           "normal-case tracking-normal hover:bg-transparent active:bg-transparent",
         ].join(" ")}
       >
-        {isLoggedIn ? (
-          <Avatar user={me} size="md" type="filled" />
-        ) : (
-          <Avatar size="md" />
-        )}
+        <Avatar user={me} size="md" />
 
         <div className="min-w-0 flex-1">
           <p className="w-full truncate text-base font-semibold leading-tight text-foreground">
-            {isLoggedIn ? `${me?.name} 님` : "로그인해주세요"}
+            {isLoggedIn ? `${me!.name} 님` : "로그인해주세요"}
           </p>
 
           <p className="mt-1 w-full truncate text-sm font-medium leading-tight text-muted-foreground">

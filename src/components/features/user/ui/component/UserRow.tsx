@@ -24,7 +24,7 @@ export default function UserRow({
 
   return (
     <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
-      <Avatar user={user} size="sm" type="filled" clickable />
+      <Avatar user={user} size="sm" clickable />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-bold text-foreground truncate">
           {user.name}

@@ -30,7 +30,10 @@ export default function RecordComments() {
   const { comments, loading, hasMore, loadMore } =
     useFetchRecordComments(recordId);
 
-  const { onCreateRecordComment } = useCreateRecordComment({ recordId, user: me ?? undefined });
+  const { onCreateRecordComment } = useCreateRecordComment({
+    recordId,
+    user: me ?? undefined,
+  });
   const { onUpdateRecordComment } = useUpdateRecordComment();
   const { onDeleteRecordComment } = useDeleteRecordComment();
 
@@ -55,8 +58,8 @@ export default function RecordComments() {
 
   return (
     <>
-      <div className="space-y-4">
-        <h2 className="text-lg font-bold">
+      <div className="p-3 space-y-4">
+        <h2 className="text-md font-bold">
           댓글 <span>{comments.length}</span>
         </h2>
         <CommentActionsProvider

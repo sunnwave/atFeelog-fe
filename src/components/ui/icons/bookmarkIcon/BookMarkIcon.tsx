@@ -25,7 +25,7 @@ export default function BookMarkIcon({
   return (
     <button
       onClick={handleClickSave}
-      className={`${c.icon} hover:text-white transition-all group/save`}
+      className={`${c.icon} hover:text-foreground transition-all group/save`}
       aria-label="저장"
     >
       <Bookmark
@@ -33,9 +33,9 @@ export default function BookMarkIcon({
           s.icon,
           "transition-colors",
           saved
-            ? "fill-point-emerald text-point-emerald"
+            ? "fill-foreground text-foreground"
             : "group-hover/save:text-point-emerald-light",
-          className
+          className,
         )}
         fill={saved ? "currentColor" : "none"}
       />

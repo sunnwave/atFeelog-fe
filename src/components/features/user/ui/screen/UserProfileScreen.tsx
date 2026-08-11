@@ -5,6 +5,7 @@ import { loggedInUserState } from "@/shared/stores";
 import { IS_NEW_API } from "@/api/config";
 import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
 import ProfileHeader from "../component/ProfileHeader";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ProfileRecordGrid from "../component/ProfileRecordGrid";
 import FollowListPanel from "../component/FollowListPanel";
 import {
@@ -117,7 +118,7 @@ export default function UserProfileScreen({
         };
 
   return (
-    <div className="w-full space-y-6 p-4 lg:mx-auto">
+    <ResponsiveLayout contentType="wide" className="py-4 space-y-6">
       <div className="lg:flex lg:items-stretch">
         <div className="flex-1 min-w-0">
           <ProfileHeader
@@ -146,6 +147,6 @@ export default function UserProfileScreen({
         )}
       </div>
       <ProfileRecordGrid records={records} likedRecords={likedRecords} />
-    </div>
+    </ResponsiveLayout>
   );
 }

@@ -1,13 +1,12 @@
 import { IS_NEW_API } from "@/api/config";
 import {
   IQuery as INewQuery,
-  IQueryFetchFollowingArgs,
+  IQueryFetchFollowingsArgs,
 } from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 import { toUser } from "@/api/adapters/user.adapter";
 
-// 서버 필드명은 fetchFollowings(복수), 생성된 타입의 fetchFollowing(단수)와 불일치
-type FetchFollowingsData = { fetchFollowings?: INewQuery["fetchFollowing"] };
+type FetchFollowingsData = { fetchFollowings?: INewQuery["fetchFollowings"] };
 
 const FETCH_FOLLOWING = gql`
   query fetchFollowings($userId: ID!) {
@@ -24,7 +23,7 @@ const FETCH_FOLLOWING = gql`
 export const useFetchFollowing = (userId?: string) => {
   const { data, loading, refetch } = useQuery<
     FetchFollowingsData,
-    IQueryFetchFollowingArgs
+    IQueryFetchFollowingsArgs
   >(FETCH_FOLLOWING, {
     variables: { userId: userId ?? "" },
     skip: !IS_NEW_API || !userId,

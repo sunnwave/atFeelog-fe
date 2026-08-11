@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button/Button";
 import type { ProfileActionsProps } from "../../types";
 import { useRouter } from "next/router";
+import FollowButton from "@/components/ui/button/FollowButton";
 
 export default function ProfileActions({
   isMe,
   isFollowing,
-  onAddFollow,
+  onFollow,
 }: ProfileActionsProps) {
   const router = useRouter();
 
@@ -30,14 +31,7 @@ export default function ProfileActions({
 
   return (
     <div className="flex gap-2 shrink-0">
-      <Button
-        variant={isFollowing ? "outline" : "solid"}
-        tone={isFollowing ? "neutral" : "primary"}
-        size="default"
-        onClick={onAddFollow}
-      >
-        {isFollowing ? "팔로잉" : "팔로우"}
-      </Button>
+      <FollowButton isFollowing={isFollowing} onFollow={onFollow} />
     </div>
   );
 }

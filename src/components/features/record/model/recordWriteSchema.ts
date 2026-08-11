@@ -53,5 +53,9 @@ export const recordWriteSchema: yup.ObjectSchema<RecordEditFormValues> = yup
     images: yup.array().of(yup.string().trim().required()).defined(),
 
     imageFiles: yup.array().of(yup.mixed<File>().required()).defined(),
+
+    mt20id: yup.string().optional(),
+    genre: yup.string().optional(),
+    posterUrl: yup.string().optional(),
   })
   .required();
