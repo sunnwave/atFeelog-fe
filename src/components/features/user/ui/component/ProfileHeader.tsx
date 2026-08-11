@@ -20,7 +20,7 @@ export default function ProfileHeader({
       <div className="flex flex-col md:grid md:grid-cols-[148px_1fr]">
         {/* 좌측: 아바타 셀 */}
         <div className="flex items-center justify-center bg-surface-soft p-6 border-b-[1.5px] border-foreground md:border-b-0 md:border-r-[1.5px]">
-          <Avatar user={user} size="lg" type="filled" />
+          <Avatar user={user} size="lg" />
         </div>
 
         {/* 우측: 정보 */}

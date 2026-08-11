@@ -20,7 +20,7 @@ export default function ProfileAvatarEditor({
   return (
     <div className="px-8 py-10 border-b border-foreground/15 flex items-center gap-7">
       <div className="relative">
-        <Avatar user={user} size="lg" type="filled" />
+        <Avatar user={user} size="lg" />
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
