@@ -1,7 +1,11 @@
 import { JSX, useState } from "react";
 import SearchBar from "@/components/commons/search/SearchBar";
-import { SHOW_GENRES, SHOW_REGIONS, SHOW_STATUSES } from "@/shared/constants/kopis";
-import type { ShowFilters } from "@/shared/hooks/kopis/useShowBrowser";
+import {
+  SHOW_GENRES,
+  SHOW_REGIONS,
+  SHOW_STATUSES,
+} from "@/shared/constants/kopis";
+import { ShowFilters } from "./hooks/useShowBrowser";
 
 type Props = {
   filters: ShowFilters;

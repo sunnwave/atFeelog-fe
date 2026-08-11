@@ -1,11 +1,10 @@
 import { JSX } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
-import { useShowBrowser } from "@/shared/hooks/kopis/useShowBrowser";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import ShowCard from "./ShowCard";
+import ShowCard from "./ShowCard/ShowCard";
 import ShowFilterBar from "./ShowFilterBar";
-import type { ShowFilters } from "@/shared/hooks/kopis/useShowBrowser";
+import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
 
 export default function ShowsScreen(): JSX.Element {
   const {
@@ -55,20 +54,15 @@ export default function ShowsScreen(): JSX.Element {
           </p>
         ) : (
           <>
-            <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
+            <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
               {items.map((p) => (
-                <div
-                  key={p.mt20id}
-                  // className="border-r-[1.5px] border-b-[1.5px] border-foreground"
-                >
-                  <ShowCard performance={p} />
-                </div>
+                <ShowCard key={p.mt20id} performance={p} showBorder showMeta />
               ))}
             </ResponsiveGrid>
 
             {/* 스켈레톤 (추가 로딩) */}
             {loading && (
-              <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
+              <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
                     key={i}
