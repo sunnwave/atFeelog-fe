@@ -101,7 +101,8 @@ export default function Avatar({
 
   return wrap(
     <div
-      className={cn(base, s.cls, color.bg, color.text, className)}
+      className={cn(base, s.cls, className)}
+      style={{ backgroundColor: color.bg, color: color.text }}
       aria-label={`${user.name} 아바타`}
     >
       {user.name[0] || INITIAL_FALLBACK}
