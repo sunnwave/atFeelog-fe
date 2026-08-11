@@ -3,7 +3,7 @@ import { Archive, Heart, Plus, Search, Trash2 } from "lucide-react";
 import { Button } from "./Button";
 
 const meta = {
-  title: "ui/Button",
+  title: "ui/Button/Button",
   component: Button,
   parameters: {
     layout: "centered",
@@ -466,11 +466,17 @@ export const UseCases: Story = {
         </h3>
         <div className="flex flex-wrap gap-3">
           <Button tone="primary">저장</Button>
-          <Button tone="neutral" variant="outline">취소</Button>
+          <Button tone="neutral" variant="outline">
+            취소
+          </Button>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Button tone="destructive" variant="solid">삭제</Button>
-          <Button tone="neutral" variant="ghost">아니요</Button>
+          <Button tone="destructive" variant="solid">
+            삭제
+          </Button>
+          <Button tone="neutral" variant="ghost">
+            아니요
+          </Button>
         </div>
       </section>
     </div>

@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
 import Avatar, { AvatarSize } from "./Avatar";
 import type { User } from "@/api/adapters/types/user";
-import { CARD_CQ_WIDTHS } from "@/stories/constants";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
+import { AVATAR_COLORS } from "@/shared/utils/palette/pickAvatarColor";
 
 const meta: Meta<typeof Avatar> = {
   title: "UI/Avatar",
@@ -81,7 +82,7 @@ export const SizeVariants: Story = {
 export const AllVariants: Story = {
   render: () => {
     const rows: { label: string; user: User | undefined }[] = [
-      { label: "filled", user: mockUser },
+      { label: "no image", user: mockUser },
       { label: "with image", user: mockUserWithImage },
       { label: "guest", user: undefined },
     ];
@@ -153,21 +154,26 @@ export const CardContextShowcase: Story = {
       </p>
       {avatarCases.map(({ label, user }) => (
         <div key={label} className="flex flex-col gap-3">
-          <p className="text-xs font-bold text-foreground uppercase tracking-widest">{label}</p>
+          <p className="text-xs font-bold text-foreground uppercase tracking-widest">
+            {label}
+          </p>
           <div className="flex items-end gap-8 flex-wrap">
             {CARD_WIDTHS.map(({ label: wLabel, desc, width }) => (
               <div key={wLabel} className="flex flex-col gap-2">
                 <div className="flex flex-col gap-0.5">
-                  <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">{wLabel}</span>
-                  <span className="text-[11px] text-muted-foreground">{desc}</span>
+                  <span className="text-xs font-bold bg-muted px-2 py-0.5 rounded w-fit">
+                    {wLabel}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
+                    {desc}
+                  </span>
                 </div>
                 {/* @container — 카드 CQ 컨텍스트 시뮬레이션 */}
-                <div className="@container border-[1.5px] border-foreground/20 bg-foreground/5 p-2" style={{ width }}>
-                  <Avatar
-                    user={user}
-                    size="sm"
-                    className="w-6 h-6 @card-xs:w-8 @card-xs:h-8 @card-md:w-10 @card-md:h-10"
-                  />
+                <div
+                  className="@container border-[1.5px] border-foreground/20 bg-foreground/5 p-2"
+                  style={{ width }}
+                >
+                  <Avatar user={user} size="card" />
                 </div>
               </div>
             ))}
@@ -253,4 +259,71 @@ export const ProfileEntryUsage: Story = {
       </div>
     </div>
   ),
+};
+
+// ─── 팔레트 전체 확인 ─────────────────────────────────────────────────────────
+
+const GROUP_LABELS = [
+  "라이트 파스텔 (black)",
+  "더스티 미드톤 (black)",
+  "딥 머티드 (white)",
+];
+
+export const Palette: Story = {
+  name: "Avatar Color Palette",
+  render: () => (
+    <div className="p-8 bg-background flex flex-col gap-8">
+      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+        Avatar Color Palette — {AVATAR_COLORS.length}색
+      </p>
+
+      {/* 그룹별 팔레트 */}
+      {GROUP_LABELS.map((groupLabel, gi) => {
+        const groupColors = AVATAR_COLORS.slice(gi * 8, gi * 8 + 8);
+        return (
+          <div key={groupLabel} className="flex flex-col gap-3">
+            <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+              {groupLabel}
+            </p>
+            <div className="flex flex-wrap gap-3">
+              {groupColors.map((color, i) => (
+                <div key={i} className="flex flex-col items-center gap-1.5">
+                  {/* 아바타 미리보기 */}
+                  <div
+                    className="w-10 h-10 rounded-full border border-foreground flex items-center justify-center text-sm font-bold shrink-0"
+                    style={{ backgroundColor: color.bg, color: color.text }}
+                  >
+                    선
+                  </div>
+                  {/* hex */}
+                  <span className="text-[9px] font-mono text-muted-foreground">
+                    {color.bg}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      {/* 전체 플랫 그리드 */}
+      <div className="flex flex-col gap-3">
+        <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+          전체 ({AVATAR_COLORS.length}색)
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {AVATAR_COLORS.map((color, i) => (
+            <div
+              key={i}
+              className="w-10 h-10 rounded-full border border-foreground flex items-center justify-center text-sm font-bold shrink-0"
+              style={{ backgroundColor: color.bg, color: color.text }}
+            >
+              {String.fromCharCode(65 + (i % 26))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  ),
+  parameters: { layout: "fullscreen" },
 };
