@@ -10,7 +10,7 @@ const meta: Meta<typeof LabelBadge> = {
   argTypes: {
     variant: {
       control: "inline-radio",
-      options: ["light", "dark", "point"],
+      options: ["light", "dark", "point", "muted"],
     },
     size: {
       control: "inline-radio",
@@ -77,6 +77,20 @@ export const AllVariants: Story = {
               </LabelBadge>
             ),
           )}
+        </div>
+      </div>
+
+      {/* muted */}
+      <div className="flex flex-col gap-2">
+        <p className="text-xs text-muted-foreground font-bold tracking-widest uppercase">
+          muted · size=fixed
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {["공연완료", "종료", "CLOSED", "ENDED", "SOLD OUT"].map((label) => (
+            <LabelBadge key={label} variant="muted">
+              {label}
+            </LabelBadge>
+          ))}
         </div>
       </div>
 
@@ -162,6 +176,35 @@ export const UsageInContext: Story = {
           콘서트 H.E.R. WORLD TOUR
         </p>
       </div>
+
+      {/* ShowCard 공연 상태 컨텍스트 */}
+      {(
+        [
+          { status: "공연예정", variant: "light" },
+          { status: "공연중", variant: "point" },
+          { status: "공연완료", variant: "muted" },
+        ] as const
+      ).map(({ status, variant }) => (
+        <div
+          key={status}
+          className="@container relative w-40 aspect-3/4 bg-muted overflow-hidden"
+        >
+          <div className="absolute inset-0 p-2">
+            <LabelBadge variant={variant} size="card">
+              {status}
+            </LabelBadge>
+          </div>
+          <div className="absolute bottom-0 left-0 right-0 p-2 bg-card">
+            <p className="text-[10px] font-bold text-muted-foreground">
+              26.07.01 — 26.07.31
+            </p>
+            <p className="text-xs font-bold text-foreground truncate">
+              아이유 콘서트 H.E.R.
+            </p>
+            <p className="text-[9px] text-muted-foreground">올림픽공원 KSPO DOME</p>
+          </div>
+        </div>
+      ))}
     </div>
   ),
   parameters: { layout: "fullscreen" },

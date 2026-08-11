@@ -14,17 +14,17 @@ export default function ShowCardMeta({ p }: { p: Performance }) {
       <div className="flex items-center justify-between">
         {p.startDate === p.endDate ? (
           // 하루 공연
-          <span className="text-[10px] @card-xs:text-xs @card-sm:text-sm @card-md:text-base font-bold text-muted-foreground">
+          <span className="text-[10px]  @card-sm:text-xs @card-md:text-sm font-bold text-muted-foreground">
             {p.startDate.slice(2)}
           </span>
         ) : (
           // 장기 공연
           <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-hidden">
-            <span className="text-[10px] @card-xs:text-xs @card-sm:text-sm @card-md:text-base font-bold text-muted-foreground shrink-0">
+            <span className="text-[10px]  @card-sm:text-xs @card-md:text-sm font-bold text-muted-foreground">
               {p.startDate.slice(2)}
             </span>
             <div className="flex-1 h-px bg-muted-foreground/20" />
-            <span className="text-[10px] @card-xs:text-xs @card-sm:text-sm @card-md:text-base font-bold text-muted-foreground shrink-0">
+            <span className="text-[10px]  @card-sm:text-xs @card-md:text-sm font-bold text-muted-foreground">
               {p.isOpenRun ? "오픈런" : p.endDate.slice(2)}
             </span>
           </div>
@@ -35,7 +35,7 @@ export default function ShowCardMeta({ p }: { p: Performance }) {
           className="flex items-center text-muted-foreground hover:text-point transition-colors ml-4 @card-md:ml-6"
         >
           {/* TODO: 북마크 아이콘 리팩토링 */}
-          <Bookmark className="w-3.5 h-3.5 @card-xs:w-4 @card-xs:h-4 @card-sm:w-4.5 @card-sm:h-4.5 @card-md:w-5 @card-md:h-5" />
+          <Bookmark className="w-3 h-3  @card-sm:w-4 @card-sm:h-4 @card-md:w-4.5 @card-md:h-4.5" />
         </button>
       </div>
 
@@ -44,9 +44,9 @@ export default function ShowCardMeta({ p }: { p: Performance }) {
         {p.title}
       </p>
 
-      {/* Row 3: 장소 · 장르 */}
+      {/* Row 3: 장소 */}
       <p className="text-[9px] @card-xs:text-[10px] @card-sm:text-xs @card-md:text-sm text-muted-foreground truncate">
-        {p.venueName} · {p.genre}
+        {p.venueName}
       </p>
     </div>
   );
