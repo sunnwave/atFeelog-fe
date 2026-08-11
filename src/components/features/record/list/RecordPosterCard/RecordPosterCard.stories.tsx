@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
 import { JSX } from "react";
 import RecordPosterCard from "./RecordPosterCard";
+import { CARD_CQ_WIDTHS } from "@/stories/constants";
 
 const IMG = "https://picsum.photos/id/64/600/800";
 
@@ -107,13 +108,7 @@ export const WithMeta: Story = {
 //   @card-md : 280px — RecordFeed 4열
 //   @card-lg : 320px — RecordFeed/Profile 2열
 
-const WIDTH_CONFIGS = [
-  { label: "180px", desc: "@card-xs", width: 180 },
-  { label: "220px", desc: "@card-sm", width: 220 },
-  { label: "280px", desc: "@card-md", width: 280 },
-  { label: "320px", desc: "@card-lg", width: 320 },
-  { label: "380px", desc: "@card-lg+", width: 380 },
-] as const;
+const WIDTH_CONFIGS = CARD_CQ_WIDTHS;
 
 export const WidthShowcase: Story = {
   name: "Width Showcase ",
