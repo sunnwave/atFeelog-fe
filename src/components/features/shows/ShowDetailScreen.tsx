@@ -6,8 +6,8 @@ import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
 import type { PerformanceDetail } from "@/shared/types/performance";
+import { RecordPosterCard } from "@/components/commons/card";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -28,7 +28,12 @@ export default function ShowDetailScreen({
   const [hasMore, setHasMore] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const { records, data, loading: recordsLoading, fetchMore } = useFetchRecordsByShow(mt20id);
+  const {
+    records,
+    data,
+    loading: recordsLoading,
+    fetchMore,
+  } = useFetchRecordsByShow(mt20id);
 
   const onLoadMore = useCallback(() => {
     if (isLoadingMore || !hasMore || !data) return;
@@ -57,7 +62,6 @@ export default function ShowDetailScreen({
     <div className="min-h-screen bg-background">
       <PageHeader label="About Show" fallbackHref="/shows" />
       <ResponsiveLayout contentType="default" className="py-6 space-y-6">
-
         {/* 공연 헤더 */}
         {detailLoading ? (
           <div className="flex gap-5">
@@ -72,20 +76,35 @@ export default function ShowDetailScreen({
           <div className="flex gap-5">
             <div className="relative w-32 shrink-0 aspect-3/4 border-[1.5px] border-foreground overflow-hidden">
               {detail.posterUrl ? (
-                <Image src={detail.posterUrl} alt={detail.title} fill className="object-cover" unoptimized />
+                <Image
+                  src={detail.posterUrl}
+                  alt={detail.title}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
               ) : (
                 <div className="w-full h-full bg-muted" />
               )}
             </div>
             <div className="flex flex-col gap-1.5 pt-1">
-              <span className="text-xs font-semibold text-point">{detail.genre}</span>
-              <h1 className="text-xl font-black leading-tight">{detail.title}</h1>
-              <p className="text-sm text-muted-foreground">{detail.venueName}</p>
+              <span className="text-xs font-semibold text-point">
+                {detail.genre}
+              </span>
+              <h1 className="text-xl font-black leading-tight">
+                {detail.title}
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                {detail.venueName}
+              </p>
               <p className="text-xs text-muted-foreground">
-                {detail.startDate} ~ {detail.isOpenRun ? "오픈런" : detail.endDate}
+                {detail.startDate} ~{" "}
+                {detail.isOpenRun ? "오픈런" : detail.endDate}
               </p>
               {detail.status && (
-                <span className="text-xs font-bold text-foreground/60">{detail.status}</span>
+                <span className="text-xs font-bold text-foreground/60">
+                  {detail.status}
+                </span>
               )}
             </div>
           </div>
@@ -104,7 +123,9 @@ export default function ShowDetailScreen({
                   : "text-muted-foreground hover:text-foreground",
               ].join(" ")}
             >
-              {t === "info" ? "공연 정보" : `필로그 ${records.length > 0 ? `(${records.length})` : ""}`}
+              {t === "info"
+                ? "공연 정보"
+                : `필로그 ${records.length > 0 ? `(${records.length})` : ""}`}
             </button>
           ))}
         </div>
@@ -115,7 +136,10 @@ export default function ShowDetailScreen({
             {detailLoading ? (
               <div className="space-y-3">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <div key={i} className="h-4 bg-muted animate-pulse rounded w-full" />
+                  <div
+                    key={i}
+                    className="h-4 bg-muted animate-pulse rounded w-full"
+                  />
                 ))}
               </div>
             ) : detail ? (
@@ -126,14 +150,19 @@ export default function ShowDetailScreen({
                   { label: "관람연령", value: detail.ageLimit },
                   { label: "티켓가격", value: detail.ticketPrice },
                   { label: "공연 시간", value: detail.showTime },
-                ].filter((r) => r.value).map(({ label, value }) => (
-                  <div key={label} className="flex gap-4 border-b border-border pb-4">
-                    <span className="text-xs font-black tracking-widest uppercase text-muted-foreground w-20 shrink-0 pt-0.5">
-                      {label}
-                    </span>
-                    <span className="text-sm leading-relaxed">{value}</span>
-                  </div>
-                ))}
+                ]
+                  .filter((r) => r.value)
+                  .map(({ label, value }) => (
+                    <div
+                      key={label}
+                      className="flex gap-4 border-b border-border pb-4"
+                    >
+                      <span className="text-xs font-black tracking-widest uppercase text-muted-foreground w-20 shrink-0 pt-0.5">
+                        {label}
+                      </span>
+                      <span className="text-sm leading-relaxed">{value}</span>
+                    </div>
+                  ))}
 
                 {detail.ticketLinks.length > 0 && (
                   <div className="flex gap-2 flex-wrap pt-1">
@@ -178,14 +207,23 @@ export default function ShowDetailScreen({
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {records.map((record) => (
-                    <div key={record.id} className="border-[1.5px] border-foreground">
-                      <RecordPosterCard record={record} showMeta showBorder={false} />
+                    <div
+                      key={record.id}
+                      className="border-[1.5px] border-foreground"
+                    >
+                      <RecordPosterCard
+                        record={record}
+                        showMeta
+                        showBorder={false}
+                      />
                     </div>
                   ))}
                 </div>
                 <div ref={sentinelRef} className="h-6" />
                 {isLoadingMore && (
-                  <p className="text-sm text-muted-foreground text-center py-3">불러오는 중…</p>
+                  <p className="text-sm text-muted-foreground text-center py-3">
+                    불러오는 중…
+                  </p>
                 )}
               </>
             )}

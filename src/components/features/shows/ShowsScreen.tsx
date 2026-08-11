@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import ShowCard from "./ShowCard/ShowCard";
+import { ShowCard } from "@/components/commons/card";
 import ShowFilterBar from "./ShowFilterBar";
 import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
 

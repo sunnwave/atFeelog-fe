@@ -5,7 +5,7 @@ import {
   BOXOFFICE_GENRES,
   type BoxOfficeGenreCatecode,
 } from "@/shared/constants/kopis";
-import BoxOfficeCard from "./BoxOfficeCard";
+import { ShowCard } from "@/components/commons/card";
 
 export default function BoxOfficeSection(): JSX.Element {
   const [catecode, setCatecode] = useState<BoxOfficeGenreCatecode>("");
@@ -41,12 +41,12 @@ export default function BoxOfficeSection(): JSX.Element {
 
       {/* 카드 리스트 */}
       {loading ? (
-        <div className="w-full max-w-full min-w-0 overflow-x-auto">
-          <div className="flex flex-nowrap border-l-[1.5px] border-foreground">
+        <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
+          <div className="flex flex-nowrap">
             {Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="shrink-0 w-40 md:w-52 border-r-[1.5px] border-foreground"
+                className="shrink-0 w-36 md:w-44 border-r-[1.5px] border-foreground"
               >
                 <div className="aspect-3/4 bg-muted animate-pulse border-b-[1.5px] border-foreground" />
                 <div className="p-3 space-y-2">
@@ -62,11 +62,32 @@ export default function BoxOfficeSection(): JSX.Element {
           {error ?? "해당 장르의 박스오피스 정보가 없어요."}
         </p>
       ) : (
-        <div className="w-full max-w-full min-w-0 overflow-x-auto pb-3 scrollbar-thin">
-          <div className="flex flex-nowrap border-l-[1.5px] border-foreground">
-            {items.slice(0, 10).map((item) => (
-              <BoxOfficeCard key={item.mt20id} item={item} />
-            ))}
+        <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
+          <div className="flex flex-nowrap">
+            {items.slice(0, 10).map((item) => {
+              const [startDate = "", endDate = ""] = item.period.split("~");
+              return (
+                <div
+                  key={item.mt20id}
+                  className="shrink-0 w-46 md:w-52 @container"
+                >
+                  <ShowCard
+                    performance={{
+                      mt20id: item.mt20id,
+                      title: item.title,
+                      venueName: item.venueName,
+                      posterUrl: item.posterUrl,
+                      genre: item.genre,
+                      startDate,
+                      endDate,
+                      isOpenRun: false,
+                    }}
+                    rank={item.rank}
+                    showBorder={true}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
