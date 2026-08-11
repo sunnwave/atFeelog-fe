@@ -1,5 +1,5 @@
 import { useState } from "react";
-import RecordPosterCard from "@/components/features/record/list/RecordPosterCard/RecordPosterCard";
+import RecordPosterCard from "@/components/commons/card/RecordPosterCard/RecordPosterCard";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import type { ProfileRecordGridProps, TabKey } from "../../types";
 

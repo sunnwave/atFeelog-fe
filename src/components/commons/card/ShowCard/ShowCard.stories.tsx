@@ -19,7 +19,7 @@ const basePerformance: Performance = {
 };
 
 const meta: Meta<typeof ShowCard> = {
-  title: "features/shows/ShowCard",
+  title: "commons/card/ShowCard",
   component: ShowCard,
   parameters: { layout: "fullscreen" },
   argTypes: {

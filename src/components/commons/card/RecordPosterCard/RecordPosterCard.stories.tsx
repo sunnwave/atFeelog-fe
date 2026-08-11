@@ -24,7 +24,7 @@ const baseRecord: RecordSummary = {
 };
 
 const meta: Meta<typeof RecordPosterCard> = {
-  title: "features/record-list/RecordPosterCard",
+  title: "commons/card/RecordPosterCard",
   component: RecordPosterCard,
   parameters: { layout: "fullscreen" },
 };

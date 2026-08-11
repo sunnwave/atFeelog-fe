@@ -9,7 +9,7 @@ import {
 import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
 import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import RecordPosterCard from "./RecordPosterCard/RecordPosterCard";
+import RecordPosterCard from "../../../commons/card/RecordPosterCard/RecordPosterCard";
 import { FeedMode } from "./RecordFilterBar";
 
 const RECORDS_PER_PAGE = 10;
@@ -144,7 +144,10 @@ export default function RecordFeed({
     <ResponsiveLayout contentType="wide" padded={false}>
       <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {records.map((record) => (
-          <div key={record.id} className="border-r-[1.5px] border-b-[1.5px] border-foreground">
+          <div
+            key={record.id}
+            className="border-r-[1.5px] border-b-[1.5px] border-foreground"
+          >
             <RecordPosterCard record={record} showMeta showBorder={false} />
           </div>
         ))}

@@ -6,7 +6,7 @@ import { JSX } from "react";
 import LabelBadge from "@/components/ui/badge/LabelBadge";
 import RecordPosterCardMeta from "./RecordPosterCardMeta";
 import RecordPosterCardDate from "./RecordPosterCardDate";
-import NoImageCard from "../../../../ui/NoImageCard";
+import NoImageCard from "../../../ui/NoImageCard";
 
 export default function RecordPosterCard({
   record,

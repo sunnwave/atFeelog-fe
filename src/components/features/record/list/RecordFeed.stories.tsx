@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
-import RecordPosterCard from "./RecordPosterCard/RecordPosterCard";
+import RecordPosterCard from "../../../commons/card/RecordPosterCard/RecordPosterCard";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { Sparkles } from "lucide-react";
@@ -208,7 +208,9 @@ function GridWithWidth({
 /** 콘텐츠 너비 500px — 2열 */
 export const Cols2: Story = {
   name: "2열 (콘텐츠 < 640px)",
-  render: () => <GridWithWidth width={500} records={MOCK_RECORDS.slice(0, 4)} />,
+  render: () => (
+    <GridWithWidth width={500} records={MOCK_RECORDS.slice(0, 4)} />
+  ),
 };
 
 /** 콘텐츠 너비 700px — @md 640px+ → 3열 */
