@@ -9,8 +9,8 @@ import {
 import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecords";
 import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import RecordPosterCard from "../../../commons/card/RecordPosterCard/RecordPosterCard";
 import { FeedMode } from "./RecordFilterBar";
+import { RecordPosterCard } from "@/components/commons/card";
 
 const RECORDS_PER_PAGE = 10;
 

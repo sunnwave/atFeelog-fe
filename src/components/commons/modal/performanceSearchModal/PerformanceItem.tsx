@@ -50,7 +50,7 @@ export default function PerformanceItem({
               {p.title}
             </span>
             <span
-              className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full ${STATUS_STYLE[p.status] ?? STATUS_STYLE["공연완료"]}`}
+              className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded-full ${STATUS_STYLE[p.status as string] ?? STATUS_STYLE["공연완료"]}`}
             >
               {p.status}
             </span>

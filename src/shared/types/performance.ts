@@ -4,15 +4,15 @@
 
 /** 공연 목록 검색 API (GET /pblprfr) 단일 항목 */
 export type KopisRawPerformance = {
-  mt20id: string;      // 공연 ID (KOPIS 고유값 — 이후 상세/필로그 연결 키)
-  prfnm: string;       // 공연명
-  prfpdfrom: string;   // 공연 시작일 "YYYY.MM.DD"
-  prfpdto: string;     // 공연 종료일 "YYYY.MM.DD"
-  fcltynm: string;     // 공연장명
-  poster: string;      // 포스터 이미지 URL
-  genrenm: string;     // 장르명 (뮤지컬 / 연극 / 콘서트 / 클래식 / 무용 / 국악 / 기타)
-  prfstate: string;    // 공연 상태 (공연예정 / 공연중 / 공연완료)
-  openrun: string;     // 오픈런 여부 ("Y" | "N")
+  mt20id: string; // 공연 ID (KOPIS 고유값 — 이후 상세/필로그 연결 키)
+  prfnm: string; // 공연명
+  prfpdfrom: string; // 공연 시작일 "YYYY.MM.DD"
+  prfpdto: string; // 공연 종료일 "YYYY.MM.DD"
+  fcltynm: string; // 공연장명
+  poster: string; // 포스터 이미지 URL
+  genrenm: string; // 장르명 (뮤지컬 / 연극 / 콘서트 / 클래식 / 무용 / 국악 / 기타)
+  prfstate: string; // 공연 상태 (공연예정 / 공연중 / 공연완료)
+  openrun: string; // 오픈런 여부 ("Y" | "N")
 };
 
 /** 공연 목록 검색 API 전체 응답 래퍼 */
@@ -25,11 +25,11 @@ export type KopisSearchResponse = {
 
 /** 공연 상세 API (GET /pblprfr/:mt20id) 추가 필드 */
 export type KopisRawPerformanceDetail = KopisRawPerformance & {
-  prfcast?: string;      // 출연진 (KOPIS XML 필드명)
-  prfruntime?: string;   // 런타임 (예: "90분")
-  prfage?: string;       // 관람연령 (예: "만 7세 이상")
+  prfcast?: string; // 출연진 (KOPIS XML 필드명)
+  prfruntime?: string; // 런타임 (예: "90분")
+  prfage?: string; // 관람연령 (예: "만 7세 이상")
   pcseguidance?: string; // 티켓가격 (예: "VIP석 170,000원, ...")
-  dtguidance?: string;   // 공연 시간 (예: "화~금 19:30 ...")
+  dtguidance?: string; // 공연 시간 (예: "화~금 19:30 ...")
   relates?: {
     // 예매처 링크도 1건이면 객체, 2건 이상이면 배열
     relate:
@@ -52,13 +52,13 @@ export type KopisDetailResponse = {
 /** 목록 검색 결과 — 모달 / 폼 자동완성에 사용 */
 export type Performance = {
   mt20id: string;
-  title: string;      // prfnm
-  venueName: string;  // fcltynm
-  posterUrl: string;  // poster
-  genre: string;      // genrenm
-  status: PerformanceStatus;
-  startDate: string;  // "YYYY.MM.DD"
-  endDate: string;    // "YYYY.MM.DD"
+  title: string; // prfnm
+  venueName: string; // fcltynm
+  posterUrl: string; // poster
+  genre: string; // genrenm
+  status?: PerformanceStatus;
+  startDate: string; // "YYYY.MM.DD"
+  endDate: string; // "YYYY.MM.DD"
   isOpenRun: boolean; // openrun === "Y"
 };
 
@@ -91,16 +91,16 @@ export type PerformanceSearchApiResponse = {
 
 /** 박스오피스 API Raw 응답 단일 항목 (KOPIS 예매상황판 조회) */
 export type KopisRawBoxOffice = {
-  rnum: string;        // 순위
-  mt20id: string;      // 공연 ID
-  prfnm: string;       // 공연명
-  prfpd: string;       // 공연기간
-  prfplcnm: string;    // 공연장명 (boxoffice API는 prfplcnm 사용)
-  poster: string;      // 포스터 URL
-  cate: string;        // 장르 (boxoffice API는 cate 사용)
-  seatcnt: string;     // 좌석수
-  prfdtcnt: string;    // 상연횟수
-  area: string;        // 지역
+  rnum: string; // 순위
+  mt20id: string; // 공연 ID
+  prfnm: string; // 공연명
+  prfpd: string; // 공연기간
+  prfplcnm: string; // 공연장명 (boxoffice API는 prfplcnm 사용)
+  poster: string; // 포스터 URL
+  cate: string; // 장르 (boxoffice API는 cate 사용)
+  seatcnt: string; // 좌석수
+  prfdtcnt: string; // 상연횟수
+  area: string; // 지역
 };
 
 /** 박스오피스 API 전체 응답 래퍼 */

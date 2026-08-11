@@ -6,8 +6,8 @@ import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import RecordPosterCard from "@/components/commons/card/RecordPosterCard/RecordPosterCard";
 import type { PerformanceDetail } from "@/shared/types/performance";
+import { RecordPosterCard } from "@/components/commons/card";
 
 const RECORDS_PER_PAGE = 10;
 
