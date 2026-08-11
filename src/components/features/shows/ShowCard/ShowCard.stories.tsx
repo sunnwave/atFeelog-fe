@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { Performance } from "@/shared/types/performance";
 import { JSX } from "react";
 import ShowCard from "./ShowCard";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const POSTER_IMG = "https://picsum.photos/id/64/600/800";
 
@@ -192,13 +193,7 @@ export const AllStatuses: Story = {
 
 // ─── 너비별 CQ 반응 ──────────────────────────────────────────────────────────
 
-const WIDTH_STEPS = [
-  { width: 180, label: "180px", note: "@card-xs" },
-  { width: 220, label: "220px", note: "@card-sm" },
-  { width: 280, label: "280px", note: "@card-md" },
-  { width: 320, label: "320px", note: "@card-lg" },
-  { width: 380, label: "380px", note: "> card-lg" },
-];
+const WIDTH_STEPS = CARD_CQ_WIDTHS;
 
 export const WidthShowcase: Story = {
   name: "Width Showcase (CQ)",
@@ -208,14 +203,14 @@ export const WidthShowcase: Story = {
         너비별 컨테이너 쿼리 반응 — 뱃지 크기 변화 확인
       </p>
       <div className="flex gap-6 flex-wrap items-start">
-        {WIDTH_STEPS.map(({ width, label, note }) => (
+        {WIDTH_STEPS.map(({ width, label, desc }) => (
           <div key={width} className="flex flex-col gap-2">
             <div className="flex items-center gap-1.5">
               <span className="text-[11px] font-bold text-foreground">
                 {label}
               </span>
               <span className="text-[10px] text-point font-semibold">
-                {note}
+                {desc}
               </span>
             </div>
             <div style={{ width }}>

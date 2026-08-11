@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import LabelBadge from "./LabelBadge";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const meta: Meta<typeof LabelBadge> = {
   title: "ui/Badge/LabelBadge",
@@ -38,12 +39,7 @@ export const Default: Story = {
   ],
 };
 
-const CARD_WIDTHS = [
-  { label: "160px", desc: "< @card-xs", width: 160 },
-  { label: "180px", desc: "@card-xs", width: 180 },
-  { label: "220px", desc: "@card-sm", width: 220 },
-  { label: "280px", desc: "@card-md", width: 280 },
-] as const;
+const CARD_WIDTHS = CARD_CQ_WIDTHS;
 
 export const AllVariants: Story = {
   render: () => (

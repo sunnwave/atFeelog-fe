@@ -54,7 +54,7 @@ export default function BottomNav() {
             href="/user/me/edit"
             className="flex flex-1 flex-col items-center justify-center"
           >
-            <Avatar user={me ?? undefined} size="md" type="filled" />
+            <Avatar user={me ?? undefined} size="md" />
           </Link>
         ) : (
           <BottomNavItem href="/login" label="로그인" icon={User} />
