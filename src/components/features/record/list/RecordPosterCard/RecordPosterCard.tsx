@@ -6,7 +6,7 @@ import { JSX } from "react";
 import LabelBadge from "@/components/ui/badge/LabelBadge";
 import RecordPosterCardMeta from "./RecordPosterCardMeta";
 import RecordPosterCardDate from "./RecordPosterCardDate";
-import NoImagePosterCard from "./NoImagePosterCard";
+import NoImageCard from "../../../../ui/NoImageCard";
 
 export default function RecordPosterCard({
   record,
@@ -55,7 +55,7 @@ export default function RecordPosterCard({
             </div>
           </>
         ) : (
-          <NoImagePosterCard>
+          <NoImageCard>
             <div className="flex items-start justify-between">
               <LabelBadge variant="point" size="card">
                 {label}
@@ -65,7 +65,7 @@ export default function RecordPosterCard({
             <p className="text-foreground text-sm @card-xs:text-lg @card-sm:text-xl @card-md:text-2xl @card-lg:text-3xl font-black leading-tight tracking-tight line-clamp-2 group-hover:text-background transition-colors duration-300">
               {record.title}
             </p>
-          </NoImagePosterCard>
+          </NoImageCard>
         )}
       </div>
       {showMeta && <RecordPosterCardMeta record={record} />}
