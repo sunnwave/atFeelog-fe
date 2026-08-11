@@ -6,6 +6,12 @@ import LabelBadge from "@/components/ui/badge/LabelBadge";
 import ShowCardMeta from "./ShowCardMeta";
 import NoImageCard from "@/components/ui/NoImageCard";
 
+const STATUS_VARIANT: Record<string, "light" | "point" | "muted"> = {
+  공연예정: "light",
+  공연중: "point",
+  공연완료: "muted",
+};
+
 export default function ShowCard({
   performance: p,
   showMeta = true,
@@ -39,8 +45,10 @@ export default function ShowCard({
         )}
         <div className="absolute inset-0 p-2 @card-xs:p-2.5 @card-sm:p-3 @card-md:p-4">
           <div className="flex items-start justify-between">
-            {/* TODO: variant는 추후 상태별 리팩토링 */}
-            <LabelBadge variant="light" size="card">
+            <LabelBadge
+              variant={STATUS_VARIANT[p.status] ?? "light"}
+              size="card"
+            >
               {p.status}
             </LabelBadge>
           </div>
