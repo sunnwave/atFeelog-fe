@@ -1,6 +1,5 @@
 import Avatar from "@/components/ui/avatar/Avatar";
 import { JSX } from "react";
-import { CARD_UI_SIZE, UI_SIZE } from "@/shared/tokens";
 import { cn, fromNow } from "@/shared/utils";
 import { RecordDetail } from "@/api/adapters/types/record";
 import { RecordSummary } from "@/api/adapters/types/record-summary";
@@ -15,7 +14,6 @@ export default function RecordProfile({
   record: RecordDetail | RecordSummary;
   isFollowing?: boolean;
   onFollow?: () => void;
-  size?: CARD_UI_SIZE;
   className?: string;
 }): JSX.Element {
   return (
