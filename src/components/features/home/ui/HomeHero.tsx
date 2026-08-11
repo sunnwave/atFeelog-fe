@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button/Button";
 
 export default function HomeHero() {
   return (
-    <section className="border-t-[1.5px] border-b-[1.5px] md:border-[1.5px] border-foreground bg-card p-6 md:p-10 md:py-12">
+    <section className="border-t-[1.5px] border-b-[1.5px] border-foreground bg-card p-6 md:p-10 md:py-12">
       <span className="inline-flex h-7 items-center border border-foreground bg-accent px-3 text-[11px] font-black uppercase tracking-[0.14em] text-accent-foreground">
         AFTER · FEEL · LOG
       </span>

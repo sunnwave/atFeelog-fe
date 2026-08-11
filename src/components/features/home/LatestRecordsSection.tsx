@@ -1,11 +1,11 @@
 import { JSX } from "react";
 import { useFetchLatestRecords } from "./hooks/queries/useFetchLatestRecords";
-import RecordPosterCard from "../../commons/card/RecordPosterCard/RecordPosterCard";
 import { ChevronRight, Clock3 } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
+import { RecordPosterCard } from "@/components/commons/card";
 
-export default function LatestRecords(): JSX.Element {
+export default function LatestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchLatestRecords();
   const { onClickNavigation } = useNavigation();
 
@@ -32,9 +32,9 @@ export default function LatestRecords(): JSX.Element {
           {records.map((record) => (
             <div
               key={record.id}
-              className="shrink-0 w-55 md:w-65 border-t-[1.5px] border-foreground"
+              className="shrink-0 w-46 md:w-52 border-t-[1.5px] border-foreground @container"
             >
-              <RecordPosterCard record={record} />
+              <RecordPosterCard record={record} showMeta />
             </div>
           ))}
         </div>

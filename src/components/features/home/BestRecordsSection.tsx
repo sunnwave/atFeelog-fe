@@ -1,11 +1,11 @@
 import { JSX } from "react";
 import { useFetchBestRecords } from "./hooks/queries/useFetchBestRecords";
-import RecordPosterCard from "../../commons/card/RecordPosterCard/RecordPosterCard";
 import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
+import { RecordPosterCard } from "@/components/commons/card";
 
-export default function BestRecords(): JSX.Element {
+export default function BestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
 
@@ -33,9 +33,9 @@ export default function BestRecords(): JSX.Element {
           {records.map((board) => (
             <div
               key={board.id}
-              className="shrink-0 w-55 md:w-65 border-t-[1.5px] border-foreground"
+              className="shrink-0 w-46 md:w-52 border-t-[1.5px] border-foreground @container"
             >
-              <RecordPosterCard record={board} />
+              <RecordPosterCard record={board} showMeta />
             </div>
           ))}
         </div>
