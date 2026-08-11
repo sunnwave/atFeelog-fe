@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import LabelBadge from "./LabelBadge";
-import { CARD_CQ_WIDTHS } from "@/stories/constants";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const meta: Meta<typeof LabelBadge> = {
   title: "ui/Badge/LabelBadge",

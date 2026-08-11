@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { Performance } from "@/shared/types/performance";
 import { JSX } from "react";
 import ShowCard from "./ShowCard";
-import { CARD_CQ_WIDTHS } from "@/stories/constants";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const POSTER_IMG = "https://picsum.photos/id/64/600/800";
 

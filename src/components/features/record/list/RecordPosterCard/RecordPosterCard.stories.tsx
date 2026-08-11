@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
 import { JSX } from "react";
 import RecordPosterCard from "./RecordPosterCard";
-import { CARD_CQ_WIDTHS } from "@/stories/constants";
+import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const IMG = "https://picsum.photos/id/64/600/800";
 
