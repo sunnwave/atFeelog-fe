@@ -1,6 +1,6 @@
 import { cn } from "@/shared/utils/cn";
 
-type LabelBadgeVariant = "light" | "dark" | "point";
+type LabelBadgeVariant = "light" | "dark" | "point" | "muted";
 type LabelBadgeSize = "card" | "fixed";
 
 type LabelBadgeProps = {
@@ -17,11 +17,12 @@ type LabelBadgeProps = {
 const variants: Record<LabelBadgeVariant, string> = {
   light: "border border-foreground bg-accent text-foreground",
   dark: "border border-white/25 bg-white/10 text-white/55",
-  point: "bg-point text-white",
+  point: "bg-point  text-white",
+  muted: "border border-forground bg-muted text-muted-foreground",
 };
 
 const sizes: Record<LabelBadgeSize, string> = {
-  card: "text-[10px] @card-xs:text-xs @card-sm:text-sm @card-md:text-base  px-1.5 py-0.5 ",
+  card: "text-[6px] @card-xs:text-[8px] @card-sm:text-[10px] @card-md:text-xs  px-1.5 py-0.5 ",
   fixed: "h-6 px-2.5 text-[10px]",
 };
 
