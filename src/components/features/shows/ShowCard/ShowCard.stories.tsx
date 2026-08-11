@@ -91,18 +91,6 @@ export const NoImageCard: Story = {
   ),
 };
 
-/** 오픈런 뱃지 표시 */
-export const OpenRun: Story = {
-  render: (args) => (
-    <CardWrapper>
-      <ShowCard
-        {...args}
-        performance={{ ...basePerformance, isOpenRun: true, endDate: "2099.12.31" }}
-      />
-    </CardWrapper>
-  ),
-};
-
 // ─── 상태별 모아보기 ─────────────────────────────────────────────────────────
 
 const STATUS_MOCKS: Performance[] = [
@@ -145,7 +133,9 @@ export const AllStatuses: Story = {
         <div className="flex gap-6 flex-wrap items-start">
           {STATUS_MOCKS.map((p) => (
             <div key={p.mt20id} className="flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-muted-foreground">{p.status}</span>
+              <span className="text-[11px] font-bold text-muted-foreground">
+                {p.status}
+              </span>
               <div style={{ width: 200 }}>
                 <ShowCard performance={p} showMeta showBorder />
               </div>
@@ -162,7 +152,9 @@ export const AllStatuses: Story = {
         <div className="flex gap-6 flex-wrap items-start">
           {STATUS_MOCKS.map((p) => (
             <div key={p.mt20id} className="flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-muted-foreground">{p.status}</span>
+              <span className="text-[11px] font-bold text-muted-foreground">
+                {p.status}
+              </span>
               <div style={{ width: 200 }}>
                 <ShowCard performance={p} showMeta={false} showBorder />
               </div>
@@ -179,9 +171,15 @@ export const AllStatuses: Story = {
         <div className="flex gap-6 flex-wrap items-start">
           {STATUS_MOCKS.map((p) => (
             <div key={p.mt20id} className="flex flex-col gap-2">
-              <span className="text-[11px] font-bold text-muted-foreground">{p.status}</span>
+              <span className="text-[11px] font-bold text-muted-foreground">
+                {p.status}
+              </span>
               <div style={{ width: 200 }}>
-                <ShowCard performance={{ ...p, posterUrl: "" }} showMeta showBorder />
+                <ShowCard
+                  performance={{ ...p, posterUrl: "" }}
+                  showMeta
+                  showBorder
+                />
               </div>
             </div>
           ))}
@@ -192,15 +190,93 @@ export const AllStatuses: Story = {
   parameters: { layout: "fullscreen" },
 };
 
+// ─── 너비별 CQ 반응 ──────────────────────────────────────────────────────────
+
+const WIDTH_STEPS = [
+  { width: 180, label: "180px", note: "@card-xs" },
+  { width: 220, label: "220px", note: "@card-sm" },
+  { width: 280, label: "280px", note: "@card-md" },
+  { width: 320, label: "320px", note: "@card-lg" },
+  { width: 380, label: "380px", note: "> card-lg" },
+];
+
+export const WidthShowcase: Story = {
+  name: "Width Showcase (CQ)",
+  render: () => (
+    <div className="p-8 bg-background flex flex-col gap-6">
+      <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+        너비별 컨테이너 쿼리 반응 — 뱃지 크기 변화 확인
+      </p>
+      <div className="flex gap-6 flex-wrap items-start">
+        {WIDTH_STEPS.map(({ width, label, note }) => (
+          <div key={width} className="flex flex-col gap-2">
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] font-bold text-foreground">
+                {label}
+              </span>
+              <span className="text-[10px] text-point font-semibold">
+                {note}
+              </span>
+            </div>
+            <div style={{ width }}>
+              <ShowCard performance={basePerformance} showMeta showBorder />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+  parameters: { layout: "fullscreen" },
+};
+
 // ─── 그리드 시뮬레이션 ────────────────────────────────────────────────────────
 
 const GRID_MOCKS: Performance[] = [
-  { ...basePerformance, mt20id: "G001", title: "아이유 콘서트 H.E.R.", genre: "콘서트", status: "공연중" },
-  { ...basePerformance, mt20id: "G002", title: "레베카", genre: "뮤지컬", status: "공연예정", posterUrl: "" },
-  { ...basePerformance, mt20id: "G003", title: "BTS PERMISSION TO DANCE ON STAGE", genre: "콘서트", status: "공연중", isOpenRun: true },
-  { ...basePerformance, mt20id: "G004", title: "세종대왕", genre: "연극", status: "공연완료", posterUrl: "" },
-  { ...basePerformance, mt20id: "G005", title: "노트르담 드 파리", genre: "뮤지컬", status: "공연예정" },
-  { ...basePerformance, mt20id: "G006", title: "피아노 소나타 전곡 연주회", genre: "클래식", status: "공연완료" },
+  {
+    ...basePerformance,
+    mt20id: "G001",
+    title: "아이유 콘서트 H.E.R.",
+    genre: "콘서트",
+    status: "공연중",
+  },
+  {
+    ...basePerformance,
+    mt20id: "G002",
+    title: "레베카",
+    genre: "뮤지컬",
+    status: "공연예정",
+    posterUrl: "",
+  },
+  {
+    ...basePerformance,
+    mt20id: "G003",
+    title: "BTS PERMISSION TO DANCE ON STAGE",
+    genre: "콘서트",
+    status: "공연중",
+    isOpenRun: true,
+  },
+  {
+    ...basePerformance,
+    mt20id: "G004",
+    title: "세종대왕",
+    genre: "연극",
+    status: "공연완료",
+    posterUrl: "",
+  },
+  {
+    ...basePerformance,
+    mt20id: "G005",
+    title: "노트르담 드 파리",
+    genre: "뮤지컬",
+    status: "공연예정",
+  },
+  {
+    ...basePerformance,
+    mt20id: "G006",
+    title: "피아노 소나타 전곡 연주회",
+    genre: "클래식",
+    status: "공연완료",
+  },
 ];
 
 export const GridShowcase: Story = {
@@ -238,7 +314,12 @@ export const GridShowcase: Story = {
         </p>
         <div className="grid grid-cols-4 max-w-4xl border-t-[1.5px] border-l-[1.5px] border-foreground">
           {[...GRID_MOCKS, ...GRID_MOCKS.slice(0, 2)].map((p, i) => (
-            <ShowCard key={`${p.mt20id}-${i}`} performance={p} showMeta showBorder />
+            <ShowCard
+              key={`${p.mt20id}-${i}`}
+              performance={p}
+              showMeta
+              showBorder
+            />
           ))}
         </div>
       </div>
