@@ -137,34 +137,30 @@ export default function RecordFeed({
 
   if (loading) {
     return (
-      <ResponsiveLayout contentType="wide" padded={false}>
-        <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
-          {Array.from({ length: RECORDS_PER_PAGE }).map((_, i) => (
-            <div
-              key={i}
-              className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
-            >
-              <CardSkeleton showMeta />
-            </div>
-          ))}
-        </ResponsiveGrid>
-      </ResponsiveLayout>
+      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
+        {Array.from({ length: RECORDS_PER_PAGE }).map((_, i) => (
+          <div
+            key={i}
+            className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+          >
+            <CardSkeleton showMeta />
+          </div>
+        ))}
+      </ResponsiveGrid>
     );
   }
 
   if (isEmpty) {
     return (
-      <ResponsiveLayout contentType="wide" padded={false} className="pt-6">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Sparkles className="w-8 h-8" />
-          <span>첫 공연의 여운을 남겨보세요</span>
-        </div>
-      </ResponsiveLayout>
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <Sparkles className="w-8 h-8" />
+        <span>첫 공연의 여운을 남겨보세요</span>
+      </div>
     );
   }
 
   return (
-    <ResponsiveLayout contentType="wide" padded={false}>
+    <>
       <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {records.map((record) => (
           <div
@@ -180,6 +176,6 @@ export default function RecordFeed({
       {isLoading && (
         <div className="p-3 text-muted-foreground">불러오는 중…</div>
       )}
-    </ResponsiveLayout>
+    </>
   );
 }
