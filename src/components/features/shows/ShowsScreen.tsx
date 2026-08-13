@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { ShowCard } from "@/components/commons/card";
+import { ShowCard, CardSkeleton } from "@/components/commons/card";
 import ShowFilterBar from "./ShowFilterBar";
 import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
 
@@ -43,12 +43,22 @@ export default function ShowsScreen(): JSX.Element {
           }
         />
 
-        {/* 결과 */}
         {error ? (
           <p className="text-sm text-muted-foreground py-10 text-center">
             {error}
           </p>
-        ) : items.length === 0 && !loading ? (
+        ) : loading && items.length === 0 ? (
+          <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
+            {Array.from({ length: 10 }).map((_, i) => (
+              <div
+                key={i}
+                className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+              >
+                <CardSkeleton showMeta />
+              </div>
+            ))}
+          </ResponsiveGrid>
+        ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground py-10 text-center">
             검색 결과가 없어요.
           </p>
@@ -60,25 +70,20 @@ export default function ShowsScreen(): JSX.Element {
               ))}
             </ResponsiveGrid>
 
-            {/* 스켈레톤 (추가 로딩) */}
+            {/* 추가 로딩 skeleton */}
             {loading && (
               <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
                 {Array.from({ length: 10 }).map((_, i) => (
                   <div
                     key={i}
-                    className="border-r-[1.5px] border-b-[1.5px] border-foreground"
+                    className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
                   >
-                    <div className="aspect-3/4 bg-muted animate-pulse" />
-                    <div className="p-3 space-y-2">
-                      <div className="h-3 bg-muted animate-pulse rounded" />
-                      <div className="h-3 bg-muted animate-pulse rounded w-2/3" />
-                    </div>
+                    <CardSkeleton showMeta />
                   </div>
                 ))}
               </ResponsiveGrid>
             )}
 
-            {/* 무한 스크롤 감지 sentinel */}
             <div ref={sentinelRef} className="h-1" />
           </>
         )}

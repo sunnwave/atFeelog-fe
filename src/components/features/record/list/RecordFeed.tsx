@@ -10,7 +10,7 @@ import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecord
 import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { FeedMode } from "./RecordFilterBar";
-import { RecordPosterCard } from "@/components/commons/card";
+import { RecordPosterCard, CardSkeleton } from "@/components/commons/card";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -47,6 +47,12 @@ export default function RecordFeed({
     : best
       ? bestResult.records
       : regularResult.records;
+
+  const loading = isFollowing
+    ? followingResult.loading
+    : best
+      ? bestResult.loading
+      : regularResult.loading;
 
   const isEmpty = records.length === 0;
 
@@ -128,6 +134,23 @@ export default function RecordFeed({
   ]);
 
   const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
+
+  if (loading) {
+    return (
+      <ResponsiveLayout contentType="wide" padded={false}>
+        <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
+          {Array.from({ length: RECORDS_PER_PAGE }).map((_, i) => (
+            <div
+              key={i}
+              className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+            >
+              <CardSkeleton showMeta />
+            </div>
+          ))}
+        </ResponsiveGrid>
+      </ResponsiveLayout>
+    );
+  }
 
   if (isEmpty) {
     return (
