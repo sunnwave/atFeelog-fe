@@ -51,6 +51,12 @@ body {
   font-family: "Pretendard Variable", Pretendard, Inter, ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ✅ skeleton shimmer 애니메이션 */
+@keyframes shimmer {
+  0% { transform: translateX(-200%); }
+  100% { transform: translateX(300%); }
+}
+
 /* ✅ 스크롤바 유틸리티 */
 @utility no-scrollbar {
   &::-webkit-scrollbar { display: none; }

@@ -1,3 +1,3 @@
 export * from "./ShowCard";
 export * from "./RecordPosterCard";
-export { default as CardSkeleton } from "./CardSkeleton";
+export * from "./CardSkeleton";
