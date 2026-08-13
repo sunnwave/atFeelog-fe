@@ -1,8 +1,8 @@
 import PageHeader from "@/components/commons/layout/PageHeader";
+import RecordUpdateScreenSkeleton from "./RecordUpdateScreenSkeleton";
 import { RecordEditorForm } from "../../editor";
 import BottomActionBar from "@/components/commons/layout/BottomActionBar";
 import RecordUpdateActions from "./RecordUpdateActions";
-import RecordUpdateTop from "./RecordUpdateTop";
 import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
 import { useRouter } from "next/router";
@@ -12,6 +12,7 @@ import { DRAFT_KEY } from "@/shared/constants/draftKeys";
 import { RecordEditFormValues } from "../../model";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
+import { ResponsiveLayout } from "@/components/commons/layout";
 
 export default function RecordUpdateScreen() {
   const formId = "record-update-form";
@@ -66,15 +67,14 @@ export default function RecordUpdateScreen() {
   const isDirty = form.formState.isDirty;
 
   if (!recordId) return <div>잘못된 접근입니다.</div>;
-  if (loading) return <div>로딩 중..</div>;
+  if (loading) return <RecordUpdateScreenSkeleton />;
   return (
     <div className="min-h-screen bg-background ">
       <PageHeader label="Edit Record" fallbackHref="/feelog" />
       {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
-      <div className="mx-auto space-y-2 px-5 lg:space-y-6 lg:pb-28">
-        <RecordUpdateTop />
+      <ResponsiveLayout className="px-4">
         <RecordEditorForm formId={formId} form={form} {...editorProps} />
-      </div>
+      </ResponsiveLayout>
 
       <BottomActionBar>
         <RecordUpdateActions
