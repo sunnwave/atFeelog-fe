@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { authInitializedState, loggedInUserState } from "@/shared/stores";
 import UserProfileScreen from "@/components/features/user/ui/screen/UserProfileScreen";
+import { UserProfileSkeleton } from "@/components/features/user/ui/component/skeleton";
 
 export default function MyProfilePage() {
   const initialized = useRecoilValue(authInitializedState);
@@ -14,6 +15,6 @@ export default function MyProfilePage() {
     if (!me?.id) void router.replace("/login");
   }, [initialized, me, router]);
 
-  if (!initialized || !me?.id) return null;
+  if (!initialized || !me?.id) return <UserProfileSkeleton />;
   return <UserProfileScreen userId={me.id} />;
 }
