@@ -45,11 +45,6 @@ export interface FollowListPanelProps {
 
 export type TabKey = "log" | "likes";
 
-export interface ProfileRecordGridProps {
-  records: RecordSummary[];
-  likedRecords: RecordSummary[];
-}
-
 export interface UserRowProps {
   user: User;
   isFollowing: boolean;

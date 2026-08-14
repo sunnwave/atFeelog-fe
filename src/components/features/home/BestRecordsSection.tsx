@@ -4,12 +4,14 @@ import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 import { RecordPosterCard } from "@/components/commons/card";
+import SectionSkeleton from "./SectionSkeleton";
 
 export default function BestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
 
-  if (loading || records.length === 0) return <></>;
+  if (loading) return <SectionSkeleton />;
+  if (records.length === 0) return <></>;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">

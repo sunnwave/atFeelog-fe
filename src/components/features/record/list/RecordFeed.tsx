@@ -10,7 +10,7 @@ import { useFetchBestRecords } from "../../home/hooks/queries/useFetchBestRecord
 import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { FeedMode } from "./RecordFilterBar";
-import { RecordPosterCard } from "@/components/commons/card";
+import { RecordPosterCard, CardSkeleton } from "@/components/commons/card";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -47,6 +47,12 @@ export default function RecordFeed({
     : best
       ? bestResult.records
       : regularResult.records;
+
+  const loading = isFollowing
+    ? followingResult.loading
+    : best
+      ? bestResult.loading
+      : regularResult.loading;
 
   const isEmpty = records.length === 0;
 
@@ -129,19 +135,32 @@ export default function RecordFeed({
 
   const sentinelRef = useInfiniteScroll({ hasMore, isLoading, onLoadMore });
 
+  if (loading) {
+    return (
+      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
+        {Array.from({ length: RECORDS_PER_PAGE }).map((_, i) => (
+          <div
+            key={i}
+            className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+          >
+            <CardSkeleton showMeta />
+          </div>
+        ))}
+      </ResponsiveGrid>
+    );
+  }
+
   if (isEmpty) {
     return (
-      <ResponsiveLayout contentType="wide" padded={false} className="pt-6">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Sparkles className="w-8 h-8" />
-          <span>첫 공연의 여운을 남겨보세요</span>
-        </div>
-      </ResponsiveLayout>
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <Sparkles className="w-8 h-8" />
+        <span>첫 공연의 여운을 남겨보세요</span>
+      </div>
     );
   }
 
   return (
-    <ResponsiveLayout contentType="wide" padded={false}>
+    <>
       <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {records.map((record) => (
           <div
@@ -157,6 +176,6 @@ export default function RecordFeed({
       {isLoading && (
         <div className="p-3 text-muted-foreground">불러오는 중…</div>
       )}
-    </ResponsiveLayout>
+    </>
   );
 }

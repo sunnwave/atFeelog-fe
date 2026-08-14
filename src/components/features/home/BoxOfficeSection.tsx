@@ -6,10 +6,22 @@ import {
   type BoxOfficeGenreCatecode,
 } from "@/shared/constants/kopis";
 import { ShowCard } from "@/components/commons/card";
+import SectionSkeleton from "./SectionSkeleton";
 
 export default function BoxOfficeSection(): JSX.Element {
   const [catecode, setCatecode] = useState<BoxOfficeGenreCatecode>("");
   const { items, loading, error } = useBoxOffice("week", catecode);
+
+  if (loading) return <SectionSkeleton count={10} />;
+  if (error)
+    return <p className="text-sm text-muted-foreground py-4">{error}</p>;
+
+  if (items.length === 0)
+    return (
+      <p className="text-sm text-muted-foreground py-4">
+        {"해당 장르의 박스오피스 정보가 없어요."}
+      </p>
+    );
 
   return (
     <div className="w-full flex flex-col space-y-4">
@@ -40,57 +52,34 @@ export default function BoxOfficeSection(): JSX.Element {
       </div>
 
       {/* 카드 리스트 */}
-      {loading ? (
-        <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
-          <div className="flex flex-nowrap">
-            {Array.from({ length: 5 }).map((_, i) => (
+
+      <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
+        <div className="flex flex-nowrap">
+          {items.slice(0, 10).map((item) => {
+            const [startDate = "", endDate = ""] = item.period.split("~");
+            return (
               <div
-                key={i}
-                className="shrink-0 w-36 md:w-44 border-r-[1.5px] border-foreground"
+                key={item.mt20id}
+                className="shrink-0 w-46 md:w-52 @container"
               >
-                <div className="aspect-3/4 bg-muted animate-pulse border-b-[1.5px] border-foreground" />
-                <div className="p-3 space-y-2">
-                  <div className="h-3 bg-muted animate-pulse rounded" />
-                  <div className="h-3 bg-muted animate-pulse rounded w-2/3" />
-                </div>
+                <ShowCard
+                  performance={{
+                    mt20id: item.mt20id,
+                    title: item.title,
+                    venueName: item.venueName,
+                    posterUrl: item.posterUrl,
+                    genre: item.genre,
+                    startDate,
+                    endDate,
+                    isOpenRun: false,
+                  }}
+                  rank={item.rank}
+                />
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
-      ) : error || items.length === 0 ? (
-        <p className="text-sm text-muted-foreground py-4">
-          {error ?? "해당 장르의 박스오피스 정보가 없어요."}
-        </p>
-      ) : (
-        <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
-          <div className="flex flex-nowrap">
-            {items.slice(0, 10).map((item) => {
-              const [startDate = "", endDate = ""] = item.period.split("~");
-              return (
-                <div
-                  key={item.mt20id}
-                  className="shrink-0 w-46 md:w-52 @container"
-                >
-                  <ShowCard
-                    performance={{
-                      mt20id: item.mt20id,
-                      title: item.title,
-                      venueName: item.venueName,
-                      posterUrl: item.posterUrl,
-                      genre: item.genre,
-                      startDate,
-                      endDate,
-                      isOpenRun: false,
-                    }}
-                    rank={item.rank}
-                    showBorder={true}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

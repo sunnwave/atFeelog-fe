@@ -13,6 +13,7 @@ import { DRAFT_KEY } from "@/shared/constants/draftKeys";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useEffect } from "react";
+import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
@@ -58,7 +59,10 @@ export default function RecordWriteScreen() {
           statusText={isDirty ? "저장 안 됨" : "임시 저장됨"}
           fallbackHref="/feelog"
         />
-        <RecordEditorForm formId={formId} form={form} {...editorProps} />
+
+        <ResponsiveLayout className="px-4">
+          <RecordEditorForm formId={formId} form={form} {...editorProps} />
+        </ResponsiveLayout>
       </div>
 
       <BottomActionBar>

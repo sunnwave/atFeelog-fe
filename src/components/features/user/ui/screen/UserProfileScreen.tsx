@@ -10,11 +10,8 @@ import ProfileRecordGrid from "../component/ProfileRecordGrid";
 import FollowListPanel from "../component/FollowListPanel";
 import {
   useAddFollow,
-  useFetchBoardsOfMine,
   useFetchBoardsCountOfMine,
-  useFetchBoardsByUser,
   useFetchBoardsCountByUser,
-  useFetchBoardsLikeByUser,
   useFetchCountOfFollowers,
   useFetchCountOfFollowing,
   useFetchFollowers,
@@ -46,15 +43,10 @@ export default function UserProfileScreen({
       ? decodeURIComponent(router.query.picture)
       : undefined;
 
-  const { records: myRecords } = useFetchBoardsOfMine();
   const { count: myRecordsCount } = useFetchBoardsCountOfMine();
-  const { records: userRecords } = useFetchBoardsByUser(
-    isMe ? undefined : userId,
-  );
   const { count: userRecordsCount } = useFetchBoardsCountByUser(
     isMe ? undefined : userId,
   );
-  const { records: likedRecords } = useFetchBoardsLikeByUser(userId);
   const { count: followersCount, refetch: refetchFollowers } =
     useFetchCountOfFollowers(userId);
   const { count: followingCount } = useFetchCountOfFollowing(userId);
@@ -72,7 +64,6 @@ export default function UserProfileScreen({
     [myFollowings],
   );
 
-  const records = isMe ? myRecords : userRecords;
   const recordsCount = isMe ? myRecordsCount : userRecordsCount;
 
   const handleFollow = async () => {
@@ -146,7 +137,7 @@ export default function UserProfileScreen({
           />
         )}
       </div>
-      <ProfileRecordGrid records={records} likedRecords={likedRecords} />
+      <ProfileRecordGrid />
     </ResponsiveLayout>
   );
 }
