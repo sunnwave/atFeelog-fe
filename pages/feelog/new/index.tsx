@@ -4,4 +4,4 @@ export default function NewRecordPage() {
   return <RecordWriteScreen />;
 }
 
-NewRecordPage.noPadding = true;
+NewRecordPage.noBottomNav = true;

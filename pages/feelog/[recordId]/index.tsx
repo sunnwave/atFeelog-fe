@@ -4,4 +4,4 @@ export default function RecordDetailPage() {
   return <RecordDetailScreen />;
 }
 
-RecordDetailPage.noPadding = true;
+RecordDetailPage.noBottomNav = true;

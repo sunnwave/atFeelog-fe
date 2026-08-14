@@ -4,4 +4,4 @@ export default function MyProfileEditPage() {
   return <ProfileEditScreen />;
 }
 
-MyProfileEditPage.noPadding = true;
+MyProfileEditPage.noBottomNav = true;

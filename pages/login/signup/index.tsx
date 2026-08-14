@@ -4,4 +4,3 @@ export default function SignUpPage() {
   return <SignupScreen />;
 }
 
-SignUpPage.noPadding = true;
