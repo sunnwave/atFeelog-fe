@@ -46,7 +46,7 @@ export default function LoginScreen() {
         </div>
 
         {/* 오른쪽 / 모바일 폼 영역 */}
-        <div className="flex-1 flex flex-col items-center px-4 pt-8 pb-16 gap-6 lg:items-start lg:justify-center lg:p-14 lg:border-l-[1.5px] lg:border-foreground">
+        <div className="flex-1 flex flex-col items-center px-4 pt-8 pb-6 gap-6 lg:items-start lg:justify-center lg:p-14 lg:border-l-[1.5px] lg:border-foreground">
           <div className="hidden lg:block w-full">
             <LabelBadge className="mb-4">SIGN IN</LabelBadge>
           </div>

@@ -26,10 +26,9 @@ export default function BottomNavItem({
             }
           `}
     >
-      <Icon className="w-6 h-6" />
-      <span className="text-xs">{label}</span>
+      <Icon className="w-5 h-5" />
       {isActive && (
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 mb-1 rounded-full bg-primary" />
+        <div className="absolute bottom-[7px] left-1/2 -translate-x-1/2 w-[3px] h-[3px] rounded-full bg-primary" />
       )}
     </Link>
   );

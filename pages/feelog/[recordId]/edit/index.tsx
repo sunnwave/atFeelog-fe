@@ -4,4 +4,4 @@ export default function RecordUpdatePage() {
   return <RecordUpdateScreen />;
 }
 
-RecordUpdatePage.noPadding = true;
+RecordUpdatePage.noBottomNav = true;

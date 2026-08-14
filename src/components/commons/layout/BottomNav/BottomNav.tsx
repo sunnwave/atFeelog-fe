@@ -6,7 +6,7 @@ import Avatar from "@/components/ui/avatar/Avatar";
 import { Button } from "@/components/ui/button/Button";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
-import { SIDE_NAV_ITEMS } from "@/shared/constants";
+import { BOTTOM_NAV_ITEMS } from "@/shared/constants";
 import { loggedInUserState } from "@/shared/stores";
 import { useRouter } from "next/router";
 
@@ -30,32 +30,28 @@ export default function BottomNav() {
   };
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t border-border safe-area-inset-bottom">
-      <div className="grid grid-cols-6 items-center h-16 max-w-2xl mx-auto px-2">
-        {SIDE_NAV_ITEMS.slice(0, 2).map((item) => (
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-background border-t-[1.5px] border-foreground safe-area-inset-bottom">
+      <div className="grid grid-cols-5 items-center h-[50px] max-w-2xl mx-auto px-2">
+        {BOTTOM_NAV_ITEMS.slice(0, 2).map((item) => (
           <BottomNavItem key={item.href} {...item} />
         ))}
         {/* Write (+) */}
-        <div className="relative flex flex-col items-center gap-1 h-full justify-center">
+        <div className="flex items-center justify-center h-full">
           <Button
-            className="size-12 rounded-full -mt-3 shadow-lg hover:shadow-xl hover:scale-105"
+            className="size-11 rounded-full  shadow-lg hover:shadow-xl hover:scale-105"
             onClick={onClickWrite}
           >
-            <Plus className="w-6 h-6" strokeWidth={2.5} />
+            <Plus className="w-5 h-5" strokeWidth={2.5} />
           </Button>
-          <span className="text-xs font-semibold">작성</span>
         </div>
-        {SIDE_NAV_ITEMS.slice(2).map((item) => (
+        {BOTTOM_NAV_ITEMS.slice(2).map((item) => (
           <BottomNavItem key={item.href} {...item} />
         ))}
 
         {isLoggedIn ? (
-          <Link
-            href="/user/me/edit"
-            className="flex flex-1 flex-col items-center justify-center"
-          >
-            <Avatar user={me ?? undefined} size="md" />
-          </Link>
+          <div className="flex items-center justify-center h-full">
+            <Avatar user={me ?? undefined} size="sm" clickable />
+          </div>
         ) : (
           <BottomNavItem href="/login" label="로그인" icon={User} />
         )}
