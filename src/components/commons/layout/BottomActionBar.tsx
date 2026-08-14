@@ -12,7 +12,7 @@ type Props = {
 export default function BottomActionBar({
   children,
   className,
-  mobileBottomOffsetClassName = "bottom-16",
+  mobileBottomOffsetClassName = "bottom-nav-offset",
   desktopLeftOffsetClassName = "lg:left-[288px]",
 }: Props) {
   return (

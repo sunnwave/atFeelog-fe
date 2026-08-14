@@ -29,14 +29,8 @@ export default function Layout({ children, noPadding = false }: LayoutProps) {
 
       {/* Main */}
       <div className="lg:pl-[288px]">
-        <main className="w-full">
-          <div
-            className={
-              noPadding
-                ? "w-full"
-                : "w-full pb-24 lg:pb-8"
-            }
-          >
+        <main className="w-full pb-nav lg:pb-0">
+          <div className={noPadding ? "w-full" : "w-full pb-8 lg:pb-8"}>
             {children}
           </div>
         </main>

@@ -47,7 +47,7 @@ export default function RecordEditorForm({
 
   return (
     <form id={formId} onSubmit={onSubmit}>
-      <div className="pb-40 gap-y-4 ">
+      <div className="pb-40">
         {/* 제목 */}
         <div className="py-4 lg:p-5 border-b border-foreground/15">
           <label htmlFor="title" className={cn(fieldLabel, "text-destructive")}>
