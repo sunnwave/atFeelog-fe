@@ -31,7 +31,6 @@ export default function RecordFilterBar({
   return (
     <div className="flex items-center justify-between">
       <ToggleGroup
-        variant="outline"
         options={FEED_OPTIONS}
         value={feedMode}
         onChange={onFeedChange}

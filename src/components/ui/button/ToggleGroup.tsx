@@ -10,7 +10,6 @@ interface Props<T extends string = string> {
   options: ToggleOption<T>[];
   value: T;
   onChange: (value: T) => void;
-  variant?: "soft" | "outline";
   className?: string;
 }
 
@@ -18,18 +17,12 @@ export default function ToggleGroup<T extends string>({
   options,
   value,
   onChange,
-  variant = "soft",
   className,
 }: Props<T>) {
-  const isOutline = variant === "outline";
-
   return (
     <div
       className={cn(
-        "flex items-center",
-        isOutline
-          ? "p-1 border-[1.5px] border-foreground rounded-full"
-          : "gap-1 p-1 bg-muted rounded-xl w-fit",
+        "flex items-center p-1 w-fit rounded-full border-[1.5px] border-foreground",
         className,
       )}
     >
@@ -39,20 +32,10 @@ export default function ToggleGroup<T extends string>({
           type="button"
           onClick={() => onChange(option.value)}
           className={cn(
-            "flex items-center gap-1.5 cursor-pointer transition-colors",
-            isOutline
-              ? [
-                  "px-3 py-1.5 rounded-full border-[1.5px] text-xs font-black tracking-widest uppercase",
-                  value === option.value
-                    ? "bg-accent text-foreground border-foreground"
-                    : "border-transparent text-muted-foreground hover:text-foreground",
-                ]
-              : [
-                  "px-4 py-1.5 rounded-lg text-sm font-medium",
-                  value === option.value
-                    ? "bg-background text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground",
-                ],
+            "flex items-center gap-1.5 px-3 py-1.5 rounded-full border-[1.5px] text-xs font-black tracking-widest uppercase cursor-pointer transition-colors",
+            value === option.value
+              ? "bg-accent text-foreground border-foreground"
+              : "border-transparent text-muted-foreground hover:text-foreground",
           )}
         >
           {option.icon}
