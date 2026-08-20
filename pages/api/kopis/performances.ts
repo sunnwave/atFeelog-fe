@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parsePerformanceSearchXml } from "@/shared/utils/kopis";
+import { normalizeKopisPerformance } from "@/api/adapters/kopis.adapter";
 import { formatKopisDate, addYears } from "@/shared/utils/date";
 import type { PerformanceSearchApiResponse } from "@/shared/types/performance";
 
@@ -48,7 +49,7 @@ export default async function handler(
   }
 
   const xml = await r.text();
-  const items = parsePerformanceSearchXml(xml);
+  const items = parsePerformanceSearchXml(xml).map(normalizeKopisPerformance);
 
   // KOPIS는 전체 건수를 별도 필드로 내려주지 않으므로
   // rows보다 적게 왔으면 마지막 페이지로 판단

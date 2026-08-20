@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parseBoxOfficeXml } from "@/shared/utils/kopis";
+import { normalizeBoxOffice } from "@/api/adapters/kopis.adapter";
 import { formatKopisDate } from "@/shared/utils/date";
 import type { BoxOffice } from "@/shared/types/performance";
 
@@ -43,7 +44,7 @@ export default async function handler(
   }
 
   const xml = await r.text();
-  const items = parseBoxOfficeXml(xml);
+  const items = parseBoxOfficeXml(xml).map(normalizeBoxOffice);
 
   res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate=3600");
   return res.status(200).json(items);

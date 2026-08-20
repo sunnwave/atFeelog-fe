@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
 import { parsePerformanceSearchXml } from "@/shared/utils/kopis";
+import { normalizeKopisPerformance } from "@/api/adapters/kopis.adapter";
 import { formatKopisDate, toKopisDate, addMonths } from "@/shared/utils/date";
 import type { PerformanceSearchApiResponse } from "@/shared/types/performance";
 
@@ -61,7 +62,7 @@ export default async function handler(
   }
 
   const xml = await r.text();
-  const items = parsePerformanceSearchXml(xml);
+  const items = parsePerformanceSearchXml(xml).map(normalizeKopisPerformance);
   const isEnd = items.length < rows;
 
   return res.status(200).json({ items, total: items.length, page, isEnd });

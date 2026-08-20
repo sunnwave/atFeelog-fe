@@ -2,14 +2,11 @@ import { XMLParser } from "fast-xml-parser";
 import type {
   KopisRawPerformance,
   KopisRawPerformanceDetail,
+  KopisRawBoxOffice,
   KopisSearchResponse,
   KopisDetailResponse,
-  KopisRawBoxOffice,
   KopisBoxOfficeResponse,
   Performance,
-  PerformanceDetail,
-  PerformanceStatus,
-  BoxOffice,
 } from "@/shared/types/performance";
 
 // ─────────────────────────────────────────────
@@ -18,14 +15,12 @@ import type {
 
 const parser = new XMLParser({
   ignoreAttributes: false,
-  // 숫자처럼 생긴 값도 문자열 유지 (mt20id 등이 숫자로 변환되는 것 방지)
   parseAttributeValue: false,
   parseTagValue: false,
 });
 
 /**
  * KOPIS API XML 응답 문자열을 JS 객체로 파싱한다.
- * fast-xml-parser는 동기 파싱이라 try/catch로 감싼다.
  */
 export function parseKopisXml<T = unknown>(xml: string): T {
   return parser.parse(xml) as T;
@@ -42,67 +37,24 @@ export function toArray<T>(value: T | T[] | undefined): T[] {
 }
 
 // ─────────────────────────────────────────────
-// Raw → UI 타입 정규화
+// XML → Raw 타입 파싱 (타입 변환 없음)
 // ─────────────────────────────────────────────
 
-export function normalizeKopisPerformance(
-  raw: KopisRawPerformance
-): Performance {
-  return {
-    mt20id: raw.mt20id,
-    title: raw.prfnm,
-    venueName: raw.fcltynm,
-    posterUrl: raw.poster,
-    genre: raw.genrenm,
-    status: raw.prfstate as PerformanceStatus,
-    startDate: raw.prfpdfrom, // "YYYY.MM.DD" 그대로 유지
-    endDate: raw.prfpdto,
-    isOpenRun: raw.openrun === "Y",
-  };
-}
-
-// ─────────────────────────────────────────────
-// 검색 XML 응답 → Performance[]
-// ─────────────────────────────────────────────
-
-/**
- * 목록 검색 API XML을 파싱해 Performance 배열로 반환한다.
- * 결과 0건일 때 KOPIS는 <dbs/> 빈 태그를 내려주므로 null 체크 필요.
- */
-export function parsePerformanceSearchXml(xml: string): Performance[] {
+export function parsePerformanceSearchXml(xml: string): KopisRawPerformance[] {
   const parsed = parseKopisXml<KopisSearchResponse>(xml);
-  const db = parsed?.dbs?.db;
-  return toArray(db).map(normalizeKopisPerformance);
+  return toArray(parsed?.dbs?.db);
 }
 
-// ─────────────────────────────────────────────
-// 상세 API 파싱
-// ─────────────────────────────────────────────
-
-export function normalizeKopisPerformanceDetail(
-  raw: KopisRawPerformanceDetail
-): PerformanceDetail {
-  const ticketLinks = toArray(raw.relates?.relate).map((r) => ({
-    name: r.relatenm,
-    url: r.relateurl,
-  }));
-
-  return {
-    ...normalizeKopisPerformance(raw),
-    cast: raw.prfcast,
-    runtime: raw.prfruntime,
-    ageLimit: raw.prfage,
-    ticketPrice: raw.pcseguidance,
-    showTime: raw.dtguidance,
-    ticketLinks,
-  };
-}
-
-export function parsePerformanceDetailXml(xml: string): PerformanceDetail | null {
+export function parsePerformanceDetailXml(
+  xml: string
+): KopisRawPerformanceDetail | null {
   const parsed = parseKopisXml<KopisDetailResponse>(xml);
-  const db = toArray(parsed?.dbs?.db)[0];
-  if (!db) return null;
-  return normalizeKopisPerformanceDetail(db);
+  return toArray(parsed?.dbs?.db)[0] ?? null;
+}
+
+export function parseBoxOfficeXml(xml: string): KopisRawBoxOffice[] {
+  const parsed = parseKopisXml<KopisBoxOfficeResponse>(xml);
+  return toArray(parsed?.boxofs?.boxof);
 }
 
 // ─────────────────────────────────────────────
@@ -117,27 +69,4 @@ export function kopisDateToFormDate(kopisDate: string): string {
 /** 공연 검색 결과의 시작일을 폼의 showDate 초깃값으로 사용한다. */
 export function resolveShowDate(p: Performance): string {
   return kopisDateToFormDate(p.startDate);
-}
-
-// ─────────────────────────────────────────────
-// 박스오피스 파싱
-// ─────────────────────────────────────────────
-
-export function normalizeBoxOffice(raw: KopisRawBoxOffice): BoxOffice {
-  return {
-    rank: Number(raw.rnum),
-    mt20id: raw.mt20id,
-    title: raw.prfnm,
-    venueName: raw.prfplcnm,
-    posterUrl: raw.poster,
-    genre: raw.cate,
-    period: raw.prfpd,
-    area: raw.area,
-  };
-}
-
-export function parseBoxOfficeXml(xml: string): BoxOffice[] {
-  const parsed = parseKopisXml<KopisBoxOfficeResponse>(xml);
-  const boxof = parsed?.boxofs?.boxof;
-  return toArray(boxof).map(normalizeBoxOffice);
 }
