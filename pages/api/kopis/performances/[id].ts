@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
-import { parsePerformanceDetailXml } from "@/shared/utils/kopis";
+import { parsePerformanceDetailXml } from "@/api/adapters/kopis.parser";
+import { normalizeKopisPerformanceDetail } from "@/api/adapters/kopis.adapter";
 import type { PerformanceDetail } from "@/shared/types/performance";
 
 /**
@@ -33,7 +34,8 @@ export default async function handler(
   }
 
   const xml = await r.text();
-  const detail = parsePerformanceDetailXml(xml);
+  const raw = parsePerformanceDetailXml(xml);
+  const detail = raw ? normalizeKopisPerformanceDetail(raw) : null;
 
   if (!detail) {
     return res.status(404).json({ message: "공연 정보를 찾을 수 없어요." });

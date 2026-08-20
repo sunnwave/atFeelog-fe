@@ -6,6 +6,7 @@ import {
   type BoxOfficeGenreCatecode,
 } from "@/shared/constants/kopis";
 import { ShowCard } from "@/components/commons/card";
+import { boxOfficeToPerformance } from "@/api/adapters/kopis.adapter";
 import SectionSkeleton from "./SectionSkeleton";
 
 export default function BoxOfficeSection(): JSX.Element {
@@ -55,29 +56,17 @@ export default function BoxOfficeSection(): JSX.Element {
 
       <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
         <div className="flex flex-nowrap">
-          {items.slice(0, 10).map((item) => {
-            const [startDate = "", endDate = ""] = item.period.split("~");
-            return (
-              <div
-                key={item.mt20id}
-                className="shrink-0 w-46 md:w-52 @container"
-              >
-                <ShowCard
-                  performance={{
-                    mt20id: item.mt20id,
-                    title: item.title,
-                    venueName: item.venueName,
-                    posterUrl: item.posterUrl,
-                    genre: item.genre,
-                    startDate,
-                    endDate,
-                    isOpenRun: false,
-                  }}
-                  rank={item.rank}
-                />
-              </div>
-            );
-          })}
+          {items.slice(0, 10).map((item) => (
+            <div
+              key={item.mt20id}
+              className="shrink-0 w-46 md:w-52 @container"
+            >
+              <ShowCard
+                performance={boxOfficeToPerformance(item)}
+                rank={item.rank}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </div>
