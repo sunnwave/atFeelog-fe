@@ -8,7 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useState } from "react";
 import { KakaoPlace } from "@/shared/types/kakao";
 import type { Performance, PerformanceDetail } from "@/shared/types/performance";
-import { resolveShowDate } from "@/shared/utils/kopis";
+import { kopisDateToFormDate } from "@/shared/utils/date";
 
 export function useRecordEditorForm(
   onSubmitValid: (v: RecordEditFormValues) => Promise<void> | void
@@ -47,7 +47,7 @@ export function useRecordEditorForm(
     setValue("genre", p.genre, { shouldDirty: true });
     setValue("posterUrl", p.posterUrl, { shouldDirty: true });
     setValue("placeName", p.venueName, { shouldValidate: true, shouldDirty: true });
-    setValue("showDate", resolveShowDate(p), { shouldValidate: true, shouldDirty: true });
+    setValue("showDate", kopisDateToFormDate(p.startDate), { shouldValidate: true, shouldDirty: true });
 
     // 2) 공연장 이름으로 카카오 장소 검색 → 좌표·주소 자동 채움
     try {
