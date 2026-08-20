@@ -2,6 +2,8 @@ import type {
   KopisRawPerformance,
   KopisRawPerformanceDetail,
   KopisRawBoxOffice,
+} from "@/api/adapters/types/kopis";
+import type {
   Performance,
   PerformanceDetail,
   PerformanceStatus,

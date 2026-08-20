@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
-import { parseBoxOfficeXml } from "@/shared/utils/kopis";
+import { parseBoxOfficeXml } from "@/api/adapters/kopis.parser";
 import { normalizeBoxOffice } from "@/api/adapters/kopis.adapter";
 import { formatKopisDate } from "@/shared/utils/date";
 import type { BoxOffice } from "@/shared/types/performance";

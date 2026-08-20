@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { KOPIS_BASE_URL } from "@/shared/constants/kopis";
-import { parsePerformanceDetailXml } from "@/shared/utils/kopis";
+import { parsePerformanceDetailXml } from "@/api/adapters/kopis.parser";
 import { normalizeKopisPerformanceDetail } from "@/api/adapters/kopis.adapter";
 import type { PerformanceDetail } from "@/shared/types/performance";
 
