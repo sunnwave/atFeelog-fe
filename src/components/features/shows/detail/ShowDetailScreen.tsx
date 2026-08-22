@@ -1,69 +1,45 @@
-import { JSX, useCallback, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ExternalLink, Sparkles } from "lucide-react";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
-import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import type { PerformanceDetail } from "@/shared/types/performance";
 import { RecordPosterCard } from "@/components/commons/card";
 
-const RECORDS_PER_PAGE = 10;
-
 type Tab = "info" | "feelog";
 
-interface ShowDetailScreenProps {
-  mt20id: string;
-  detail: PerformanceDetail | null;
-  detailLoading: boolean;
-}
+export default function ShowDetailScreen(): JSX.Element {
+  const { query, isReady } = useRouter();
+  const id = typeof query.id === "string" ? query.id : "";
 
-export default function ShowDetailScreen({
-  mt20id,
-  detail,
-  detailLoading,
-}: ShowDetailScreenProps): JSX.Element {
+  const [detail, setDetail] = useState<PerformanceDetail | null>(null);
+  const [detailLoading, setDetailLoading] = useState(false);
   const [tab, setTab] = useState<Tab>("info");
-  const [hasMore, setHasMore] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const {
-    records,
-    data,
-    loading: recordsLoading,
-    fetchMore,
-  } = useFetchRecordsByShow(mt20id);
+  useEffect(() => {
+    if (!isReady || !id) return;
 
-  const onLoadMore = useCallback(() => {
-    if (isLoadingMore || !hasMore || !data) return;
-    const currentLength = data.fetchBoardsByMt20id.length;
-    const nextPage = Math.floor(currentLength / RECORDS_PER_PAGE) + 1;
-    setIsLoadingMore(true);
+    setDetailLoading(true);
+    fetch(`/api/kopis/performances/${encodeURIComponent(id)}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: PerformanceDetail | null) => setDetail(data))
+      .catch(() => setDetail(null))
+      .finally(() => setDetailLoading(false));
+  }, [id, isReady]);
 
-    fetchMore({
-      variables: { mt20id, page: nextPage },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult?.fetchBoardsByMt20id) return prev;
-        const next = fetchMoreResult.fetchBoardsByMt20id;
-        if (next.length < RECORDS_PER_PAGE) setHasMore(false);
-        return { fetchBoardsByMt20id: [...prev.fetchBoardsByMt20id, ...next] };
-      },
-    }).finally(() => setIsLoadingMore(false));
-  }, [isLoadingMore, hasMore, data, fetchMore, mt20id]);
+  const { records, loading: recordsLoading } = useFetchRecordsByShow(id);
 
-  const sentinelRef = useInfiniteScroll({
-    hasMore: tab === "feelog" && hasMore,
-    isLoading: isLoadingMore,
-    onLoadMore,
-  });
+  const isLoading = !isReady || detailLoading;
 
   return (
     <div className="min-h-screen bg-background">
       <PageHeader label="About Show" fallbackHref="/shows" />
       <ResponsiveLayout contentType="default" className="py-6 space-y-6">
         {/* 공연 헤더 */}
-        {detailLoading ? (
+        {isLoading ? (
           <div className="flex gap-5">
             <div className="w-32 aspect-3/4 bg-muted animate-pulse shrink-0" />
             <div className="flex-1 space-y-3 pt-2">
@@ -133,7 +109,7 @@ export default function ShowDetailScreen({
         {/* 공연 정보 탭 */}
         {tab === "info" && (
           <div className="space-y-5">
-            {detailLoading ? (
+            {isLoading ? (
               <div className="space-y-3">
                 {Array.from({ length: 4 }).map((_, i) => (
                   <div
@@ -192,7 +168,7 @@ export default function ShowDetailScreen({
         {/* 필로그 탭 */}
         {tab === "feelog" && (
           <div>
-            {recordsLoading && records.length === 0 ? (
+            {recordsLoading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div key={i} className="aspect-3/4 bg-muted animate-pulse" />
@@ -204,28 +180,20 @@ export default function ShowDetailScreen({
                 <span className="text-sm">아직 이 공연의 필로그가 없어요</span>
               </div>
             ) : (
-              <>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                  {records.map((record) => (
-                    <div
-                      key={record.id}
-                      className="border-[1.5px] border-foreground"
-                    >
-                      <RecordPosterCard
-                        record={record}
-                        showMeta
-                        showBorder={false}
-                      />
-                    </div>
-                  ))}
-                </div>
-                <div ref={sentinelRef} className="h-6" />
-                {isLoadingMore && (
-                  <p className="text-sm text-muted-foreground text-center py-3">
-                    불러오는 중…
-                  </p>
-                )}
-              </>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {records.map((record) => (
+                  <div
+                    key={record.id}
+                    className="border-[1.5px] border-foreground"
+                  >
+                    <RecordPosterCard
+                      record={record}
+                      showMeta
+                      showBorder={false}
+                    />
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         )}

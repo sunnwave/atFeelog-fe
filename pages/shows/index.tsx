@@ -1,8 +1,5 @@
-import type { NextPage } from "next";
-import ShowsScreen from "@/components/features/shows/ShowsScreen";
+import ShowsScreen from "@/components/features/shows/list/ShowsScreen";
 
-const ShowsPage: NextPage = () => {
+export default function ShowsPage() {
   return <ShowsScreen />;
-};
-
-export default ShowsPage;
+}
