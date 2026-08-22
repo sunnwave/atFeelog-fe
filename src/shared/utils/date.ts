@@ -39,6 +39,11 @@ export function localDateToRfc3339NoonUtc(localDate: string): string {
 // KOPIS 날짜 유틸
 // ─────────────────────────────────────────────
 
+/** KOPIS 날짜 "YYYY.MM.DD" → 폼 날짜 "YYYY-MM-DD" */
+export function kopisDateToFormDate(kopisDate: string): string {
+  return kopisDate.replace(/\./g, "-");
+}
+
 /** Date → KOPIS API 파라미터 포맷 "YYYYMMDD" */
 export function formatKopisDate(date: Date): string {
   const y = date.getFullYear();

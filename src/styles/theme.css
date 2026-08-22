@@ -1,267 +1,277 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --font-size: 16px;
+  /* ══════════════════════════════════════════════════════════════════════
+     Layer 1 — Primitive Palette
+     브랜드 원색. 직접 사용 금지, 시맨틱 토큰(Layer 2)을 통해 참조할 것.
+     ══════════════════════════════════════════════════════════════════════ */
 
-  /* ── Feelog color system ──────────────────────────────────────────────── */
+  /* Neutral — Eerie Black #212121 · Ghost White #F6F5FA */
+  --feelog-neutral-bg:      #f6f5fa;
+  --feelog-neutral-surface: #ffffff;
+  --feelog-neutral-soft:    #f4f4ef;
+  --feelog-neutral-border:  #e8e8df;
+  --feelog-neutral-muted:   #70736b;
+  --feelog-neutral-dark:    #424242;
+  --feelog-neutral-text:    #212121;
+  --feelog-neutral-ink:     #0a0a0a;
+
+  /* Vanilla — accent, active state (ref: #EFF0A3) */
+  --feelog-vanilla-tint:  #fafbe6;
+  --feelog-vanilla-light: #f5f7c4;
+  --feelog-vanilla-soft:  #eff0a3;
+  --feelog-vanilla-base:  #e4e57d;
+  --feelog-vanilla-point: #7c7d00;
+
+  /* Alice — info surface, point text (ref: #D8DFE9) */
+  --feelog-alice-tint:  #f4f6f9;
+  --feelog-alice-light: #e4eaf2;
+  --feelog-alice-soft:  #d8dfe9;
+  --feelog-alice-base:  #b8c4d5;
+  --feelog-alice-point: #4a5e78;
+  --feelog-alice-deep:  #2c3d54;
+
+  /* Honeydew — aux surface, sub section (ref: #CFDECA) */
+  --feelog-honeydew-tint:  #f5faf3;
+  --feelog-honeydew-light: #e3f0de;
+  --feelog-honeydew-soft:  #cfdeca;
+  --feelog-honeydew-base:  #afc7a7;
+  --feelog-honeydew-point: #73996b;
+
+  /* Coral — likes, engagement (ref: #FF5C34) */
+  --feelog-coral-tint:  #fff6f1;
+  --feelog-coral-light: #ffe0d2;
+  --feelog-coral-soft:  #ffb199;
+  --feelog-coral-base:  #ff7954;
+  --feelog-coral-point: #ff5c34;
+
+  /* ══════════════════════════════════════════════════════════════════════
+     Layer 2 — Semantic Tokens
+     용도 기반 토큰. 컴포넌트에서 이 토큰을 사용할 것.
+     ══════════════════════════════════════════════════════════════════════ */
 
   /* Surface & Text */
-  --background: #f6f5fa;
-  --foreground: #212121;
+  --background:         var(--feelog-neutral-bg);
+  --foreground:         var(--feelog-neutral-text);
 
-  --card: #ffffff;
-  --card-foreground: #212121;
+  --card:               var(--feelog-neutral-surface);
+  --card-foreground:    var(--feelog-neutral-text);
 
-  --popover: #ffffff;
-  --popover-foreground: #212121;
+  --popover:            var(--feelog-neutral-surface);
+  --popover-foreground: var(--feelog-neutral-text);
 
-  --surface-soft: #f4f4ef;
+  --surface-soft:       var(--feelog-neutral-soft);
 
-  /* Primary CTA — dark charcoal */
-  --primary: #212121;
-  --primary-foreground: #ffffff;
-  --primary-hover: #424242;
-  --primary-pressed: #0a0a0a;
+  /* Primary CTA */
+  --primary:            var(--feelog-neutral-text);
+  --primary-foreground: var(--feelog-neutral-surface);
+  --primary-hover:      var(--feelog-neutral-dark);
+  --primary-pressed:    var(--feelog-neutral-ink);
 
   /* Secondary / Muted */
-  --secondary: #f4f4ef;
-  --secondary-foreground: #212121;
+  --secondary:            var(--feelog-neutral-soft);
+  --secondary-foreground: var(--feelog-neutral-text);
 
-  --muted: #f4f4ef;
-  --muted-foreground: #70736b;
+  --muted:            var(--feelog-neutral-soft);
+  --muted-foreground: var(--feelog-neutral-muted);
 
   /* Accent — vanilla highlight */
-  --accent: #eff0a3;
-  --accent-foreground: #7c7d00;
+  --accent:            var(--feelog-vanilla-soft);
+  --accent-foreground: var(--feelog-vanilla-point);
 
   /* Feature tokens */
-  --info-surface: #d8dfe9;
-  --info-foreground: #4a5e78;
-  --info-border: #b8c4d5;
+  --info-surface:    var(--feelog-alice-soft);
+  --info-foreground: var(--feelog-alice-point);
+  --info-border:     var(--feelog-alice-base);
 
-  --aux-surface: #e3f0de;
-  --aux-foreground: #73996b;
-  --aux-border: #cfdeca;
+  --aux-surface:    var(--feelog-honeydew-light);
+  --aux-foreground: var(--feelog-honeydew-point);
+  --aux-border:     var(--feelog-honeydew-soft);
 
-  --point: #ff5c34;
-  --point-light: #ffb199;
-  --point-bg: #fff6f1;
+  --point:       var(--feelog-coral-point);
+  --point-light: var(--feelog-coral-soft);
+  --point-bg:    var(--feelog-coral-tint);
 
   /* Status */
-  --destructive: #dc2626;
+  --destructive:            #dc2626;
   --destructive-foreground: #ffffff;
 
-  --success: #10b981;
+  --success:            #10b981;
   --success-foreground: #ffffff;
 
   /* Border & Form */
-  --border: #e8e8df;
-  --input: #e8e8df;
-  --input-background: #ffffff;
-  --switch-background: #cfdeca;
-  --ring: #212121;
+  --border:            var(--feelog-neutral-border);
+  --input:             var(--feelog-neutral-border);
+  --input-background:  var(--feelog-neutral-surface);
+  --switch-background: var(--feelog-honeydew-soft);
+  --ring:              var(--feelog-neutral-text);
+
+  /* Chart */
+  --chart-1: var(--feelog-vanilla-point);
+  --chart-2: var(--feelog-alice-point);
+  --chart-3: var(--feelog-alice-base);
+  --chart-4: var(--feelog-honeydew-point);
+  --chart-5: var(--feelog-coral-point);
+
+  /* Sidebar */
+  --sidebar:                    var(--feelog-neutral-surface);
+  --sidebar-foreground:         var(--feelog-neutral-text);
+  --sidebar-primary:            var(--feelog-neutral-text);
+  --sidebar-primary-foreground: var(--feelog-neutral-surface);
+  --sidebar-accent:             var(--feelog-vanilla-soft);
+  --sidebar-accent-foreground:  var(--feelog-vanilla-point);
+  --sidebar-border:             var(--feelog-neutral-border);
+  --sidebar-ring:               var(--feelog-neutral-text);
+
+  /* ══════════════════════════════════════════════════════════════════════
+     Typography
+     ══════════════════════════════════════════════════════════════════════ */
+
+  /* Base font size (html 엘리먼트에서 참조) */
+  --font-size: 16px;
 
   /* Font weights */
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --font-weight-semibold: 600;
+  --font-weight-normal:    400;
+  --font-weight-medium:    500;
+  --font-weight-semibold:  600;
+  --font-weight-bold:      700;
+  --font-weight-extrabold: 800;
+  --font-weight-black:     900;
 
-  /* Spacing (8pt system) */
-  --spacing-1: 8px;
-  --spacing-2: 16px;
-  --spacing-3: 24px;
-  --spacing-4: 32px;
-  --spacing-5: 40px;
-  --spacing-6: 48px;
+  /* ══════════════════════════════════════════════════════════════════════
+     Layout
+     ══════════════════════════════════════════════════════════════════════ */
 
-  /* Responsive breakpoints */
-  --breakpoint-mobile: 375px;
-  --breakpoint-tablet: 768px;
-  --breakpoint-desktop: 1280px;
-
-  /* Max content widths */
+  --bottom-nav-height: 50px;
   --max-content-width: 720px;
-  --max-app-width: 1440px;
+  --max-app-width:     1440px;
 
-  /* Grid columns */
-  --grid-columns-mobile: 4;
-  --grid-columns-tablet: 8;
-  --grid-columns-desktop: 12;
+  /* ══════════════════════════════════════════════════════════════════════
+     Elevation
+     ══════════════════════════════════════════════════════════════════════ */
 
-  /* Typography scale */
-  --font-size-xs: 0.75rem;   /* 12px */
-  --font-size-sm: 0.875rem;  /* 14px */
-  --font-size-base: 1rem;    /* 16px */
-  --font-size-lg: 1.125rem;  /* 18px */
-  --font-size-xl: 1.25rem;   /* 20px */
-  --font-size-2xl: 1.5rem;   /* 24px */
-  --font-size-3xl: 1.875rem; /* 30px */
-
-  /* Border radius */
-  --radius: 16px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
-  --radius-full: 9999px;
-
-  /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
   --shadow-md: 0 2px 4px 0 rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.02);
   --shadow-lg: 0 4px 8px 0 rgb(0 0 0 / 0.05), 0 2px 4px 0 rgb(0 0 0 / 0.03);
-
-  /* Chart */
-  --chart-1: #7c7d00;
-  --chart-2: #4a5e78;
-  --chart-3: #b8c4d5;
-  --chart-4: #73996b;
-  --chart-5: #ff5c34;
-
-  /* Sidebar */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #212121;
-  --sidebar-primary: #212121;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eff0a3;
-  --sidebar-accent-foreground: #7c7d00;
-  --sidebar-border: #e8e8df;
-  --sidebar-ring: #212121;
 }
 
-/* .dark {
-  --background: #0a0a0a;
-  --foreground: #fafafa;
-  --card: #1a1a1a;
-  --card-foreground: #fafafa;
-  --popover: #1a1a1a;
-  --popover-foreground: #fafafa;
-  --primary: #8b5cf6;
-  --primary-foreground: #ffffff;
-  --primary-hover: #7c3aed;
-  --secondary: #27272a;
-  --secondary-foreground: #fafafa;
-  --muted: #27272a;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #8b5cf6;
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: #27272a;
-  --input: #27272a;
-  --input-background: #1a1a1a;
-  --ring: #a78bfa;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --font-weight-semibold: 600;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
-} */
-
 @theme inline {
-  /* ── Semantic → Tailwind ─────────────────────────────────────────────── */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
+  /* ── Semantic → Tailwind ─────────────────────────────────────────── */
+  --color-background:         var(--background);
+  --color-foreground:         var(--foreground);
+  --color-card:               var(--card);
+  --color-card-foreground:    var(--card-foreground);
+  --color-popover:            var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-surface-soft: var(--surface-soft);
-  --color-primary: var(--primary);
+  --color-surface-soft:       var(--surface-soft);
+  --color-primary:            var(--primary);
   --color-primary-foreground: var(--primary-foreground);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-pressed: var(--primary-pressed);
-  --color-secondary: var(--secondary);
+  --color-primary-hover:      var(--primary-hover);
+  --color-primary-pressed:    var(--primary-pressed);
+  --color-secondary:            var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
+  --color-muted:            var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
+  --color-accent:            var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-info-surface: var(--info-surface);
+  --color-info-surface:    var(--info-surface);
   --color-info-foreground: var(--info-foreground);
-  --color-info-border: var(--info-border);
-  --color-aux-surface: var(--aux-surface);
+  --color-info-border:     var(--info-border);
+  --color-aux-surface:    var(--aux-surface);
   --color-aux-foreground: var(--aux-foreground);
-  --color-aux-border: var(--aux-border);
-  --color-point: var(--point);
+  --color-aux-border:     var(--aux-border);
+  --color-point:       var(--point);
   --color-point-light: var(--point-light);
-  --color-point-bg: var(--point-bg);
-  --color-destructive: var(--destructive);
+  --color-point-bg:    var(--point-bg);
+  --color-destructive:            var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
-  --color-success: var(--success);
+  --color-success:            var(--success);
   --color-success-foreground: var(--success-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-input-background: var(--input-background);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-input-background:  var(--input-background);
   --color-switch-background: var(--switch-background);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
+  --color-ring:      var(--ring);
+  --color-chart-1:   var(--chart-1);
+  --color-chart-2:   var(--chart-2);
+  --color-chart-3:   var(--chart-3);
+  --color-chart-4:   var(--chart-4);
+  --color-chart-5:   var(--chart-5);
+  --color-sidebar:                    var(--sidebar);
+  --color-sidebar-foreground:         var(--sidebar-foreground);
+  --color-sidebar-primary:            var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-accent:             var(--sidebar-accent);
+  --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
+  --color-sidebar-border:             var(--sidebar-border);
+  --color-sidebar-ring:               var(--sidebar-ring);
 
-  /* ── Brand palette — bg-feelog-* / text-feelog-* ─────────────────────── */
-  /* 레퍼런스: Vanilla #EFF0A3 · Alice Blue #D8DFE9 · Honeydew #CFDECA     */
+  /* ── Brand palette → Tailwind (bg-feelog-* / text-feelog-*) ─────── */
+  /* Neutral */
+  --color-feelog-neutral-bg:      var(--feelog-neutral-bg);
+  --color-feelog-neutral-surface: var(--feelog-neutral-surface);
+  --color-feelog-neutral-soft:    var(--feelog-neutral-soft);
+  --color-feelog-neutral-border:  var(--feelog-neutral-border);
+  --color-feelog-neutral-muted:   var(--feelog-neutral-muted);
+  --color-feelog-neutral-dark:    var(--feelog-neutral-dark);
+  --color-feelog-neutral-text:    var(--feelog-neutral-text);
+  --color-feelog-neutral-ink:     var(--feelog-neutral-ink);
 
-  /* Vanilla — accent, active state (ref: #EFF0A3) */
-  --color-feelog-vanilla-tint:  #fafbe6;
-  --color-feelog-vanilla-light: #f5f7c4;
-  --color-feelog-vanilla-soft:  #eff0a3;
-  --color-feelog-vanilla-base:  #e4e57d;
-  --color-feelog-vanilla-point: #7c7d00;
+  /* Vanilla */
+  --color-feelog-vanilla-tint:  var(--feelog-vanilla-tint);
+  --color-feelog-vanilla-light: var(--feelog-vanilla-light);
+  --color-feelog-vanilla-soft:  var(--feelog-vanilla-soft);
+  --color-feelog-vanilla-base:  var(--feelog-vanilla-base);
+  --color-feelog-vanilla-point: var(--feelog-vanilla-point);
 
-  /* Alice — info surface, point text (ref: #D8DFE9) */
-  --color-feelog-alice-tint:  #f4f6f9;
-  --color-feelog-alice-light: #e4eaf2;
-  --color-feelog-alice-soft:  #d8dfe9;
-  --color-feelog-alice-base:  #b8c4d5;
-  --color-feelog-alice-point: #4a5e78;
-  --color-feelog-alice-deep:  #2c3d54;
+  /* Alice */
+  --color-feelog-alice-tint:  var(--feelog-alice-tint);
+  --color-feelog-alice-light: var(--feelog-alice-light);
+  --color-feelog-alice-soft:  var(--feelog-alice-soft);
+  --color-feelog-alice-base:  var(--feelog-alice-base);
+  --color-feelog-alice-point: var(--feelog-alice-point);
+  --color-feelog-alice-deep:  var(--feelog-alice-deep);
 
-  /* Honeydew — aux surface, sub section (ref: #CFDECA) */
-  --color-feelog-honeydew-tint:  #f5faf3;
-  --color-feelog-honeydew-light: #e3f0de;
-  --color-feelog-honeydew-soft:  #cfdeca;
-  --color-feelog-honeydew-base:  #afc7a7;
-  --color-feelog-honeydew-point: #73996b;
+  /* Honeydew */
+  --color-feelog-honeydew-tint:  var(--feelog-honeydew-tint);
+  --color-feelog-honeydew-light: var(--feelog-honeydew-light);
+  --color-feelog-honeydew-soft:  var(--feelog-honeydew-soft);
+  --color-feelog-honeydew-base:  var(--feelog-honeydew-base);
+  --color-feelog-honeydew-point: var(--feelog-honeydew-point);
 
-  /* Coral — likes, engagement (unchanged) */
-  --color-feelog-coral-tint:  #fff6f1;
-  --color-feelog-coral-light: #ffe0d2;
-  --color-feelog-coral-soft:  #ffb199;
-  --color-feelog-coral-base:  #ff7954;
-  --color-feelog-coral-point: #ff5c34;
+  /* Coral */
+  --color-feelog-coral-tint:  var(--feelog-coral-tint);
+  --color-feelog-coral-light: var(--feelog-coral-light);
+  --color-feelog-coral-soft:  var(--feelog-coral-soft);
+  --color-feelog-coral-base:  var(--feelog-coral-base);
+  --color-feelog-coral-point: var(--feelog-coral-point);
 
-  /* Neutral — Eerie Black #212121 · Ghost White #F6F5FA */
-  --color-feelog-neutral-bg:      #f6f5fa;
-  --color-feelog-neutral-surface: #ffffff;
-  --color-feelog-neutral-soft:    #f4f4ef;
-  --color-feelog-neutral-border:  #e8e8df;
-  --color-feelog-neutral-text:    #212121;
-  --color-feelog-neutral-muted:   #70736b;
+  /* ── Font sizes → Tailwind (text-*) ─────────────────────────────── */
+  /*
+   * UI / Label 텍스트
+   *   text-3xs  9px  — 극소 레이블, 뱃지 내 텍스트
+   *   text-2xs  10px — 소형 레이블
+   *   text-xs   12px — Tailwind 기본값 유지
+   *   text-sm   14px — Tailwind 기본값 유지
+   *   text-base 16px — body
+   *
+   * Display / Hero 텍스트
+   *   text-display-sm  22px — 모바일 히어로 소형
+   *   text-display-md  32px — 섹션 헤딩
+   *   text-display-lg  38px — 프로필 이름 (데스크탑)
+   *   text-display-xl  42px — 데스크탑 히어로
+   *   text-display-2xl 56px — 랜딩 최대 히어로
+   */
+  --font-size-3xs:        0.5625rem;   /*  9px */
+  --font-size-2xs:        0.625rem;    /* 10px */
+  --font-size-display-sm: 1.375rem;   /* 22px */
+  --font-size-display-md: 2rem;       /* 32px */
+  --font-size-display-lg: 2.375rem;   /* 38px */
+  --font-size-display-xl: 2.625rem;   /* 42px */
+  --font-size-display-2xl: 3.5rem;    /* 56px */
+
+  /* ── Border radius ───────────────────────────────────────────────── */
+  /* Tailwind 기본값 사용 (sm:2px md:6px lg:8px xl:12px 2xl:16px) */
 }
 
 @layer base {
@@ -271,14 +281,12 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-      "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    font-family: "Pretendard Variable", Pretendard, Inter, ui-sans-serif, system-ui, sans-serif;
   }
 
   /**
-  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
-  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
-  */
+   * Default typography — @layer base이므로 Tailwind 유틸리티 클래스로 자동 오버라이드됨.
+   */
 
   html {
     font-size: var(--font-size);
@@ -331,48 +339,28 @@
 
   @keyframes shake {
     0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-4px);
-    }
-    75% {
-      transform: translateX(4px);
-    }
+    100% { transform: translateX(0); }
+    25%  { transform: translateX(-4px); }
+    75%  { transform: translateX(4px); }
   }
 
   .animate-shake {
     animation: shake 0.3s ease-in-out;
   }
 
-  /* Responsive Typography - Desktop scales up */
+  /* Responsive Typography */
   @media (min-width: 1280px) {
-    html {
-      font-size: 18px;
-    }
-
-    h1 {
-      font-size: 2rem;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    h3 {
-      font-size: 1.25rem;
-    }
+    html { font-size: 18px; }
+    h1   { font-size: 2rem; }
+    h2   { font-size: 1.5rem; }
+    h3   { font-size: 1.25rem; }
   }
 
-  /* Tablet intermediate scale */
   @media (min-width: 768px) and (max-width: 1279px) {
-    html {
-      font-size: 16px;
-    }
+    html { font-size: 16px; }
   }
 
-  /* Utility classes for responsive containers */
+  /* Container utilities */
   .container-reading {
     max-width: var(--max-content-width);
     margin-left: auto;

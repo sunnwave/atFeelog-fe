@@ -172,7 +172,7 @@ export default function RecordFeed({
         ))}
       </ResponsiveGrid>
 
-      <div ref={sentinelRef} className="h-6" />
+      <div ref={sentinelRef} />
       {isLoading && (
         <div className="p-3 text-muted-foreground">불러오는 중…</div>
       )}
