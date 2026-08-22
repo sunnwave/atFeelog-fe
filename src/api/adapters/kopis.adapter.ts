@@ -11,7 +11,7 @@ import type {
 } from "@/shared/types/performance";
 
 export function normalizeKopisPerformance(
-  raw: KopisRawPerformance
+  raw: KopisRawPerformance,
 ): Performance {
   return {
     mt20id: raw.mt20id,
@@ -27,7 +27,7 @@ export function normalizeKopisPerformance(
 }
 
 export function normalizeKopisPerformanceDetail(
-  raw: KopisRawPerformanceDetail
+  raw: KopisRawPerformanceDetail,
 ): PerformanceDetail {
   const ticketLinks = (
     Array.isArray(raw.relates?.relate)
@@ -46,7 +46,6 @@ export function normalizeKopisPerformanceDetail(
         : [raw.styurls.styurl]
       ).filter(Boolean)
     : [];
-
   return {
     ...normalizeKopisPerformance(raw),
     cast: raw.prfcast,
