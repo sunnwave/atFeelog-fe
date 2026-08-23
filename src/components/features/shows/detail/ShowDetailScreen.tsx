@@ -1,15 +1,20 @@
 import { JSX, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { ExternalLink, Sparkles } from "lucide-react";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
+import Tabs from "@/components/ui/tabs/Tabs";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
-import { RecordPosterCard } from "@/components/commons/card";
 import { useFetchShowDetail } from "./hooks/useFetchShowDetail";
+import ShowRecordsTab from "./ui/ShowRecordsTab";
+import ShowInfoTab from "./ui/ShowInfoTab";
 
-type Tab = "info" | "feelog";
+type Tab = "intro" | "records";
+
+const TABS = [
+  { id: "intro" as const, label: "소개" },
+  { id: "records" as const, label: "필로그" },
+];
 
 export default function ShowDetailScreen(): JSX.Element {
   const { query, isReady } = useRouter();
@@ -21,10 +26,11 @@ export default function ShowDetailScreen(): JSX.Element {
     error: detailError,
   } = useFetchShowDetail(id);
   const { records, loading: recordsLoading } = useFetchRecordsByShow(id);
-  const [tab, setTab] = useState<Tab>("info");
+  const [tab, setTab] = useState<Tab>("intro");
 
   const isLoading = !isReady || detailLoading;
 
+  console.log(detail);
   return (
     <div className="min-h-screen bg-background">
       <PageHeader label="About Show" fallbackHref="/shows" />
@@ -78,115 +84,29 @@ export default function ShowDetailScreen(): JSX.Element {
         ) : null}
 
         {/* 탭 */}
-        <div className="flex border-b-[1.5px] border-foreground">
-          {(["info", "feelog"] as Tab[]).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={[
-                "px-5 py-2.5 text-sm font-bold tracking-wide transition-colors",
-                tab === t
-                  ? "border-b-2 border-foreground text-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              ].join(" ")}
-            >
-              {t === "info"
-                ? "공연 정보"
-                : `필로그 ${records.length > 0 ? `(${records.length})` : ""}`}
-            </button>
+        <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
+
+        {/* 탭 콘텐츠 */}
+        {tab === "intro" &&
+          (detail ? (
+            <ShowInfoTab detail={detail} />
+          ) : isLoading ? (
+            <div className="space-y-3 py-5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="h-4 bg-muted animate-pulse rounded w-full"
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="py-10 text-center text-sm text-muted-foreground">
+              공연 정보를 불러올 수 없어요.
+            </p>
           ))}
-        </div>
 
-        {/* 공연 정보 탭 */}
-        {tab === "info" && (
-          <div className="space-y-5">
-            {isLoading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-4 bg-muted animate-pulse rounded w-full"
-                  />
-                ))}
-              </div>
-            ) : detail ? (
-              <>
-                {[
-                  { label: "출연진", value: detail.cast },
-                  { label: "런타임", value: detail.runtime },
-                  { label: "관람연령", value: detail.ageLimit },
-                  { label: "티켓가격", value: detail.ticketPrice },
-                  { label: "공연 시간", value: detail.showTime },
-                ]
-                  .filter((r) => r.value)
-                  .map(({ label, value }) => (
-                    <div
-                      key={label}
-                      className="flex gap-4 border-b border-border pb-4"
-                    >
-                      <span className="text-xs font-black tracking-widest uppercase text-muted-foreground w-20 shrink-0 pt-0.5">
-                        {label}
-                      </span>
-                      <span className="text-sm leading-relaxed">{value}</span>
-                    </div>
-                  ))}
-
-                {detail.ticketLinks.length > 0 && (
-                  <div className="flex gap-2 flex-wrap pt-1">
-                    {detail.ticketLinks.map((link) => (
-                      <Link
-                        key={link.url}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 border-[1.5px] border-foreground text-xs font-bold hover:bg-foreground hover:text-background transition-colors"
-                      >
-                        {link.name}
-                        <ExternalLink className="w-3 h-3" />
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="text-sm text-muted-foreground py-10 text-center">
-                공연 정보를 불러올 수 없어요.
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* 필로그 탭 */}
-        {tab === "feelog" && (
-          <div>
-            {recordsLoading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="aspect-3/4 bg-muted animate-pulse" />
-                ))}
-              </div>
-            ) : records.length === 0 ? (
-              <div className="flex items-center gap-2 text-muted-foreground py-10">
-                <Sparkles className="w-5 h-5" />
-                <span className="text-sm">아직 이 공연의 필로그가 없어요</span>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {records.map((record) => (
-                  <div
-                    key={record.id}
-                    className="border-[1.5px] border-foreground"
-                  >
-                    <RecordPosterCard
-                      record={record}
-                      showMeta
-                      showBorder={false}
-                    />
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+        {tab === "records" && (
+          <ShowRecordsTab records={records} loading={recordsLoading} />
         )}
       </ResponsiveLayout>
     </div>
