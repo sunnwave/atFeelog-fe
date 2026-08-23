@@ -1,3 +1,5 @@
+import { ResponsiveGrid } from "@/components/commons/layout";
+
 type TicketPriceRow = {
   seat: string;
   price: string;
@@ -19,21 +21,26 @@ type TicketPriceTableProps = {
   ticketPrice: string;
 };
 
-export default function TicketPriceTable({ ticketPrice }: TicketPriceTableProps) {
+export default function TicketPriceTable({
+  ticketPrice,
+}: TicketPriceTableProps) {
   const rows = parse(ticketPrice);
+
   if (rows.length === 0) return null;
 
   return (
-    <div className="flex flex-col">
+    <ResponsiveGrid cols={1} colsMd={2}>
       {rows.map((row) => (
-        <div
-          key={row.seat}
-          className="flex items-baseline justify-between gap-3 border-b border-border py-2.5"
-        >
-          <span className="text-[13.5px]">{row.seat}</span>
-          <span className="shrink-0 text-[13.5px] font-bold">{row.price}</span>
+        <div key={row.seat} className="flex w-full px-5 min-w-0 items-baseline">
+          <span className="shrink-0 whitespace-nowrap text-[13.5px] text-foreground mr-2">
+            {row.seat}
+          </span>
+          <span className="flex-1 -translate-y-0.75 border-b border-dotted border-muted-foreground opacity-45" />
+          <span className="shrink-0 whitespace-nowrap text-[13.5px] font-bold tabular-nums text-foreground ml-2">
+            {row.price}
+          </span>
         </div>
       ))}
-    </div>
+    </ResponsiveGrid>
   );
 }
