@@ -1,4 +1,4 @@
-import { JSX, useEffect, useState } from "react";
+import { JSX, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -6,8 +6,8 @@ import { ExternalLink, Sparkles } from "lucide-react";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
-import type { PerformanceDetail } from "@/shared/types/performance";
 import { RecordPosterCard } from "@/components/commons/card";
+import { useFetchShowDetail } from "./hooks/useFetchShowDetail";
 
 type Tab = "info" | "feelog";
 
@@ -15,22 +15,13 @@ export default function ShowDetailScreen(): JSX.Element {
   const { query, isReady } = useRouter();
   const id = typeof query.id === "string" ? query.id : "";
 
-  const [detail, setDetail] = useState<PerformanceDetail | null>(null);
-  const [detailLoading, setDetailLoading] = useState(false);
-  const [tab, setTab] = useState<Tab>("info");
-
-  useEffect(() => {
-    if (!isReady || !id) return;
-
-    setDetailLoading(true);
-    fetch(`/api/kopis/performances/${encodeURIComponent(id)}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data: PerformanceDetail | null) => setDetail(data))
-      .catch(() => setDetail(null))
-      .finally(() => setDetailLoading(false));
-  }, [id, isReady]);
-
+  const {
+    detail,
+    loading: detailLoading,
+    error: detailError,
+  } = useFetchShowDetail(id);
   const { records, loading: recordsLoading } = useFetchRecordsByShow(id);
+  const [tab, setTab] = useState<Tab>("info");
 
   const isLoading = !isReady || detailLoading;
 
