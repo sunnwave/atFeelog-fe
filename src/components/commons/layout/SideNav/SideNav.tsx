@@ -1,20 +1,19 @@
-import { useState } from "react";
-import { LogOut } from "lucide-react";
 import { useRecoilValue } from "recoil";
 
 import Logo from "../../../ui/logo/Logo";
-import ProfileEntry from "./ProfileEntry/ProfileEntry";
 import NavItem from "./NavItem";
 
-import { Button } from "@/components/ui/button/Button";
-
-import { buildWriteActionSheetOptions } from "@/shared/constants/actionSheetOptions";
-import { SIDE_NAV_ITEMS } from "@/shared/constants/navigation";
+import {
+  SIDE_NAV_ITEMS,
+  WRITE_NAV_ITEM,
+  LOGOUT_NAV_ITEM,
+} from "@/shared/constants/navigation";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import useLogoutUser from "@/shared/hooks/auth/useLogoutUser";
 import { loggedInUserState } from "@/shared/stores";
 import { useRouter } from "next/router";
+import Avatar from "@/components/ui/avatar/Avatar";
 
 export default function SideNav() {
   const router = useRouter();
@@ -46,30 +45,27 @@ export default function SideNav() {
 
   return (
     <aside className="flex h-full w-full flex-col border-r-[1.5px] border-foreground bg-card">
-      <div className="border-b-[1.5px] border-foreground flex justify-center items-center px-6 py-4">
-        <Logo size="lg" />
+      <div className="border-b-[1.5px] border-foreground flex justify-center items-center px-3.5 py-4">
+        {/* TODO: 정사각 로고 디자인 후 교체 */}
+        <Logo size="sm" />
       </div>
 
-      <ProfileEntry user={me} />
-
-      <div className="px-6 py-5">
-        <Button
-          variant="solid"
-          tone="primary"
-          size="lg"
-          className={[
-            "w-full rounded-none",
-            "font-black uppercase tracking-[0.14em]",
-            "hover:translate-x-px hover:translate-y-px",
-            "active:translate-x-0.5 active:translate-y-0.5",
-            "active:shadow-none",
-          ].join(" ")}
-          onClick={onClickWrite}
-        >
-          Write
-        </Button>
+      {/* profile entry */}
+      <div className="flex items-center border-b-[1.5px] py-3">
+        <div className="w-16 flex justify-center shrink-0">
+          <Avatar user={me} size="sm" clickable />
+        </div>
+        <span className="hidden group-hover:inline truncate text-sm font-semibold leading-tight text-foreground whitespace-nowrap">
+          {isLoggedIn ? `${me!.name}` : "로그인해주세요"}
+        </span>
       </div>
 
+      <NavItem
+        nav={WRITE_NAV_ITEM}
+        onClick={onClickWrite}
+        cta
+        className="border-b-[1.5px] border-foreground"
+      />
       <nav className="flex flex-1 flex-col overflow-y-auto ">
         {SIDE_NAV_ITEMS.map((item) => (
           <NavItem key={item.label} nav={item} />
@@ -77,23 +73,11 @@ export default function SideNav() {
       </nav>
 
       {isLoggedIn && (
-        <div className="border-t border-border px-6 py-5">
-          <Button
-            variant="ghost"
-            tone="primary"
-            size="default"
-            className={[
-              "w-full justify-start rounded-none px-0",
-              "normal-case tracking-normal",
-              "text-muted-foreground",
-              "hover:bg-transparent hover:text-foreground",
-            ].join(" ")}
-            onClick={onClickLogout}
-          >
-            <LogOut className="h-4.5 w-4.5" />
-            <span>로그아웃</span>
-          </Button>
-        </div>
+        <NavItem
+          nav={LOGOUT_NAV_ITEM}
+          onClick={onClickLogout}
+          className="border-t"
+        />
       )}
     </aside>
   );
