@@ -26,7 +26,7 @@ export default function ShowInfoTab({ detail }: ShowInfoTabProps) {
         </section>
       )}
 
-      {/* 장소 — #55 카카오맵 연동 후 대체 예정 */}
+      {/* TODO:장소 — #55 카카오맵 연동 후 대체 예정 */}
       <section>
         <SectionRule label="장소" />
         <p className="text-[13.5px] leading-relaxed">{detail.venueName}</p>
