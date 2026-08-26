@@ -3,7 +3,7 @@ import { cn } from "@/shared/utils/cn";
 
 /**
  * contentType
- * - "wide"    : max-w-screen-xl (1280px) — 피드, 그리드 페이지
+ * - "wide"    : max-w-screen-xl (1180px) — 피드, 그리드 페이지
  * - "default" : max-w-screen-lg (1024px) — 상세 페이지
  * - "narrow"  : max-w-[680px]            — 폼, 프로필 편집
  * - "full"    : 제한 없음
@@ -20,7 +20,7 @@ interface IResponsiveLayoutProps {
 }
 
 const maxWMap: Record<ContentType, string> = {
-  wide: "max-w-screen-2xl",
+  wide: "max-w-[1180px]",
   default: "max-w-screen-lg",
   narrow: "max-w-[680px]",
   full: "",

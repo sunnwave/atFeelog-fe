@@ -53,7 +53,7 @@ export default function RecordDetailScreen(): JSX.Element | null {
       <div className="min-h-screen bg-background">
         <PageHeader label="Record" fallbackHref="/feelog" />
         <ResponsiveLayout
-          contentType="wide"
+          contentType="default"
           padded={false}
           className="lg:px-6 lg:py-8"
         >
@@ -74,7 +74,7 @@ export default function RecordDetailScreen(): JSX.Element | null {
     <div className="min-h-screen bg-background">
       <PageHeader label="Record" fallbackHref="/feelog" />
       <ResponsiveLayout
-        contentType="wide"
+        contentType="default"
         padded={false}
         className="lg:px-6 lg:py-8"
       >

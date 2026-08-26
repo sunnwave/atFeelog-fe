@@ -48,10 +48,11 @@ export default function Avatar({
   const base =
     "rounded-full flex shrink-0 items-center justify-center overflow-hidden border border-foreground";
 
-  const href =
-    clickable && user?.id
+  const href = !clickable
+    ? null
+    : user?.id
       ? `/user/${user.id}?name=${encodeURIComponent(user.name)}${user.picture ? `&picture=${encodeURIComponent(user.picture)}` : ""}`
-      : undefined;
+      : `/login`;
 
   const wrap = (node: JSX.Element) =>
     href ? (
@@ -67,20 +68,18 @@ export default function Avatar({
     );
 
   if (isGuest) {
-    return (
-      <>
-        <div
-          className={cn(
-            base,
-            s.cls,
-            "bg-surface-soft text-foreground",
-            className,
-          )}
-          aria-label="Guest Avatar"
-        >
-          <UserIcon className={s.iconCls} />
-        </div>
-      </>
+    return wrap(
+      <div
+        className={cn(
+          base,
+          s.cls,
+          "bg-surface-soft text-foreground",
+          className,
+        )}
+        aria-label="Guest Avatar"
+      >
+        <UserIcon className={s.iconCls} />
+      </div>,
     );
   }
 

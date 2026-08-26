@@ -9,14 +9,11 @@ interface LayoutProps {
   noBottomNav?: boolean;
 }
 
-export default function Layout({
-  children,
-  noBottomNav = false,
-}: LayoutProps) {
+export default function Layout({ children, noBottomNav = false }: LayoutProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Desktop Sidebar */}
-      <aside className="fixed left-0 top-0 z-50 hidden h-screen w-[288px] lg:block">
+      <aside className="fixed w-16 left-0 top-0 z-50 hidden h-screen hover:w-45 transition-[width] duration-150 overflow-hidden group lg:block">
         <SideNav />
       </aside>
 
@@ -31,7 +28,7 @@ export default function Layout({
       </header>
 
       {/* Main */}
-      <div className="lg:pl-[288px]">
+      <div className="lg:pl-16">
         <main className={`w-full lg:pb-0 ${noBottomNav ? "" : "pb-nav"}`}>
           {children}
         </main>
