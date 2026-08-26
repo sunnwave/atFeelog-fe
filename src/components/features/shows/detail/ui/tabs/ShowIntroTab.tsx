@@ -9,7 +9,7 @@ type ShowInfoTabProps = {
 
 export default function ShowInfoTab({ detail }: ShowInfoTabProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 pt-7 px-3">
       {/* 출연진 */}
       {detail.cast && (
         <section>
