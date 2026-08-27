@@ -97,7 +97,7 @@ export default function ResponsiveGrid({
 }: ResponsiveGridProps) {
   return (
     /* @container: 이 div의 너비를 기준으로 자식 grid의 열 수가 결정됨 */
-    <div className={cn("@container", className)}>
+    <div className={cn("@container")}>
       <div
         className={cn(
           "grid",
@@ -106,8 +106,9 @@ export default function ResponsiveGrid({
           colsMd && colsMdCQMap[colsMd],
           colsLg && colsLgCQMap[colsLg],
           bordered
-            ? "gap-px border-t-[1.5px] border-l-[1.5px] border-foreground"
+            ? " border-t-[1.5px] border-l-[1.5px] border-foreground"
             : gapMap[gap],
+          className,
         )}
       >
         {children}

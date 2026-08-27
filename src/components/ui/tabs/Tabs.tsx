@@ -19,7 +19,7 @@ export default function Tabs<T extends string>({
   className,
 }: TabsProps<T>) {
   return (
-    <div className={cn("flex border-b-[1.5px] border-foreground", className)}>
+    <div className={cn("flex border-y-[1.5px] border-foreground", className)}>
       {tabs.map((tab, i) => (
         <button
           key={tab.id}

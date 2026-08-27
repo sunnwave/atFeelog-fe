@@ -36,6 +36,11 @@ export type KopisRawPerformanceDetail = KopisRawPerformance & {
       | { relatenm: string; relateurl: string }
       | { relatenm: string; relateurl: string }[];
   };
+  sty?: string; // 줄거리
+  styurls?: {
+    // 소개이미지도 1건이면 객체, 2건 이상이면 배열
+    styurl: string | string[];
+  };
 };
 
 /** 공연 상세 API 전체 응답 래퍼 */

@@ -3,8 +3,8 @@ import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { ShowCard, CardSkeleton } from "@/components/commons/card";
-import ShowFilterBar from "./ShowFilterBar";
 import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
+import ShowFilterBar from "./ShowFilterBar";
 
 export default function ShowsScreen(): JSX.Element {
   const {

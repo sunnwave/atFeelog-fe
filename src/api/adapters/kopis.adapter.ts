@@ -40,6 +40,13 @@ export function normalizeKopisPerformanceDetail(
     url: r.relateurl,
   }));
 
+  const introImages = raw.styurls
+    ? (Array.isArray(raw.styurls.styurl)
+        ? raw.styurls.styurl
+        : [raw.styurls.styurl]
+      ).filter(Boolean)
+    : [];
+
   return {
     ...normalizeKopisPerformance(raw),
     cast: raw.prfcast,
@@ -48,6 +55,8 @@ export function normalizeKopisPerformanceDetail(
     ticketPrice: raw.pcseguidance,
     showTime: raw.dtguidance,
     ticketLinks,
+    description: raw.sty || undefined,
+    introImages,
   };
 }
 
