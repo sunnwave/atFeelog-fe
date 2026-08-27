@@ -33,8 +33,8 @@ type InfoRowProps = {
 function InfoRow({ icon, text }: InfoRowProps) {
   return (
     <div className={`flex gap-3 py-1 items-start `}>
-      <span className="mt-[1px] shrink-0 text-muted-foreground">{icon}</span>
-      <span className="text-[13.5px] leading-relaxed text-foreground">
+      <span className="mt-px shrink-0 text-muted-foreground">{icon}</span>
+      <span className="text-xs @md:text-[13.5px] leading-relaxed text-foreground">
         {text}
       </span>
     </div>
@@ -74,7 +74,7 @@ export default function ShowInfoList({ detail, className }: ShowInfoListProps) {
   ];
 
   return (
-    <div className={cn(`py-4 flex flex-col`, className)}>
+    <div className={cn(`flex w-full flex-col`, className)}>
       {rows.map((row, i) => (
         <InfoRow key={i} icon={row.icon} text={row.text} />
       ))}

@@ -31,7 +31,7 @@ export default function TicketPriceTable({
   return (
     <ResponsiveGrid cols={1} colsMd={2}>
       {rows.map((row) => (
-        <div key={row.seat} className="flex w-full px-5 min-w-0 items-baseline">
+        <div key={row.seat} className="flex w-full min-w-0 items-baseline">
           <span className="shrink-0 whitespace-nowrap text-[13.5px] text-foreground mr-2">
             {row.seat}
           </span>

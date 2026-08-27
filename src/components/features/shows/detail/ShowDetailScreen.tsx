@@ -38,15 +38,17 @@ export default function ShowDetailScreen(): JSX.Element {
   if (!detail) return <p>공연 정보를 찾을 수 없습니다.</p>;
 
   return (
-    <div className="@container min-h-screen bg-background">
+    <div className=" min-h-screen bg-background">
       <PageHeader label="공연 상세" fallbackHref="/shows" />
 
       <ResponsiveLayout
         contentType="default"
-        className="md:px-20 py-4 flex flex-col"
+        padded={false}
+        className="flex flex-col gap-3
+      @container"
       >
         {/* 히어로 행 */}
-        <div className="w-full border-b-[1.5px] pb-5 border-foreground  lg:grid lg:grid-cols-[5fr_2fr] lg:items-start lg:space-y-0 lg:gap-8">
+        <div className="w-full flex flex-col gap-3 @lg:p-3 @lg:grid @lg:grid-cols-[5fr_2fr] @lg:items-start @lg:gap-5">
           <ShowDetailInfo
             detail={detail}
             liked={liked}
