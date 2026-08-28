@@ -31,7 +31,10 @@ export default function RecordFeedScreen(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <ResponsiveLayout contentType="wide" className="py-4 space-y-2 lg:space-y-4">
+      <ResponsiveLayout
+        contentType="wide"
+        className="py-4 space-y-2 lg:space-y-4"
+      >
         <SearchBar
           variant="withDate"
           search={search}

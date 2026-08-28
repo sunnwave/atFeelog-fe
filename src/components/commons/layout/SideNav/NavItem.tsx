@@ -1,33 +1,52 @@
 import { useRouter } from "next/router";
-import { SideNavItemType } from "@/shared/constants";
-import { Button } from "@/components/ui/button/Button";
+import { NavItemType } from "@/shared/constants";
+import { cn } from "@/shared/utils/cn";
 
-export default function NavItem({ nav }: { nav: SideNavItemType }) {
+export default function NavItem({
+  nav,
+  onClick,
+  cta = false,
+  className,
+}: {
+  nav: NavItemType;
+  onClick?: () => void;
+  cta?: boolean;
+  className?: string;
+}) {
   const router = useRouter();
-  const isActive = router.pathname === nav.href;
+  const isActive = !!nav.href && router.pathname === nav.href;
+
+  const handleClick = () => {
+    if (onClick) return onClick();
+    if (nav.href) router.push(nav.href);
+  };
 
   return (
-    <Button
-      size="lg"
-      variant="ghost"
-      tone="primary"
-      className={[
-        "relative w-full justify-start rounded-none border-b border-border px-6",
-        "normal-case tracking-normal",
-        // "hover:bg-surface-soft hover:text-foreground",
-        isActive
-          ? [
-              "bg-surface-soft font-semibold text-foreground",
-              "before:absolute before:left-0 before:top-1/2",
-              "before:h-7 before:w-1 before:-translate-y-1/2",
-              "before:rounded-r-full before:bg-chart-4",
-            ].join(" ")
-          : "text-muted-foreground",
-      ].join(" ")}
-      onClick={() => router.push(nav.href)}
+    <button
+      className={cn(
+        "flex w-full items-center border-b border-border py-3 uppercase tracking-[0.12em] text-[12px] font-black cursor-pointer hover:bg-muted",
+        isActive ? "text-foreground" : "text-muted-foreground",
+        className,
+      )}
+      onClick={handleClick}
     >
-      <nav.icon className="w-4.5 h-4.5 transition-colors" />
-      <span>{nav.label}</span>
-    </Button>
+      <span className="w-16 flex justify-center shrink-0">
+        {cta ? (
+          <span className="flex w-7.5 h-7.5 items-center justify-center bg-foreground text-background">
+            <nav.icon className="w-4 h-4 shrink-0" />
+          </span>
+        ) : (
+          <nav.icon
+            className={cn(
+              "w-4.5 h-4.5 shrink-0 transition-colors",
+              isActive ? "text-point" : "text-muted-foreground",
+            )}
+          />
+        )}
+      </span>
+      <span className="hidden group-hover:inline whitespace-nowrap">
+        {nav.label}
+      </span>
+    </button>
   );
 }
