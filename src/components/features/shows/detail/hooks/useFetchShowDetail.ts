@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import type { PerformanceDetail } from "@/shared/types/performance";
 
 export function useFetchShowDetail(id: string) {
-  const [detail, setDetail] = useState<PerformanceDetail | undefined>(undefined);
+  const [detail, setDetail] = useState<PerformanceDetail | undefined>(
+    undefined,
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
