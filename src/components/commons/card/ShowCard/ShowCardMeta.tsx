@@ -1,7 +1,9 @@
-import { Bookmark } from "lucide-react";
 import { Performance } from "@/shared/types/performance";
+import LikeButton from "@/components/ui/button/LikeButton";
+import { useToggleShowLike } from "@/shared/hooks/show/useToggleShowLike";
 
 export default function ShowCardMeta({ p }: { p: Performance }) {
+  const { toggle, loading } = useToggleShowLike();
   return (
     <div
       className="
@@ -29,14 +31,11 @@ export default function ShowCardMeta({ p }: { p: Performance }) {
             </span>
           </div>
         )}
-        {/* TODO: 관심공연 찜 기능 연결 */}
-        <button
-          type="button"
-          className="flex items-center text-muted-foreground hover:text-point transition-colors ml-4 @card-md:ml-6"
-        >
-          {/* TODO: 북마크 아이콘 리팩토링 */}
-          <Bookmark className="w-3 h-3  @card-sm:w-4 @card-sm:h-4 @card-md:w-4.5 @card-md:h-4.5" />
-        </button>
+        <LikeButton
+          isLiked={false}
+          onToggle={() => toggle(p.mt20id)}
+          className="ml-4 @card-md:ml-6"
+        />
       </div>
 
       {/* Row 2: 공연 제목 */}
