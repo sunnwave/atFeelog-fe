@@ -1,4 +1,4 @@
-import ShowDetailScreen from "@/components/features/shows/detail/ShowDetailScreen";
+import ShowDetailScreen from "@/components/features/shows/detail/screen/ShowDetailScreen";
 
 export default function ShowDetailPage() {
   return <ShowDetailScreen />;

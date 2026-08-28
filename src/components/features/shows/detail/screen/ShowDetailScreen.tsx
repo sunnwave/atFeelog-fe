@@ -6,14 +6,16 @@ import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import Tabs from "@/components/ui/tabs/Tabs";
 
 import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
-import { useFetchShowDetail } from "./hooks/useFetchShowDetail";
+import { useFetchShowDetail } from "../hooks/useFetchShowDetail";
 
 import {
   ShowDetailInfo,
   ShowIntroTab,
   ShowRecordsTab,
   ShowTicketLinks,
-} from "./ui";
+} from "../ui";
+import ShowDetailSkeleton from "./ShowDetailSkeleton";
+import { PageFallback } from "@/components/ui/feedback";
 
 type Tab = "intro" | "records";
 
@@ -23,19 +25,36 @@ const TABS = [
 ];
 
 export default function ShowDetailScreen(): JSX.Element {
-  const { query, isReady } = useRouter();
+  const { query } = useRouter();
   const id = typeof query.id === "string" ? query.id : "";
 
-  const { detail, loading: detailLoading } = useFetchShowDetail(id);
+  const {
+    detail,
+    loading: detailLoading,
+    error: detailError,
+  } = useFetchShowDetail(id);
   const { records, loading: recordsLoading } = useFetchRecordsByShow(id);
 
   const [tab, setTab] = useState<Tab>("intro");
   const [liked, setLiked] = useState(false);
 
-  const isLoading = !isReady || detailLoading;
-
-  if (isLoading) return <p>로딩 중</p>;
-  if (!detail) return <p>공연 정보를 찾을 수 없습니다.</p>;
+  if (detailLoading) return <ShowDetailSkeleton />;
+  if (detailError)
+    return (
+      <PageFallback
+        label="공연 상세"
+        fallbackHref="/shows"
+        message={detailError}
+      />
+    );
+  if (!detail)
+    return (
+      <PageFallback
+        label="공연 상세"
+        fallbackHref="/shows"
+        message="공연 정보를 찾을 수 없습니다."
+      />
+    );
 
   return (
     <div className=" min-h-screen bg-background">
@@ -44,8 +63,7 @@ export default function ShowDetailScreen(): JSX.Element {
       <ResponsiveLayout
         contentType="default"
         padded={false}
-        className="flex flex-col gap-3
-      @container"
+        className="flex flex-col gap-3 lg:pt-5 lg:pb-10 @container"
       >
         {/* 히어로 행 */}
         <div className="w-full flex flex-col gap-3 @lg:p-3 @lg:grid @lg:grid-cols-[5fr_2fr] @lg:items-start @lg:gap-5">
@@ -62,23 +80,7 @@ export default function ShowDetailScreen(): JSX.Element {
         <div className="flex flex-col">
           <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
 
-          {tab === "intro" &&
-            (detail ? (
-              <ShowIntroTab detail={detail} />
-            ) : isLoading ? (
-              <div className="flex flex-col gap-3">
-                {Array.from({ length: 4 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-4 bg-muted animate-pulse rounded w-full"
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="py-10 text-center text-sm text-muted-foreground">
-                공연 정보를 불러올 수 없어요.
-              </p>
-            ))}
+          {tab === "intro" && <ShowIntroTab detail={detail} />}
 
           {tab === "records" && (
             <ShowRecordsTab records={records} loading={recordsLoading} />
