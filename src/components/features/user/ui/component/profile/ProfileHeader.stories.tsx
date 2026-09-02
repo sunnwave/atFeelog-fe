@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import ProfileHeader from "./ProfileHeader";
-import type { ProfileUser } from "../../types";
+import type { ProfileUser } from "../../../types";
 
 const baseUser: ProfileUser = {
   id: "user-1",

@@ -6,7 +6,7 @@ import {
 } from "react-hook-form";
 import { FieldError } from "@/components/ui/form";
 import PasswordField from "@/components/ui/form/PasswordField";
-import { PasswordFormValues } from "../../model/passwordSchema";
+import { PasswordFormValues } from "../../../model/passwordSchema";
 
 interface PasswordEditFormProps {
   formId: string;

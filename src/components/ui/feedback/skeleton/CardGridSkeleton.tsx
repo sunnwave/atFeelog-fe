@@ -1,7 +1,6 @@
 import { JSX } from "react";
 import { ResponsiveGrid } from "@/components/commons/layout";
 import CardSkeleton from "./CardSkeleton/CardSkeleton";
-import { ClassNames } from "storybook/theming";
 
 type Cols = 1 | 2 | 3 | 4 | 5 | 6 | 12;
 

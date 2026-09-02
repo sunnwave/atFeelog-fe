@@ -4,9 +4,9 @@ import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import { IS_NEW_API } from "@/api/config";
 import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
-import ProfileHeader from "../component/ProfileHeader";
+import ProfileHeader from "../component/profile/ProfileHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import FollowListPanel from "../component/FollowListPanel";
+import FollowListPanel from "../component/follow/FollowListPanel";
 import {
   useAddFollow,
   useFetchBoardsCountOfMine,
