@@ -6,7 +6,6 @@ import { IS_NEW_API } from "@/api/config";
 import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
 import ProfileHeader from "../component/ProfileHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import ProfileRecordGrid from "../component/ProfileRecordGrid";
 import FollowListPanel from "../component/FollowListPanel";
 import {
   useAddFollow,
@@ -18,6 +17,20 @@ import {
   useFetchFollowing,
   useIsConnected,
 } from "../../hooks";
+import Tabs from "@/components/ui/tabs/Tabs";
+import {
+  UserRecordGrid,
+  UserLikedRecordGrid,
+  UserSavedShowGrid,
+} from "../component/user-content-grid";
+
+type Tab = "records" | "liked" | "saved";
+
+const TABS_ALL = [
+  { id: "records" as const, label: "필로그" },
+  { id: "liked" as const, label: "좋아요" },
+  { id: "saved" as const, label: "찜한 공연" },
+];
 
 export default function UserProfileScreen({
   userId,
@@ -25,6 +38,9 @@ export default function UserProfileScreen({
   const router = useRouter();
   const loggedInUser = useRecoilValue(loggedInUserState);
   const isMe = !!loggedInUser?.id && loggedInUser.id === userId;
+
+  const [activeTab, setActivTab] = useState<Tab>("records");
+  const tabs = isMe ? TABS_ALL : TABS_ALL.slice(0, 2);
 
   const { isConnected, refetch: refetchIsConnected } = useIsConnected(userId);
 
@@ -137,7 +153,17 @@ export default function UserProfileScreen({
           />
         )}
       </div>
-      <ProfileRecordGrid />
+      <section>
+        <Tabs
+          tabs={tabs}
+          activeTab={activeTab}
+          onChange={setActivTab}
+          className="w-full border-x-[1.5px]"
+        />
+        {activeTab === "records" && <UserRecordGrid userId={userId} />}
+        {activeTab === "liked" && <UserLikedRecordGrid userId={userId} />}
+        {activeTab === "saved" && <UserSavedShowGrid />}
+      </section>
     </ResponsiveLayout>
   );
 }

@@ -28,7 +28,7 @@ const FETCH_BOARDS_LIKE_BY_USER = gql`
 `;
 
 export const useFetchBoardsLikeByUser = (userId?: string) => {
-  const { data, loading, refetch } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     Pick<INewQuery, "fetchBoardsLikeByUser">,
     IQueryFetchBoardsLikeByUserArgs
   >(FETCH_BOARDS_LIKE_BY_USER, {
@@ -41,5 +41,5 @@ export const useFetchBoardsLikeByUser = (userId?: string) => {
     .filter((b): b is NonNullable<typeof b> => b != null)
     .map(toRecordSummary);
 
-  return { records, loading, refetch };
+  return { records, loading, error, refetch };
 };
