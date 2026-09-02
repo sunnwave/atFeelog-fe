@@ -4,7 +4,7 @@ import CardSkeleton from "./CardSkeleton";
 import { CARD_CQ_WIDTHS } from "@/storybook/constants";
 
 const meta: Meta<typeof CardSkeleton> = {
-  title: "commons/card/CardSkeleton",
+  title: "ui/skeleton/CardSkeleton",
   component: CardSkeleton,
   parameters: { layout: "fullscreen" },
   argTypes: {
@@ -32,7 +32,10 @@ function CardWrapper({ children }: { children: React.ReactNode }): JSX.Element {
         background: "#f6f5fa",
       }}
     >
-      <div style={{ width: 200 }} className="@container border-[1.5px] border-foreground">
+      <div
+        style={{ width: 200 }}
+        className="@container border-[1.5px] border-foreground"
+      >
         {children}
       </div>
     </div>
@@ -80,7 +83,10 @@ export const WidthShowcase: Story = {
                 {desc}
               </span>
             </div>
-            <div style={{ width }} className="@container border-[1.5px] border-foreground">
+            <div
+              style={{ width }}
+              className="@container border-[1.5px] border-foreground"
+            >
               <CardSkeleton showMeta />
             </div>
           </div>
@@ -103,7 +109,10 @@ export const GridShowcase: Story = {
         </p>
         <div className="grid grid-cols-2 max-w-sm border-t-[1.5px] border-l-[1.5px] border-foreground">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="border-r-[1.5px] border-b-[1.5px] border-foreground @container">
+            <div
+              key={i}
+              className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+            >
               <CardSkeleton showMeta />
             </div>
           ))}
@@ -116,7 +125,10 @@ export const GridShowcase: Story = {
         </p>
         <div className="grid grid-cols-3 max-w-2xl border-t-[1.5px] border-l-[1.5px] border-foreground">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="border-r-[1.5px] border-b-[1.5px] border-foreground @container">
+            <div
+              key={i}
+              className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+            >
               <CardSkeleton showMeta />
             </div>
           ))}
@@ -129,7 +141,10 @@ export const GridShowcase: Story = {
         </p>
         <div className="grid grid-cols-4 max-w-4xl border-t-[1.5px] border-l-[1.5px] border-foreground">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="border-r-[1.5px] border-b-[1.5px] border-foreground @container">
+            <div
+              key={i}
+              className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
+            >
               <CardSkeleton showMeta />
             </div>
           ))}
