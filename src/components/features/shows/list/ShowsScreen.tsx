@@ -2,7 +2,8 @@ import { JSX } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { ShowCard, CardSkeleton } from "@/components/commons/card";
+import { ShowCard } from "@/components/commons/card";
+import { CardGridSkeleton } from "@/components/ui/feedback";
 import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
 import ShowFilterBar from "./ShowFilterBar";
 
@@ -48,16 +49,7 @@ export default function ShowsScreen(): JSX.Element {
             {error}
           </p>
         ) : loading && items.length === 0 ? (
-          <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                key={i}
-                className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
-              >
-                <CardSkeleton showMeta />
-              </div>
-            ))}
-          </ResponsiveGrid>
+          <CardGridSkeleton showMeta />
         ) : items.length === 0 ? (
           <p className="text-sm text-muted-foreground py-10 text-center">
             검색 결과가 없어요.
@@ -71,18 +63,7 @@ export default function ShowsScreen(): JSX.Element {
             </ResponsiveGrid>
 
             {/* 추가 로딩 skeleton */}
-            {loading && (
-              <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
-                {Array.from({ length: 10 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="border-r-[1.5px] border-b-[1.5px] border-foreground @container"
-                  >
-                    <CardSkeleton showMeta />
-                  </div>
-                ))}
-              </ResponsiveGrid>
-            )}
+            {loading && <CardGridSkeleton showMeta count={4} />}
 
             <div ref={sentinelRef} className="h-1" />
           </>
