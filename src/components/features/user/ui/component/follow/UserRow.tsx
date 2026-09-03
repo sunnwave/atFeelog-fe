@@ -1,26 +1,11 @@
-import { useState } from "react";
 import Avatar from "@/components/ui/avatar/Avatar";
-import { Button } from "@/components/ui/button/Button";
 import type { UserRowProps } from "../../../types";
+import FollowButton from "@/components/ui/button/FollowButton";
+import { useAddFollow, useIsConnected } from "../../../hooks";
 
-export default function UserRow({
-  user,
-  isFollowing,
-  isMe,
-  onFollow,
-}: UserRowProps) {
-  const [following, setFollowing] = useState(isFollowing);
-  const [loading, setLoading] = useState(false);
-
-  const handleFollow = async () => {
-    setLoading(true);
-    try {
-      await onFollow();
-      setFollowing((f) => !f);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function UserRow({ user, isMe }: UserRowProps) {
+  const { isConnected } = useIsConnected(user.id);
+  const { onAddFollow } = useAddFollow();
 
   return (
     <div className="flex items-center gap-3 px-4 py-3 border-b border-border">
@@ -31,15 +16,10 @@ export default function UserRow({
         </p>
       </div>
       {!isMe && (
-        <Button
-          variant={following ? "outline" : "solid"}
-          tone={following ? "neutral" : "primary"}
-          size="sm"
-          disabled={loading}
-          onClick={handleFollow}
-        >
-          {following ? "팔로잉" : "+ 팔로우"}
-        </Button>
+        <FollowButton
+          isFollowing={isConnected}
+          onFollow={() => onAddFollow(user.id)}
+        />
       )}
     </div>
   );
