@@ -1,23 +1,22 @@
 import { cn } from "@/shared/utils/cn";
 import UserRow from "./UserRow";
-import type { FollowListPanelProps } from "../../types";
+import type { FollowListPanelProps } from "../../../types";
+import { useFetchFollowers, useFetchFollowing } from "../../../hooks";
 
 export default function FollowListPanel({
-  openTab,
-  onTabChange,
+  openPanel,
+  onPanelChange,
   onClose,
-  followers,
-  followings,
-  followersCount,
-  followingCount,
-  myFollowingIds,
   loggedInUserId,
-  onFollow,
-  loadingFollowers,
-  loadingFollowings,
+  userId,
 }: FollowListPanelProps) {
-  const users = openTab === "팔로워" ? followers : followings;
-  const loading = openTab === "팔로워" ? loadingFollowers : loadingFollowings;
+  const { users: followings, loading: loadingFollowings } =
+    useFetchFollowing(userId);
+  const { users: followers, loading: loadingFollowers } =
+    useFetchFollowers(userId);
+
+  const users = openPanel === "팔로워" ? followers : followings;
+  const loading = openPanel === "팔로워" ? loadingFollowers : loadingFollowings;
 
   const tabHeader = (
     <div className="flex border-b-[1.5px] border-foreground shrink-0">
@@ -25,16 +24,16 @@ export default function FollowListPanel({
         <button
           key={tab}
           type="button"
-          onClick={() => onTabChange(tab)}
+          onClick={() => onPanelChange(tab)}
           className={cn(
             "flex-1 py-3 text-[11px] font-black tracking-[0.16em] uppercase transition-colors",
             i === 0 && "border-r-[1.5px] border-foreground",
-            openTab === tab
+            openPanel === tab
               ? "bg-foreground text-white"
               : "bg-transparent text-muted-foreground hover:text-foreground",
           )}
         >
-          {tab} {tab === "팔로워" ? followersCount : followingCount}
+          {tab} {tab === "팔로워" ? followers.length : followings.length}
         </button>
       ))}
       <button
@@ -56,7 +55,7 @@ export default function FollowListPanel({
         </p>
       ) : users.length === 0 ? (
         <p className="px-4 py-6 text-sm text-muted-foreground text-center">
-          {openTab === "팔로워"
+          {openPanel === "팔로워"
             ? "팔로워가 없습니다."
             : "팔로잉하는 사람이 없습니다."}
         </p>
@@ -65,9 +64,7 @@ export default function FollowListPanel({
           <UserRow
             key={user.id}
             user={user}
-            isFollowing={!!(user.id && myFollowingIds.has(user.id))}
             isMe={user.id === loggedInUserId}
-            onFollow={() => onFollow(user.id!)}
           />
         ))
       )}
@@ -79,7 +76,7 @@ export default function FollowListPanel({
       {/* 모바일(lg 미만): 헤더 아래 인라인 확장 (D) */}
       <div
         className="lg:hidden overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
-        style={{ maxHeight: openTab ? 360 : 0 }}
+        style={{ maxHeight: openPanel ? 360 : 0 }}
       >
         <div
           className="flex flex-col border-[1.5px] border-t-0 border-foreground bg-card"
@@ -93,7 +90,7 @@ export default function FollowListPanel({
       {/* 데스크탑(lg 이상): flex 형제로 ProfileHeader를 밀어내는 사이드 드로어 (B) */}
       <div
         className="hidden lg:block shrink-0 overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
-        style={{ width: openTab ? 280 : 0 }}
+        style={{ width: openPanel ? 280 : 0 }}
       >
         <div
           className="h-full flex flex-col bg-card border-[1.5px] border-l-0 border-foreground"

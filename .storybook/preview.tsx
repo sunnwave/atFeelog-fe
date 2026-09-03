@@ -1,12 +1,15 @@
 import type { Preview } from "@storybook/nextjs-vite";
 import { MockedProvider } from "@apollo/client/testing";
 import "../src/styles/globals.css";
+import { ToastProvider } from "@/components/commons/toast";
 
 const preview: Preview = {
   decorators: [
     (Story) => (
       <MockedProvider mocks={[]} addTypename={false}>
-        <Story />
+        <ToastProvider>
+          <Story />
+        </ToastProvider>
       </MockedProvider>
     ),
   ],

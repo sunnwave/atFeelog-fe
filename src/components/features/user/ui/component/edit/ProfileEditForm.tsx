@@ -1,8 +1,8 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { TextField, FieldError } from "@/components/ui/form";
-import { ProfileFormValues } from "../../model/profileSchema";
 import { formatDate } from "@/shared/utils";
 import { User } from "@/api/adapters/types/user";
+import { ProfileFormValues } from "../../../model/profileSchema";
 
 interface ProfileEditFormProps {
   formId: string;
