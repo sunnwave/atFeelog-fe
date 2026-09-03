@@ -15,7 +15,10 @@ export const useAddFollow = () => {
   const [addFollow, { loading }] = useMutation<
     Pick<INewMutation, "addFollow">,
     IMutationAddFollowArgs
-  >(ADD_FOLLOW, { errorPolicy: "all" });
+  >(ADD_FOLLOW, {
+    errorPolicy: "all",
+    refetchQueries: ["fetchCountOfFollowers", "fetchCountOfFollowing", "fetchFollowings", "fetchFollowers", "isConnected"],
+  });
 
   const onAddFollow = async (followerId: string) => {
     if (!IS_NEW_API) return;
