@@ -3,8 +3,7 @@ import type { User } from "@/api/adapters/types/user";
 export type ProfileUser = {
   id: string;
   name: string;
-  handle?: string;
-  bio?: string;
+  description?: string;
   picture?: string;
 };
 
@@ -23,17 +22,11 @@ export type ProfileActionsProps = {
 export type FollowTab = "팔로워" | "팔로잉";
 
 export interface FollowListPanelProps {
-  openTab: FollowTab | null;
-  onTabChange: (tab: FollowTab) => void;
+  userId: string;
+  openPanel: FollowTab | null;
+  onPanelChange: (tab: FollowTab) => void;
   onClose: () => void;
-  followers: User[];
-  followings: User[];
-  followersCount: number;
-  followingCount: number;
-  myFollowingIds: Set<string>;
   loggedInUserId?: string;
-  loadingFollowers?: boolean;
-  loadingFollowings?: boolean;
 }
 
 export interface UserRowProps {
