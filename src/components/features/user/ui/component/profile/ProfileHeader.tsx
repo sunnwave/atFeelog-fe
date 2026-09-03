@@ -1,20 +1,23 @@
 import Avatar from "@/components/ui/avatar/Avatar";
 import { ProfileHeaderProps } from "../../../types";
 import ProfileActions from "./ProfileActions";
-
-const STATS = [
-  { key: "recordsCount", label: "기록" },
-  { key: "followersCount", label: "팔로워" },
-  { key: "followingCount", label: "팔로잉" },
-] as const;
+import {
+  useFetchBoardsCountByUser,
+  useFetchCountOfFollowers,
+  useFetchCountOfFollowing,
+} from "../../../hooks";
+import StatItem from "./StatItem";
 
 export default function ProfileHeader({
+  userId,
   user,
   isMe = false,
-  isFollowing,
-  onFollow,
   onStatClick,
 }: ProfileHeaderProps) {
+  const { count: recordsCount } = useFetchBoardsCountByUser(userId);
+  const { count: followersCount } = useFetchCountOfFollowers(userId);
+  const { count: followingCount } = useFetchCountOfFollowing(userId);
+
   return (
     <section className="border-[1.5px] border-foreground bg-card">
       <div className="flex flex-col md:grid md:grid-cols-[148px_1fr]">
@@ -34,66 +37,31 @@ export default function ProfileHeader({
                 <h2 className="mt-2 text-[32px] md:text-[38px] leading-none tracking-[-0.07em] font-black text-foreground">
                   {user.name}
                 </h2>
-                {user.handle && (
-                  <p className="mt-2 text-sm font-extrabold text-muted-foreground">
-                    {user.handle}
-                  </p>
-                )}
               </div>
-              <ProfileActions
-                isMe={isMe}
-                isFollowing={isFollowing}
-                onFollow={onFollow}
-              />
+              <ProfileActions isMe={isMe} userId={userId} />
             </div>
-            {user.bio && (
+            {user.description && (
               <p className="mt-4.5 text-sm leading-relaxed text-foreground">
-                {user.bio}
+                {user.description}
               </p>
             )}
           </div>
 
-          {/* 통계 스트립 */}
-          {(() => {
-            const visibleStats = STATS.filter(
-              ({ key }) => user[key] !== undefined,
-            );
-            const colClass =
-              visibleStats.length === 1
-                ? "grid-cols-1"
-                : visibleStats.length === 2
-                  ? "grid-cols-2"
-                  : "grid-cols-3";
-            return (
-              <div className={`grid ${colClass} border-t border-border`}>
-                {visibleStats.map(({ key, label }, i) => {
-                  const clickTab =
-                    key === "followersCount"
-                      ? "팔로워"
-                      : key === "followingCount"
-                        ? "팔로잉"
-                        : undefined;
-                  const isClickable = !!clickTab && !!onStatClick;
-                  return (
-                    <div
-                      key={key}
-                      onClick={
-                        isClickable ? () => onStatClick!(clickTab!) : undefined
-                      }
-                      className={`px-6 py-4 ${i !== visibleStats.length - 1 ? "border-r border-border" : ""} ${isClickable ? "cursor-pointer hover:bg-surface-soft transition-colors" : ""}`}
-                    >
-                      <div className="text-2xl font-black tracking-[-0.05em] leading-none text-foreground">
-                        {user[key]}
-                      </div>
-                      <div className="mt-1 text-xs font-bold text-muted-foreground">
-                        {label}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })()}
+          <div className="grid grid-cols-3 border-t border-border">
+            <StatItem value={recordsCount} label="기록" />
+            <StatItem
+              value={followersCount}
+              label="팔로워"
+              hasBorderLeft
+              onClick={onStatClick ? () => onStatClick("팔로워") : undefined}
+            />
+            <StatItem
+              value={followingCount}
+              label="팔로잉"
+              hasBorderLeft
+              onClick={onStatClick ? () => onStatClick("팔로잉") : undefined}
+            />
+          </div>
         </div>
       </div>
     </section>
