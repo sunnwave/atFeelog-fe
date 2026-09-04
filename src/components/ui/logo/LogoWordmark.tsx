@@ -1,15 +1,15 @@
 import Link from "next/link";
 import { cn } from "@/shared/utils/cn";
 
-type LogoSize = "sm" | "md" | "lg";
+type LogoWordmarkSize = "sm" | "md" | "lg";
 
-type LogoProps = {
-  size?: LogoSize;
+type LogoWordmarkProps = {
+  size?: LogoWordmarkSize;
   className?: string;
   clickable?: boolean;
 };
 
-const sizeStyles: Record<LogoSize, string> = {
+const sizeStyles: Record<LogoWordmarkSize, string> = {
   sm: "text-xl",
   md: "text-2xl",
   lg: "text-[36px]",
@@ -17,7 +17,7 @@ const sizeStyles: Record<LogoSize, string> = {
 
 const baseClassName = "block font-black tracking-[-0.06em] text-foreground leading-none";
 
-export default function Logo({ size = "md", className, clickable = true }: LogoProps) {
+export default function LogoWordmark({ size = "md", className, clickable = true }: LogoWordmarkProps) {
   const resolvedClassName = cn(baseClassName, sizeStyles[size], className);
   const content = <>@atFeelog<span className="text-point">.</span></>;
 
