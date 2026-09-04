@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import Logo from "./Logo";
+import LogoWordmark from "./LogoWordmark";
 
-const meta: Meta<typeof Logo> = {
+const meta: Meta<typeof LogoWordmark> = {
   title: "ui/Logo",
-  component: Logo,
+  component: LogoWordmark,
   parameters: {
     layout: "fullscreen",
   },
@@ -17,6 +17,6 @@ const meta: Meta<typeof Logo> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Logo>;
+type Story = StoryObj<typeof LogoWordmark>;
 
 export const DefaultLogo: Story = {};
