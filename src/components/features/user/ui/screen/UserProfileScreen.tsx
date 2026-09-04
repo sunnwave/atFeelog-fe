@@ -82,7 +82,7 @@ export default function UserProfileScreen({
         />
         {activeTab === "records" && <UserRecordGrid userId={userId} />}
         {activeTab === "liked" && <UserLikedRecordGrid userId={userId} />}
-        {activeTab === "saved" && <UserSavedShowGrid />}
+        {/* {activeTab === "saved" && <UserSavedShowGrid />} */}
       </section>
     </ResponsiveLayout>
   );

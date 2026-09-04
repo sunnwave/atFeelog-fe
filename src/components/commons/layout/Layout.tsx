@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 import BottomNav from "./BottomNav/BottomNav";
-import Logo from "../../ui/logo/Logo";
 import SideNav from "./SideNav/SideNav";
+import LogoWordmark from "@/components/ui/logo/LogoWordmark";
 
 interface LayoutProps {
   children: ReactNode;
@@ -20,10 +20,10 @@ export default function Layout({ children, noBottomNav = false }: LayoutProps) {
       {/* Mobile/Tablet Header */}
       <header className="flex w-full items-center justify-center border-b border-border bg-card/80 py-3 lg:hidden">
         <div className="block md:hidden">
-          <Logo size="md" />
+          <LogoWordmark size="md" />
         </div>
         <div className="hidden md:block">
-          <Logo size="lg" />
+          <LogoWordmark size="lg" />
         </div>
       </header>
 

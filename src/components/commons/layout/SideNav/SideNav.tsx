@@ -1,7 +1,8 @@
 import { useRecoilValue } from "recoil";
 
-import Logo from "../../../ui/logo/Logo";
+import Image from "next/image";
 import NavItem from "./NavItem";
+import LogoWordmark from "@/components/ui/logo/LogoWordmark";
 
 import {
   SIDE_NAV_ITEMS,
@@ -45,9 +46,13 @@ export default function SideNav() {
 
   return (
     <aside className="flex h-full w-full flex-col border-r-[1.5px] border-foreground bg-card">
-      <div className="border-b-[1.5px] border-foreground flex justify-center items-center px-3.5 py-4">
-        {/* TODO: 정사각 로고 디자인 후 교체 */}
-        <Logo size="sm" />
+      <div className="flex items-center justify-center border-b-[1.5px] border-foreground h-16 ">
+        <span className="group-hover:hidden">
+          <Image src="/logo-icon.png" alt="atFeelog" width={42} height={42} />
+        </span>
+        <span className="hidden group-hover:flex">
+          <LogoWordmark size="md" />
+        </span>
       </div>
 
       {/* profile entry */}
