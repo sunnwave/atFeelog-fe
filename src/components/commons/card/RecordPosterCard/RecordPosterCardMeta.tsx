@@ -1,6 +1,7 @@
 import { RecordSummary } from "@/api/adapters/types/record-summary";
 import Avatar from "@/components/ui/avatar/Avatar";
-import { CommentIcon, HeartIcon } from "@/components/ui/icons";
+import LikeButton from "@/components/ui/button/LikeButton";
+import { CommentIcon } from "@/components/ui/icons";
 import { useLikeRecord } from "@/shared/hooks/record/useLikeRecord";
 
 export default function RecordPosterCardMeta({
@@ -19,20 +20,12 @@ export default function RecordPosterCardMeta({
           {record.user?.name}
         </span>
         <div className="flex items-center gap-3">
-          <HeartIcon
+          <LikeButton
             likeCount={record.likeCount}
             isLiked={record.isLiked ?? false}
-            iconSize="xs"
-            direction="row"
-            iconColor="primary"
             onToggle={() => onLikeRecord(record.id)}
           />
-          <CommentIcon
-            count={record.commentCount ?? 0}
-            iconSize="xs"
-            direction="row"
-            className="text-foreground/70"
-          />
+          <CommentIcon count={record.commentCount ?? 0} />
         </div>
       </div>
     </div>

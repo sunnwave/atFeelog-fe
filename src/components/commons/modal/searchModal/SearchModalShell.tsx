@@ -52,13 +52,13 @@ export default function SearchModalShell({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
 
-        <div className="fixed inset-0 z-[60] flex items-end sm:items-center sm:justify-center p-0 sm:p-4">
+        <div className="fixed inset-0 z-[60] flex items-end md:items-center md:justify-center p-0 md:p-4">
           <Dialog.Content
             aria-describedby={undefined}
             className={cn(
               "w-full bg-background shadow-2xl flex flex-col",
               "rounded-t-3xl max-h-[85vh]",
-              "sm:max-w-lg sm:rounded-3xl sm:max-h-[80vh]",
+              "md:max-w-lg md:rounded-3xl md:max-h-[80vh]",
               className
             )}
           >

@@ -25,6 +25,8 @@ export type PerformanceDetail = Performance & {
   ticketPrice?: string;
   showTime?: string;
   ticketLinks: { name: string; url: string }[];
+  description?: string; // 줄거리 (sty)
+  introImages?: string[]; // 소개이미지 목록 (styurls.styurl)
 };
 
 // ─────────────────────────────────────────────

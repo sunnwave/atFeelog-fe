@@ -11,9 +11,9 @@ import ImageScrollStrip from "@/components/commons/imageScrollStrip/ImageScrollS
 import RecordProfile from "./recordDetailContent/RecordProfile";
 import RecordActions from "./recordDetailContent/RecordActions";
 import RecordComments from "../../record-comments/RecordComments";
-import { useAddFollow, useIsConnected } from "../../user/hooks";
 import RecordDetailSkeleton from "./RecordDetailSkeleton";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
+import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
 
 export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
