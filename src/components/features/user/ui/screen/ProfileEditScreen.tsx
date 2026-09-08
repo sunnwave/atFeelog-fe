@@ -6,11 +6,10 @@ import { loggedInUserState } from "@/shared/stores";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import Tabs from "@/components/ui/tabs/Tabs";
-import ProfileEditForm from "../component/ProfileEditForm";
-import PasswordEditForm from "../component/PasswordEditForm";
-import ProfileAvatarEditor from "../component/ProfileAvatarEditor/ProfileAvatarEditor";
+import PasswordEditForm from "../component/edit/PasswordEditForm";
+import ProfileAvatarEditor from "../component/edit/ProfileAvatarEditor/ProfileAvatarEditor";
 import BottomActionBar from "@/components/commons/layout/BottomActionBar";
-import UserEditActions from "../component/UserEditActions";
+import UserEditActions from "../component/edit/UserEditActions";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useUploadImages } from "@/shared/hooks/image/useUploadImages";
 import { useResetUserPassword, useUpdateUser } from "../../hooks";
@@ -22,6 +21,7 @@ import {
   passwordSchema,
   type PasswordFormValues,
 } from "../../model/passwordSchema";
+import ProfileEditForm from "../component/edit/ProfileEditForm";
 
 type ProfileTab = "profile" | "password";
 

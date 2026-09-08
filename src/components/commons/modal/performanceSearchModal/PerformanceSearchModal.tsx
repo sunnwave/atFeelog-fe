@@ -1,12 +1,12 @@
 "use client";
 
 import { Clapperboard } from "lucide-react";
-import { useKopisPerformanceSearch } from "@/shared/hooks/kopis/useKopisPerformanceSearch";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { useSearchModal } from "@/shared/hooks/ui/useSearchModal";
 import SearchModalShell from "../searchModal/SearchModalShell";
 import type { Performance } from "@/shared/types/performance";
 import PerformanceItem from "./PerformanceItem";
+import { useSearchPerformances } from "@/shared/hooks/kopis/useSearchPerformances";
 
 export default function PerformanceSearchModal({
   open,
@@ -31,7 +31,7 @@ export default function PerformanceSearchModal({
     search,
     loadMore,
     reset,
-  } = useKopisPerformanceSearch({ rows: 10 });
+  } = useSearchPerformances({ rows: 10 });
 
   const { onSubmitSearch } = useSearchModal({ query, search, reset, open });
 

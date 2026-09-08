@@ -5,7 +5,6 @@ import PageHeader from "@/components/commons/layout/PageHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import Tabs from "@/components/ui/tabs/Tabs";
 
-import { useFetchRecordsByShow } from "@/components/features/record/list/hooks/queries/useFetchRecordsByShow";
 import { useFetchShowDetail } from "../hooks/useFetchShowDetail";
 
 import {
@@ -28,23 +27,18 @@ export default function ShowDetailScreen(): JSX.Element {
   const { query } = useRouter();
   const id = typeof query.id === "string" ? query.id : "";
 
-  const {
-    detail,
-    loading: detailLoading,
-    error: detailError,
-  } = useFetchShowDetail(id);
-  const { records, loading: recordsLoading } = useFetchRecordsByShow(id);
+  const { detail, loading, error } = useFetchShowDetail(id);
 
   const [tab, setTab] = useState<Tab>("intro");
   const [liked, setLiked] = useState(false);
 
-  if (detailLoading) return <ShowDetailSkeleton />;
-  if (detailError)
+  if (loading) return <ShowDetailSkeleton />;
+  if (error)
     return (
       <PageFallback
         label="공연 상세"
         fallbackHref="/shows"
-        message={detailError}
+        message={"공연 정보를 불러오는 중 오류가 발생했습니다."}
       />
     );
   if (!detail)
@@ -81,10 +75,7 @@ export default function ShowDetailScreen(): JSX.Element {
           <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
 
           {tab === "intro" && <ShowIntroTab detail={detail} />}
-
-          {tab === "records" && (
-            <ShowRecordsTab records={records} loading={recordsLoading} />
-          )}
+          {tab === "records" && <ShowRecordsTab id={id} />}
         </div>
       </ResponsiveLayout>
     </div>

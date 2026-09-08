@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { CardSkeleton } from "@/components/commons/card";
+import { CardSkeleton } from "@/components/ui/feedback";
 
 export default function SectionSkeleton({
   count = 5,

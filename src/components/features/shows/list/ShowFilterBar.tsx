@@ -5,7 +5,7 @@ import {
   SHOW_REGIONS,
   SHOW_STATUSES,
 } from "@/shared/constants/kopis";
-import { ShowFilters } from "./hooks/useShowBrowser";
+import { ShowFilters } from "./type/type";
 
 type Props = {
   filters: ShowFilters;

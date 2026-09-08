@@ -1,4 +1,4 @@
-import Logo from "@/components/ui/logo/Logo";
+import LogoWordmark from "@/components/ui/logo/LogoWordmark";
 import LabelBadge from "@/components/ui/badge/LabelBadge";
 import AuthNavLink from "@/components/features/auth/AuthNavLink";
 import { useCreateUser } from "./hooks/useCreateUser";
@@ -22,7 +22,7 @@ export default function SignupScreen() {
 
         {/* 데스크탑: 다크 왼쪽 패널 */}
         <div className="hidden lg:flex lg:flex-col lg:justify-between lg:p-14 bg-foreground">
-          <Logo size="md" className="text-white" clickable={false} />
+          <LogoWordmark size="md" className="text-white" clickable={false} />
           <div>
             <h2 className="text-[42px] font-black leading-[1.1] tracking-[-0.05em] text-white">
               함께

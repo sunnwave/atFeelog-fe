@@ -1,7 +1,7 @@
 import { JSX } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ProfileHeaderSkeleton from "./ProfileHeaderSkeleton";
-import ProfileRecordGridSkeleton from "./ProfileRecordGridSkeleton";
+import { CardGridSkeleton } from "@/components/ui/feedback";
 
 export default function UserProfileSkeleton(): JSX.Element {
   return (
@@ -11,7 +11,13 @@ export default function UserProfileSkeleton(): JSX.Element {
           <ProfileHeaderSkeleton />
         </div>
       </div>
-      <ProfileRecordGridSkeleton />
+      <CardGridSkeleton
+        showMeta={false}
+        count={4}
+        bordered
+        className="border-t-0"
+      />
+      {/* <ProfileRecordGridSkeleton /> */}
     </ResponsiveLayout>
   );
 }

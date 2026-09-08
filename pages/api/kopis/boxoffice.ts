@@ -14,21 +14,25 @@ import type { BoxOffice } from "@/shared/types/performance";
  */
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<BoxOffice[] | { message: string }>
+  res: NextApiResponse<BoxOffice[] | { message: string }>,
 ) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method not allowed" });
   }
 
   const API_KEY = process.env.KOPIS_API_KEY;
-  if (!API_KEY) return res.status(500).json({ message: "KOPIS_API_KEY missing" });
+  if (!API_KEY)
+    return res.status(500).json({ message: "KOPIS_API_KEY missing" });
 
   const typeParam = (req.query.type as string) ?? "week";
 
   // stdate~eddate: week=최근 7일, month=최근 30일
   const edDate = new Date();
   const stDate = new Date();
-  stDate.setDate(stDate.getDate() - (typeParam === "month" ? 30 : 7));
+  stDate.setDate(
+    stDate.getDate() -
+      (typeParam === "month" ? 30 : typeParam === "day" ? 1 : 7),
+  );
 
   const url = new URL(`${KOPIS_BASE_URL}/boxoffice`);
   url.searchParams.set("service", API_KEY);
@@ -49,4 +53,3 @@ export default async function handler(
   res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate=3600");
   return res.status(200).json(items);
 }
-

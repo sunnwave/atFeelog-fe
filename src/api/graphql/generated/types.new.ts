@@ -20,7 +20,6 @@ export type IBoard = {
   artistName: Scalars['String']['output'];
   boardAddress?: Maybe<IBoardAddress>;
   commentCount: Scalars['Int']['output'];
-  comments?: Maybe<Array<Maybe<IBoardComment>>>;
   contents: Scalars['String']['output'];
   createdAt: Scalars['DateTime']['output'];
   genre?: Maybe<Scalars['String']['output']>;
