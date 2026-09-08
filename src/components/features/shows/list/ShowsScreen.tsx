@@ -4,8 +4,9 @@ import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { ShowCard } from "@/components/commons/card";
 import { CardGridSkeleton } from "@/components/ui/feedback";
-import { ShowFilters, useShowBrowser } from "./hooks/useShowBrowser";
+import { useFetchShows } from "./hooks/useFetchShows";
 import ShowFilterBar from "./ShowFilterBar";
+import { ShowFilters } from "./type/type";
 
 export default function ShowsScreen(): JSX.Element {
   const {
@@ -17,7 +18,7 @@ export default function ShowsScreen(): JSX.Element {
     setFilter,
     applySearch,
     loadMore,
-  } = useShowBrowser();
+  } = useFetchShows();
 
   const sentinelRef = useInfiniteScroll({
     hasMore,

@@ -1,25 +1,28 @@
-import { useEffect, useState } from "react";
 import type { PerformanceDetail } from "@/shared/types/performance";
+import { queryKeys } from "@/api/rest/queryKeys";
+import { useQuery } from "@tanstack/react-query";
+
+async function fetchShowDetail(id: string): Promise<PerformanceDetail> {
+  const res = await fetch(`/api/kopis/performances/${encodeURIComponent(id)}`);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch show detail: ${res.status}`);
+  }
+  const data = (await res.json()) as PerformanceDetail;
+  return data?.mt20id
+    ? data
+    : Promise.reject(new Error("Invalid show detail data"));
+}
 
 export function useFetchShowDetail(id: string) {
-  const [detail, setDetail] = useState<PerformanceDetail | undefined>(
-    undefined,
-  );
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { data, isLoading, error } = useQuery({
+    queryKey: queryKeys.kopis.performanceDetail(id),
+    queryFn: () => fetchShowDetail(id),
+    enabled: !!id,
+  });
 
-  useEffect(() => {
-    if (!id) return;
-
-    setLoading(true);
-    fetch(`/api/kopis/performances/${encodeURIComponent(id)}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data: PerformanceDetail | null) =>
-        setDetail(data?.mt20id ? data : undefined),
-      )
-      .catch(() => setError("공연 정보를 불러오는 중 에러가 발생했어요."))
-      .finally(() => setLoading(false));
-  }, [id]);
-
-  return { detail, loading, error };
+  return {
+    detail: data ?? undefined,
+    loading: isLoading,
+    error,
+  };
 }

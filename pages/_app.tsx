@@ -6,6 +6,10 @@ import ApolloSetting from "@/api/graphql/apollo/ApolloSetting";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { RecoilRoot } from "recoil";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const queryClient = new QueryClient();
 
 type AppComponent = AppProps["Component"] & { noBottomNav?: boolean };
 
@@ -14,15 +18,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <RecoilRoot>
-      <ToastProvider>
-        <ApolloSetting>
-          <AuthInitialize />
-          <Layout noBottomNav={noBottomNav}>
-            <Component {...pageProps} />
-            <ConfirmModalHost />
-          </Layout>
-        </ApolloSetting>
-      </ToastProvider>
+      <QueryClientProvider client={queryClient}>
+        <ToastProvider>
+          <ApolloSetting>
+            <AuthInitialize />
+            <Layout noBottomNav={noBottomNav}>
+              <Component {...pageProps} />
+              <ConfirmModalHost />
+            </Layout>
+          </ApolloSetting>
+        </ToastProvider>
+        {process.env.NODE_ENV === "development" && <ReactQueryDevtools />}
+      </QueryClientProvider>
     </RecoilRoot>
   );
 }
