@@ -1,12 +1,10 @@
-"use client";
-
 import { MapPin } from "lucide-react";
-import { useKakaoPlaceSearch } from "@/shared/hooks/kakao/useKakaoPlaceSearch";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { useSearchModal } from "@/shared/hooks/ui/useSearchModal";
 import SearchModalShell from "../searchModal/SearchModalShell";
 import PlaceItem from "./PlaceItem";
 import type { KakaoPlace } from "@/shared/types/kakao";
+import { useSearchKakaoPlace } from "@/shared/hooks/kakao/useSearchKakaoPlace";
 
 export default function PlaceSearchModal({
   open,
@@ -20,13 +18,26 @@ export default function PlaceSearchModal({
   className?: string;
 }) {
   const {
-    query, setQuery, items, loading, error,
-    hasMore, hasSearched, isEmpty, search, loadMore, reset,
-  } = useKakaoPlaceSearch({ size: 10 });
+    query,
+    setQuery,
+    items,
+    loading,
+    error,
+    hasSearched,
+    hasMore,
+    isEmpty,
+    search,
+    loadMore,
+    reset,
+  } = useSearchKakaoPlace({ size: 10 });
 
   const { onSubmitSearch } = useSearchModal({ query, search, reset, open });
 
-  const targetRef = useInfiniteScroll({ hasMore, isLoading: loading, onLoadMore: loadMore });
+  const targetRef = useInfiniteScroll({
+    hasMore,
+    isLoading: loading,
+    onLoadMore: loadMore,
+  });
 
   return (
     <SearchModalShell
@@ -48,7 +59,12 @@ export default function PlaceSearchModal({
       className={className}
     >
       {items.map((p) => (
-        <PlaceItem key={p.id} place={p} onConfirm={onConfirm} onOpenChange={onOpenChange} />
+        <PlaceItem
+          key={p.id}
+          place={p}
+          onConfirm={onConfirm}
+          onOpenChange={onOpenChange}
+        />
       ))}
     </SearchModalShell>
   );
