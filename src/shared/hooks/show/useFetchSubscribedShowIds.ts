@@ -1,16 +1,16 @@
 import { gql, useQuery } from "@apollo/client";
 import { IQuery } from "@/api/graphql/generated/types.new";
 
-const FETCH_SUBSCRIBED_PERFORMANCES = gql`
+const FETCH_SUBSCRIBED_PERFORMANCE_IDS = gql`
   query fetchSubscribedPerformances {
     fetchSubscribedPerformances
   }
 `;
 
-export function useSubscribedShows() {
-  const { data, loading } = useQuery<
+export function useFetchSubscribedShowIds() {
+  const { data, loading, error } = useQuery<
     Pick<IQuery, "fetchSubscribedPerformances">
-  >(FETCH_SUBSCRIBED_PERFORMANCES, {
+  >(FETCH_SUBSCRIBED_PERFORMANCE_IDS, {
     fetchPolicy: "cache-and-network",
   });
 
@@ -18,5 +18,5 @@ export function useSubscribedShows() {
 
   const isSubscribed = (mt20id: string) => subscribedIds.includes(mt20id);
 
-  return { subscribedIds, isSubscribed, loading };
+  return { subscribedIds, isSubscribed, loading, error };
 }
