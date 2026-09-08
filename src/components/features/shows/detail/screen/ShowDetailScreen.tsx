@@ -75,7 +75,6 @@ export default function ShowDetailScreen(): JSX.Element {
           <Tabs tabs={TABS} activeTab={tab} onChange={setTab} />
 
           {tab === "intro" && <ShowIntroTab detail={detail} />}
-
           {tab === "records" && <ShowRecordsTab id={id} />}
         </div>
       </ResponsiveLayout>
