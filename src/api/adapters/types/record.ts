@@ -12,7 +12,7 @@ export interface RecordDetail {
   images?: string[];
   likeCount: number;
   isLiked?: boolean;
-  user?: User;
+  user: User;
   boardAddress?: Address;
   createdAt: string;
   updatedAt: string;

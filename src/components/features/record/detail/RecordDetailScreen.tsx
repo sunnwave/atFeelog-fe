@@ -2,7 +2,7 @@ import { JSX } from "react";
 import { useRouter } from "next/router";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { useFetchRecord } from "../hooks/useFetchRecord";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import RecordDetailDateHeader from "./recordDetailContent/RecordDetailDateHeader";
 import RecordDetailBody from "./recordDetailContent/RecordDetailBody";
@@ -13,7 +13,6 @@ import RecordActions from "./recordDetailContent/RecordActions";
 import RecordComments from "../../record-comments/RecordComments";
 import RecordDetailSkeleton from "./RecordDetailSkeleton";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
 import { PageFallback } from "@/components/ui/feedback";
 
 export default function RecordDetailScreen(): JSX.Element | null {
@@ -24,28 +23,15 @@ export default function RecordDetailScreen(): JSX.Element | null {
       ? router.query.recordId
       : undefined;
 
-  const [me] = useRecoilState(loggedInUserState);
+  const me = useRecoilValue(loggedInUserState);
   const isLoggedIn = !!me;
   const { record, loading, error } = useFetchRecord(recordId);
-  const { onAddFollow } = useAddFollow();
-  const { isConnected: isFollowing, refetch: refetchIsFollowing } =
-    useIsConnected(record?.user?.id);
 
   const isWriter = !!(
     isLoggedIn &&
     record &&
-    (me.id === record.user?.id || me.name === record.user?.name)
+    (me.id === record.user.id || me.name === record.user.name)
   );
-
-  const handleFollow = async () => {
-    if (!record?.user?.id) return;
-    try {
-      await onAddFollow(record.user.id);
-      void refetchIsFollowing();
-    } catch (e) {
-      console.error("[follow] error:", e);
-    }
-  };
 
   if (!router.isReady) return null;
   if (!recordId)
@@ -111,8 +97,6 @@ export default function RecordDetailScreen(): JSX.Element | null {
           <aside className="border-t-[1.5px] lg:border-[1.5px]">
             <RecordProfile
               record={record}
-              isFollowing={isFollowing}
-              onFollow={handleFollow}
               className="border-b-[1.5px] bg-white"
             />
             <RecordActions record={record} />
