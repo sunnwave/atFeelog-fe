@@ -1,17 +1,18 @@
 import { JSX } from "react";
-import { useFetchBestRecords } from "./hooks/queries/useFetchBestRecords";
 import { ChevronRight, Flame } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 import { RecordPosterCard } from "@/components/commons/card";
-import SectionSkeleton from "./SectionSkeleton";
+import { useFetchBestRecords } from "../hooks/queries/useFetchBestRecords";
+import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function BestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
 
   if (loading) return <SectionSkeleton />;
-  if (records.length === 0) return <></>;
+  if (records.length === 0) return <EmptyState {...EMPTY_MESSAGES.home.best} />;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">

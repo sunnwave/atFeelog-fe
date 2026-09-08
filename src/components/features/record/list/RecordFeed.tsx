@@ -1,7 +1,5 @@
-import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { JSX, useCallback, useState } from "react";
-import { Sparkles } from "lucide-react";
 import {
   useFetchRecords,
   RecordFilterVars,
@@ -11,7 +9,8 @@ import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { FeedMode } from "./RecordFilterBar";
 import { RecordPosterCard } from "@/components/commons/card";
-import { CardGridSkeleton, CardSkeleton } from "@/components/ui/feedback";
+import { CardGridSkeleton, EmptyState } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -138,14 +137,7 @@ export default function RecordFeed({
 
   if (loading) return <CardGridSkeleton showMeta />;
 
-  if (isEmpty) {
-    return (
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <Sparkles className="w-8 h-8" />
-        <span>첫 공연의 여운을 남겨보세요</span>
-      </div>
-    );
-  }
+  if (isEmpty) return <EmptyState {...EMPTY_MESSAGES.record.feed} />;
 
   return (
     <>

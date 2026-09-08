@@ -7,7 +7,8 @@ import {
 } from "@/shared/constants/kopis";
 import { ShowCard } from "@/components/commons/card";
 import { boxOfficeToPerformance } from "@/api/adapters/kopis.adapter";
-import SectionSkeleton from "./SectionSkeleton";
+import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function BoxOfficeSection(): JSX.Element {
   const [catecode, setCatecode] = useState<BoxOfficeGenreCatecode>("");
@@ -18,11 +19,7 @@ export default function BoxOfficeSection(): JSX.Element {
     return <p className="text-sm text-muted-foreground py-4">{error}</p>;
 
   if (items.length === 0)
-    return (
-      <p className="text-sm text-muted-foreground py-4">
-        {"해당 장르의 박스오피스 정보가 없어요."}
-      </p>
-    );
+    return <EmptyState {...EMPTY_MESSAGES.home.boxOffice} />;
 
   return (
     <div className="w-full flex flex-col space-y-4">
@@ -31,8 +28,7 @@ export default function BoxOfficeSection(): JSX.Element {
         <Trophy className="w-5 h-5" />
         <span>이번 주 박스오피스</span>
       </h2>
-
-      {/* 장르 탭 */}
+      {/* TODO: 장르탭 구분. boxOfficeSection 리렌더링시 장르탭도 리렌더링됨 */}
       <div className="flex flex-row gap-2 overflow-x-auto pb-1 no-scrollbar">
         {BOXOFFICE_GENRES.map((genre) => {
           const active = catecode === genre.catecode;
@@ -57,10 +53,7 @@ export default function BoxOfficeSection(): JSX.Element {
       <div className="w-full max-w-full min-w-0 overflow-x-auto border-t-[1.5px] border-l-[1.5px] border-foreground">
         <div className="flex flex-nowrap">
           {items.slice(0, 10).map((item) => (
-            <div
-              key={item.mt20id}
-              className="shrink-0 w-46 md:w-52 @container"
-            >
+            <div key={item.mt20id} className="shrink-0 w-46 md:w-52 @container">
               <ShowCard
                 performance={boxOfficeToPerformance(item)}
                 rank={item.rank}

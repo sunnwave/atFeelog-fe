@@ -14,6 +14,7 @@ import RecordComments from "../../record-comments/RecordComments";
 import RecordDetailSkeleton from "./RecordDetailSkeleton";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
+import { PageFallback } from "@/components/ui/feedback";
 
 export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
@@ -47,7 +48,14 @@ export default function RecordDetailScreen(): JSX.Element | null {
   };
 
   if (!router.isReady) return null;
-  if (!recordId) return null;
+  if (!recordId)
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="잘못된 접근이에요"
+      />
+    );
   if (loading)
     return (
       <div className="min-h-screen bg-background">
@@ -63,9 +71,22 @@ export default function RecordDetailScreen(): JSX.Element | null {
     );
   if (error) {
     console.error(error);
-    return <div>에러!</div>;
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="기록을 불러오지 못했어요"
+      />
+    );
   }
-  if (!record) return <div>데이터가 없어요</div>;
+  if (!record)
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="기록을 찾을 수 없어요"
+      />
+    );
 
   const images = (record.images ?? []).filter((v): v is string => !!v);
   const hasImages = images.length > 0;
