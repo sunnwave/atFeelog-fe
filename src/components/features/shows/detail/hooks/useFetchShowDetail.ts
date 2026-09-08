@@ -2,7 +2,7 @@ import type { PerformanceDetail } from "@/shared/types/performance";
 import { queryKeys } from "@/api/rest/queryKeys";
 import { useQuery } from "@tanstack/react-query";
 
-async function fetchShowDetail(id: string): Promise<PerformanceDetail> {
+export async function fetchShowDetail(id: string): Promise<PerformanceDetail> {
   const res = await fetch(`/api/kopis/performances/${encodeURIComponent(id)}`);
   if (!res.ok) {
     throw new Error(`Failed to fetch show detail: ${res.status}`);

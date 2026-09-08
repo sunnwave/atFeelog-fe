@@ -6,3 +6,4 @@ export { useFetchCountOfFollowers } from "./useFetchCountOfFollowers";
 export { useFetchCountOfFollowing } from "./useFetchCountOfFollowing";
 export { useFetchFollowers } from "./useFetchFollowers";
 export { useFetchFollowing } from "./useFetchFollowing";
+export { useFetchSavedShows } from "./useFetchSavedShows";
