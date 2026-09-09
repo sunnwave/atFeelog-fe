@@ -3,19 +3,23 @@ import { JSX } from "react";
 import { cn, fromNow } from "@/shared/utils";
 import { RecordDetail } from "@/api/adapters/types/record";
 import { RecordSummary } from "@/api/adapters/types/record-summary";
+import { User } from "@/api/adapters/types/user";
 import FollowButton from "@/components/ui/button/FollowButton";
+import { useIsConnected } from "@/shared/hooks/user/useIsConnected";
+import { useAddFollow } from "@/shared/hooks/user";
+
+type RecordWithUser = (RecordDetail | RecordSummary) & { user: User };
 
 export default function RecordProfile({
   record,
-  isFollowing,
-  onFollow,
   className,
 }: {
-  record: RecordDetail | RecordSummary;
-  isFollowing?: boolean;
-  onFollow?: () => void;
+  record: RecordWithUser;
   className?: string;
 }): JSX.Element {
+  const { isConnected } = useIsConnected(record.user.id);
+  const { onAddFollow } = useAddFollow();
+
   return (
     <div
       className={cn(
@@ -35,7 +39,10 @@ export default function RecordProfile({
           </p>
         </div>
       </div>
-      <FollowButton isFollowing={isFollowing} onFollow={onFollow} />
+      <FollowButton
+        isFollowing={isConnected}
+        onFollow={() => onAddFollow(record.user.id)}
+      />
     </div>
   );
 }

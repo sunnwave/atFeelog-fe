@@ -1,7 +1,5 @@
-import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { JSX, useCallback, useState } from "react";
-import { Sparkles } from "lucide-react";
 import {
   useFetchRecords,
   RecordFilterVars,
@@ -11,7 +9,10 @@ import { useFetchFollowingFeed } from "./hooks/useFetchFollowingFeed";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { FeedMode } from "./RecordFilterBar";
 import { RecordPosterCard } from "@/components/commons/card";
-import { CardGridSkeleton, CardSkeleton } from "@/components/ui/feedback";
+import { CardGridSkeleton, EmptyState } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
+import { Button } from "@/components/ui/button/Button";
+import { useRouter } from "next/router";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -28,6 +29,7 @@ export default function RecordFeed({
   const [isLoading, setIsLoading] = useState(false);
 
   const isFollowing = feedMode === "following";
+  const router = useRouter();
 
   // filter/feedMode 변경 시 페이지네이션 리셋
   const filterKey = `${feedMode}|${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
@@ -138,14 +140,18 @@ export default function RecordFeed({
 
   if (loading) return <CardGridSkeleton showMeta />;
 
-  if (isEmpty) {
+  if (isEmpty)
     return (
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <Sparkles className="w-8 h-8" />
-        <span>첫 공연의 여운을 남겨보세요</span>
-      </div>
+      <EmptyState {...EMPTY_MESSAGES.record.feed}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => router.push("/feelog/new")}
+        >
+          기록 작성하기
+        </Button>
+      </EmptyState>
     );
-  }
 
   return (
     <>

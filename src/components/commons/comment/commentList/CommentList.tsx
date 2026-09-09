@@ -1,34 +1,30 @@
-import { MessageCircle } from "lucide-react";
 import CommentItem from "../commentItem/CommentItem";
 import { RecordComment } from "@/api/adapters/types/record-comment";
+import { CommentItemSkeleton, EmptyState } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES, ERROR_MESSAGES } from "@/shared/constants/messages";
+import { ApolloError } from "@apollo/client";
 
 export default function CommentList({
   isLoading,
   comments,
-  subText = "이 기록에 대한 생각을 공유해주세요",
+  error,
 }: {
   isLoading?: boolean;
   comments: Array<RecordComment>;
-  subText?: string;
+  error?: ApolloError;
 }) {
-  // TODO: skeleton 구현
-  if (isLoading) {
-    <div>로딩 중...</div>;
-  }
-
-  if (comments.length === 0) {
+  if (isLoading)
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-          <MessageCircle className="w-8 h-8 text-muted-foreground" />
-        </div>
-        <p className="text-sm font-medium text-foreground mb-1">
-          첫 댓글을 남겨보세요
-        </p>
-        <p className="text-xs text-muted-foreground">{subText}</p>
+      <div className="space-y-4">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <CommentItemSkeleton key={i} />
+        ))}
       </div>
     );
-  }
+  if (error) return <EmptyState {...ERROR_MESSAGES.comment} />;
+
+  if (!isLoading && comments.length === 0)
+    return <EmptyState {...EMPTY_MESSAGES.comment} />;
 
   return (
     <div className="space-y-4">

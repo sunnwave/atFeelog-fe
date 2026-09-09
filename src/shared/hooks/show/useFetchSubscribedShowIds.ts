@@ -8,7 +8,7 @@ const FETCH_SUBSCRIBED_PERFORMANCE_IDS = gql`
 `;
 
 export function useFetchSubscribedShowIds() {
-  const { data, loading, error } = useQuery<
+  const { data, loading, error, refetch } = useQuery<
     Pick<IQuery, "fetchSubscribedPerformances">
   >(FETCH_SUBSCRIBED_PERFORMANCE_IDS, {
     fetchPolicy: "cache-and-network",
@@ -18,5 +18,5 @@ export function useFetchSubscribedShowIds() {
 
   const isSubscribed = (mt20id: string) => subscribedIds.includes(mt20id);
 
-  return { subscribedIds, isSubscribed, loading, error };
+  return { subscribedIds, isSubscribed, loading, error, refetch };
 }

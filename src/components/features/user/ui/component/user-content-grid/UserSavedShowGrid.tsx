@@ -1,11 +1,14 @@
-import { Sparkles } from "lucide-react";
 import { ResponsiveGrid } from "@/components/commons/layout";
-import { CardGridSkeleton } from "@/components/ui/feedback";
+import { CardGridSkeleton, EmptyState } from "@/components/ui/feedback";
 import ShowCard from "@/components/commons/card/ShowCard/ShowCard";
 import { useFetchSavedShows } from "../../../hooks";
+import { Button } from "@/components/ui/button/Button";
+import { EMPTY_MESSAGES, ERROR_MESSAGES } from "@/shared/constants/messages";
+import { useRouter } from "next/router";
 
 export default function UserSavedShowGrid() {
-  const { shows, loading, error } = useFetchSavedShows();
+  const router = useRouter();
+  const { shows, loading, error, refetch } = useFetchSavedShows();
 
   if (loading) {
     return (
@@ -17,25 +20,27 @@ export default function UserSavedShowGrid() {
       />
     );
   }
-  if (error) {
+  if (error)
     return (
-      <div className="flex items-center gap-2 py-5 text-muted-foreground">
-        <Sparkles className="h-5 w-5" />
-        <span className="text-sm">
-          찜한 공연을 불러오는 중 오류가 발생했어요
-        </span>
-      </div>
+      <EmptyState {...ERROR_MESSAGES.user.savedGrid}>
+        <Button variant={"outline"} size={"sm"} onClick={() => refetch()}>
+          다시 시도하기
+        </Button>
+      </EmptyState>
     );
-  }
 
-  if (shows.length === 0) {
+  if (shows.length === 0)
     return (
-      <div className="flex items-center gap-2 py-5 text-muted-foreground">
-        <Sparkles className="h-5 w-5" />
-        <span className="text-sm">찜한 공연이 없어요</span>
-      </div>
+      <EmptyState {...EMPTY_MESSAGES.user.savedGrid}>
+        <Button
+          variant="outline"
+          size={"sm"}
+          onClick={() => router.push("/shows")}
+        >
+          공연 둘러보기
+        </Button>
+      </EmptyState>
     );
-  }
 
   return (
     <ResponsiveGrid

@@ -27,7 +27,7 @@ const FETCH_RECORDS_BY_SHOW = gql`
 `;
 
 export const useFetchRecordsByShow = (mt20id: string) => {
-  const { data, loading, error, fetchMore } = useQuery<
+  const { data, loading, error, fetchMore, refetch } = useQuery<
     Pick<INewQuery, "fetchBoardsByMt20id">
   >(FETCH_RECORDS_BY_SHOW, {
     variables: { mt20id, page: 1 },
@@ -45,5 +45,5 @@ export const useFetchRecordsByShow = (mt20id: string) => {
       return true;
     });
 
-  return { records, data, loading, error, fetchMore };
+  return { records, data, loading, error, fetchMore, refetch };
 };

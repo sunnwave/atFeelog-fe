@@ -1,17 +1,19 @@
 import { JSX } from "react";
-import { useFetchLatestRecords } from "./hooks/queries/useFetchLatestRecords";
 import { ChevronRight, Clock3 } from "lucide-react";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 import { RecordPosterCard } from "@/components/commons/card";
-import SectionSkeleton from "./SectionSkeleton";
+import { useFetchLatestRecords } from "../hooks/queries/useFetchLatestRecords";
+import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function LatestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchLatestRecords();
   const { onClickNavigation } = useNavigation();
 
   if (loading) return <SectionSkeleton />;
-  if (records.length === 0) return <></>;
+  if (records.length === 0)
+    return <EmptyState {...EMPTY_MESSAGES.home.latest} />;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">

@@ -2,9 +2,11 @@ import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import type { RecordSummary } from "@/api/adapters/types/record-summary";
 import RecordPosterCard from "../../../commons/card/RecordPosterCard/RecordPosterCard";
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
-import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import { Sparkles } from "lucide-react";
 import { JSX } from "react";
+import EmptyState from "@/components/ui/feedback/empty-state/EmptyState";
+import { Button } from "@/components/ui/button/Button";
+import CardGridSkeleton from "@/components/ui/feedback/skeleton/CardGridSkeleton";
+import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
 
@@ -179,74 +181,18 @@ export const BreakpointShowcase: Story = {
   ),
 };
 
-// ─── Container width stories (CQ 기반) ───────────────────────────────────────
-// 뷰포트가 아닌 컨테이너 너비로 열 수가 결정됨
-// @md(640px)에서 3열, @lg(800px)에서 4열 전환
-
-function GridWithWidth({
-  width,
-  records,
-}: {
-  width: number;
-  records: RecordSummary[];
-}): JSX.Element {
-  return (
-    <div className="p-6 bg-background">
-      <div style={{ width }} className="border border-border/40">
-        <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
-          {records.map((record) => (
-            <div key={record.id} className="border-[1.5px] border-foreground">
-              <RecordPosterCard record={record} showMeta showBorder={false} />
-            </div>
-          ))}
-        </ResponsiveGrid>
-      </div>
-    </div>
-  );
-}
-
-/** 콘텐츠 너비 500px — 2열 */
-export const Cols2: Story = {
-  name: "2열 (콘텐츠 < 640px)",
-  render: () => (
-    <GridWithWidth width={500} records={MOCK_RECORDS.slice(0, 4)} />
-  ),
-};
-
-/** 콘텐츠 너비 700px — @md 640px+ → 3열 */
-export const Cols3: Story = {
-  name: "3열 (콘텐츠 640px+)",
-  render: () => <GridWithWidth width={700} records={MOCK_RECORDS} />,
-};
-
-/** 콘텐츠 너비 900px — @lg 800px+ → 4열 */
-export const Cols4: Story = {
-  name: "4열 (콘텐츠 800px+)",
-  render: () => <GridWithWidth width={900} records={MOCK_RECORDS} />,
-};
-
 export const Empty: Story = {
   render: () => (
-    <ResponsiveLayout contentType="wide" className="pt-6">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <Sparkles className="w-8 h-8" />
-        <span>첫 공연의 여운을 남겨보세요</span>
-      </div>
-    </ResponsiveLayout>
+    <div className="min-h-screen bg-background flex items-center justify-center p-8">
+      <EmptyState {...EMPTY_MESSAGES.record.feed}>
+        <Button variant="outline" size="sm">
+          기록 작성하기
+        </Button>
+      </EmptyState>
+    </div>
   ),
 };
 
 export const Loading: Story = {
-  render: () => (
-    <ResponsiveLayout contentType="wide" padded={false} className="py-4">
-      <ResponsiveGrid cols={2} colsMd={3} colsLg={4} gap="none">
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="aspect-3/4 bg-muted animate-pulse border-[1.5px] border-foreground"
-          />
-        ))}
-      </ResponsiveGrid>
-    </ResponsiveLayout>
-  ),
+  render: () => <CardGridSkeleton showMeta />,
 };
