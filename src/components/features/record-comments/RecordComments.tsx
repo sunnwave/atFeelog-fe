@@ -12,7 +12,7 @@ import {
 } from "./hooks";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 
 export default function RecordComments() {
@@ -22,12 +22,12 @@ export default function RecordComments() {
       ? router.query.recordId
       : undefined;
 
-  const [me] = useRecoilState(loggedInUserState);
+  const me = useRecoilValue(loggedInUserState);
   const IsLoggedIn = !!me;
 
   const { openConfirmPreset } = useConfirmPreset();
 
-  const { comments, loading, hasMore, loadMore } =
+  const { comments, loading, hasMore, loadMore, error } =
     useFetchRecordComments(recordId);
 
   const { onCreateRecordComment } = useCreateRecordComment({
@@ -70,7 +70,7 @@ export default function RecordComments() {
             onRequestDelete: (commentId) => requestDeleteComment(commentId),
           }}
         >
-          <CommentList isLoading={loading} comments={comments} />
+          <CommentList isLoading={loading} comments={comments} error={error} />
         </CommentActionsProvider>
         {hasMore && <div ref={targetRef} className="h-6" />}
         {loading && (

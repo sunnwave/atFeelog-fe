@@ -11,6 +11,8 @@ import { FeedMode } from "./RecordFilterBar";
 import { RecordPosterCard } from "@/components/commons/card";
 import { CardGridSkeleton, EmptyState } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
+import { Button } from "@/components/ui/button/Button";
+import { useRouter } from "next/router";
 
 const RECORDS_PER_PAGE = 10;
 
@@ -27,6 +29,7 @@ export default function RecordFeed({
   const [isLoading, setIsLoading] = useState(false);
 
   const isFollowing = feedMode === "following";
+  const router = useRouter();
 
   // filter/feedMode 변경 시 페이지네이션 리셋
   const filterKey = `${feedMode}|${best ? "best" : ""}|${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}`;
@@ -137,7 +140,18 @@ export default function RecordFeed({
 
   if (loading) return <CardGridSkeleton showMeta />;
 
-  if (isEmpty) return <EmptyState {...EMPTY_MESSAGES.record.feed} />;
+  if (isEmpty)
+    return (
+      <EmptyState {...EMPTY_MESSAGES.record.feed}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => router.push("/feelog/new")}
+        >
+          기록 작성하기
+        </Button>
+      </EmptyState>
+    );
 
   return (
     <>
