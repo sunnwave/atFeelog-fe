@@ -12,6 +12,10 @@ const meta: Meta<typeof EmptyState> = {
       control: "select",
       options: ["section", "inline"],
     },
+    status: {
+      control: "select",
+      options: ["empty", "error"],
+    },
     title: { control: "text" },
     description: { control: "text" },
   },
@@ -109,6 +113,57 @@ export const SectionWithButton: Story = {
   },
 };
 
+// ─── Error status ─────────────────────────────────────────────────────────────
+
+/** 에러 — section */
+export const SectionError: Story = {
+  name: "Section — 에러",
+  render: (args) => (
+    <PageWrapper>
+      <EmptyState {...args} />
+    </PageWrapper>
+  ),
+  args: {
+    variant: "section",
+    status: "error",
+    description: "기록을 불러오지 못했어요",
+  },
+};
+
+/** 에러 — section + 재시도 버튼 */
+export const SectionErrorWithRetry: Story = {
+  name: "Section — 에러 + 재시도",
+  render: (args) => (
+    <PageWrapper>
+      <EmptyState {...args}>
+        <Button variant="outline" size="sm">
+          다시 시도
+        </Button>
+      </EmptyState>
+    </PageWrapper>
+  ),
+  args: {
+    variant: "section",
+    status: "error",
+    description: "기록을 불러오지 못했어요",
+  },
+};
+
+/** 에러 — inline */
+export const InlineError: Story = {
+  name: "Inline — 에러",
+  render: (args) => (
+    <SectionWrapper>
+      <EmptyState {...args} />
+    </SectionWrapper>
+  ),
+  args: {
+    variant: "inline",
+    status: "error",
+    description: "검색 중 오류가 발생했어요.",
+  },
+};
+
 // ─── Inline variant ───────────────────────────────────────────────────────────
 
 /** 모달·패널 내부 — 텍스트만 */
@@ -169,6 +224,34 @@ export const AllVariants: Story = {
           <EmptyState
             variant="inline"
             description="검색 결과가 없어요. 다른 키워드로 검색해보세요."
+          />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          section — 에러
+        </p>
+        <div className="border-[1.5px] border-foreground">
+          <EmptyState
+            variant="section"
+            status="error"
+            description="기록을 불러오지 못했어요"
+          >
+            <Button variant="outline" size="sm">다시 시도</Button>
+          </EmptyState>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+          inline — 에러
+        </p>
+        <div className="border-[1.5px] border-foreground max-w-sm">
+          <EmptyState
+            variant="inline"
+            status="error"
+            description="검색 중 오류가 발생했어요."
           />
         </div>
       </div>

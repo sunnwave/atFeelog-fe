@@ -1,9 +1,10 @@
 import { ReactNode } from "react";
 import { cn } from "@/shared/utils/cn";
-import { Ghost } from "lucide-react";
+import { AlertCircle, Ghost } from "lucide-react";
 
 type EmptyStateProps = {
   variant?: "section" | "inline";
+  status?: "empty" | "error";
   title?: string;
   description: string;
   icon?: ReactNode;
@@ -11,8 +12,14 @@ type EmptyStateProps = {
   className?: string;
 };
 
+const DEFAULT_ICONS = {
+  empty: <Ghost className="h-10 w-10" />,
+  error: <AlertCircle className="h-10 w-10 text-destructive" />,
+};
+
 export default function EmptyState({
   variant = "section",
+  status = "empty",
   title,
   description,
   icon,
@@ -27,7 +34,7 @@ export default function EmptyState({
           className,
         )}
       >
-        {icon ?? <Ghost className="h-10 w-10" />}
+        {icon ?? DEFAULT_ICONS[status]}
         {title && (
           <p className="text-base font-semibold text-foreground">{title}</p>
         )}
@@ -42,6 +49,7 @@ export default function EmptyState({
     <p
       className={cn(
         "py-4 text-center text-xs text-muted-foreground",
+        status === "error" && "text-destructive",
         className,
       )}
     >
