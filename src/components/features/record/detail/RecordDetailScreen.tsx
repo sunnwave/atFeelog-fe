@@ -1,5 +1,6 @@
 import { JSX } from "react";
 import { useRouter } from "next/router";
+import { User } from "@/api/adapters/types/user";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { useFetchRecord } from "../hooks/useFetchRecord";
 import { useRecoilValue } from "recoil";
@@ -25,13 +26,8 @@ export default function RecordDetailScreen(): JSX.Element | null {
 
   const me = useRecoilValue(loggedInUserState);
   const isLoggedIn = !!me;
-  const { record, loading, error } = useFetchRecord(recordId);
 
-  const isWriter = !!(
-    isLoggedIn &&
-    record &&
-    (me.id === record.user.id || me.name === record.user.name)
-  );
+  const { record, loading, error } = useFetchRecord(recordId);
 
   if (!router.isReady) return null;
   if (!recordId)
@@ -65,7 +61,7 @@ export default function RecordDetailScreen(): JSX.Element | null {
       />
     );
   }
-  if (!record)
+  if (!record || !record.user)
     return (
       <PageFallback
         label="Record"
@@ -74,6 +70,11 @@ export default function RecordDetailScreen(): JSX.Element | null {
       />
     );
 
+  const isWriter = !!(
+    isLoggedIn &&
+    record &&
+    (me.id === record.user.id || me.name === record.user.name)
+  );
   const images = (record.images ?? []).filter((v): v is string => !!v);
   const hasImages = images.length > 0;
 
@@ -96,7 +97,7 @@ export default function RecordDetailScreen(): JSX.Element | null {
           </article>
           <aside className="border-t-[1.5px] lg:border-[1.5px]">
             <RecordProfile
-              record={record}
+              record={record as typeof record & { user: User }}
               className="border-b-[1.5px] bg-white"
             />
             <RecordActions record={record} />
