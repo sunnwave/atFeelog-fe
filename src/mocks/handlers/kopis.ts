@@ -100,6 +100,26 @@ export const kopisInfiniteHandler = http.get(
   },
 );
 
+export const kopisDetailHandlers = [
+  http.get("/api/kopis/performances/:mt20id", ({ params }) => {
+    const base =
+      MOCK_PERFORMANCES.find((p) => p.mt20id === params.mt20id) ??
+      MOCK_PERFORMANCES[0];
+
+    return HttpResponse.json({
+      ...base,
+      cast: "김지현, 홍광호",
+      runtime: "2시간 30분",
+      ageLimit: "8세 이상",
+      ticketPrice: "VIP 170,000원 / R석 140,000원",
+      showTime: "화~금 19:30 / 토·일 14:00, 19:00",
+      ticketLinks: [{ name: "인터파크", url: "https://tickets.interpark.com" }],
+      description: "지킬 박사는 인간의 선과 악을 분리하는 실험을 시도한다.",
+      introImages: [],
+    });
+  }),
+];
+
 // 스토리별 override용 핸들러
 export const kopisEmptyHandler = http.get("/api/kopis/performances", () => {
   return HttpResponse.json(emptyResponse);
