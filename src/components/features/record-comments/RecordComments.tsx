@@ -14,6 +14,7 @@ import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
+import { LoadingIndicator } from "@/components/ui/feedback";
 
 export default function RecordComments() {
   const router = useRouter();
@@ -73,11 +74,7 @@ export default function RecordComments() {
           <CommentList isLoading={loading} comments={comments} error={error} />
         </CommentActionsProvider>
         {hasMore && <div ref={targetRef} className="h-6" />}
-        {loading && (
-          <p className="text-xs text-center text-muted-foreground py-2">
-            댓글을 불러오는 중...
-          </p>
-        )}
+        {loading && <LoadingIndicator label="더 많은 댓글 불러오는 중.." />}
 
         <CommentInput onSubmit={onSubmit} isLoggedIn={IsLoggedIn} />
       </div>

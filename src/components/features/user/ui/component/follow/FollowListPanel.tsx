@@ -2,7 +2,7 @@ import { cn } from "@/shared/utils/cn";
 import UserRow from "./UserRow";
 import type { FollowListPanelProps } from "../../../types";
 import { useFetchFollowers, useFetchFollowing } from "../../../hooks";
-import { EmptyState } from "@/components/ui/feedback";
+import { EmptyState, LoadingIndicator } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function FollowListPanel({
@@ -52,9 +52,7 @@ export default function FollowListPanel({
   const listContent = (
     <div className="overflow-y-auto flex-1">
       {loading ? (
-        <p className="px-4 py-6 text-sm text-muted-foreground text-center">
-          불러오는 중...
-        </p>
+        <LoadingIndicator label="불러오는 중.." />
       ) : users.length === 0 ? (
         openPanel === "팔로워" ? (
           <EmptyState {...EMPTY_MESSAGES.user.follower} />

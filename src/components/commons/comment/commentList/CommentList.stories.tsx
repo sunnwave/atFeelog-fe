@@ -53,7 +53,6 @@ export const Empty: Story = {
   args: {
     isLoading: false,
     comments: [],
-    subText: "이 기록에 대한 생각을 공유해주세요",
   },
 };
 
@@ -92,12 +91,4 @@ export const Loading: Story = {
     isLoading: true,
     comments: [],
   },
-  render: (args) => (
-    <div className="space-y-4">
-      <CommentList {...args} />
-      <div className="text-xs text-muted-foreground">
-        TODO: skeleton 구현 예정
-      </div>
-    </div>
-  ),
 };
