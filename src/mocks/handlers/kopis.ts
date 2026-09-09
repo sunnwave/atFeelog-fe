@@ -85,26 +85,17 @@ export const kopisHandlers = [
 ];
 
 // 무한스크롤 확인용 — 3페이지에서 종료
-export const koisInfiniteHandler = http.get(
+export const kopisInfiniteHandler = http.get(
   "/api/kopis/performances",
   ({ request }) => {
     const url = new URL(request.url);
     const page = Number(url.searchParams.get("page") ?? "1");
 
-    if (page >= 3) {
-      return HttpResponse.json({
-        items: MOCK_PERFORMANCES.slice(0, 2),
-        total: 12,
-        page,
-        isEnd: true,
-      });
-    }
-
     return HttpResponse.json({
       items: MOCK_PERFORMANCES,
       total: 12,
       page,
-      isEnd: false,
+      isEnd: page >= 3,
     });
   },
 );

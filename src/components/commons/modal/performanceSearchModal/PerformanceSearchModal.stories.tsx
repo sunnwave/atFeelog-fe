@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button/Button";
 import {
   kopisEmptyHandler,
   kopisErrorHandler,
-  koisInfiniteHandler,
+  kopisInfiniteHandler,
   kopisSlowHandler,
 } from "@/mocks/handlers/kopis";
 import type { Performance } from "@/shared/types/performance";
@@ -57,7 +57,6 @@ export const Default: Story = {
 };
 
 export const EmptyResult: Story = {
-  name: "Empty Result",
   parameters: {
     msw: { handlers: [kopisEmptyHandler] },
   },
@@ -65,7 +64,6 @@ export const EmptyResult: Story = {
 };
 
 export const ErrorState: Story = {
-  name: "Error State",
   parameters: {
     msw: { handlers: [kopisErrorHandler] },
   },
@@ -73,7 +71,6 @@ export const ErrorState: Story = {
 };
 
 export const SlowNetwork: Story = {
-  name: "Slow Network",
   parameters: {
     msw: { handlers: [kopisSlowHandler] },
   },
@@ -83,7 +80,7 @@ export const SlowNetwork: Story = {
 export const InfiniteScroll: Story = {
   name: "무한스크롤",
   parameters: {
-    msw: { handlers: [koisInfiniteHandler] },
+    msw: { handlers: [kopisInfiniteHandler] },
   },
   render: (args) => <Demo {...args} />,
 };
