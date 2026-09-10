@@ -1,4 +1,8 @@
-import { IBoard as INewBoard, IQuery as INewQuery, IQueryFetchFollowingFeedArgs } from "@/api/graphql/generated/types.new";
+import {
+  IBoard as INewBoard,
+  IQuery as INewQuery,
+  IQueryFetchFollowingFeedArgs,
+} from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 import { toRecordSummary } from "@/api/adapters/record-summary.adapter";
 
@@ -24,7 +28,7 @@ export const FETCH_FOLOWING_FEED = gql`
 `;
 
 export const useFetchFollowingFeed = () => {
-  const { data, loading, refetch, fetchMore } = useQuery<
+  const { data, loading, refetch, fetchMore, error } = useQuery<
     Pick<INewQuery, "fetchFollowingFeed">,
     IQueryFetchFollowingFeedArgs
   >(FETCH_FOLOWING_FEED, {
@@ -46,5 +50,6 @@ export const useFetchFollowingFeed = () => {
     loading,
     refetch,
     fetchMore,
+    error,
   };
 };
