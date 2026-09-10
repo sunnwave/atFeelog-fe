@@ -4,7 +4,7 @@ import RecordFeed from "./RecordFeed";
 import {
   recordEmptyHandler,
   recordInfiniteHandler,
-  // recordErrorHandler,
+  recordErrorHandler,
 } from "@/mocks/handlers/record";
 import { BREAKPOINT_CONFIGS } from "@/storybook/constants";
 
@@ -91,16 +91,16 @@ export const InfiniteScroll: Story = {
 };
 
 // TODO:RecordFeed 에러 상태 처리 추가
-// export const Error: Story = {
-//   parameters: {
-//     msw: { handlers: [recordErrorHandler] },
-//   },
-//   render: () => (
-//     <div className="p-4 bg-background min-h-screen">
-//       <RecordFeed />
-//     </div>
-//   ),
-// };
+export const Error: Story = {
+  parameters: {
+    msw: { handlers: [recordErrorHandler] },
+  },
+  render: () => (
+    <div className="p-4 bg-background min-h-screen">
+      <RecordFeed />
+    </div>
+  ),
+};
 // TODO: RecordFeed default,best, following 훅 분리
 // export const LiveFollowingFeed: Story = {
 //   name: "Live — 팔로잉 피드 (MSW)",
