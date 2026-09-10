@@ -74,11 +74,6 @@ const FETCH_RECORDS = IS_NEW_API ? FETCH_RECORDS_NEW : FETCH_RECORDS_LEGACY;
 
 type FetchBoardsArgs = RecordFilterVars & { page?: number };
 
-// export type RecordFilterVars = Pick<
-//   IQueryFetchBoardsArgs,
-//   "search" | "startDate" | "endDate"
-// >;
-
 export const useFetchRecords = (filter: RecordFilterVars = {}) => {
   const { data, loading, error, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoards"> | Pick<INewQuery, "fetchBoards">,

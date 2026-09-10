@@ -2,6 +2,7 @@ import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { JSX } from "react";
 import { useFetchRecords } from "../hooks/queries/useFetchRecords";
 import { useApolloInfiniteScroll } from "@/shared/hooks/ui/useApolloInfiniteScroll";
+import { useRetry } from "@/shared/hooks/ui/useRetry";
 import { RecordPosterCard } from "@/components/commons/card";
 import {
   CardGridSkeleton,
@@ -37,11 +38,13 @@ export default function RecordFeed({
     perPage: RECORDS_PER_PAGE,
   });
 
-  if (loading && records.length === 0) return <CardGridSkeleton showMeta />;
+  const { handleRetry, isRetrying } = useRetry(refetch);
+
+  if ((loading && records.length === 0) || isRetrying) return <CardGridSkeleton showMeta />;
   if (error)
     return (
       <EmptyState {...ERROR_MESSAGES.record.feed}>
-        <Button variant={"outline"} size={"sm"} onClick={() => refetch()}>
+        <Button variant={"outline"} size={"sm"} onClick={handleRetry}>
           다시 시도하기
         </Button>
       </EmptyState>
