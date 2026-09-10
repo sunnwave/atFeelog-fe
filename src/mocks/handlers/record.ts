@@ -128,6 +128,7 @@ export const recordHandlers = [
         : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
     return HttpResponse.json({ data: { fetchFollowingFeed: sorted } });
+    // return HttpResponse.json({ errors: [{ message: "에러테스트" }] });
   }),
   graphql.query("fetchBoardsOfBest", () =>
     HttpResponse.json({ data: { fetchBoardsOfBest: MOCK_RECORDS } }),
