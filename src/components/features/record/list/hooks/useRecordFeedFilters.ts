@@ -1,19 +1,14 @@
 import { useRouter } from "next/router";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { localDateToRfc3339NoonUtc } from "@/shared/utils";
 import { FeedMode, SortMode } from "../types";
+import { useSearch } from "@/components/commons/search/useSearch";
 
 export function useRecordFeedFilters() {
   const router = useRouter();
 
   const sortMode = ((router.query.sort as SortMode) ?? "latest") as SortMode;
   const feedMode = ((router.query.feed as FeedMode) ?? "all") as FeedMode;
-  // search는 로컬 state로 관리 — 검색 버튼 클릭 시에만 URL 업데이트
-  const [searchInput, setSearchInput] = useState(
-    (router.query.search as string) ?? "",
-  );
-  const startDate = (router.query.startDate as string) ?? "";
-  const endDate = (router.query.endDate as string) ?? "";
 
   const updateQuery = useCallback(
     (patch: Record<string, string | undefined>) => {
@@ -32,6 +27,20 @@ export function useRecordFeedFilters() {
     [router],
   );
 
+  const { search, setSearch, startDate, setStartDate, endDate, setEndDate, submit: submitSearch, reset: resetSearch } = useSearch({
+    initValue: {
+      search: (router.query.search as string) ?? "",
+      startDate: (router.query.startDate as string) ?? "",
+      endDate: (router.query.endDate as string) ?? "",
+    },
+    onCommit: ({ search, startDate, endDate }) =>
+      updateQuery({
+        search: search || undefined,
+        startDate: startDate || undefined,
+        endDate: endDate || undefined,
+      }),
+  });
+
   const setSortMode = useCallback(
     (mode: SortMode) => updateQuery({ sort: mode }),
     [updateQuery],
@@ -43,43 +52,30 @@ export function useRecordFeedFilters() {
     [updateQuery],
   );
 
-  const setSearch = useCallback((value: string) => {
-    setSearchInput(value);
-  }, []);
-
-  const submitSearch = useCallback(() => {
-    updateQuery({ search: searchInput || undefined });
-  }, [searchInput, updateQuery]);
-
-  const setStartDate = useCallback(
-    (value: string) => updateQuery({ startDate: value || undefined }),
-    [updateQuery],
-  );
-
-  const setEndDate = useCallback(
-    (value: string) => updateQuery({ endDate: value || undefined }),
-    [updateQuery],
-  );
-
   const filter = {
     search: (router.query.search as string) || undefined,
-    startDate: startDate ? localDateToRfc3339NoonUtc(startDate) : undefined,
-    endDate: endDate ? localDateToRfc3339NoonUtc(endDate) : undefined,
+    startDate: (router.query.startDate as string)
+      ? localDateToRfc3339NoonUtc(router.query.startDate as string)
+      : undefined,
+    endDate: (router.query.endDate as string)
+      ? localDateToRfc3339NoonUtc(router.query.endDate as string)
+      : undefined,
     sort: sortMode,
   };
 
   return {
     sortMode,
     feedMode,
-    search: searchInput,
+    search,
     startDate,
     endDate,
     filter,
     setSortMode,
     setFeedMode,
     setSearch,
-    submitSearch,
     setStartDate,
     setEndDate,
+    submitSearch,
+    resetSearch,
   };
 }

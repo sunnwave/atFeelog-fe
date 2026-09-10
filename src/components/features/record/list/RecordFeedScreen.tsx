@@ -19,6 +19,7 @@ export default function RecordFeedScreen(): JSX.Element {
     setSortMode,
     setFeedMode,
     submitSearch,
+    resetSearch,
     filter,
   } = useRecordFeedFilters();
 
@@ -37,6 +38,7 @@ export default function RecordFeedScreen(): JSX.Element {
           onStartDateChange={setStartDate}
           onEndDateChange={setEndDate}
           onSubmit={submitSearch}
+          onReset={resetSearch}
         />
 
         <RecordFilterBar
