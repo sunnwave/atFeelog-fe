@@ -1,3 +1,5 @@
+import { ShowGenre, ShowStatus, ShowArea, ShowKidstate } from "@/shared/constants";
+
 // ─────────────────────────────────────────────
 // Raw KOPIS API 응답 타입 (XML → fast-xml-parser 파싱 후)
 // ─────────────────────────────────────────────
@@ -69,4 +71,15 @@ export type KopisBoxOfficeResponse = {
   boxofs: {
     boxof: KopisRawBoxOffice | KopisRawBoxOffice[];
   };
+};
+
+/** 공연 탐색 API (/api/kopis/shows) 요청 파라미터 */
+export type ShowApiParams = {
+  q?: string;
+  genre?: ShowGenre;
+  status?: ShowStatus;
+  area?: ShowArea;
+  kidstate?: ShowKidstate;
+  stdate?: string;
+  eddate?: string;
 };

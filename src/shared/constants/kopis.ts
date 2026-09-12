@@ -11,7 +11,8 @@ export const BOXOFFICE_GENRES = [
   { label: "서커스/마술", catecode: "EEEB" },
 ] as const;
 
-export type BoxOfficeGenreCatecode = (typeof BOXOFFICE_GENRES)[number]["catecode"];
+export type BoxOfficeGenreCatecode =
+  (typeof BOXOFFICE_GENRES)[number]["catecode"];
 
 /** 공연 탐색 페이지 장르 필터 코드 (pblprfr API shcate 파라미터) */
 export const SHOW_GENRES = [
@@ -24,7 +25,7 @@ export const SHOW_GENRES = [
   { label: "서커스/마술", shcate: "EEEB" },
 ] as const;
 
-export type ShowGenreShcate = (typeof SHOW_GENRES)[number]["shcate"];
+export type ShowGenre = (typeof SHOW_GENRES)[number]["shcate"];
 
 /** 공연 상태 필터 (prfstate 파라미터) */
 export const SHOW_STATUSES = [
@@ -34,10 +35,10 @@ export const SHOW_STATUSES = [
   { label: "공연완료", prfstate: "03" },
 ] as const;
 
-export type ShowPrfstate = (typeof SHOW_STATUSES)[number]["prfstate"];
+export type ShowStatus = (typeof SHOW_STATUSES)[number]["prfstate"];
 
 /** 공연 탐색 지역 필터 (signgucode 파라미터) */
-export const SHOW_REGIONS = [
+export const SHOW_AREAS = [
   { label: "전체", signgucode: "" },
   { label: "서울", signgucode: "11" },
   { label: "경기", signgucode: "41" },
@@ -57,4 +58,12 @@ export const SHOW_REGIONS = [
   { label: "제주", signgucode: "50" },
 ] as const;
 
-export type ShowSigngucode = (typeof SHOW_REGIONS)[number]["signgucode"];
+export type ShowArea = (typeof SHOW_AREAS)[number]["signgucode"];
+
+/** 아동극 여부 필터 (kidstate 파라미터) */
+export const SHOW_KID_STATE = [
+  { label: "전체", kidstate: "" },
+  { label: "아동극", kidstate: "Y" },
+] as const;
+
+export type ShowKidstate = (typeof SHOW_KID_STATE)[number]["kidstate"];
