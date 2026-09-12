@@ -58,3 +58,11 @@ export const SHOW_REGIONS = [
 ] as const;
 
 export type ShowSigngucode = (typeof SHOW_REGIONS)[number]["signgucode"];
+
+/** 아동극 여부 필터 (kidstate 파라미터) */
+export const SHOW_KID_OPTIONS = [
+  { label: "전체", kidstate: "" },
+  { label: "아동극", kidstate: "Y" },
+] as const;
+
+export type ShowKidstate = (typeof SHOW_KID_OPTIONS)[number]["kidstate"];
