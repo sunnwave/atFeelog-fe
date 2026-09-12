@@ -3,29 +3,14 @@ import { useCallback } from "react";
 import { localDateToRfc3339NoonUtc } from "@/shared/utils";
 import { FeedMode, SortMode } from "../types";
 import { useSearch } from "@/components/commons/search/useSearch";
+import { useQueryUpdate } from "@/shared/hooks/ui/useQueryUpdate";
 
 export function useRecordFeedFilters() {
   const router = useRouter();
+  const updateQuery = useQueryUpdate();
 
   const sortMode = ((router.query.sort as SortMode) ?? "latest") as SortMode;
   const feedMode = ((router.query.feed as FeedMode) ?? "all") as FeedMode;
-
-  const updateQuery = useCallback(
-    (patch: Record<string, string | undefined>) => {
-      const next = { ...router.query };
-      Object.entries(patch).forEach(([k, v]) => {
-        if (v === undefined || v === "") {
-          delete next[k];
-        } else {
-          next[k] = v;
-        }
-      });
-      router.replace({ pathname: router.pathname, query: next }, undefined, {
-        shallow: true,
-      });
-    },
-    [router],
-  );
 
   const { search, setSearch, startDate, setStartDate, endDate, setEndDate, submit: submitSearch, reset: resetSearch } = useSearch({
     initValue: {
