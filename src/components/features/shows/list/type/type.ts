@@ -6,21 +6,23 @@ import {
 } from "@/shared/constants";
 
 export type ShowFilters = {
-  q: string;
-  genre: ShowGenreShcate;
-  status: ShowPrfstate;
-  area: ShowSigngucode;
-  kidstate: ShowKidstate;
-  stdate: string; // "YYYY-MM-DD"
-  eddate: string; // "YYYY-MM-DD"
+  search?: string;
+  genre?: ShowGenreShcate;
+  status?: ShowPrfstate;
+  area?: ShowSigngucode;
+  kidstate?: ShowKidstate;
+  startDate?: string; // "YYYY-MM-DD"
+  endDate?: string; // "YYYY-MM-DD"
 };
 
 export const DEFAULT_FILTERS: ShowFilters = {
-  q: "",
+  search: "",
   genre: "",
   status: "01", // 기본: 공연예정
   area: "",
   kidstate: "",
-  stdate: "",
-  eddate: "",
+  startDate: "",
+  endDate: "",
 };
+
+export type KidMode = "all" | "kid";
