@@ -30,6 +30,11 @@ export const EMPTY_MESSAGES = {
       description:
         "관람한 공연의 감상을 사진과 장소, 날짜와 함께 차곡차곡 모아보세요",
     } as FeedBackMessage,
+    following_feed: {
+      variant: "section",
+      title: "아직 팔로잉 필로그가 없어요.",
+      description: "관심 있는 사람을 팔로우하고 필로그를 함께 즐겨보세요",
+    } as FeedBackMessage,
   },
   show: {
     record: {
@@ -104,6 +109,11 @@ export const ERROR_MESSAGES = {
       variant: "section",
       status: "error",
       description: "필로그를 불러오지 못했어요.",
+    } as FeedBackMessage,
+    following_feed: {
+      variant: "section",
+      status: "error",
+      description: "팔로잉 필로그를 불러오지 못했어요.",
     } as FeedBackMessage,
   },
   show: {

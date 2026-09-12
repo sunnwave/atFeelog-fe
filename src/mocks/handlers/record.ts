@@ -13,7 +13,11 @@ const MOCK_RECORDS = [
     commentCount: 12,
     isLiked: false,
     images: ["https://picsum.photos/id/21/400/600"],
-    user: { id: "u1", name: "홍길동", picture: "https://picsum.photos/id/64/200/200" },
+    user: {
+      id: "u1",
+      name: "홍길동",
+      picture: "https://picsum.photos/id/64/200/200",
+    },
     createdAt: "2026-03-10T00:00:00.000Z",
   },
   {
@@ -28,7 +32,11 @@ const MOCK_RECORDS = [
     commentCount: 35,
     isLiked: true,
     images: ["https://picsum.photos/id/29/400/600"],
-    user: { id: "u2", name: "아미", picture: "https://picsum.photos/id/91/200/200" },
+    user: {
+      id: "u2",
+      name: "아미",
+      picture: "https://picsum.photos/id/91/200/200",
+    },
     createdAt: "2026-02-20T00:00:00.000Z",
   },
   {
@@ -58,7 +66,11 @@ const MOCK_RECORDS = [
     commentCount: 6,
     isLiked: false,
     images: ["https://picsum.photos/id/49/400/600"],
-    user: { id: "u4", name: "뮤지컬팬", picture: "https://picsum.photos/id/22/200/200" },
+    user: {
+      id: "u4",
+      name: "뮤지컬팬",
+      picture: "https://picsum.photos/id/22/200/200",
+    },
     createdAt: "2025-12-01T00:00:00.000Z",
   },
   {
@@ -73,7 +85,11 @@ const MOCK_RECORDS = [
     commentCount: 20,
     isLiked: true,
     images: ["https://picsum.photos/id/93/400/600"],
-    user: { id: "u1", name: "홍길동", picture: "https://picsum.photos/id/64/200/200" },
+    user: {
+      id: "u1",
+      name: "홍길동",
+      picture: "https://picsum.photos/id/64/200/200",
+    },
     createdAt: "2025-11-10T00:00:00.000Z",
   },
   {
@@ -95,12 +111,25 @@ const MOCK_RECORDS = [
 
 // 기본 핸들러
 export const recordHandlers = [
-  graphql.query("fetchBoards", () =>
-    HttpResponse.json({ data: { fetchBoards: MOCK_RECORDS } }),
-  ),
-  graphql.query("fetchFollowingFeed", () =>
-    HttpResponse.json({ data: { fetchFollowingFeed: MOCK_RECORDS } }),
-  ),
+  graphql.query("fetchBoards", ({ variables }) => {
+    const sort = variables.sort as string | undefined;
+    const sorted = [...MOCK_RECORDS].sort((a, b) =>
+      sort === "popular"
+        ? b.likeCount - a.likeCount
+        : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+    return HttpResponse.json({ data: { fetchBoards: sorted } });
+  }),
+  graphql.query("fetchFollowingFeed", ({ variables }) => {
+    const sort = variables.sort as string | undefined;
+    const sorted = [...MOCK_RECORDS].sort((a, b) =>
+      sort === "popular"
+        ? b.likeCount - a.likeCount
+        : new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
+    return HttpResponse.json({ data: { fetchFollowingFeed: sorted } });
+    // return HttpResponse.json({ errors: [{ message: "에러테스트" }] });
+  }),
   graphql.query("fetchBoardsOfBest", () =>
     HttpResponse.json({ data: { fetchBoardsOfBest: MOCK_RECORDS } }),
   ),
@@ -126,9 +155,9 @@ export const followingEmptyHandler = graphql.query("fetchFollowingFeed", () =>
 
 // 무한스크롤 확인용 — 3페이지에서 종료
 // RecordFeed의 RECORDS_PER_PAGE = 10이므로 페이지당 10개 반환해야 hasMore 유지
-const INFINITE_PAGE_RECORDS = [...MOCK_RECORDS, ...MOCK_RECORDS].slice(0, 10).map(
-  (r, i) => ({ ...r, id: `inf-${i + 1}` }),
-);
+const INFINITE_PAGE_RECORDS = [...MOCK_RECORDS, ...MOCK_RECORDS]
+  .slice(0, 10)
+  .map((r, i) => ({ ...r, id: `inf-${i + 1}` }));
 
 export const recordInfiniteHandler = graphql.query(
   "fetchBoards",
@@ -138,7 +167,9 @@ export const recordInfiniteHandler = graphql.query(
 
     return HttpResponse.json({
       data: {
-        fetchBoards: isLastPage ? MOCK_RECORDS.slice(0, 2) : INFINITE_PAGE_RECORDS,
+        fetchBoards: isLastPage
+          ? MOCK_RECORDS.slice(0, 2)
+          : INFINITE_PAGE_RECORDS,
       },
     });
   },

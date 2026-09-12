@@ -1,8 +1,9 @@
 import { IS_NEW_API } from "@/api/config";
-import { IQuery, IQueryFetchBoardsArgs } from "@/api/graphql/generated/types";
+import { IQuery } from "@/api/graphql/generated/types";
 import { IQuery as INewQuery } from "@/api/graphql/generated/types.new";
 import { gql, useQuery } from "@apollo/client";
 import { toRecordSummary } from "@/api/adapters/record-summary.adapter";
+import { RecordFilterVars } from "../../types";
 
 const FETCH_RECORDS_LEGACY = gql`
   query fetchBoards(
@@ -39,12 +40,14 @@ const FETCH_RECORDS_NEW = gql`
     $startDate: DateTime
     $endDate: DateTime
     $search: String
+    $sort: String
   ) {
     fetchBoards(
       page: $page
       startDate: $startDate
       endDate: $endDate
       search: $search
+      sort: $sort
     ) {
       id
       title
@@ -69,15 +72,13 @@ const FETCH_RECORDS_NEW = gql`
 
 const FETCH_RECORDS = IS_NEW_API ? FETCH_RECORDS_NEW : FETCH_RECORDS_LEGACY;
 
-export type RecordFilterVars = Pick<
-  IQueryFetchBoardsArgs,
-  "search" | "startDate" | "endDate"
->;
+type FetchBoardsArgs = RecordFilterVars & { page?: number };
 
 export const useFetchRecords = (filter: RecordFilterVars = {}) => {
   const { data, loading, error, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoards"> | Pick<INewQuery, "fetchBoards">,
-    IQueryFetchBoardsArgs
+    // IQueryFetchBoardsArgs
+    FetchBoardsArgs
   >(FETCH_RECORDS, {
     variables: { page: 1, ...filter },
     fetchPolicy: "cache-and-network",

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { JSX } from "react";
-import RecordFeed from "./RecordFeed";
 import {
   recordEmptyHandler,
   recordInfiniteHandler,
-  // recordErrorHandler,
+  recordErrorHandler,
 } from "@/mocks/handlers/record";
 import { BREAKPOINT_CONFIGS } from "@/storybook/constants";
+import RegularFeed from "./RegularFeed";
 
 function SectionHeader({
   label,
@@ -30,7 +30,7 @@ function SectionHeader({
 // ─── Meta ─────────────────────────────────────────────────────────────────────
 
 const meta: Meta = {
-  title: "features/record-list/RecordFeed",
+  title: "features/record-list/RegularFeed",
   parameters: {
     layout: "fullscreen",
     backgrounds: { default: "app" },
@@ -50,7 +50,7 @@ export const BreakpointShowcase: Story = {
         <section key={label}>
           <SectionHeader label={label} range={range} />
           <div style={{ width }} className="border border-border/50">
-            <RecordFeed />
+            <RegularFeed />
           </div>
         </section>
       ))}
@@ -62,7 +62,7 @@ export const Default: Story = {
   // name: "Live — 전체 피드 (MSW)",
   render: () => (
     <div className="p-4 bg-background min-h-screen">
-      <RecordFeed />
+      <RegularFeed />
     </div>
   ),
 };
@@ -74,7 +74,7 @@ export const Empty: Story = {
   },
   render: () => (
     <div className="p-4 bg-background min-h-screen">
-      <RecordFeed />
+      <RegularFeed />
     </div>
   ),
 };
@@ -85,49 +85,18 @@ export const InfiniteScroll: Story = {
   },
   render: () => (
     <div className="p-4 bg-background min-h-screen">
-      <RecordFeed />
+      <RegularFeed />
     </div>
   ),
 };
 
-// TODO:RecordFeed 에러 상태 처리 추가
-// export const Error: Story = {
-//   parameters: {
-//     msw: { handlers: [recordErrorHandler] },
-//   },
-//   render: () => (
-//     <div className="p-4 bg-background min-h-screen">
-//       <RecordFeed />
-//     </div>
-//   ),
-// };
-// TODO: RecordFeed default,best, following 훅 분리
-// export const LiveFollowingFeed: Story = {
-//   name: "Live — 팔로잉 피드 (MSW)",
-//   render: () => (
-//     <div className="p-4 bg-background min-h-screen">
-//       <RecordFeed feedMode="following" />
-//     </div>
-//   ),
-// };
-
-// export const LiveFollowingFeedEmpty: Story = {
-//   name: "Live — 팔로잉 피드 (빈 결과)",
-//   parameters: {
-//     msw: { handlers: [followingEmptyHandler] },
-//   },
-//   render: () => (
-//     <div className="p-4 bg-background min-h-screen">
-//       <RecordFeed feedMode="following" />
-//     </div>
-//   ),
-// };
-
-// export const LiveBestFeed: Story = {
-//   name: "Live — 베스트 피드 (MSW)",
-//   render: () => (
-//     <div className="p-4 bg-background min-h-screen">
-//       <RecordFeed best />
-//     </div>
-//   ),
-// };
+export const Error: Story = {
+  parameters: {
+    msw: { handlers: [recordErrorHandler] },
+  },
+  render: () => (
+    <div className="p-4 bg-background min-h-screen">
+      <RegularFeed />
+    </div>
+  ),
+};
