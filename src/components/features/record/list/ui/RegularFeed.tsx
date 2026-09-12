@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button/Button";
 import { useRouter } from "next/router";
 import { RecordFilterVars, RECORDS_PER_PAGE } from "../types";
 
-export default function RecordFeed({
+export default function RegularFeed({
   filter = {},
 }: {
   filter?: RecordFilterVars;
@@ -40,7 +40,8 @@ export default function RecordFeed({
 
   const { handleRetry, isRetrying } = useRetry(refetch);
 
-  if ((loading && records.length === 0) || isRetrying) return <CardGridSkeleton showMeta />;
+  if ((loading && records.length === 0) || isRetrying)
+    return <CardGridSkeleton showMeta />;
   if (error)
     return (
       <EmptyState {...ERROR_MESSAGES.record.feed}>

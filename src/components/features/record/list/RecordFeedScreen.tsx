@@ -1,10 +1,10 @@
 import SearchBar from "@/components/commons/search/SearchBar";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import { JSX } from "react";
-import RecordFeed from "./ui/RecordFeed";
 import RecordFilterBar from "./ui/RecordFilterBar";
 import { useRecordFeedFilters } from "./hooks/useRecordFeedFilters";
 import FollowingFeed from "./ui/FollowingFeed";
+import RegularFeed from "./ui/RegularFeed";
 
 export default function RecordFeedScreen(): JSX.Element {
   const {
@@ -48,7 +48,7 @@ export default function RecordFeedScreen(): JSX.Element {
           onFeedChange={setFeedMode}
         />
 
-        {feedMode === "all" && <RecordFeed filter={filter} />}
+        {feedMode === "all" && <RegularFeed filter={filter} />}
         {feedMode === "following" && <FollowingFeed filter={filter} />}
       </ResponsiveLayout>
     </div>
