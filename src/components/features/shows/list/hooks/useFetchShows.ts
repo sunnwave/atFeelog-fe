@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import type { PerformanceSearchApiResponse } from "@/shared/types/performance";
 import { queryKeys } from "@/api/rest/queryKeys";
+import { toShowApiParams } from "@/api/adapters/kopis.adapter";
 import { ShowFilters } from "../type/type";
 
 const ROWS = 20;
@@ -15,17 +16,8 @@ async function fetchShows(
     rows: String(ROWS),
   });
 
-  const paramMap: Record<string, string | undefined> = {
-    q: filters?.search,
-    genre: filters.genre,
-    status: filters.status,
-    area: filters.area,
-    kidstate: filters.kidstate,
-    stdate: filters.startDate,
-    eddate: filters.endDate,
-  };
-
-  Object.entries(paramMap).forEach(([key, value]) => {
+  const apiParams = toShowApiParams(filters);
+  Object.entries(apiParams).forEach(([key, value]) => {
     if (value) params.set(key, value);
   });
 

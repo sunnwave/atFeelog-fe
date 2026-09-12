@@ -1,28 +1,17 @@
 import {
-  ShowGenreShcate,
+  ShowGenre,
+  ShowStatus,
+  ShowArea,
   ShowKidstate,
-  ShowPrfstate,
-  ShowSigngucode,
 } from "@/shared/constants";
 
+/** URL/UI 레이어에서 사용하는 필터 상태 */
 export type ShowFilters = {
   search?: string;
-  genre?: ShowGenreShcate;
-  status?: ShowPrfstate;
-  area?: ShowSigngucode;
+  genre?: ShowGenre;
+  status?: ShowStatus;
+  area?: ShowArea;
   kidstate?: ShowKidstate;
-  startDate?: string; // "YYYY-MM-DD"
-  endDate?: string; // "YYYY-MM-DD"
+  startDate?: string;
+  endDate?: string;
 };
-
-export const DEFAULT_FILTERS: ShowFilters = {
-  search: "",
-  genre: "",
-  status: "01", // 기본: 공연예정
-  area: "",
-  kidstate: "",
-  startDate: "",
-  endDate: "",
-};
-
-export type KidMode = "all" | "kid";

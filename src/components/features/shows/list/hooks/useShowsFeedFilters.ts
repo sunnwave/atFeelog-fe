@@ -2,18 +2,28 @@ import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { useSearch } from "@/components/commons/search/useSearch";
 import { useQueryUpdate } from "@/shared/hooks/ui/useQueryUpdate";
-import { ShowGenreShcate, ShowKidstate, ShowPrfstate, ShowSigngucode } from "@/shared/constants";
+import { ShowGenre, ShowStatus, ShowArea, ShowKidstate } from "@/shared/constants";
+import { ShowFilters } from "../type/type";
 
 export function useShowsFeedFilters() {
   const router = useRouter();
   const updateQuery = useQueryUpdate();
 
-  const genre = ((router.query.genre as ShowGenreShcate) ?? "") as ShowGenreShcate;
-  const status = ((router.query.status as ShowPrfstate) ?? "01") as ShowPrfstate;
-  const area = ((router.query.area as ShowSigngucode) ?? "") as ShowSigngucode;
+  const genre = ((router.query.genre as ShowGenre) ?? "") as ShowGenre;
+  const status = ((router.query.status as ShowStatus) ?? "") as ShowStatus;
+  const area = ((router.query.area as ShowArea) ?? "") as ShowArea;
   const kidstate = ((router.query.kidstate as ShowKidstate) ?? "") as ShowKidstate;
 
-  const { search, setSearch, startDate, setStartDate, endDate, setEndDate, submit: submitSearch, reset: resetSearch } = useSearch({
+  const {
+    search,
+    setSearch,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    submit: submitSearch,
+    reset: resetSearch,
+  } = useSearch({
     initValue: {
       search: (router.query.search as string) ?? "",
       startDate: (router.query.startDate as string) ?? "",
@@ -28,17 +38,17 @@ export function useShowsFeedFilters() {
   });
 
   const setGenre = useCallback(
-    (value: ShowGenreShcate) => updateQuery({ genre: value || undefined }),
+    (value: ShowGenre) => updateQuery({ genre: value || undefined }),
     [updateQuery],
   );
 
   const setStatus = useCallback(
-    (value: ShowPrfstate) => updateQuery({ status: value || undefined }),
+    (value: ShowStatus) => updateQuery({ status: value || undefined }),
     [updateQuery],
   );
 
   const setArea = useCallback(
-    (value: ShowSigngucode) => updateQuery({ area: value || undefined }),
+    (value: ShowArea) => updateQuery({ area: value || undefined }),
     [updateQuery],
   );
 
@@ -47,7 +57,7 @@ export function useShowsFeedFilters() {
     [updateQuery],
   );
 
-  const filter = {
+  const filter: ShowFilters = {
     search: (router.query.search as string) || "",
     genre,
     status,
