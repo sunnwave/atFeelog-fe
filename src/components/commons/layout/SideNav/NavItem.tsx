@@ -7,11 +7,13 @@ export default function NavItem({
   onClick,
   cta = false,
   className,
+  testId,
 }: {
   nav: NavItemType;
   onClick?: () => void;
   cta?: boolean;
   className?: string;
+  testId?: string;
 }) {
   const router = useRouter();
   const isActive = !!nav.href && router.pathname === nav.href;
@@ -23,6 +25,7 @@ export default function NavItem({
 
   return (
     <button
+      data-testid={testId}
       className={cn(
         "flex w-full items-center border-b border-border py-3 uppercase tracking-[0.12em] text-[12px] font-black cursor-pointer hover:bg-muted",
         isActive ? "text-foreground" : "text-muted-foreground",

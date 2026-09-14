@@ -1,18 +1,31 @@
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { localDateToRfc3339NoonUtc } from "@/shared/utils";
-import { FeedMode, SortMode } from "../types";
+import { IBoardSortType } from "@/api/graphql/generated/types.new";
+import { FeedMode } from "../types";
 import { useSearch } from "@/components/commons/search/useSearch";
 import { useQueryUpdate } from "@/shared/hooks/ui/useQueryUpdate";
 
 export function useRecordFeedFilters() {
   const router = useRouter();
+
+  const sortMode = ((router.query.sort as IBoardSortType) ??
+    IBoardSortType.Latest) as IBoardSortType;
+
   const updateQuery = useQueryUpdate();
 
-  const sortMode = ((router.query.sort as SortMode) ?? "latest") as SortMode;
   const feedMode = ((router.query.feed as FeedMode) ?? "all") as FeedMode;
 
-  const { search, setSearch, startDate, setStartDate, endDate, setEndDate, submit: submitSearch, reset: resetSearch } = useSearch({
+  const {
+    search,
+    setSearch,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+    submit: submitSearch,
+    reset: resetSearch,
+  } = useSearch({
     initValue: {
       search: (router.query.search as string) ?? "",
       startDate: (router.query.startDate as string) ?? "",
@@ -27,7 +40,7 @@ export function useRecordFeedFilters() {
   });
 
   const setSortMode = useCallback(
-    (mode: SortMode) => updateQuery({ sort: mode }),
+    (mode: IBoardSortType) => updateQuery({ sort: mode }),
     [updateQuery],
   );
 

@@ -40,7 +40,7 @@ const FETCH_RECORDS_NEW = gql`
     $startDate: DateTime
     $endDate: DateTime
     $search: String
-    $sort: String
+    $sort: BoardSortType
   ) {
     fetchBoards(
       page: $page
@@ -77,7 +77,6 @@ type FetchBoardsArgs = RecordFilterVars & { page?: number };
 export const useFetchRecords = (filter: RecordFilterVars = {}) => {
   const { data, loading, error, fetchMore, refetch } = useQuery<
     Pick<IQuery, "fetchBoards"> | Pick<INewQuery, "fetchBoards">,
-    // IQueryFetchBoardsArgs
     FetchBoardsArgs
   >(FETCH_RECORDS, {
     variables: { page: 1, ...filter },

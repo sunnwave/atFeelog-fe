@@ -13,7 +13,7 @@ export const FETCH_FOLOWING_FEED = gql`
     $startDate: DateTime
     $endDate: DateTime
     $search: String
-    $sort: String
+    $sort: BoardSortType
   ) {
     fetchFollowingFeed(
       page: $page
