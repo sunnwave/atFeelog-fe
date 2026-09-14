@@ -34,6 +34,7 @@ export default async function handler(
   const genre = String(req.query.genre ?? "").trim();
   const status = String(req.query.status ?? "").trim();
   const area = String(req.query.area ?? "").trim();
+  const kidstate = String(req.query.kidstate ?? "").trim();
   const page = Math.max(1, Number(req.query.page ?? 1));
   const rows = Math.min(100, Math.max(1, Number(req.query.rows ?? 20)));
 
@@ -55,6 +56,7 @@ export default async function handler(
   if (genre) url.searchParams.set("shcate", genre);
   if (status) url.searchParams.set("prfstate", status);
   if (area) url.searchParams.set("signgucode", area);
+  if (kidstate) url.searchParams.set("kidstate", kidstate);
 
   const r = await fetch(url.toString());
   if (!r.ok) {

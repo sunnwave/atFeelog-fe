@@ -21,8 +21,16 @@ const FEED_OPTIONS: ToggleOption<FeedMode>[] = [
 ];
 
 const SORT_OPTIONS: ToggleOption<IBoardSortType>[] = [
-  { value: IBoardSortType.Latest, label: "최신순", icon: <Clock className="w-3.5 h-3.5" /> },
-  { value: IBoardSortType.Popular, label: "인기순", icon: <Flame className="w-3.5 h-3.5" /> },
+  {
+    value: IBoardSortType.Latest,
+    label: "최신순",
+    icon: <Clock className="w-3.5 h-3.5" />,
+  },
+  {
+    value: IBoardSortType.Popular,
+    label: "인기순",
+    icon: <Flame className="w-3.5 h-3.5" />,
+  },
 ];
 
 export default function RecordFilterBar({

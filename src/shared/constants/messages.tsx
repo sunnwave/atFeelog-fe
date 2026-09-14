@@ -42,6 +42,11 @@ export const EMPTY_MESSAGES = {
       title: "아직 이 공연에 대해 작성된 필로그가 없어요",
       description: "이 공연을 관람했다면 필로그를 작성해보세요",
     } as FeedBackMessage,
+    feed: {
+      variant: "section",
+      title: "조건에 해당하는 공연이 없어요.",
+      description: "다른 키워드나 필터로 검색해보세요.",
+    } as FeedBackMessage,
     saved: {} as FeedBackMessage,
   },
   comment: {
@@ -121,6 +126,11 @@ export const ERROR_MESSAGES = {
       variant: "section",
       status: "error",
       description: "필로그를 불러오지 못했어요.",
+    } as FeedBackMessage,
+    feed: {
+      variant: "section",
+      status: "error",
+      description: "공연목록을 불러오지 못했어요.",
     } as FeedBackMessage,
   },
   comment: {

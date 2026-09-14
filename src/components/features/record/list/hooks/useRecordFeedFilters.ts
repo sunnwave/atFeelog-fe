@@ -1,33 +1,20 @@
 import { useRouter } from "next/router";
 import { useCallback } from "react";
 import { localDateToRfc3339NoonUtc } from "@/shared/utils";
+import { IBoardSortType } from "@/api/graphql/generated/types.new";
 import { FeedMode } from "../types";
 import { useSearch } from "@/components/commons/search/useSearch";
-import { IBoardSortType } from "@/api/graphql/generated/types.new";
+import { useQueryUpdate } from "@/shared/hooks/ui/useQueryUpdate";
 
 export function useRecordFeedFilters() {
   const router = useRouter();
 
   const sortMode = ((router.query.sort as IBoardSortType) ??
     IBoardSortType.Latest) as IBoardSortType;
-  const feedMode = ((router.query.feed as FeedMode) ?? "all") as FeedMode;
 
-  const updateQuery = useCallback(
-    (patch: Record<string, string | undefined>) => {
-      const next = { ...router.query };
-      Object.entries(patch).forEach(([k, v]) => {
-        if (v === undefined || v === "") {
-          delete next[k];
-        } else {
-          next[k] = v;
-        }
-      });
-      router.replace({ pathname: router.pathname, query: next }, undefined, {
-        shallow: true,
-      });
-    },
-    [router],
-  );
+  const updateQuery = useQueryUpdate();
+
+  const feedMode = ((router.query.feed as FeedMode) ?? "all") as FeedMode;
 
   const {
     search,

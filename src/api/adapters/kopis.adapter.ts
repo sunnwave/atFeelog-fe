@@ -2,7 +2,9 @@ import type {
   KopisRawPerformance,
   KopisRawPerformanceDetail,
   KopisRawBoxOffice,
+  ShowApiParams,
 } from "@/api/adapters/types/kopis";
+import type { ShowFilters } from "@/components/features/shows/list/type/type";
 import type {
   Performance,
   PerformanceDetail,
@@ -69,6 +71,19 @@ export function normalizeBoxOffice(raw: KopisRawBoxOffice): BoxOffice {
     genre: raw.cate,
     period: raw.prfpd,
     area: raw.area,
+  };
+}
+
+/** ShowFilters(UI/URL) → ShowApiParams(KOPIS API 요청 파라미터) 변환 */
+export function toShowApiParams(filters: ShowFilters): ShowApiParams {
+  return {
+    q: filters.search || undefined,
+    genre: filters.genre || undefined,
+    status: filters.status || undefined,
+    area: filters.area || undefined,
+    kidstate: filters.kidstate || undefined,
+    stdate: filters.startDate || undefined,
+    eddate: filters.endDate || undefined,
   };
 }
 
