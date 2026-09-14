@@ -17,16 +17,18 @@ type AppComponent = AppProps["Component"] & { noBottomNav?: boolean };
 export default function App({ Component, pageProps }: AppProps) {
   const { noBottomNav } = Component as AppComponent;
 
-  const [mswReady, setMswReady] = useState(
-    process.env.NODE_ENV !== "development"
-  );
+  const isMswEnabled =
+    process.env.NODE_ENV === "development" &&
+    process.env.NEXT_PUBLIC_MSW_ENABLED !== "false";
+
+  const [mswReady, setMswReady] = useState(!isMswEnabled);
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
+    if (!isMswEnabled) return;
     import("../src/mocks/init")
       .then(({ startMSW }) => startMSW())
       .then(() => setMswReady(true));
-  }, []);
+  }, [isMswEnabled]);
 
   if (!mswReady) return null;
 
