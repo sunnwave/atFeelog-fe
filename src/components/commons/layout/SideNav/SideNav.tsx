@@ -1,6 +1,5 @@
 import { useRecoilValue } from "recoil";
 
-
 import Image from "next/image";
 import NavItem from "./NavItem";
 import LogoWordmark from "@/components/ui/logo/LogoWordmark";
@@ -83,6 +82,7 @@ export default function SideNav() {
           nav={LOGOUT_NAV_ITEM}
           onClick={onClickLogout}
           className="border-t"
+          testId="logout-button"
         />
       )}
     </aside>
