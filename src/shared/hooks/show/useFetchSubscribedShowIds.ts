@@ -1,7 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { IQuery } from "@/api/graphql/generated/types.new";
 
-const FETCH_SUBSCRIBED_PERFORMANCE_IDS = gql`
+export const FETCH_SUBSCRIBED_PERFORMANCE_IDS = gql`
   query fetchSubscribedPerformances {
     fetchSubscribedPerformances
   }
