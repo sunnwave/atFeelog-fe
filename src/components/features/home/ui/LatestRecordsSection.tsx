@@ -11,8 +11,11 @@ export default function LatestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchLatestRecords();
   const { onClickNavigation } = useNavigation();
 
-  if (loading) return <SectionSkeleton />;
-  if (records.length === 0)
+  const isEmpty = records.length === 0;
+
+  if (loading && isEmpty) return <SectionSkeleton />;
+
+  if (!loading && isEmpty)
     return <EmptyState {...EMPTY_MESSAGES.home.latest} />;
 
   return (

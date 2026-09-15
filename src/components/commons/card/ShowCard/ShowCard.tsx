@@ -20,11 +20,13 @@ export default function ShowCard({
   showMeta = true,
   showBorder = true,
   rank,
+  isSaved,
 }: {
   performance: ShowCardPerformance;
   showMeta?: boolean;
   showBorder?: boolean;
   rank?: number;
+  isSaved?: boolean;
 }): JSX.Element {
   const router = useRouter();
 
@@ -63,7 +65,7 @@ export default function ShowCard({
       </div>
 
       {/* 텍스트 */}
-      {showMeta && <ShowCardMeta p={p} />}
+      {showMeta && <ShowCardMeta p={p} isSaved={isSaved} />}
     </div>
   );
 }

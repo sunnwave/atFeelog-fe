@@ -11,6 +11,7 @@ import { useInfiniteScroll } from "@/shared/hooks/ui/useInfiniteScroll";
 import { useRetry } from "@/shared/hooks/ui/useRetry";
 import { Button } from "@/components/ui/button/Button";
 import { EMPTY_MESSAGES, ERROR_MESSAGES } from "@/shared/constants/messages";
+import { useFetchSubscribedShowIds } from "@/shared/hooks/show/useFetchSubscribedShowIds";
 
 export default function ShowsFeed({ filter }: { filter: ShowFilters }) {
   const {
@@ -22,6 +23,8 @@ export default function ShowsFeed({ filter }: { filter: ShowFilters }) {
     loadMore,
     refetch,
   } = useFetchShows(filter);
+
+  const { isSubscribed } = useFetchSubscribedShowIds();
 
   const sentinelRef = useInfiniteScroll({
     hasMore,
@@ -50,7 +53,13 @@ export default function ShowsFeed({ filter }: { filter: ShowFilters }) {
     <>
       <ResponsiveGrid cols={2} colsMd={3} colsLg={4} bordered>
         {items.map((show) => (
-          <ShowCard key={show.mt20id} performance={show} showBorder showMeta />
+          <ShowCard
+            key={show.mt20id}
+            performance={show}
+            showBorder
+            showMeta
+            isSaved={isSubscribed(show.mt20id)}
+          />
         ))}
       </ResponsiveGrid>
 
