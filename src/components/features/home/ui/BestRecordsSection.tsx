@@ -11,8 +11,10 @@ export default function BestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
 
-  if (loading) return <SectionSkeleton />;
-  if (records.length === 0) return <EmptyState {...EMPTY_MESSAGES.home.best} />;
+  const isEmpty = records.length === 0;
+
+  if (loading && isEmpty) return <SectionSkeleton />;
+  if (!loading && isEmpty) return <EmptyState {...EMPTY_MESSAGES.home.best} />;
 
   return (
     <div className="w-full overflow-x-hidden flex flex-col space-y-6">

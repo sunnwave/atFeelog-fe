@@ -51,7 +51,7 @@ export default function UserSavedShowGrid() {
       className="border-t-0"
     >
       {shows.map((show) => (
-        <ShowCard key={show.mt20id} performance={show} showBorder />
+        <ShowCard key={show.mt20id} performance={show} showBorder isSaved />
       ))}
     </ResponsiveGrid>
   );

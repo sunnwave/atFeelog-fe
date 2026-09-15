@@ -9,16 +9,20 @@ import { ShowCard } from "@/components/commons/card";
 import { boxOfficeToPerformance } from "@/api/adapters/kopis.adapter";
 import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
+import { useFetchSubscribedShowIds } from "@/shared/hooks/show/useFetchSubscribedShowIds";
 
 export default function BoxOfficeSection(): JSX.Element {
   const [catecode, setCatecode] = useState<BoxOfficeGenreCatecode>("");
   const { items, loading, error } = useBoxOffice("week", catecode);
+  const { isSubscribed } = useFetchSubscribedShowIds();
 
-  if (loading) return <SectionSkeleton count={10} />;
+  const isEmpty = items.length === 0;
+
+  if (loading && isEmpty) return <SectionSkeleton count={10} />;
   if (error)
     return <p className="text-sm text-muted-foreground py-4">{error}</p>;
 
-  if (items.length === 0)
+  if (!loading && isEmpty)
     return <EmptyState {...EMPTY_MESSAGES.home.boxOffice} />;
 
   return (
@@ -57,6 +61,7 @@ export default function BoxOfficeSection(): JSX.Element {
               <ShowCard
                 performance={boxOfficeToPerformance(item)}
                 rank={item.rank}
+                isSaved={isSubscribed(item.mt20id)}
               />
             </div>
           ))}

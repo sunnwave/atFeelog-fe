@@ -15,6 +15,8 @@ import {
 } from "../ui";
 import ShowDetailSkeleton from "./ShowDetailSkeleton";
 import { PageFallback } from "@/components/ui/feedback";
+import { useIsPerformanceSubscribed } from "../hooks/useIsPerformanceSubscribed";
+import { useToggleShowLike } from "@/shared/hooks/show/useToggleShowLike";
 
 type Tab = "intro" | "records";
 
@@ -28,9 +30,10 @@ export default function ShowDetailScreen(): JSX.Element {
   const id = typeof query.id === "string" ? query.id : "";
 
   const { detail, loading, error } = useFetchShowDetail(id);
+  const { isSubscribed } = useIsPerformanceSubscribed(id);
+  const { toggle } = useToggleShowLike();
 
   const [tab, setTab] = useState<Tab>("intro");
-  const [liked, setLiked] = useState(false);
 
   if (loading) return <ShowDetailSkeleton />;
   if (error)
@@ -63,8 +66,8 @@ export default function ShowDetailScreen(): JSX.Element {
         <div className="w-full flex flex-col gap-3 @lg:p-3 @lg:grid @lg:grid-cols-[5fr_2fr] @lg:items-start @lg:gap-5">
           <ShowDetailInfo
             detail={detail}
-            liked={liked}
-            onLikeToggle={() => setLiked((l) => !l)}
+            liked={isSubscribed}
+            onLikeToggle={() => toggle(id)}
           />
 
           <ShowTicketLinks links={detail.ticketLinks} />
