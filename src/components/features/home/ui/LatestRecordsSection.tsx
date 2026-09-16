@@ -1,15 +1,20 @@
 import { JSX } from "react";
 import { ChevronRight, Clock3 } from "lucide-react";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 import { RecordPosterCard } from "@/components/commons/card";
 import { useFetchLatestRecords } from "../hooks/queries/useFetchLatestRecords";
+import { useFetchLikedBoardIds } from "@/shared/hooks/record/useFetchLikedBoardIds";
 import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function LatestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchLatestRecords();
   const { onClickNavigation } = useNavigation();
+  const me = useRecoilValue(loggedInUserState);
+  const { isLiked } = useFetchLikedBoardIds(me?.id);
 
   const isEmpty = records.length === 0;
 
@@ -41,7 +46,10 @@ export default function LatestRecordsSection(): JSX.Element {
               key={record.id}
               className="shrink-0 w-46 md:w-52 border-t-[1.5px] border-foreground @container"
             >
-              <RecordPosterCard record={record} showMeta />
+              <RecordPosterCard
+                record={{ ...record, isLiked: isLiked(record.id) }}
+                showMeta
+              />
             </div>
           ))}
         </div>

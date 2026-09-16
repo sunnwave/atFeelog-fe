@@ -1,5 +1,8 @@
 import ResponsiveGrid from "@/components/commons/layout/ResponsiveGrid";
 import { JSX } from "react";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
+import { useFetchLikedBoardIds } from "@/shared/hooks/record/useFetchLikedBoardIds";
 import { useFetchRecords } from "../hooks/queries/useFetchRecords";
 import { useApolloInfiniteScroll } from "@/shared/hooks/ui/useApolloInfiniteScroll";
 import { useRetry } from "@/shared/hooks/ui/useRetry";
@@ -20,6 +23,8 @@ export default function RegularFeed({
   filter?: RecordFilterVars;
 }): JSX.Element {
   const router = useRouter();
+  const me = useRecoilValue(loggedInUserState);
+  const { isLiked } = useFetchLikedBoardIds(me?.id);
 
   const filterKey = `${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}|${filter.sort ?? ""}`;
 
@@ -71,7 +76,11 @@ export default function RegularFeed({
             key={record.id}
             className="border-r-[1.5px] border-b-[1.5px] border-foreground"
           >
-            <RecordPosterCard record={record} showMeta showBorder={false} />
+            <RecordPosterCard
+              record={{ ...record, isLiked: isLiked(record.id) }}
+              showMeta
+              showBorder={false}
+            />
           </div>
         ))}
       </ResponsiveGrid>

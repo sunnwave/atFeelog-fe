@@ -1,15 +1,20 @@
 import { JSX } from "react";
 import { ChevronRight, Flame } from "lucide-react";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 import { useNavigation } from "@/shared/hooks/ui/useNavigation";
 import { Button } from "@/components/ui/button/Button";
 import { RecordPosterCard } from "@/components/commons/card";
 import { useFetchBestRecords } from "../hooks/queries/useFetchBestRecords";
+import { useFetchLikedBoardIds } from "@/shared/hooks/record/useFetchLikedBoardIds";
 import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 
 export default function BestRecordsSection(): JSX.Element {
   const { records, loading } = useFetchBestRecords();
   const { onClickNavigation } = useNavigation();
+  const me = useRecoilValue(loggedInUserState);
+  const { isLiked } = useFetchLikedBoardIds(me?.id);
 
   const isEmpty = records.length === 0;
 
@@ -40,7 +45,10 @@ export default function BestRecordsSection(): JSX.Element {
               key={board.id}
               className="shrink-0 w-46 md:w-52 border-t-[1.5px] border-foreground @container"
             >
-              <RecordPosterCard record={board} showMeta />
+              <RecordPosterCard
+                record={{ ...board, isLiked: isLiked(board.id) }}
+                showMeta
+              />
             </div>
           ))}
         </div>
