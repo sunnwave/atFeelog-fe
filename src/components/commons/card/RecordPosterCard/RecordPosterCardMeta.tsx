@@ -23,7 +23,7 @@ export default function RecordPosterCardMeta({
           <LikeButton
             likeCount={record.likeCount}
             isLiked={record.isLiked ?? false}
-            onToggle={() => onLikeRecord(record.id)}
+            onToggle={() => onLikeRecord(record.id).catch(() => {})}
           />
           <CommentIcon count={record.commentCount ?? 0} />
         </div>

@@ -11,6 +11,7 @@ import {
 import { gql, useMutation } from "@apollo/client";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
+import { useToast } from "@/components/commons/toast/ToastProvider";
 import { FETCH_LIKED_BOARD_IDS } from "./useFetchLikedBoardIds";
 
 const LIKE_RECORD_LEGACY = gql`
@@ -32,6 +33,7 @@ const LIKE_RECORD = IS_NEW_API ? LIKE_RECORD_NEW : LIKE_RECORD_LEGACY;
 
 export const useLikeRecord = () => {
   const me = useRecoilValue(loggedInUserState);
+  const { error } = useToast();
 
   const [likeBoard] = useMutation<
     Pick<ILegacyMutation | INewMutation, "likeBoard">,
@@ -83,6 +85,10 @@ export const useLikeRecord = () => {
 
   const onLikeRecord = async (recordId: string) => {
     const result = await likeBoard({ variables: { boardId: recordId } });
+    if (result.errors?.length) {
+      error(result.errors[0].message || "좋아요 처리에 실패했어요. 잠시 후 다시 시도해주세요.");
+      throw new Error(result.errors[0].message);
+    }
     return result.data?.likeBoard;
   };
 
