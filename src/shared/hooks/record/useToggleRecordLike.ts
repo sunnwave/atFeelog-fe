@@ -31,7 +31,7 @@ const LIKE_RECORD_NEW = gql`
 
 const LIKE_RECORD = IS_NEW_API ? LIKE_RECORD_NEW : LIKE_RECORD_LEGACY;
 
-export const useLikeRecord = () => {
+export const useToggleRecordLike = () => {
   const me = useRecoilValue(loggedInUserState);
   const { error } = useToast();
 
@@ -83,7 +83,7 @@ export const useLikeRecord = () => {
     },
   });
 
-  const onLikeRecord = async (recordId: string) => {
+  const toggle = async (recordId: string) => {
     const result = await likeBoard({ variables: { boardId: recordId } });
     if (result.errors?.length) {
       error(result.errors[0].message || "좋아요 처리에 실패했어요. 잠시 후 다시 시도해주세요.");
@@ -92,5 +92,5 @@ export const useLikeRecord = () => {
     return result.data?.likeBoard;
   };
 
-  return { onLikeRecord };
+  return { toggle };
 };
