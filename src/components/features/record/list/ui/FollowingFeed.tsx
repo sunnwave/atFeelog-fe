@@ -1,4 +1,7 @@
 import { ResponsiveGrid } from "@/components/commons/layout";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
+import { useFetchLikedBoardIds } from "@/shared/hooks/record/useFetchLikedBoardIds";
 import { useFetchFollowingFeed } from "../hooks/queries/useFetchFollowingFeed";
 import { RecordPosterCard } from "@/components/commons/card";
 import { RecordFilterVars, RECORDS_PER_PAGE } from "../types";
@@ -19,6 +22,8 @@ export default function FollowingFeed({
   filter?: RecordFilterVars;
 }): JSX.Element {
   const router = useRouter();
+  const me = useRecoilValue(loggedInUserState);
+  const { isLiked } = useFetchLikedBoardIds(me?.id);
 
   const filterKey = `${filter.search ?? ""}|${filter.startDate ?? ""}|${filter.endDate ?? ""}|${filter.sort ?? ""}`;
 
@@ -73,7 +78,11 @@ export default function FollowingFeed({
             key={record.id}
             className="border-r-[1.5px] border-b-[1.5px] border-foreground"
           >
-            <RecordPosterCard record={record} showMeta showBorder={false} />
+            <RecordPosterCard
+              record={{ ...record, isLiked: isLiked(record.id) }}
+              showMeta
+              showBorder={false}
+            />
           </div>
         ))}
       </ResponsiveGrid>

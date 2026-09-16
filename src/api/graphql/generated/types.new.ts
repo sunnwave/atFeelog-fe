@@ -112,6 +112,12 @@ export type IFollow = {
   id: Scalars['ID']['output'];
 };
 
+export type ILikeBoardResponse = {
+  __typename?: 'LikeBoardResponse';
+  isLike: Scalars['Boolean']['output'];
+  likeCount: Scalars['Int']['output'];
+};
+
 export type IMutation = {
   __typename?: 'Mutation';
   /**  팔로우 기능 */
@@ -123,7 +129,7 @@ export type IMutation = {
   deleteBoard: Scalars['ID']['output'];
   deleteBoardComment: Scalars['ID']['output'];
   deleteBoards: Array<Scalars['ID']['output']>;
-  likeBoard: Scalars['Int']['output'];
+  likeBoard: ILikeBoardResponse;
   loginUser: IToken;
   logoutUser: Scalars['Boolean']['output'];
   resetUserPassword: Scalars['Boolean']['output'];
