@@ -6,8 +6,12 @@ import {
 import {
   IMutation as INewMutation,
   IMutationLikeBoardArgs as INewLikeArgs,
+  IQuery,
 } from "@/api/graphql/generated/types.new";
 import { gql, useMutation } from "@apollo/client";
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
+import { FETCH_LIKED_BOARD_IDS } from "./useFetchLikedBoardIds";
 
 const LIKE_RECORD_LEGACY = gql`
   mutation likeBoard($boardId: ID!) {
@@ -27,6 +31,8 @@ const LIKE_RECORD_NEW = gql`
 const LIKE_RECORD = IS_NEW_API ? LIKE_RECORD_NEW : LIKE_RECORD_LEGACY;
 
 export const useLikeRecord = () => {
+  const me = useRecoilValue(loggedInUserState);
+
   const [likeBoard] = useMutation<
     Pick<ILegacyMutation | INewMutation, "likeBoard">,
     ILegacyLikeArgs | INewLikeArgs
@@ -50,6 +56,27 @@ export const useLikeRecord = () => {
           isLiked: () => data.isLike,
           likeCount: () => data.likeCount,
         },
+      });
+
+      if (!me?.id) return;
+
+      const existing = cache.readQuery<Pick<IQuery, "fetchBoardsLikeByUser">>({
+        query: FETCH_LIKED_BOARD_IDS,
+        variables: { userId: me.id },
+      });
+      if (!existing) return;
+
+      const current = existing.fetchBoardsLikeByUser ?? [];
+      const nextList = data.isLike
+        ? current.some((b) => b?.id === variables.boardId)
+          ? current
+          : [...current, { __typename: "Board" as const, id: variables.boardId }]
+        : current.filter((b) => b?.id !== variables.boardId);
+
+      cache.writeQuery({
+        query: FETCH_LIKED_BOARD_IDS,
+        variables: { userId: me.id },
+        data: { fetchBoardsLikeByUser: nextList },
       });
     },
   });
