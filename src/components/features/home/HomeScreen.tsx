@@ -2,10 +2,10 @@ import { JSX } from "react";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import HomeHero from "./ui/HomeHero";
-import BoxOfficeSection from "./BoxOfficeSection";
+import BoxOfficeSection from "./ui/BoxOfficeSection";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import BestRecordsSection from "./BestRecordsSection";
-import LatestRecordsSection from "./LatestRecordsSection";
+import BestRecordsSection from "./ui/BestRecordsSection";
+import LatestRecordsSection from "./ui/LatestRecordsSection";
 
 export default function HomeScreen(): JSX.Element {
   const me = useRecoilValue(loggedInUserState);

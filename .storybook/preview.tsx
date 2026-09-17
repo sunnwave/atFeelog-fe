@@ -1,16 +1,35 @@
 import type { Preview } from "@storybook/nextjs-vite";
-import { MockedProvider } from "@apollo/client/testing";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { initialize, mswDecorator } from "msw-storybook-addon";
 import "../src/styles/globals.css";
 import { ToastProvider } from "@/components/commons/toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { handlers } from "../src/mocks/handlers";
+
+initialize({ onUnhandledRequest: "bypass" }, handlers);
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: { retry: false },
+  },
+});
+
+const apolloClient = new ApolloClient({
+  uri: "/api/graphql",
+  cache: new InMemoryCache(),
+});
 
 const preview: Preview = {
   decorators: [
+    mswDecorator,
     (Story) => (
-      <MockedProvider mocks={[]} addTypename={false}>
-        <ToastProvider>
-          <Story />
-        </ToastProvider>
-      </MockedProvider>
+      <QueryClientProvider client={queryClient}>
+        <ApolloProvider client={apolloClient}>
+          <ToastProvider>
+            <Story />
+          </ToastProvider>
+        </ApolloProvider>
+      </QueryClientProvider>
     ),
   ],
   parameters: {

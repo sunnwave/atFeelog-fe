@@ -9,6 +9,7 @@ export const useFetchSavedShows = () => {
     subscribedIds,
     loading: idsLoading,
     error,
+    refetch: refetchIds,
   } = useFetchSubscribedShowIds();
 
   const results = useQueries({
@@ -22,7 +23,13 @@ export const useFetchSavedShows = () => {
   const shows = results
     .map((r) => r.data)
     .filter((d): d is PerformanceDetail => !!d);
+
   const loading = idsLoading || results.some((r) => r.isLoading);
 
-  return { shows, loading, error };
+  const refetch = () => {
+    refetchIds();
+    results.forEach((r) => r.refetch());
+  };
+
+  return { shows, loading, error, refetch };
 };

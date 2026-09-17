@@ -48,6 +48,7 @@ export default function SearchModalShell({
   children,
 }: SearchModalShellProps) {
   return (
+    // TODO: loading, error, empty 컴포넌트 적용
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50" />
@@ -59,17 +60,24 @@ export default function SearchModalShell({
               "w-full bg-background shadow-2xl flex flex-col",
               "rounded-t-3xl max-h-[85vh]",
               "md:max-w-lg md:rounded-3xl md:max-h-[80vh]",
-              className
+              className,
             )}
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-border">
               <div className="flex items-center gap-2">
                 {icon}
-                <Dialog.Title className="text-lg font-bold">{title}</Dialog.Title>
+                <Dialog.Title className="text-lg font-bold">
+                  {title}
+                </Dialog.Title>
               </div>
               <Dialog.Close asChild>
-                <Button variant="ghost" type="button" size="icon" aria-label="닫기">
+                <Button
+                  variant="ghost"
+                  type="button"
+                  size="icon"
+                  aria-label="닫기"
+                >
                   <X className="w-5 h-5" />
                 </Button>
               </Dialog.Close>
@@ -90,8 +98,12 @@ export default function SearchModalShell({
                 </Button>
               </form>
 
-              {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
-              {loading && <p className="mt-2 text-xs text-muted-foreground">검색 중…</p>}
+              {error && (
+                <p className="mt-2 text-xs text-destructive">{error}</p>
+              )}
+              {loading && (
+                <p className="mt-2 text-xs text-muted-foreground">검색 중…</p>
+              )}
             </div>
 
             {/* Results */}

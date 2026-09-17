@@ -1,8 +1,9 @@
 import { JSX } from "react";
 import { useRouter } from "next/router";
+import { User } from "@/api/adapters/types/user";
 import PageHeader from "@/components/commons/layout/PageHeader";
 import { useFetchRecord } from "../hooks/useFetchRecord";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import RecordDetailDateHeader from "./recordDetailContent/RecordDetailDateHeader";
 import RecordDetailBody from "./recordDetailContent/RecordDetailBody";
@@ -13,7 +14,7 @@ import RecordActions from "./recordDetailContent/RecordActions";
 import RecordComments from "../../record-comments/RecordComments";
 import RecordDetailSkeleton from "./RecordDetailSkeleton";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
-import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
+import { PageFallback } from "@/components/ui/feedback";
 
 export default function RecordDetailScreen(): JSX.Element | null {
   const router = useRouter();
@@ -23,31 +24,20 @@ export default function RecordDetailScreen(): JSX.Element | null {
       ? router.query.recordId
       : undefined;
 
-  const [me] = useRecoilState(loggedInUserState);
+  const me = useRecoilValue(loggedInUserState);
   const isLoggedIn = !!me;
+
   const { record, loading, error } = useFetchRecord(recordId);
-  const { onAddFollow } = useAddFollow();
-  const { isConnected: isFollowing, refetch: refetchIsFollowing } =
-    useIsConnected(record?.user?.id);
-
-  const isWriter = !!(
-    isLoggedIn &&
-    record &&
-    (me.id === record.user?.id || me.name === record.user?.name)
-  );
-
-  const handleFollow = async () => {
-    if (!record?.user?.id) return;
-    try {
-      await onAddFollow(record.user.id);
-      void refetchIsFollowing();
-    } catch (e) {
-      console.error("[follow] error:", e);
-    }
-  };
 
   if (!router.isReady) return null;
-  if (!recordId) return null;
+  if (!recordId)
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="잘못된 접근이에요"
+      />
+    );
   if (loading)
     return (
       <div className="min-h-screen bg-background">
@@ -63,10 +53,28 @@ export default function RecordDetailScreen(): JSX.Element | null {
     );
   if (error) {
     console.error(error);
-    return <div>에러!</div>;
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="기록을 불러오지 못했어요"
+      />
+    );
   }
-  if (!record) return <div>데이터가 없어요</div>;
+  if (!record || !record.user)
+    return (
+      <PageFallback
+        label="Record"
+        fallbackHref="/feelog"
+        message="기록을 찾을 수 없어요"
+      />
+    );
 
+  const isWriter = !!(
+    isLoggedIn &&
+    record &&
+    (me.id === record.user.id || me.name === record.user.name)
+  );
   const images = (record.images ?? []).filter((v): v is string => !!v);
   const hasImages = images.length > 0;
 
@@ -89,9 +97,7 @@ export default function RecordDetailScreen(): JSX.Element | null {
           </article>
           <aside className="border-t-[1.5px] lg:border-[1.5px]">
             <RecordProfile
-              record={record}
-              isFollowing={isFollowing}
-              onFollow={handleFollow}
+              record={record as typeof record & { user: User }}
               className="border-b-[1.5px] bg-white"
             />
             <RecordActions record={record} />

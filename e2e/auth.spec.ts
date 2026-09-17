@@ -38,14 +38,14 @@ test.describe("인증 (E2E)", () => {
     await page.reload();
 
     // 데스크탑 SideNav에 로그아웃 버튼이 보이면 로그인 상태 유지됨
-    await expect(page.getByRole("button", { name: "로그아웃" })).toBeVisible();
+    await expect(page.getByTestId("logout-button")).toBeVisible();
   });
 
   test("로그아웃 후 쿠키가 삭제됨", async ({ page, context }) => {
     await login(page);
 
     // SideNav 로그아웃 버튼 클릭 → 확인 모달의 "로그아웃" 버튼 클릭
-    await page.getByRole("button", { name: "로그아웃" }).click();
+    await page.getByTestId("logout-button").click();
     await page
       .getByRole("dialog")
       .getByRole("button", { name: "로그아웃" })

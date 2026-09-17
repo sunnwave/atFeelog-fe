@@ -3,12 +3,14 @@ import { Search, X } from "lucide-react";
 type Props = {
   value: string;
   onChange: (v: string) => void;
+  onReset?: () => void;
   placeholder?: string;
 };
 
 export default function SearchInput({
   value,
   onChange,
+  onReset,
   placeholder = "공연, 아티스트 검색",
 }: Props) {
   return (
@@ -27,7 +29,7 @@ export default function SearchInput({
       {value && (
         <button
           type="button"
-          onClick={() => onChange("")}
+          onClick={() => onReset ? onReset() : onChange("")}
           aria-label="검색어 초기화"
           className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
         >

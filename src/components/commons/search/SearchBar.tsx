@@ -7,6 +7,7 @@ type SearchBarBaseProps = {
   search: string;
   onSearchChange: (v: string) => void;
   onSubmit?: () => void;
+  onReset?: () => void;
 };
 
 type SearchBarOnlySearchProps = SearchBarBaseProps & {
@@ -27,7 +28,7 @@ const submitButtonClass =
   "h-14 bg-foreground text-xs font-black uppercase tracking-[0.12em] text-background transition-opacity hover:opacity-80 active:opacity-70";
 
 export default function SearchBar(props: SearchBarProps): JSX.Element {
-  const { variant, search, onSearchChange, onSubmit } = props;
+  const { variant, search, onSearchChange, onSubmit, onReset } = props;
 
   const [activeField, setActiveField] = useState<"from" | "to" | null>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -71,7 +72,7 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
         className="grid h-14 w-full border-[1.5px] border-foreground bg-card grid-cols-[1fr_92px]"
       >
         <div className="flex h-14 items-center gap-3 border-r border-border px-4">
-          <SearchInput value={search} onChange={onSearchChange} />
+          <SearchInput value={search} onChange={onSearchChange} onReset={onReset} />
         </div>
         <button type="submit" className={submitButtonClass}>
           Search
@@ -97,7 +98,7 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
             "border-b border-border md:border-b-0 md:border-r",
           ].join(" ")}
         >
-          <SearchInput value={search} onChange={onSearchChange} />
+          <SearchInput value={search} onChange={onSearchChange} onReset={onReset} />
         </div>
 
         <DatePickerCell

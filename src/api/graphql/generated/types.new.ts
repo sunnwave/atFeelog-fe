@@ -65,6 +65,11 @@ export type IBoardComment = {
   user?: Maybe<IUser>;
 };
 
+export enum IBoardSortType {
+  Latest = 'LATEST',
+  Popular = 'POPULAR'
+}
+
 export type ICreateBoardCommentInput = {
   content: Scalars['String']['input'];
 };
@@ -107,6 +112,12 @@ export type IFollow = {
   id: Scalars['ID']['output'];
 };
 
+export type ILikeBoardResponse = {
+  __typename?: 'LikeBoardResponse';
+  isLike: Scalars['Boolean']['output'];
+  likeCount: Scalars['Int']['output'];
+};
+
 export type IMutation = {
   __typename?: 'Mutation';
   /**  팔로우 기능 */
@@ -118,7 +129,7 @@ export type IMutation = {
   deleteBoard: Scalars['ID']['output'];
   deleteBoardComment: Scalars['ID']['output'];
   deleteBoards: Array<Scalars['ID']['output']>;
-  likeBoard: Scalars['Int']['output'];
+  likeBoard: ILikeBoardResponse;
   loginUser: IToken;
   logoutUser: Scalars['Boolean']['output'];
   resetUserPassword: Scalars['Boolean']['output'];
@@ -230,8 +241,12 @@ export type IQuery = {
   fetchFollowings?: Maybe<Array<Maybe<IUser>>>;
   /**  현재 로그인한 사용자의 관심 공연 mt20id 목록 반환 — 로그인 필수 */
   fetchSubscribedPerformances: Array<Scalars['String']['output']>;
+  fetchUser: IUser;
+  /**  User */
   fetchUserLoggedIn: IUser;
   isConnected: Scalars['Boolean']['output'];
+  /**  로그인한 유저 기준 특정 공연 찜 여부 — 비로그인 시 false 반환 (에러 아님) */
+  isPerformanceSubscribed: Scalars['Boolean']['output'];
 };
 
 
@@ -250,6 +265,7 @@ export type IQueryFetchBoardsArgs = {
   endDate?: InputMaybe<Scalars['DateTime']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<IBoardSortType>;
   startDate?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
@@ -309,7 +325,11 @@ export type IQueryFetchFollowersArgs = {
 
 
 export type IQueryFetchFollowingFeedArgs = {
+  endDate?: InputMaybe<Scalars['DateTime']['input']>;
   page?: InputMaybe<Scalars['Int']['input']>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  sort?: InputMaybe<IBoardSortType>;
+  startDate?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
 
@@ -318,8 +338,18 @@ export type IQueryFetchFollowingsArgs = {
 };
 
 
+export type IQueryFetchUserArgs = {
+  userId: Scalars['ID']['input'];
+};
+
+
 export type IQueryIsConnectedArgs = {
   followerId: Scalars['ID']['input'];
+};
+
+
+export type IQueryIsPerformanceSubscribedArgs = {
+  mt20id: Scalars['ID']['input'];
 };
 
 export type IToken = {

@@ -1,14 +1,15 @@
+import { useEffect, useState } from "react";
 import LabelBadge from "@/components/ui/badge/LabelBadge";
 import { PerformanceDetail } from "@/shared/types/performance";
 import ShowInfoList from "./ShowInfoList";
-import { Heart } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 import ShowPosterHero from "./ShowPosterHero";
 
 type ShowDetailInfoProps = {
   detail: PerformanceDetail;
   liked?: boolean;
-  onLikeToggle?: () => void;
+  onLikeToggle?: () => void | Promise<unknown>;
 };
 
 const STATUS_VARIANT: Record<string, "light" | "point" | "muted"> = {
@@ -23,6 +24,20 @@ export default function ShowDetailInfo({
   onLikeToggle,
 }: ShowDetailInfoProps) {
   const badgeVariant = STATUS_VARIANT[detail.status ?? "공연완료"];
+
+  const [optimisticLiked, setOptimisticLiked] = useState(liked ?? false);
+
+  useEffect(() => {
+    setOptimisticLiked(liked ?? false);
+  }, [liked]);
+
+  const handleLikeClick = () => {
+    const previousLiked = optimisticLiked;
+    setOptimisticLiked(!previousLiked);
+    Promise.resolve(onLikeToggle?.()).catch(() => {
+      setOptimisticLiked(previousLiked);
+    });
+  };
 
   return (
     <div className="flex gap-10 items-start">
@@ -48,19 +63,20 @@ export default function ShowDetailInfo({
           </div>
           <ShowInfoList detail={detail} className="" />
           <button
-            aria-label={liked ? "찜 취소" : "찜하기"}
-            onClick={onLikeToggle}
+            aria-label={optimisticLiked ? "찜 해제" : "찜하기"}
+            onClick={handleLikeClick}
             className={cn(
               `flex w-full items-center bg-card justify-center gap-2 text-[13px] font-semibold transition-colors duration-150 border-[1.5px] border-foreground py-2`,
-              liked ? "text-point" : "text-foreground",
+              optimisticLiked ? "text-point" : "text-foreground",
             )}
           >
-            <Heart
+            <Bookmark
               size={16}
               strokeWidth={2}
-              fill={liked ? "currentColor" : "none"}
+              fill={optimisticLiked ? "currentColor" : "none"}
             />
-            <span>{liked ? "찜한 공연" : "찜하기"}</span>
+
+            <span>{optimisticLiked ? "찜한 공연" : "찜하기"}</span>
           </button>
         </div>
       </div>

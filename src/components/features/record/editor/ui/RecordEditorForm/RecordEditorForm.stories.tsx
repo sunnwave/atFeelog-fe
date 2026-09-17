@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 
 import RecordEditorForm from "./RecordEditorForm";
@@ -8,14 +8,12 @@ import {
   type RecordEditFormValues,
 } from "../../../model";
 import type { KakaoPlace } from "@/shared/types/kakao";
-
-import {
-  installKakaoPlacesFetchMock,
-  type MockMode,
-} from "@/storybook/mocks/kakaoPlaceMock";
+import type {
+  Performance,
+  PerformanceDetail,
+} from "@/shared/types/performance";
 
 type StoryArgs = React.ComponentProps<typeof RecordEditorForm> & {
-  mockMode: MockMode;
   defaultValues?: Partial<RecordEditFormValues>;
 };
 
@@ -25,21 +23,14 @@ const meta: Meta<StoryArgs> = {
   parameters: { layout: "fullscreen" },
   argTypes: {
     formId: { control: "text" },
-
     form: { control: false },
     onPickPlace: { control: false },
     onImagesChange: { control: false },
     onSubmit: { control: false },
-
-    mockMode: {
-      control: "inline-radio",
-      options: ["success", "empty", "error", "slow"] as const,
-    },
     defaultValues: { control: false },
   },
   args: {
     formId: "record-write-form",
-    mockMode: "success",
   },
   decorators: [
     (Story) => (
@@ -68,11 +59,6 @@ function Demo(args: StoryArgs) {
     defaultValues,
   });
 
-  useEffect(() => {
-    const uninstall = installKakaoPlacesFetchMock(args.mockMode);
-    return uninstall;
-  }, [args.mockMode]);
-
   const onPickPlace = (p: KakaoPlace) => {
     form.setValue("placeName", p.place_name, { shouldDirty: true });
     form.setValue("roadAddress", p.road_address_name ?? "", {
@@ -90,6 +76,62 @@ function Demo(args: StoryArgs) {
     });
   };
 
+  const onPickPerformance = async (p: Performance) => {
+    // 1) 즉시 채울 수 있는 필드
+    form.setValue("showName", p.title, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    form.setValue("mt20id", p.mt20id, { shouldDirty: true });
+    form.setValue("genre", p.genre, { shouldDirty: true });
+    form.setValue("posterUrl", p.posterUrl, { shouldDirty: true });
+    form.setValue("placeName", p.venueName, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    form.setValue("showDate", p.startDate.replace(/\./g, "-"), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+
+    // 2) 공연장 이름으로 카카오 장소 검색 → 좌표·주소 자동 채움 (MSW 인터셉트)
+    try {
+      const kakaoRes = await fetch(
+        `/api/kakao/places?q=${encodeURIComponent(p.venueName)}&size=1`,
+      );
+      if (kakaoRes.ok) {
+        const kakaoData = await kakaoRes.json();
+        const first = kakaoData?.documents?.[0];
+        if (first) {
+          form.setValue("roadAddress", first.road_address_name ?? "", {
+            shouldDirty: true,
+          });
+          form.setValue("jibunAddress", first.address_name ?? "", {
+            shouldDirty: true,
+          });
+          form.setValue("x", first.x ?? undefined, { shouldDirty: true });
+          form.setValue("y", first.y ?? undefined, { shouldDirty: true });
+        }
+      }
+    } catch {}
+
+    // 3) 아티스트명 — kopis 상세 API (MSW 인터셉트)
+    try {
+      const res = await fetch(
+        `/api/kopis/performances/${encodeURIComponent(p.mt20id)}`,
+      );
+      if (res.ok) {
+        const detail = (await res.json()) as PerformanceDetail;
+        if (detail.cast) {
+          form.setValue("artistName", detail.cast, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }
+      }
+    } catch {}
+  };
+
   const onSubmit = form.handleSubmit(async (values) => {
     console.log(values);
   });
@@ -99,7 +141,7 @@ function Demo(args: StoryArgs) {
       formId={args.formId}
       form={form}
       onPickPlace={onPickPlace}
-      onPickPerformance={async () => {}}
+      onPickPerformance={onPickPerformance}
       onImagesChange={onImagesChange}
       onSubmit={onSubmit}
     />
@@ -112,7 +154,6 @@ export const Default: Story = {
 
 export const Prefilled: Story = {
   args: {
-    mockMode: "success",
     defaultValues: {
       showName: "서울재즈페스티벌 2026",
       artistName: "아이유",
@@ -125,10 +166,5 @@ export const Prefilled: Story = {
       contents: "<p>너무 좋았어요… 앵콜 때 소름!</p>",
     },
   },
-  render: (args) => <Demo {...args} />,
-};
-
-export const PlaceSearchEmpty: Story = {
-  args: { mockMode: "empty" },
   render: (args) => <Demo {...args} />,
 };

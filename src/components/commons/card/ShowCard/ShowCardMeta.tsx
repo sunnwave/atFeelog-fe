@@ -2,7 +2,13 @@ import { Performance } from "@/shared/types/performance";
 import LikeButton from "@/components/ui/button/LikeButton";
 import { useToggleShowLike } from "@/shared/hooks/show/useToggleShowLike";
 
-export default function ShowCardMeta({ p }: { p: Performance }) {
+export default function ShowCardMeta({
+  p,
+  isSaved = false,
+}: {
+  p: Performance;
+  isSaved?: boolean;
+}) {
   const { toggle, loading } = useToggleShowLike();
   return (
     <div
@@ -32,8 +38,8 @@ export default function ShowCardMeta({ p }: { p: Performance }) {
           </div>
         )}
         <LikeButton
-          isLiked={false}
-          onToggle={() => toggle(p.mt20id)}
+          isLiked={isSaved}
+          onToggle={() => toggle(p.mt20id).catch(() => {})}
           className="ml-4 @card-md:ml-6"
         />
       </div>
