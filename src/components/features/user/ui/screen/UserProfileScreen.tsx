@@ -4,7 +4,11 @@ import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import { IS_NEW_API } from "@/api/config";
 import type { ProfileUser, FollowTab } from "../../types";
-import { useFetchUser } from "../../hooks";
+import {
+  useFetchCountOfFollowers,
+  useFetchCountOfFollowing,
+  useFetchUser,
+} from "../../hooks";
 import ProfileHeader from "../component/profile/ProfileHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import FollowListPanel from "../component/follow/FollowListPanel";
@@ -16,9 +20,9 @@ import {
   UserSavedShowGrid,
 } from "../component/user-content-grid";
 
-type Tab = "records" | "liked" | "saved";
+type GridTab = "records" | "liked" | "saved";
 
-const TABS_ALL = [
+const GRID_TABS = [
   { id: "records" as const, label: "필로그" },
   { id: "liked" as const, label: "좋아요" },
   { id: "saved" as const, label: "찜한 공연" },
@@ -35,7 +39,7 @@ export default function UserProfileScreen() {
   const loggedInUser = useRecoilValue(loggedInUserState);
   const isMe = !!loggedInUser?.id && loggedInUser.id === userId;
 
-  const [activeTab, setActiveTab] = useState<Tab>("records");
+  const [activeTab, setActiveTab] = useState<GridTab>("records");
   const [openPanel, setOpenPanel] = useState<FollowTab | null>(null);
 
   const { user: fetchedUser, loading: userLoading } = useFetchUser(
@@ -45,13 +49,16 @@ export default function UserProfileScreen() {
     ? (loggedInUser ?? undefined)
     : fetchedUser;
 
+  const { count: followersCount } = useFetchCountOfFollowers(userId);
+  const { count: followingCount } = useFetchCountOfFollowing(userId);
+
   if (!userId) return null;
   if (!isMe && userLoading) {
     return <LoadingIndicator label="불러오는 중.." />;
   }
   if (!user) return null;
 
-  const tabs = isMe ? TABS_ALL : TABS_ALL.slice(0, 2);
+  const tabs = isMe ? GRID_TABS : GRID_TABS.slice(0, 2);
 
   return (
     <ResponsiveLayout contentType="wide" className="py-4 space-y-6">
@@ -61,12 +68,16 @@ export default function UserProfileScreen() {
             user={user}
             userId={userId}
             isMe={isMe}
+            followersCount={followersCount}
+            followingsCount={followingCount}
             onStatClick={IS_NEW_API ? setOpenPanel : undefined}
           />
         </div>
         {IS_NEW_API && (
           <FollowListPanel
             userId={userId}
+            followersCount={followersCount}
+            followingsCount={followingCount}
             openPanel={openPanel}
             onPanelChange={setOpenPanel}
             onClose={() => setOpenPanel(null)}

@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button/Button";
 import { useRouter } from "next/router";
 import FollowButton from "@/components/ui/button/FollowButton";
-import { ProfileActionsProps } from "../../../types";
 import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
+
+type ProfileActionsProps = {
+  isMe: boolean;
+  userId: string;
+};
 
 export default function ProfileActions({ isMe, userId }: ProfileActionsProps) {
   const router = useRouter();

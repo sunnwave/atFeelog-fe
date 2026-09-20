@@ -1,9 +1,19 @@
-import { cn } from "@/shared/utils/cn";
 import UserRow from "./UserRow";
-import type { FollowListPanelProps } from "../../../types";
+import type { FollowTab } from "../../../types";
 import { useFetchFollowers, useFetchFollowing } from "../../../hooks";
 import { EmptyState, LoadingIndicator } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
+import Tabs from "@/components/ui/tabs/Tabs";
+
+interface FollowListPanelProps {
+  userId: string;
+  openPanel: FollowTab | null;
+  onPanelChange: (tab: FollowTab) => void;
+  onClose: () => void;
+  followersCount?: number;
+  followingsCount?: number;
+  loggedInUserId?: string;
+}
 
 export default function FollowListPanel({
   openPanel,
@@ -11,33 +21,38 @@ export default function FollowListPanel({
   onClose,
   loggedInUserId,
   userId,
+  followersCount,
+  followingsCount,
 }: FollowListPanelProps) {
-  const { users: followings, loading: loadingFollowings } =
-    useFetchFollowing(userId);
-  const { users: followers, loading: loadingFollowers } =
-    useFetchFollowers(userId);
+  const { users: followings, loading: loadingFollowings } = useFetchFollowing(
+    userId,
+    openPanel !== "followings",
+  );
+  const { users: followers, loading: loadingFollowers } = useFetchFollowers(
+    userId,
+    openPanel !== "followers",
+  );
 
-  const users = openPanel === "팔로워" ? followers : followings;
-  const loading = openPanel === "팔로워" ? loadingFollowers : loadingFollowings;
+  const users = openPanel === "followers" ? followers : followings;
+  const loading =
+    openPanel === "followers" ? loadingFollowers : loadingFollowings;
+
+  const TABS = [
+    {
+      id: "followers" as const,
+      label: `팔로워 ${followersCount}`,
+    },
+    { id: "followings" as const, label: `팔로잉 ${followingsCount}` },
+  ];
 
   const tabHeader = (
     <div className="flex border-b-[1.5px] border-foreground shrink-0">
-      {(["팔로워", "팔로잉"] as const).map((tab, i) => (
-        <button
-          key={tab}
-          type="button"
-          onClick={() => onPanelChange(tab)}
-          className={cn(
-            "flex-1 py-3 text-[11px] font-black tracking-[0.16em] uppercase transition-colors",
-            i === 0 && "border-r-[1.5px] border-foreground",
-            openPanel === tab
-              ? "bg-foreground text-white"
-              : "bg-transparent text-muted-foreground hover:text-foreground",
-          )}
-        >
-          {tab} {tab === "팔로워" ? followers.length : followings.length}
-        </button>
-      ))}
+      <Tabs
+        tabs={TABS}
+        activeTab={openPanel ?? "followers"}
+        onChange={onPanelChange}
+        className="flex-1 border-y-0"
+      />
       <button
         type="button"
         onClick={onClose}
@@ -50,11 +65,11 @@ export default function FollowListPanel({
   );
 
   const listContent = (
-    <div className="overflow-y-auto flex-1">
+    <div className="overflow-y-auto flex-1 min-h-0">
       {loading ? (
-        <LoadingIndicator label="불러오는 중.." />
+        <LoadingIndicator label="불러오는 중.." className="p-5" />
       ) : users.length === 0 ? (
-        openPanel === "팔로워" ? (
+        openPanel === "followers" ? (
           <EmptyState {...EMPTY_MESSAGES.user.follower} />
         ) : (
           <EmptyState {...EMPTY_MESSAGES.user.following} />

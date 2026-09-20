@@ -1,7 +1,12 @@
 import Avatar from "@/components/ui/avatar/Avatar";
-import type { UserRowProps } from "../../../types";
+import type { User } from "@/api/adapters/types/user";
 import FollowButton from "@/components/ui/button/FollowButton";
 import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
+
+interface UserRowProps {
+  user: User;
+  isMe: boolean;
+}
 
 export default function UserRow({ user, isMe }: UserRowProps) {
   const { isConnected } = useIsConnected(user.id);
