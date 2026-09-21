@@ -1,2 +1,2 @@
-export { useAddFollow } from "./useAddFollow";
+export { useToggleFollow } from "./useToggleFollow";
 export { useIsConnected } from "./useIsConnected";

@@ -6,7 +6,7 @@ import { RecordSummary } from "@/api/adapters/types/record-summary";
 import { User } from "@/api/adapters/types/user";
 import FollowButton from "@/components/ui/button/FollowButton";
 import { useIsConnected } from "@/shared/hooks/user/useIsConnected";
-import { useAddFollow } from "@/shared/hooks/user";
+import { useToggleFollow } from "@/shared/hooks/user";
 
 type RecordWithUser = (RecordDetail | RecordSummary) & { user: User };
 
@@ -18,7 +18,7 @@ export default function RecordProfile({
   className?: string;
 }): JSX.Element {
   const { isConnected } = useIsConnected(record.user.id);
-  const { onAddFollow } = useAddFollow();
+  const { onToggleFollow } = useToggleFollow();
 
   return (
     <div
@@ -41,7 +41,7 @@ export default function RecordProfile({
       </div>
       <FollowButton
         isFollowing={isConnected}
-        onFollow={() => onAddFollow(record.user.id)}
+        onFollow={() => onToggleFollow(record.user.id)}
       />
     </div>
   );
