@@ -11,7 +11,9 @@ type UserLikedRecordProps = {
 export default function UserLikedRecordGrid({ userId }: UserLikedRecordProps) {
   const { records, error, loading, refetch } = useFetchBoardsLikeByUser(userId);
 
-  if (loading) {
+  const isEmpty = records.length === 0;
+
+  if (loading && isEmpty) {
     return (
       <CardGridSkeleton
         showMeta={false}
@@ -29,7 +31,7 @@ export default function UserLikedRecordGrid({ userId }: UserLikedRecordProps) {
         </Button>
       </EmptyState>
     );
-  if (!loading && records.length === 0)
+  if (!loading && isEmpty)
     return <EmptyState {...EMPTY_MESSAGES.user.likedGrid} />;
 
   return (

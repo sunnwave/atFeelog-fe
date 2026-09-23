@@ -1,56 +1,64 @@
-import { JSX, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import { IS_NEW_API } from "@/api/config";
-import type { ProfileUser, UserProfilePageProps, FollowTab } from "../../types";
+import type { ProfileUser, FollowTab } from "../../types";
+import {
+  useFetchCountOfFollowers,
+  useFetchCountOfFollowing,
+  useFetchUser,
+} from "../../hooks";
 import ProfileHeader from "../component/profile/ProfileHeader";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
 import FollowListPanel from "../component/follow/FollowListPanel";
 import Tabs from "@/components/ui/tabs/Tabs";
+import { LoadingIndicator } from "@/components/ui/feedback";
 import {
   UserRecordGrid,
   UserLikedRecordGrid,
   UserSavedShowGrid,
 } from "../component/user-content-grid";
 
-type Tab = "records" | "liked" | "saved";
+type GridTab = "records" | "liked" | "saved";
 
-const TABS_ALL = [
+const GRID_TABS = [
   { id: "records" as const, label: "필로그" },
   { id: "liked" as const, label: "좋아요" },
   { id: "saved" as const, label: "찜한 공연" },
 ];
 
-export default function UserProfileScreen({
-  userId,
-}: UserProfilePageProps): JSX.Element {
+export default function UserProfileScreen() {
   const router = useRouter();
+
+  const userId =
+    router.isReady && typeof router.query.userId === "string"
+      ? router.query.userId
+      : undefined;
+
   const loggedInUser = useRecoilValue(loggedInUserState);
   const isMe = !!loggedInUser?.id && loggedInUser.id === userId;
 
-  const [activeTab, setActivTab] = useState<Tab>("records");
-  const tabs = isMe ? TABS_ALL : TABS_ALL.slice(0, 2);
-
+  const [activeTab, setActiveTab] = useState<GridTab>("records");
   const [openPanel, setOpenPanel] = useState<FollowTab | null>(null);
 
-  const nameFromQuery =
-    typeof router.query.name === "string"
-      ? decodeURIComponent(router.query.name)
-      : undefined;
-  const pictureFromQuery =
-    typeof router.query.picture === "string"
-      ? decodeURIComponent(router.query.picture)
-      : undefined;
+  const { user: fetchedUser, loading: userLoading } = useFetchUser(
+    isMe ? undefined : userId,
+  );
+  const user: ProfileUser | undefined = isMe
+    ? (loggedInUser ?? undefined)
+    : fetchedUser;
 
-  // TODO: fetchUserById를 사용하여 userId에 해당하는 유저 정보를 가져오도록 수정 필요
-  const user: ProfileUser = {
-    id: isMe ? (loggedInUser?.id ?? userId) : userId,
-    name: isMe
-      ? (loggedInUser?.name ?? nameFromQuery ?? userId)
-      : (nameFromQuery ?? userId),
-    picture: isMe ? loggedInUser?.picture : pictureFromQuery,
-  };
+  const { count: followersCount } = useFetchCountOfFollowers(userId);
+  const { count: followingCount } = useFetchCountOfFollowing(userId);
+
+  if (!userId) return null;
+  if (!isMe && userLoading) {
+    return <LoadingIndicator label="불러오는 중.." />;
+  }
+  if (!user) return null;
+
+  const tabs = isMe ? GRID_TABS : GRID_TABS.slice(0, 2);
 
   return (
     <ResponsiveLayout contentType="wide" className="py-4 space-y-6">
@@ -60,12 +68,16 @@ export default function UserProfileScreen({
             user={user}
             userId={userId}
             isMe={isMe}
+            followersCount={followersCount}
+            followingsCount={followingCount}
             onStatClick={IS_NEW_API ? setOpenPanel : undefined}
           />
         </div>
         {IS_NEW_API && (
           <FollowListPanel
             userId={userId}
+            followersCount={followersCount}
+            followingsCount={followingCount}
             openPanel={openPanel}
             onPanelChange={setOpenPanel}
             onClose={() => setOpenPanel(null)}
@@ -77,7 +89,7 @@ export default function UserProfileScreen({
         <Tabs
           tabs={tabs}
           activeTab={activeTab}
-          onChange={setActivTab}
+          onChange={setActiveTab}
           className="w-full border-x-[1.5px]"
         />
         {activeTab === "records" && <UserRecordGrid userId={userId} />}

@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button/Button";
 import { useRouter } from "next/router";
 import FollowButton from "@/components/ui/button/FollowButton";
-import { ProfileActionsProps } from "../../../types";
-import { useAddFollow, useIsConnected } from "@/shared/hooks/user";
+import { useToggleFollow, useIsConnected } from "@/shared/hooks/user";
+
+type ProfileActionsProps = {
+  isMe: boolean;
+  userId: string;
+};
 
 export default function ProfileActions({ isMe, userId }: ProfileActionsProps) {
   const router = useRouter();
@@ -12,7 +16,7 @@ export default function ProfileActions({ isMe, userId }: ProfileActionsProps) {
   };
 
   const { isConnected } = useIsConnected(userId);
-  const { onAddFollow } = useAddFollow();
+  const { onToggleFollow } = useToggleFollow();
 
   if (isMe) {
     return (
@@ -33,7 +37,7 @@ export default function ProfileActions({ isMe, userId }: ProfileActionsProps) {
     <div className="flex gap-2 shrink-0">
       <FollowButton
         isFollowing={isConnected}
-        onFollow={() => onAddFollow(userId)}
+        onFollow={() => onToggleFollow(userId)}
       />
     </div>
   );
