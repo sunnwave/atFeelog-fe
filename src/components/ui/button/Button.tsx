@@ -1,85 +1,52 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot, Slottable } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { LoaderCircle } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 
-/**
- * variant — 버튼 형태
- *
- * solid   : 채워진 기본 버튼
- * outline : 테두리 버튼
- * ghost   : 배경 없는 가벼운 버튼
- * link    : 텍스트 링크형 버튼
- *
- * soft    : 은은한 카드형 버튼. 사이드바 nav, 보조 CTA
- * ticket  : 티켓/아카이브 무드 버튼. My Page, Archive CTA
- * poster  : 강한 포스터형 CTA. Hero, Write 버튼
- *
- * tone — 버튼 색상 역할
- *
- * primary     : 가장 중요한 CTA, Eerie Black
- * accent      : Vanilla, 밝은 보조 CTA
- * alice       : Alice Blue, 정보성 필터/버튼
- * honeydew    : Honeydew, 보조 필터/아카이브 계열
- * point       : Coral Point, 좋아요/강조 액션
- * neutral     : 회색 계열, 취소/보조 액션
- * destructive : 삭제/위험 액션
- */
 const buttonVariants = cva(
   [
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap",
-    "cursor-pointer select-none shrink-0",
-    "border font-medium transition-all duration-150 ease-out",
+    "inline-flex w-fit shrink-0 items-center justify-center gap-2 whitespace-nowrap",
+    "cursor-pointer select-none border font-semibold transition-all duration-150 ease-out",
+    "outline-none focus-visible:ring-2 focus-visible:ring-ring/20 focus-visible:ring-offset-2",
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50",
-    "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0",
-    "outline-none",
-    "focus-visible:ring-[3px] focus-visible:ring-ring/20 focus-visible:ring-offset-2",
-    "aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
-  ].join(" "),
+    "data-[loading=true]:pointer-events-none",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20",
+  ],
   {
     variants: {
       variant: {
         solid: "",
-        outline: "bg-transparent border-[1.5px]",
+        outline: "border-[1.5px] bg-transparent",
         ghost: "border-transparent bg-transparent",
         link: [
-          "h-auto border-transparent bg-transparent p-0",
+          "h-auto border-none bg-transparent p-0",
           "underline-offset-4 hover:underline",
-        ].join(" "),
-
-        soft: "shadow-sm",
-        ticket: [
-          "relative overflow-hidden",
-          "after:absolute after:right-8 after:top-0 after:h-full",
-          "after:border-l after:border-dashed after:border-current/25",
-        ].join(" "),
-        poster: [
-          "font-black uppercase tracking-[0.14em]",
-          "shadow-[3px_3px_0_0_var(--foreground)]",
-          "hover:translate-x-[1px] hover:translate-y-[1px]",
-          "hover:shadow-[2px_2px_0_0_var(--foreground)]",
-          "active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
-        ].join(" "),
+        ],
       },
       tone: {
         primary: "",
         accent: "",
-        alice: "",
-        honeydew: "",
-        point: "",
         neutral: "",
         destructive: "focus-visible:ring-destructive/20",
       },
       size: {
-        sm: "h-7 rounded-none px-3 text-xs has-[>svg]:px-2.5",
-        default: "h-9 rounded-none px-4 py-2 text-sm has-[>svg]:px-3",
-        md: "h-10 rounded-none px-5 text-sm has-[>svg]:px-4",
-        lg: "h-12 rounded-none px-7 text-base has-[>svg]:px-6",
-        icon: "size-9 rounded-none p-0",
+        sm: "h-[28px] px-[12px] text-[12px] leading-[16px] [&_svg]:size-[14px]",
+        md: "h-[36px] px-[16px] text-[14px] leading-[20px] [&_svg]:size-[16px]",
+        lg: "h-[44px] px-[20px] text-[16px] leading-[24px] [&_svg]:size-[20px]",
+        /** @deprecated `md`로 교체합니다. */
+        default:
+          "h-[36px] px-[16px] text-[14px] leading-[20px] [&_svg]:size-[16px]",
+        /** @deprecated IconButton 분리 전까지만 유지합니다. */
+        icon: "size-[36px] p-0 [&_svg]:size-[16px]",
+      },
+      shape: {
+        square: "rounded-none",
+        pill: "rounded-full",
       },
     },
     compoundVariants: [
-      // ── solid ────────────────────────────────────────────────────────
       {
         variant: "solid",
         tone: "primary",
@@ -90,40 +57,20 @@ const buttonVariants = cva(
         variant: "solid",
         tone: "accent",
         class:
-          "border-primary bg-accent text-foreground hover:bg-feelog-vanilla-base active:bg-feelog-vanilla-soft",
-      },
-      {
-        variant: "solid",
-        tone: "alice",
-        class:
-          "border-info-border bg-info-surface text-info-foreground hover:bg-feelog-alice-light active:bg-feelog-alice-base/70",
-      },
-      {
-        variant: "solid",
-        tone: "honeydew",
-        class:
-          "border-aux-border bg-aux-surface text-aux-foreground hover:bg-feelog-honeydew-light active:bg-feelog-honeydew-base/70",
-      },
-      {
-        variant: "solid",
-        tone: "point",
-        class:
-          "border-point bg-point text-white hover:bg-feelog-coral-base active:bg-feelog-coral-point",
+          "border-primary bg-accent text-foreground hover:bg-button-solid-accent-hover-background active:bg-button-accent-active-background",
       },
       {
         variant: "solid",
         tone: "neutral",
         class:
-          "border-muted-foreground/25 bg-muted-foreground/20 text-foreground hover:bg-muted-foreground/30 active:bg-muted-foreground/40",
+          "border-transparent bg-button-neutral-background-default text-foreground hover:bg-button-neutral-background-hover-default active:border-button-neutral-border-strong active:bg-button-neutral-background-default",
       },
       {
         variant: "solid",
         tone: "destructive",
         class:
-          "border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90 active:bg-destructive/80",
+          "border-destructive bg-destructive text-destructive-foreground hover:bg-button-destructive-background-hover-strong active:bg-button-destructive-background-active-strong",
       },
-
-      // ── outline ──────────────────────────────────────────────────────
       {
         variant: "outline",
         tone: "primary",
@@ -134,40 +81,20 @@ const buttonVariants = cva(
         variant: "outline",
         tone: "accent",
         class:
-          "border-primary text-foreground hover:bg-accent active:bg-feelog-vanilla-soft",
-      },
-      {
-        variant: "outline",
-        tone: "alice",
-        class:
-          "border-info-border text-info-foreground hover:bg-info-surface active:bg-feelog-alice-light",
-      },
-      {
-        variant: "outline",
-        tone: "honeydew",
-        class:
-          "border-aux-border text-aux-foreground hover:bg-aux-surface active:bg-feelog-honeydew-light",
-      },
-      {
-        variant: "outline",
-        tone: "point",
-        class:
-          "border-point text-point hover:bg-point hover:text-white active:bg-feelog-coral-base active:text-white",
+          "border-primary text-foreground hover:bg-accent active:bg-button-accent-active-background",
       },
       {
         variant: "outline",
         tone: "neutral",
         class:
-          "border-muted-foreground/40 text-muted-foreground hover:bg-muted-foreground/15 hover:text-foreground active:bg-muted-foreground/25",
+          "border-muted-foreground text-muted-foreground hover:bg-button-neutral-background-hover-subtle hover:text-foreground active:bg-button-neutral-background-default",
       },
       {
         variant: "outline",
         tone: "destructive",
         class:
-          "border-destructive text-destructive hover:bg-destructive/10 active:bg-destructive/15",
+          "border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground active:bg-button-destructive-background-active",
       },
-
-      // ── ghost ────────────────────────────────────────────────────────
       {
         variant: "ghost",
         tone: "primary",
@@ -176,39 +103,21 @@ const buttonVariants = cva(
       {
         variant: "ghost",
         tone: "accent",
-        class: "text-foreground hover:bg-accent active:bg-feelog-vanilla-soft",
-      },
-      {
-        variant: "ghost",
-        tone: "alice",
         class:
-          "text-info-foreground hover:bg-info-surface active:bg-feelog-alice-light",
-      },
-      {
-        variant: "ghost",
-        tone: "honeydew",
-        class:
-          "text-aux-foreground hover:bg-aux-surface active:bg-feelog-honeydew-light",
-      },
-      {
-        variant: "ghost",
-        tone: "point",
-        class: "text-point hover:bg-point-bg active:bg-feelog-coral-light/40",
+          "text-foreground hover:bg-accent active:bg-button-accent-active-background",
       },
       {
         variant: "ghost",
         tone: "neutral",
         class:
-          "text-muted-foreground hover:bg-muted-foreground/15 hover:text-foreground active:bg-muted-foreground/25",
+          "text-muted-foreground hover:bg-button-neutral-background-soft hover:text-foreground active:bg-button-neutral-background-default",
       },
       {
         variant: "ghost",
         tone: "destructive",
         class:
-          "text-destructive hover:bg-destructive/10 active:bg-destructive/15",
+          "text-destructive hover:bg-button-destructive-background-soft active:bg-button-destructive-background-active",
       },
-
-      // ── link ─────────────────────────────────────────────────────────
       {
         variant: "link",
         tone: "primary",
@@ -217,22 +126,7 @@ const buttonVariants = cva(
       {
         variant: "link",
         tone: "accent",
-        class: "text-foreground hover:text-feelog-vanilla-point",
-      },
-      {
-        variant: "link",
-        tone: "alice",
-        class: "text-info-foreground hover:text-feelog-alice-deep",
-      },
-      {
-        variant: "link",
-        tone: "honeydew",
-        class: "text-aux-foreground hover:text-feelog-honeydew-point",
-      },
-      {
-        variant: "link",
-        tone: "point",
-        class: "text-point hover:text-feelog-coral-base",
+        class: "text-foreground hover:text-button-link-accent-hover-foreground",
       },
       {
         variant: "link",
@@ -242,169 +136,74 @@ const buttonVariants = cva(
       {
         variant: "link",
         tone: "destructive",
-        class: "text-destructive hover:text-destructive/80",
-      },
-
-      // ── soft custom ──────────────────────────────────────────────────
-      {
-        variant: "soft",
-        tone: "primary",
         class:
-          "border-border bg-card text-foreground shadow-sm hover:border-primary hover:bg-surface-soft active:bg-muted",
+          "text-destructive hover:text-button-destructive-background-hover-strong",
       },
       {
-        variant: "soft",
-        tone: "accent",
-        class:
-          "border-feelog-vanilla-soft bg-feelog-vanilla-tint text-foreground hover:bg-accent active:bg-feelog-vanilla-soft",
+        variant: "outline",
+        class: "!border-[1.5px]",
       },
       {
-        variant: "soft",
-        tone: "alice",
+        variant: "link",
         class:
-          "border-info-border bg-feelog-alice-tint text-info-foreground hover:bg-info-surface active:bg-feelog-alice-light",
-      },
-      {
-        variant: "soft",
-        tone: "honeydew",
-        class:
-          "border-aux-border bg-feelog-honeydew-tint text-aux-foreground hover:bg-aux-surface active:bg-feelog-honeydew-light",
-      },
-      {
-        variant: "soft",
-        tone: "point",
-        class:
-          "border-feelog-coral-light bg-point-bg text-point hover:bg-feelog-coral-light/35 active:bg-feelog-coral-light/50",
-      },
-      {
-        variant: "soft",
-        tone: "neutral",
-        class:
-          "border-muted-foreground/25 bg-muted-foreground/10 text-muted-foreground hover:bg-muted-foreground/20 hover:text-foreground active:bg-muted-foreground/30",
-      },
-      {
-        variant: "soft",
-        tone: "destructive",
-        class:
-          "border-destructive/30 bg-destructive/10 text-destructive hover:bg-destructive/15 active:bg-destructive/20",
-      },
-
-      // ── ticket custom ────────────────────────────────────────────────
-      {
-        variant: "ticket",
-        tone: "primary",
-        class:
-          "border-primary bg-card text-foreground hover:bg-primary hover:text-primary-foreground active:bg-primary-pressed",
-      },
-      {
-        variant: "ticket",
-        tone: "accent",
-        class:
-          "border-primary bg-accent text-foreground hover:bg-feelog-vanilla-base active:bg-feelog-vanilla-soft",
-      },
-      {
-        variant: "ticket",
-        tone: "alice",
-        class:
-          "border-info-border bg-info-surface text-info-foreground hover:border-primary hover:bg-feelog-alice-light",
-      },
-      {
-        variant: "ticket",
-        tone: "honeydew",
-        class:
-          "border-aux-border bg-aux-surface text-aux-foreground hover:border-primary hover:bg-feelog-honeydew-light",
-      },
-      {
-        variant: "ticket",
-        tone: "point",
-        class:
-          "border-point bg-point-bg text-point hover:bg-point hover:text-white active:bg-feelog-coral-base",
-      },
-      {
-        variant: "ticket",
-        tone: "neutral",
-        class:
-          "border-muted-foreground/30 bg-muted-foreground/10 text-muted-foreground hover:border-primary hover:bg-muted-foreground/20 hover:text-foreground active:bg-muted-foreground/30",
-      },
-      {
-        variant: "ticket",
-        tone: "destructive",
-        class:
-          "border-destructive bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground",
-      },
-
-      // ── poster custom ────────────────────────────────────────────────
-      {
-        variant: "poster",
-        tone: "primary",
-        class:
-          "border-primary bg-primary text-primary-foreground hover:bg-primary-hover active:bg-primary-pressed",
-      },
-      {
-        variant: "poster",
-        tone: "accent",
-        class:
-          "border-primary bg-accent text-foreground hover:bg-feelog-vanilla-base active:bg-feelog-vanilla-soft",
-      },
-      {
-        variant: "poster",
-        tone: "alice",
-        class:
-          "border-primary bg-info-surface text-info-foreground hover:bg-feelog-alice-light",
-      },
-      {
-        variant: "poster",
-        tone: "honeydew",
-        class:
-          "border-primary bg-aux-surface text-aux-foreground hover:bg-feelog-honeydew-light",
-      },
-      {
-        variant: "poster",
-        tone: "point",
-        class:
-          "border-primary bg-point text-white hover:bg-feelog-coral-base active:bg-feelog-coral-point",
-      },
-      {
-        variant: "poster",
-        tone: "neutral",
-        class:
-          "border-muted-foreground/30 bg-muted-foreground/20 text-foreground hover:bg-muted-foreground/30 active:bg-muted-foreground/40",
-      },
-      {
-        variant: "poster",
-        tone: "destructive",
-        class:
-          "border-primary bg-destructive text-destructive-foreground hover:bg-destructive/90",
+          "h-auto border-none bg-transparent p-0 underline-offset-4 hover:underline",
       },
     ],
     defaultVariants: {
       variant: "solid",
       tone: "primary",
-      size: "default",
+      size: "md",
+      shape: "square",
     },
   },
 );
 
+type ButtonProps = React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+    leadingIcon?: React.ReactNode;
+    trailingIcon?: React.ReactNode;
+    loading?: boolean;
+    loadingLabel?: string;
+  };
+
 function Button({
+  children,
   className,
   variant,
   tone,
   size,
+  shape,
   asChild = false,
+  leadingIcon,
+  trailingIcon,
+  loading = false,
+  loadingLabel = "처리 중",
+  disabled,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : "button";
+  const isDisabled = disabled || loading;
 
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, tone, size, className }))}
+      data-loading={loading || undefined}
+      aria-busy={loading || undefined}
+      aria-disabled={asChild && isDisabled ? true : undefined}
+      disabled={asChild ? undefined : isDisabled}
+      className={cn(buttonVariants({ variant, tone, size, shape }), className)}
       {...props}
-    />
+    >
+      {loading ? (
+        <LoaderCircle aria-hidden="true" className="animate-spin" />
+      ) : (
+        leadingIcon
+      )}
+      <Slottable>{loading ? loadingLabel : children}</Slottable>
+      {!loading && trailingIcon}
+    </Comp>
   );
 }
 
-export { Button, buttonVariants };
+export { Button, buttonVariants, type ButtonProps };
