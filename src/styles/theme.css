@@ -123,6 +123,26 @@
   --sidebar-border:             var(--feelog-neutral-border);
   --sidebar-ring:               var(--feelog-neutral-text);
 
+  /* Button states */
+  --button-neutral-background-soft:         color-mix(in srgb, var(--muted-foreground) 10%, transparent);
+  --button-neutral-background-default:      color-mix(in srgb, var(--muted-foreground) 20%, transparent);
+  --button-neutral-background-hover-subtle: color-mix(in srgb, var(--muted-foreground) 15%, transparent);
+  --button-neutral-background-hover-default: color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  --button-neutral-border-subtle:            color-mix(in srgb, var(--muted-foreground) 25%, transparent);
+  --button-neutral-border-default:           color-mix(in srgb, var(--muted-foreground) 30%, transparent);
+  --button-neutral-border-strong:            color-mix(in srgb, var(--muted-foreground) 40%, transparent);
+
+  --button-destructive-background-soft:          color-mix(in srgb, var(--destructive) 10%, transparent);
+  --button-destructive-background-hover:         color-mix(in srgb, var(--destructive) 15%, transparent);
+  --button-destructive-background-active:        color-mix(in srgb, var(--destructive) 20%, transparent);
+  --button-destructive-border-subtle:             color-mix(in srgb, var(--destructive) 30%, transparent);
+  --button-destructive-background-hover-strong:  color-mix(in srgb, var(--destructive) 80%, transparent);
+  --button-destructive-background-active-strong: color-mix(in srgb, var(--destructive) 80%, transparent);
+
+  --button-link-accent-hover-foreground:  var(--feelog-vanilla-point);
+  --button-solid-accent-hover-background: var(--feelog-vanilla-base);
+  --button-accent-active-background:      var(--feelog-vanilla-soft);
+
   /* ══════════════════════════════════════════════════════════════════════
      Typography
      ══════════════════════════════════════════════════════════════════════ */
@@ -205,6 +225,22 @@
   --color-sidebar-accent-foreground:  var(--sidebar-accent-foreground);
   --color-sidebar-border:             var(--sidebar-border);
   --color-sidebar-ring:               var(--sidebar-ring);
+  --color-button-neutral-background-soft:         var(--button-neutral-background-soft);
+  --color-button-neutral-background-default:      var(--button-neutral-background-default);
+  --color-button-neutral-background-hover-subtle: var(--button-neutral-background-hover-subtle);
+  --color-button-neutral-background-hover-default: var(--button-neutral-background-hover-default);
+  --color-button-neutral-border-subtle:            var(--button-neutral-border-subtle);
+  --color-button-neutral-border-default:           var(--button-neutral-border-default);
+  --color-button-neutral-border-strong:            var(--button-neutral-border-strong);
+  --color-button-destructive-background-soft:          var(--button-destructive-background-soft);
+  --color-button-destructive-background-hover:         var(--button-destructive-background-hover);
+  --color-button-destructive-background-active:        var(--button-destructive-background-active);
+  --color-button-destructive-border-subtle:             var(--button-destructive-border-subtle);
+  --color-button-destructive-background-hover-strong:  var(--button-destructive-background-hover-strong);
+  --color-button-destructive-background-active-strong: var(--button-destructive-background-active-strong);
+  --color-button-link-accent-hover-foreground:  var(--button-link-accent-hover-foreground);
+  --color-button-solid-accent-hover-background: var(--button-solid-accent-hover-background);
+  --color-button-accent-active-background:      var(--button-accent-active-background);
 
   /* ── Brand palette → Tailwind (bg-feelog-* / text-feelog-*) ─────── */
   /* Neutral */
@@ -272,6 +308,33 @@
 
   /* ── Border radius ───────────────────────────────────────────────── */
   /* Tailwind 기본값 사용 (sm:2px md:6px lg:8px xl:12px 2xl:16px) */
+}
+
+/*
+ * Semantic label styles
+ *
+ * 컴포넌트 적용은 각 컴포넌트 리팩토링 단계에서 진행합니다.
+ * 영문 브랜드·분류 라벨이 아닌 한 uppercase는 호출부에서 결정합니다.
+ */
+@utility label-default {
+  font-size: 0.875rem; /* 14px */
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3125rem; /* 21px */
+  letter-spacing: 0;
+}
+
+@utility label-strong {
+  font-size: 0.75rem; /* 12px */
+  font-weight: var(--font-weight-black);
+  line-height: 1rem; /* 16px */
+  letter-spacing: 0.12em;
+}
+
+@utility label-compact {
+  font-size: 0.625rem; /* 10px */
+  font-weight: var(--font-weight-black);
+  line-height: 0.875rem; /* 14px */
+  letter-spacing: 0.1em;
 }
 
 @layer base {
