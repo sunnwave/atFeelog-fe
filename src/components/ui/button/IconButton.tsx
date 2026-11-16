@@ -23,6 +23,7 @@ const iconButtonVariants = cva(
         accent: "",
       },
       size: {
+        xs: "size-5 [&_svg]:size-3",
         sm: "size-7 [&_svg]:size-4",
         md: "size-9 [&_svg]:size-5",
         lg: "size-11 [&_svg]:size-6",
