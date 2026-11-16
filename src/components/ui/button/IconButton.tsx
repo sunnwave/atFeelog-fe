@@ -23,10 +23,10 @@ const iconButtonVariants = cva(
         accent: "",
       },
       size: {
-        xs: "size-5 [&_svg]:size-3",
-        sm: "size-7 [&_svg]:size-4",
-        md: "size-9 [&_svg]:size-5",
-        lg: "size-11 [&_svg]:size-6",
+        xs: "size-5 [&_svg]:size-4",
+        sm: "size-6 [&_svg]:size-5",
+        md: "size-7 [&_svg]:size-6",
+        lg: "size-8 [&_svg]:size-7",
       },
       shape: {
         square: "rounded-none",
@@ -37,13 +37,14 @@ const iconButtonVariants = cva(
       {
         variant: "ghost",
         tone: "primary",
-        class: "text-foreground hover:bg-muted active:bg-surface-soft",
+        class:
+          "text-foreground hover:bg-button-neutral-background-soft active:bg-surface-soft",
       },
       {
         variant: "ghost",
         tone: "neutral",
         class:
-          "text-muted-foreground hover:bg-button-neutral-background-soft hover:text-foreground active:bg-button-neutral-background-default",
+          "text-muted-foreground  hover:text-foreground active:bg-button-neutral-background-default",
       },
       {
         variant: "ghost",
