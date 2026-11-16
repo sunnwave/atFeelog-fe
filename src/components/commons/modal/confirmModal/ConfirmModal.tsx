@@ -7,6 +7,7 @@ import IconBadge from "@/components/ui/badge/IconBadge";
 import { cn } from "@/shared/utils/cn";
 import { Button } from "@/components/ui/button/Button";
 import { ModalProps } from "./ConfirmModalTypes";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 export function ConfirmModal({
   open,
@@ -53,7 +54,7 @@ export function ConfirmModal({
         >
           {/* Header */}
           {(title || description || icon) && (
-            <div className="flex items-start gap-3 px-6 pt-6 pb-4">
+            <div className="flex items-start gap-3 px-5 pt-5 pb-4">
               {icon && variant && <IconBadge icon={icon} variant={variant} />}
               <div className="min-w-0 flex-1">
                 {title ? (
@@ -69,15 +70,15 @@ export function ConfirmModal({
               </div>
 
               <Dialog.Close asChild>
-                <Button variant="ghost" size="icon" aria-label="닫기">
+                <IconButton variant="ghost" aria-label="닫기">
                   <X className="w-5 h-5" />
-                </Button>
+                </IconButton>
               </Dialog.Close>
             </div>
           )}
 
           <div className="px-5 py-4">
-            <div className="mt-2 flex gap-2">
+            <div className=" flex gap-2">
               <Button
                 variant="outline"
                 className="flex-1"

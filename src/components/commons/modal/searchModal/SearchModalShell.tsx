@@ -5,6 +5,7 @@ import { Search, X } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/shared/utils";
 import { Button } from "@/components/ui/button/Button";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 interface SearchModalShellProps {
   open: boolean;
@@ -72,14 +73,9 @@ export default function SearchModalShell({
                 </Dialog.Title>
               </div>
               <Dialog.Close asChild>
-                <Button
-                  variant="ghost"
-                  type="button"
-                  size="icon"
-                  aria-label="닫기"
-                >
-                  <X className="w-5 h-5" />
-                </Button>
+                <IconButton aria-label="닫기" variant="ghost" type="button">
+                  <X />
+                </IconButton>
               </Dialog.Close>
             </div>
 
