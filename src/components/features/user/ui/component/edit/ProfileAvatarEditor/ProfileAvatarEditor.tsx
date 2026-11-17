@@ -3,6 +3,7 @@ import { Camera } from "lucide-react";
 import Avatar from "@/components/ui/avatar/Avatar";
 import { User } from "@/api/adapters/types/user";
 import { Button } from "@/components/ui/button/Button";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 interface ProfileAvatarEditorProps {
   user: User | null;
@@ -21,15 +22,19 @@ export default function ProfileAvatarEditor({
     <div className="px-8 py-10 border-b border-foreground/15 flex items-center gap-7">
       <div className="relative">
         <Avatar user={user} size="lg" />
-        <button
-          type="button"
+
+        <IconButton
+          aria-label="프로필 사진 변경"
+          size="sm"
+          variant="solid"
+          tone="primary"
+          shape="pill"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-foreground border-2 border-background flex items-center justify-center text-background hover:bg-foreground/90 transition-colors disabled:opacity-50"
-          aria-label="프로필 사진 변경"
+          className="absolute bottom-0 right-0"
         >
-          <Camera className="w-3.5 h-3.5" />
-        </button>
+          <Camera />
+        </IconButton>
         <input
           ref={fileInputRef}
           type="file"
@@ -42,11 +47,10 @@ export default function ProfileAvatarEditor({
         <p className="text-md font-medium text-foreground">{user?.name}</p>
         <p className="text-xs text-muted-foreground">{user?.email}</p>
         <Button
-          type="button"
           variant="outline"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
-          className="text-xs font-semibold text-primary mt-2"
+          size="sm"
         >
           사진 변경
         </Button>

@@ -10,6 +10,7 @@ import { boxOfficeToPerformance } from "@/api/adapters/kopis.adapter";
 import { EmptyState, SectionSkeleton } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 import { useFetchSubscribedShowIds } from "@/shared/hooks/show/useFetchSubscribedShowIds";
+import { Button } from "@/components/ui/button/Button";
 
 export default function BoxOfficeSection(): JSX.Element {
   const [catecode, setCatecode] = useState<BoxOfficeGenreCatecode>("");
@@ -37,17 +38,13 @@ export default function BoxOfficeSection(): JSX.Element {
         {BOXOFFICE_GENRES.map((genre) => {
           const active = catecode === genre.catecode;
           return (
-            <button
+            <Button
               key={genre.catecode}
               onClick={() => setCatecode(genre.catecode)}
-              className={`shrink-0 text-xs font-bold px-3 py-1.5 border-[1.5px] transition-colors duration-150 ${
-                active
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background text-foreground border-foreground hover:bg-foreground/10"
-              }`}
+              variant={active ? "solid" : "outline"}
             >
               {genre.label}
-            </button>
+            </Button>
           );
         })}
       </div>

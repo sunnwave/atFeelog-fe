@@ -8,6 +8,7 @@ import { ToastItem } from "./types";
 import useSwipeToDismiss from "./useToastSwipeToDismiss";
 import { X } from "lucide-react";
 import { cn } from "@/shared/utils";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 export default function ToastCard({
   toast,
@@ -24,7 +25,7 @@ export default function ToastCard({
         variant={toast.variant}
         className={cn(
           "shadow-2xl border bg-card/95 backdrop-blur-md",
-          "border-border/90"
+          "border-border/90",
         )}
         withBar
         onPointerDown={swipe.onPointerDown}
@@ -44,14 +45,9 @@ export default function ToastCard({
             ) : null}
           </div>
 
-          <button
-            type="button"
-            onClick={onDismiss}
-            className="shrink-0 rounded-lg p-1 text-muted-foreground hover:bg-muted"
-            aria-label="닫기"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <IconButton aria-label="닫기" onClick={onDismiss} size="xs">
+            <X />
+          </IconButton>
         </div>
       </Alert>
     </div>

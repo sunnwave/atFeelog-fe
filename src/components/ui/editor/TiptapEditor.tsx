@@ -11,8 +11,10 @@ import {
   Minus,
   Undo,
   Redo,
+  Icon,
 } from "lucide-react";
 import { useEffect } from "react";
+import { IconButton } from "../button/IconButton";
 
 interface TiptapEditorProps {
   content: string;
@@ -91,123 +93,93 @@ export function TiptapEditor({
         {/* Toolbar */}
         <div className="flex items-center gap-1 px-3 py-2 border-b border-border bg-muted/30">
           {/* Text Formatting */}
-          <button
-            type="button"
+          <IconButton
+            aria-label="굵게"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`
-              p-2 rounded-lg transition-colors
-              ${
-                editor.isActive("bold")
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-              }
-            `}
+            variant={editor.isActive("bold") ? "solid" : "ghost"}
+            tone="primary"
+            shape="pill"
             title="굵게 (Ctrl+B)"
           >
-            <Bold className="w-4 h-4" />
-          </button>
+            <Bold />
+          </IconButton>
 
-          <button
-            type="button"
+          <IconButton
+            aria-label="기울임"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`
-              p-2 rounded-lg transition-colors
-              ${
-                editor.isActive("italic")
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-              }
-            `}
+            variant={editor.isActive("italic") ? "solid" : "ghost"}
+            tone="primary"
+            shape="pill"
             title="기울임 (Ctrl+I)"
           >
-            <Italic className="w-4 h-4" />
-          </button>
+            <Italic />
+          </IconButton>
 
           <div className="w-px h-6 bg-border mx-1" />
 
           {/* Lists */}
-          <button
-            type="button"
+          <IconButton
+            aria-label="글머리"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`
-              p-2 rounded-lg transition-colors
-              ${
-                editor.isActive("bulletList")
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-              }
-            `}
+            variant={editor.isActive("bulletList") ? "solid" : "ghost"}
+            tone="primary"
+            shape="pill"
             title="글머리 기호"
           >
-            <List className="w-4 h-4" />
-          </button>
+            <List />
+          </IconButton>
 
-          <button
-            type="button"
+          <IconButton
+            aria-label="번호 매기기"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`
-              p-2 rounded-lg transition-colors
-              ${
-                editor.isActive("orderedList")
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-              }
-            `}
+            variant={editor.isActive("orderedList") ? "solid" : "ghost"}
+            tone="primary"
+            shape="pill"
             title="번호 매기기"
           >
-            <ListOrdered className="w-4 h-4" />
-          </button>
+            <ListOrdered />
+          </IconButton>
 
           <div className="w-px h-6 bg-border mx-1" />
 
           {/* Blockquote & Divider */}
-          <button
-            type="button"
+          <IconButton
+            aria-label="인용구"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`
-              p-2 rounded-lg transition-colors
-              ${
-                editor.isActive("blockquote")
-                  ? "bg-primary text-primary-foreground"
-                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
-              }
-            `}
+            variant={editor.isActive("blockquote") ? "solid" : "ghost"}
+            tone="primary"
+            shape="pill"
             title="인용구"
           >
-            <Quote className="w-4 h-4" />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setHorizontalRule().run()}
-            className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-            title="구분선"
-          >
-            <Minus className="w-4 h-4" />
-          </button>
+            <Quote />
+          </IconButton>
 
           <div className="w-px h-6 bg-border mx-1" />
 
           {/* Undo & Redo */}
-          <button
-            type="button"
+          <IconButton
+            aria-label="실행 취소"
             onClick={() => editor.chain().focus().undo().run()}
             disabled={!editor.can().undo()}
-            className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            variant="ghost"
+            tone="primary"
+            shape="pill"
             title="실행 취소 (Ctrl+Z)"
           >
-            <Undo className="w-4 h-4" />
-          </button>
+            <Undo />
+          </IconButton>
 
-          <button
-            type="button"
+          <IconButton
+            aria-label="다시 실행"
             onClick={() => editor.chain().focus().redo().run()}
             disabled={!editor.can().redo()}
-            className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+            variant="ghost"
+            tone="primary"
+            shape="pill"
             title="다시 실행 (Ctrl+Y)"
           >
-            <Redo className="w-4 h-4" />
-          </button>
+            <Redo />
+          </IconButton>
         </div>
 
         {/* Editor Content */}

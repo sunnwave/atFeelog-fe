@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
+import { IconButton } from "@/components/ui/button/IconButton";
 import { Menu } from "lucide-react";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
@@ -16,13 +17,13 @@ export default function WriterMenu({
 
   return (
     <div className="relative">
-      <Button variant="ghost" onClick={() => setShowMenu(!showMenu)}>
-        {icon === "m" ? (
-          <Menu className="w-4 h-4 text-muted-foreground" />
-        ) : (
-          <MoreVertical className="w-4 h-4 text-muted-foreground" />
-        )}
-      </Button>
+      <IconButton
+        aria-label="메뉴 아이콘"
+        onClick={() => setShowMenu(!showMenu)}
+        size="xs"
+      >
+        {icon === "m" ? <Menu /> : <MoreVertical />}
+      </IconButton>
 
       {showMenu && (
         <>

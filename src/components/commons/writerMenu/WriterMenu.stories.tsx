@@ -18,5 +18,7 @@ export default meta;
 type Story = StoryObj<typeof WriterMenu>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    icon: "m"
+  },
 };
