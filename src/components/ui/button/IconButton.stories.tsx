@@ -204,21 +204,26 @@ export const FigmaMatrix: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div className="flex items-center gap-4 bg-background p-8">
-      {shapes.flatMap((shape) =>
-        sizes.map((size) => (
-          <IconButton
-            key={`${shape}-${size}`}
-            aria-label={`${shape} ${size}`}
-            shape={shape}
-            size={size}
-            variant="ghost"
-            tone="neutral"
-          >
-            <Plus />
-          </IconButton>
-        )),
-      )}
+    <div className="grid grid-cols-2 gap-8 bg-background p-8">
+      {shapes.map((shape) => (
+        <div key={shape} className="flex flex-col gap-3">
+          <span className="text-xs text-muted-foreground uppercase font-bold">{shape}</span>
+          <div className="flex items-center gap-3">
+            {sizes.map((size) => (
+              <IconButton
+                key={`${shape}-${size}`}
+                aria-label={`${shape} ${size}`}
+                shape={shape}
+                size={size}
+                variant="solid"
+                tone="primary"
+              >
+                <Plus />
+              </IconButton>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   ),
 };
