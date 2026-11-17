@@ -22,7 +22,7 @@ const buttonVariants = cva(
         ghost: "border-transparent bg-transparent",
         link: [
           "h-auto border-none bg-transparent p-0",
-          "underline-offset-4 hover:underline",
+          "underline-offset-4 underline",
         ],
       },
       tone: {
@@ -35,11 +35,6 @@ const buttonVariants = cva(
         sm: "h-[28px] px-[12px] text-[12px] leading-[16px] [&_svg]:size-[14px]",
         md: "h-[36px] px-[16px] text-[14px] leading-[20px] [&_svg]:size-[16px]",
         lg: "h-[44px] px-[20px] text-[16px] leading-[24px] [&_svg]:size-[20px]",
-        /** @deprecated `md`로 교체합니다. */
-        default:
-          "h-[36px] px-[16px] text-[14px] leading-[20px] [&_svg]:size-[16px]",
-        /** @deprecated IconButton 분리 전까지만 유지합니다. */
-        icon: "size-[36px] p-0 [&_svg]:size-[16px]",
       },
       shape: {
         square: "rounded-none",
@@ -75,7 +70,7 @@ const buttonVariants = cva(
         variant: "outline",
         tone: "primary",
         class:
-          "border-primary text-primary hover:bg-primary hover:text-primary-foreground active:bg-primary-pressed active:text-primary-foreground",
+          "border-primary text-primary hover:bg-muted  active:bg-primary-pressed active:text-primary-foreground",
       },
       {
         variant: "outline",
@@ -93,7 +88,7 @@ const buttonVariants = cva(
         variant: "outline",
         tone: "destructive",
         class:
-          "border-destructive text-destructive hover:bg-destructive hover:text-destructive-foreground active:bg-button-destructive-background-active",
+          "border-destructive text-destructive hover:bg-button-destructive-background-soft active:bg-button-destructive-background-active",
       },
       {
         variant: "ghost",

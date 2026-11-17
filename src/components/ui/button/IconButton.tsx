@@ -23,10 +23,10 @@ const iconButtonVariants = cva(
         accent: "",
       },
       size: {
-        xs: "size-5 [&_svg]:size-4",
-        sm: "size-6 [&_svg]:size-5",
-        md: "size-7 [&_svg]:size-6",
-        lg: "size-8 [&_svg]:size-7",
+        xs: "size-5 [&_svg]:size-3",
+        sm: "size-6 [&_svg]:size-4",
+        md: "size-7 [&_svg]:size-5",
+        lg: "size-8 [&_svg]:size-6",
       },
       shape: {
         square: "rounded-none",
