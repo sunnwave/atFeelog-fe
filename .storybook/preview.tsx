@@ -5,6 +5,7 @@ import "../src/styles/globals.css";
 import { ToastProvider } from "@/components/commons/toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { handlers } from "../src/mocks/handlers";
+import { RecoilRoot } from "recoil";
 
 initialize({ onUnhandledRequest: "bypass" }, handlers);
 
@@ -23,13 +24,15 @@ const preview: Preview = {
   decorators: [
     mswDecorator,
     (Story) => (
-      <QueryClientProvider client={queryClient}>
-        <ApolloProvider client={apolloClient}>
-          <ToastProvider>
-            <Story />
-          </ToastProvider>
-        </ApolloProvider>
-      </QueryClientProvider>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <ApolloProvider client={apolloClient}>
+            <ToastProvider>
+              <Story />
+            </ToastProvider>
+          </ApolloProvider>
+        </QueryClientProvider>
+      </RecoilRoot>
     ),
   ],
   parameters: {
