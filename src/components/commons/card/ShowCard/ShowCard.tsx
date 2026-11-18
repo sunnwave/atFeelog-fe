@@ -39,11 +39,11 @@ export default function ShowCard({
 
   return (
     <div
-      className={`@container group${showBorder ? " border-r-[1.5px] border-b-[1.5px] border-foreground" : ""}`}
+      className={`@container${showBorder ? " border-r-[1.5px] border-b-[1.5px] border-foreground" : ""}`}
     >
       {/* 포스터 */}
       <div
-        className="cursor-pointer relative aspect-3/4 overflow-hidden border-b-[1.5px] border-foreground"
+        className="group cursor-pointer relative aspect-3/4 overflow-hidden border-b-[1.5px] border-foreground"
         onClick={() => void router.push(`/shows/${p.mt20id}`)}
       >
         {p.posterUrl ? (
