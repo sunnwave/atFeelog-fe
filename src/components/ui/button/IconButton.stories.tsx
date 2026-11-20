@@ -160,7 +160,7 @@ export const DocsPreview: Story = {
   render: (args) => <IconButton {...args} />,
 };
 
-export const FigmaMatrix: Story = {
+export const VariantToneMatrix: Story = {
   render: () => (
     <div className="grid gap-8 bg-background p-8 text-foreground">
       {shapes.map((shape) => (
@@ -168,6 +168,24 @@ export const FigmaMatrix: Story = {
           <h3 className="label-strong text-muted-foreground uppercase">
             {shape}
           </h3>
+          {/* 열 헤더 */}
+          <div className="flex items-center gap-4">
+            <span className="w-16" />
+            {variants.flatMap((variant) => [
+              <span
+                key={`${variant}-default`}
+                className="w-7 text-center text-[10px] text-muted-foreground"
+              >
+                {variant}
+              </span>,
+              <span
+                key={`${variant}-disabled`}
+                className="w-7 text-center text-[10px] text-muted-foreground opacity-50"
+              >
+                disabled
+              </span>,
+            ])}
+          </div>
           {tones.map((tone) => (
             <div key={tone} className="flex items-center gap-4">
               <span className="w-16 text-xs text-muted-foreground">{tone}</span>
@@ -202,24 +220,40 @@ export const FigmaMatrix: Story = {
   ),
 };
 
+const sizeLabels: Record<(typeof sizes)[number], string> = {
+  xs: "xs · 20px",
+  sm: "sm · 28px",
+  md: "md · 36px",
+  lg: "lg · 44px",
+};
+
 export const Sizes: Story = {
   render: () => (
     <div className="grid grid-cols-2 gap-8 bg-background p-8">
       {shapes.map((shape) => (
-        <div key={shape} className="flex flex-col gap-3">
-          <span className="text-xs text-muted-foreground uppercase font-bold">{shape}</span>
-          <div className="flex items-center gap-3">
+        <div key={shape} className="flex flex-col gap-4">
+          <span className="text-xs text-muted-foreground uppercase font-bold">
+            {shape}
+          </span>
+          <div className="flex items-end gap-4">
             {sizes.map((size) => (
-              <IconButton
+              <div
                 key={`${shape}-${size}`}
-                aria-label={`${shape} ${size}`}
-                shape={shape}
-                size={size}
-                variant="solid"
-                tone="primary"
+                className="flex flex-col items-center gap-2"
               >
-                <Plus />
-              </IconButton>
+                <IconButton
+                  aria-label={`${shape} ${size}`}
+                  shape={shape}
+                  size={size}
+                  variant="solid"
+                  tone="primary"
+                >
+                  <Plus />
+                </IconButton>
+                <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                  {sizeLabels[size]}
+                </span>
+              </div>
             ))}
           </div>
         </div>
