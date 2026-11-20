@@ -1,5 +1,5 @@
 import { IconButton } from "@/components/ui/button/IconButton";
-import { Icon, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 type Props = {
   value: string;
@@ -31,7 +31,7 @@ export default function SearchInput({
         <IconButton
           aria-label="검색어 초기화"
           onClick={onReset ? onReset : () => onChange("")}
-          size="xs"
+          size="sm"
         >
           <X />
         </IconButton>

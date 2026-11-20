@@ -2,6 +2,7 @@ import { JSX, useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
 import SearchInput from "./SearchInput";
 import DatePickerCell from "./DatePickerCell";
+import { Button } from "@/components/ui/button/Button";
 
 type SearchBarBaseProps = {
   search: string;
@@ -69,14 +70,23 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
     return (
       <form
         onSubmit={handleSubmit}
-        className="grid h-14 w-full border-[1.5px] border-foreground bg-card grid-cols-[1fr_92px]"
+        className="flex items-center justify-between h-12 w-full border-[1.5px] border-foreground bg-card "
       >
-        <div className="flex h-14 items-center gap-3 border-r border-border px-4">
-          <SearchInput value={search} onChange={onSearchChange} onReset={onReset} />
+        <div className="flex w-full h-full items-center gap-3 border-border px-4">
+          <SearchInput
+            value={search}
+            onChange={onSearchChange}
+            onReset={onReset}
+          />
         </div>
-        <button type="submit" className={submitButtonClass}>
+
+        <Button
+          type="submit"
+          size="sm"
+          className="h-full font-black uppercase tracking-[0.12em]"
+        >
           Search
-        </button>
+        </Button>
       </form>
     );
   }
@@ -87,25 +97,31 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
         onSubmit={handleSubmit}
         className={[
           "grid w-full border-[1.5px] border-foreground bg-card",
-          "grid-cols-[1fr_1fr_92px]",
-          "md:h-14 md:grid-cols-[1fr_160px_160px_92px]",
+          "grid-cols-[1fr_1fr_auto] md:grid-cols-[1fr_auto_auto_auto] items-center ",
+          "md:h-12 h-24",
         ].join(" ")}
       >
         <div
           className={[
             "col-span-3 md:col-span-1",
-            "flex h-14 items-center gap-3 px-4",
+            "flex h-full items-center gap-3 px-4",
             "border-b border-border md:border-b-0 md:border-r",
           ].join(" ")}
         >
-          <SearchInput value={search} onChange={onSearchChange} onReset={onReset} />
+          <SearchInput
+            value={search}
+            onChange={onSearchChange}
+            onReset={onReset}
+          />
         </div>
 
         <DatePickerCell
           label="From"
           value={startDate}
           isOpen={activeField === "from"}
-          onToggle={() => setActiveField(activeField === "from" ? null : "from")}
+          onToggle={() =>
+            setActiveField(activeField === "from" ? null : "from")
+          }
           onSelect={handleFromSelect}
           onReset={() => {
             onStartDateChange("");
@@ -127,9 +143,13 @@ export default function SearchBar(props: SearchBarProps): JSX.Element {
           popupAlign="right"
         />
 
-        <button type="submit" className={submitButtonClass}>
+        <Button
+          type="submit"
+          size="sm"
+          className="h-full font-black uppercase tracking-[0.12em]"
+        >
           Search
-        </button>
+        </Button>
       </form>
     </div>
   );
