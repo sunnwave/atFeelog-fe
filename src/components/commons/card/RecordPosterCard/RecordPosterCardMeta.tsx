@@ -16,7 +16,7 @@ export default function RecordPosterCardMeta({
         <Avatar user={record.user ?? null} size="card" clickable />
       </div>
       <div className="flex items-center justify-between">
-        <span className="text-[10px] @card-xs:text-xs @card-md:text-base font-bold text-foreground truncate min-w-0">
+        <span className="text-xs @card-sm:text-sm @card-md:text-base font-bold text-foreground truncate min-w-0">
           {record.user?.name}
         </span>
         <div className="flex items-center gap-3">

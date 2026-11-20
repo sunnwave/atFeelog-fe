@@ -37,14 +37,14 @@ export default function LikeButton({
     <button
       onClick={handleClick}
       className={cn(
-        "flex items-center transition-colors group/like gap-1 cursor-pointer",
+        "flex items-center transition-colors group/like gap-0.5 cursor-pointer",
         className,
       )}
       aria-label="좋아요"
     >
       <Heart
         className={cn(
-          "w-3 h-3 @card-xs:w-3.5 @card-xs:h-3.5 @card-sm:w-4 @card-sm:h-4 @card-md:w-5 @card-md:h-5 transition-colors",
+          "w-3.5 h-3.5 @card-sm:w-4 @card-sm:h-4 @card-md:w-4.5 @card-md:h-4.5 transition-colors",
           liked ? "text-point" : "text-muted-foreground",
         )}
         fill={liked ? "currentColor" : "none"}
