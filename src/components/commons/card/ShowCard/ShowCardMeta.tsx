@@ -1,5 +1,5 @@
 import { Performance } from "@/shared/types/performance";
-import { useToggleShowLike } from "@/shared/hooks/show/useToggleShowLike";
+import { useToggleShowSave } from "@/shared/hooks/show/useToggleShowSave";
 import BookmarkButton from "@/components/ui/button/BookmarkButton";
 
 export default function ShowCardMeta({
@@ -9,7 +9,7 @@ export default function ShowCardMeta({
   p: Performance;
   isSaved?: boolean;
 }) {
-  const { toggle, loading } = useToggleShowLike();
+  const { toggle } = useToggleShowSave();
   return (
     <div
       className="
