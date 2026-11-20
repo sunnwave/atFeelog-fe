@@ -31,11 +31,10 @@ export default function BestRecordsSection(): JSX.Element {
 
         <Button
           variant="ghost"
-          className="justify-end hover:bg-background"
+          trailingIcon={<ChevronRight />}
           onClick={onClickNavigation("/feelog?view=best")}
         >
           더보기
-          <ChevronRight className="w-5 h-5" />
         </Button>
       </div>
       <div className="w-full max-w-full min-w-0 overflow-x-auto">

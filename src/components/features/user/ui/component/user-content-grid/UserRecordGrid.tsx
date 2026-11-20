@@ -12,7 +12,9 @@ type UserRecordProps = {
 export default function UserRecordGrid({ userId }: UserRecordProps) {
   const { records, loading, error, refetch } = useFetchBoardsByUser(userId);
 
-  if (loading) {
+  const isEmpty = records.length === 0;
+
+  if (loading && isEmpty) {
     return (
       <CardGridSkeleton
         showMeta={false}
@@ -30,7 +32,7 @@ export default function UserRecordGrid({ userId }: UserRecordProps) {
         </Button>
       </EmptyState>
     );
-  if (!loading && records.length === 0)
+  if (!loading && isEmpty)
     return <EmptyState {...EMPTY_MESSAGES.user.recordGrid} />;
   return (
     <ResponsiveGrid

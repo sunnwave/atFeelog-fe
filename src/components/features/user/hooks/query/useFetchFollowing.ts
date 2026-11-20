@@ -20,13 +20,13 @@ const FETCH_FOLLOWING = gql`
   }
 `;
 
-export const useFetchFollowing = (userId?: string) => {
+export const useFetchFollowing = (userId?: string, skip?: boolean) => {
   const { data, loading, refetch } = useQuery<
     FetchFollowingsData,
     IQueryFetchFollowingsArgs
   >(FETCH_FOLLOWING, {
     variables: { userId: userId ?? "" },
-    skip: !IS_NEW_API || !userId,
+    skip: !IS_NEW_API || !userId || skip,
     fetchPolicy: "cache-and-network",
   });
 

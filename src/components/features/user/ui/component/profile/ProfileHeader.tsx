@@ -1,22 +1,27 @@
 import Avatar from "@/components/ui/avatar/Avatar";
-import { ProfileHeaderProps } from "../../../types";
+import type { FollowTab, ProfileUser } from "../../../types";
 import ProfileActions from "./ProfileActions";
-import {
-  useFetchBoardsCountByUser,
-  useFetchCountOfFollowers,
-  useFetchCountOfFollowing,
-} from "../../../hooks";
+import { useFetchBoardsCountByUser } from "../../../hooks";
 import StatItem from "./StatItem";
+
+type ProfileHeaderProps = {
+  userId: string;
+  user: ProfileUser;
+  isMe?: boolean;
+  followersCount?: number;
+  followingsCount?: number;
+  onStatClick?: (tab: FollowTab) => void;
+};
 
 export default function ProfileHeader({
   userId,
   user,
   isMe = false,
+  followersCount,
+  followingsCount,
   onStatClick,
 }: ProfileHeaderProps) {
   const { count: recordsCount } = useFetchBoardsCountByUser(userId);
-  const { count: followersCount } = useFetchCountOfFollowers(userId);
-  const { count: followingCount } = useFetchCountOfFollowing(userId);
 
   return (
     <section className="border-[1.5px] border-foreground bg-card">
@@ -53,13 +58,15 @@ export default function ProfileHeader({
               value={followersCount}
               label="팔로워"
               hasBorderLeft
-              onClick={onStatClick ? () => onStatClick("팔로워") : undefined}
+              onClick={onStatClick ? () => onStatClick("followers") : undefined}
             />
             <StatItem
-              value={followingCount}
+              value={followingsCount}
               label="팔로잉"
               hasBorderLeft
-              onClick={onStatClick ? () => onStatClick("팔로잉") : undefined}
+              onClick={
+                onStatClick ? () => onStatClick("followings") : undefined
+              }
             />
           </div>
         </div>

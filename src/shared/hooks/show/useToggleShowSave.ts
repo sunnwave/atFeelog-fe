@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { useRef } from "react";
 import {
   IMutation,
   IMutationTogglePerformanceSubscriptionArgs,
@@ -19,10 +20,10 @@ const IS_PERFORMANCE_SUBSCRIBED = gql`
   }
 `;
 
-export function useToggleShowLike() {
+export function useToggleShowSave() {
   const { error } = useToast();
 
-  const [toggleMutation, { loading }] = useMutation<
+  const [toggleShowSave] = useMutation<
     Pick<IMutation, "togglePerformanceSubscription">,
     IMutationTogglePerformanceSubscriptionArgs
   >(TOGGLE_PERFORMANCE_SUBSCRIPTION, {
@@ -57,15 +58,21 @@ export function useToggleShowLike() {
     },
   });
 
+  const isPending = useRef(false);
+
   const toggle = async (mt20id: string) => {
+    if (isPending.current) return;
+    isPending.current = true;
     try {
-      const result = await toggleMutation({ variables: { mt20id } });
+      const result = await toggleShowSave({ variables: { mt20id } });
       return result.data?.togglePerformanceSubscription;
     } catch (e) {
       error("찜 처리에 실패했어요. 잠시 후 다시 시도해주세요.");
       throw e;
+    } finally {
+      isPending.current = false;
     }
   };
 
-  return { toggle, loading };
+  return { toggle };
 }

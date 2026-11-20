@@ -10,7 +10,9 @@ export default function UserSavedShowGrid() {
   const router = useRouter();
   const { shows, loading, error, refetch } = useFetchSavedShows();
 
-  if (loading) {
+  const isEmpty = shows.length === 0;
+
+  if (loading && isEmpty) {
     return (
       <CardGridSkeleton
         showMeta={false}
@@ -29,7 +31,7 @@ export default function UserSavedShowGrid() {
       </EmptyState>
     );
 
-  if (shows.length === 0)
+  if (!loading && isEmpty)
     return (
       <EmptyState {...EMPTY_MESSAGES.user.savedGrid}>
         <Button

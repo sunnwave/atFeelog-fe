@@ -9,6 +9,7 @@ import {
   IQuery,
 } from "@/api/graphql/generated/types.new";
 import { gql, useMutation } from "@apollo/client";
+import { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import { useToast } from "@/components/commons/toast/ToastProvider";
@@ -35,7 +36,7 @@ export const useToggleRecordLike = () => {
   const me = useRecoilValue(loggedInUserState);
   const { error } = useToast();
 
-  const [likeBoard] = useMutation<
+  const [toggleRecordLike] = useMutation<
     Pick<ILegacyMutation | INewMutation, "likeBoard">,
     ILegacyLikeArgs | INewLikeArgs
   >(LIKE_RECORD, {
@@ -72,7 +73,10 @@ export const useToggleRecordLike = () => {
       const nextList = data.isLike
         ? current.some((b) => b?.id === variables.boardId)
           ? current
-          : [...current, { __typename: "Board" as const, id: variables.boardId }]
+          : [
+              ...current,
+              { __typename: "Board" as const, id: variables.boardId },
+            ]
         : current.filter((b) => b?.id !== variables.boardId);
 
       cache.writeQuery({
@@ -83,13 +87,26 @@ export const useToggleRecordLike = () => {
     },
   });
 
+  const isPending = useRef(false);
+
   const toggle = async (recordId: string) => {
-    const result = await likeBoard({ variables: { boardId: recordId } });
-    if (result.errors?.length) {
-      error(result.errors[0].message || "좋아요 처리에 실패했어요. 잠시 후 다시 시도해주세요.");
-      throw new Error(result.errors[0].message);
+    if (isPending.current) return;
+    isPending.current = true;
+    try {
+      const result = await toggleRecordLike({
+        variables: { boardId: recordId },
+      });
+      if (result.errors?.length) {
+        error(
+          result.errors[0].message ||
+            "좋아요 처리에 실패했어요. 잠시 후 다시 시도해주세요.",
+        );
+        throw new Error(result.errors[0].message);
+      }
+      return result.data?.likeBoard;
+    } finally {
+      isPending.current = false;
     }
-    return result.data?.likeBoard;
   };
 
   return { toggle };

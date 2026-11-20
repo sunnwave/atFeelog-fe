@@ -25,19 +25,19 @@ export const Closed: Story = {
 
 export const FollowersTab: Story = {
   name: "팔로워 탭",
-  args: { openPanel: "팔로워" },
+  args: { openPanel: "followers" },
 };
 
 export const FollowingTab: Story = {
   name: "팔로잉 탭",
-  args: { openPanel: "팔로잉" },
+  args: { openPanel: "followings" },
 };
 
 // ── 반응형 확인 ───────────────────────────────────────────────────────────────
 
 export const Mobile: Story = {
   name: "[반응형] Mobile 375px — 팔로워 탭",
-  args: { openPanel: "팔로워" },
+  args: { openPanel: "followers" },
   decorators: [
     (Story) => (
       <div className="w-[375px] bg-background p-4">
@@ -49,7 +49,7 @@ export const Mobile: Story = {
 
 export const Desktop: Story = {
   name: "[반응형] Desktop — ProfileHeader 옆 사이드 드로어",
-  args: { openPanel: "팔로워" },
+  args: { openPanel: "followers" },
   decorators: [
     (Story) => (
       <div className="flex bg-background p-6 gap-0" style={{ width: 800 }}>

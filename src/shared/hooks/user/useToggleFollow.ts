@@ -6,17 +6,17 @@ import {
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { gql, useMutation } from "@apollo/client";
 
-const ADD_FOLLOW = gql`
-  mutation addFollow($followerId: ID!) {
+const TOGGLE_FOLLOW = gql`
+  mutation toggleFollow($followerId: ID!) {
     addFollow(followerId: $followerId)
   }
 `;
 
-export const useAddFollow = () => {
+export const useToggleFollow = () => {
   const [addFollow, { loading }] = useMutation<
     Pick<INewMutation, "addFollow">,
     IMutationAddFollowArgs
-  >(ADD_FOLLOW, {
+  >(TOGGLE_FOLLOW, {
     errorPolicy: "all",
     refetchQueries: [
       "fetchCountOfFollowers",
@@ -29,7 +29,7 @@ export const useAddFollow = () => {
 
   const { error } = useToast();
 
-  const onAddFollow = async (followerId: string) => {
+  const onToggleFollow = async (followerId: string) => {
     if (!IS_NEW_API) return;
 
     const result = await addFollow({ variables: { followerId } });
@@ -40,5 +40,5 @@ export const useAddFollow = () => {
     return result.data?.addFollow;
   };
 
-  return { onAddFollow, loading };
+  return { onToggleFollow, loading };
 };

@@ -13,11 +13,11 @@ export default function CommentIcon({
 }: CommentIconProps): JSX.Element {
   return (
     <div
-      className={cn("flex items-center transition-colors  gap-1", className)}
+      className={cn("flex items-center transition-colors  gap-0.5", className)}
       aria-label="댓글"
     >
-      <MessageCircle className="w-3 h-3 @card-sm:w-4 @card-sm:h-4 @card-md:w-4.5 @card-md:h-4.5 transition-colors text-muted-foreground" />
-      <span className="text-[10px] @card-sm:text-xs @card-md:text-base text-muted-foreground">
+      <MessageCircle className="w-3.5 h-3.5 @card-sm:w-4 @card-sm:h-4 @card-md:w-4.5 @card-md:h-4.5 transition-colors text-muted-foreground" />
+      <span className="text-[10px] @card-xs:text-[11px] @card-sm:text-xs @card-md:text-sm text-muted-foreground">
         {count ?? 0}
       </span>
     </div>

@@ -18,13 +18,13 @@ const FETCH_FOLLOWERS = gql`
   }
 `;
 
-export const useFetchFollowers = (userId?: string) => {
+export const useFetchFollowers = (userId?: string, skip?: boolean) => {
   const { data, loading, refetch } = useQuery<
     Pick<INewQuery, "fetchFollowers">,
     IQueryFetchFollowersArgs
   >(FETCH_FOLLOWERS, {
     variables: { userId: userId ?? "" },
-    skip: !IS_NEW_API || !userId,
+    skip: !IS_NEW_API || !userId || skip,
     fetchPolicy: "cache-and-network",
   });
 

@@ -24,12 +24,11 @@ export default function LoadingIndicator({
   className,
 }: LoadingIndicatorProps) {
   return (
-    <div className="flex justify-center items-center gap-2">
+    <div className={cn(`flex justify-center items-center gap-2`, className)}>
       <div
         className={cn(
           "animate-spin rounded-full border-transparent border-t-muted-foreground border-r-muted-foreground border-b-muted-foreground",
           SIZE_MAP[size],
-          className,
         )}
       />
       {label && (
