@@ -1,3 +1,4 @@
+import { IconButton } from "@/components/ui/button/IconButton";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/router";
 import { useCallback } from "react";
@@ -24,15 +25,10 @@ export default function PageHeader({
   }, [router, fallbackHref]);
 
   return (
-    <div className="sticky top-0 z-40 flex items-center gap-3 border-b-[1.5px] px-5 py-3.5 bg-background/95 backdrop-blur-sm">
-      <button
-        type="button"
-        onClick={onBack}
-        aria-label="뒤로가기"
-        className="flex items-center bg-transparent border-none cursor-pointer text-foreground p-0"
-      >
-        <ArrowLeft className="w-4.5 h-4.5" strokeWidth={2.2} />
-      </button>
+    <div className="sticky top-0 z-40 flex items-center gap-3 border-b-[1.5px] px-3 py-2 bg-background/95 backdrop-blur-sm">
+      <IconButton aria-label="뒤로가기" onClick={onBack}>
+        <ArrowLeft strokeWidth={2.2} />
+      </IconButton>
       <span className="flex-1 text-[11px] font-black tracking-[0.2em] uppercase text-foreground">
         {label}
       </span>

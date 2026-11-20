@@ -10,6 +10,7 @@ import {
 } from "@/shared/constants/kopis";
 import { ShowFilters } from "./type/type";
 import ToggleGroup, { ToggleOption } from "@/components/ui/button/ToggleGroup";
+import { Button } from "@/components/ui/button/Button";
 
 type Props = {
   filter: ShowFilters;
@@ -34,16 +35,9 @@ function FilterTabButton({
   onClick: () => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`shrink-0 text-xs font-bold px-3 py-1.5 border-[1.5px] transition-colors duration-150 ${
-        active
-          ? "bg-foreground text-background border-foreground"
-          : "bg-background text-foreground border-foreground hover:bg-foreground/10"
-      }`}
-    >
+    <Button onClick={onClick} variant={active ? "solid" : "outline"} size="sm">
       {label}
-    </button>
+    </Button>
   );
 }
 

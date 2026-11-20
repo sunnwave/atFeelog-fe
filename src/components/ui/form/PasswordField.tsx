@@ -1,9 +1,9 @@
 import * as React from "react";
 import type { FieldValues, PathValue } from "react-hook-form";
 import { Eye, EyeOff, X } from "lucide-react";
-import { Button } from "@/components/ui/button/Button";
 import { PasswordFieldProps } from "./types";
 import TextField from "./TextField";
+import { IconButton } from "../button/IconButton";
 
 export function PasswordField<TFieldValues extends FieldValues>({
   id,
@@ -35,34 +35,29 @@ export function PasswordField<TFieldValues extends FieldValues>({
       rightSlot={
         <>
           {canClear ? (
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
+            <IconButton
               aria-label="비밀번호 지우기"
-              className="hover:bg-input-background"
+              size="xs"
               onClick={() =>
                 setValue(name, "" as PathValue<TFieldValues, typeof name>)
               }
+              className="hover:bg-input-background"
             >
-              <X className="w-5 h-5" />
-            </Button>
+              <X />
+            </IconButton>
           ) : null}
 
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={() => setShow((p) => !p)}
-            className="hover:bg-input-background"
+          <IconButton
+            size="xs"
             aria-label={show ? "비밀번호 숨기기" : "비밀번호 보기"}
+            onClick={() => setShow((p) => !p)}
           >
             {show ? (
               <EyeOff className="w-5 h-5" />
             ) : (
               <Eye className="w-5 h-5" />
             )}
-          </Button>
+          </IconButton>
         </>
       }
     />

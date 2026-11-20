@@ -5,16 +5,18 @@ export default function FollowButton({
   isFollowing,
   onFollow,
   className,
+  size = "md",
 }: {
   isFollowing?: boolean;
   onFollow?: () => void;
+  size?: "sm" | "md" | "lg";
   className?: string;
 }): JSX.Element {
   return (
     <Button
       variant={isFollowing ? "outline" : "solid"}
       tone={isFollowing ? "neutral" : "primary"}
-      size="default"
+      size={size}
       onClick={onFollow}
       className={cn("rounded-full font-semibold", className)}
     >

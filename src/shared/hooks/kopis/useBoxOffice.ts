@@ -18,14 +18,15 @@ export function useBoxOffice(
   type: "day" | "week" | "month" = "week",
   catecode: BoxOfficeGenreCatecode = "",
 ) {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isFetching, error } = useQuery({
     queryKey: queryKeys.kopis.boxOffice({ type, catecode }),
     queryFn: () => fetchBoxOffice(type, catecode),
+    placeholderData: (prev) => prev,
   });
 
   return {
     items: data ?? [],
-    loading: isLoading,
+    loading: isLoading || isFetching,
     error: error ? "박스오피스 정보를 불러오지 못했어요." : null,
   };
 }

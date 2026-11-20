@@ -16,7 +16,7 @@ import {
 import ShowDetailSkeleton from "./ShowDetailSkeleton";
 import { PageFallback } from "@/components/ui/feedback";
 import { useIsPerformanceSubscribed } from "../hooks/useIsPerformanceSubscribed";
-import { useToggleShowLike } from "@/shared/hooks/show/useToggleShowLike";
+import { useToggleShowSave } from "@/shared/hooks/show/useToggleShowSave";
 
 type Tab = "intro" | "records";
 
@@ -31,7 +31,7 @@ export default function ShowDetailScreen(): JSX.Element {
 
   const { detail, loading, error } = useFetchShowDetail(id);
   const { isSubscribed } = useIsPerformanceSubscribed(id);
-  const { toggle } = useToggleShowLike();
+  const { toggle } = useToggleShowSave();
 
   const [tab, setTab] = useState<Tab>("intro");
 

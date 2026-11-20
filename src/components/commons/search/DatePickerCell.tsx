@@ -27,7 +27,7 @@ export default function DatePickerCell({
       <button
         type="button"
         onClick={onToggle}
-        className="flex h-14 w-full items-center gap-2 px-4 hover:bg-muted/40 transition-colors"
+        className="flex h-full w-full items-center gap-2 px-4 hover:bg-muted/40 transition-colors"
       >
         <span className="shrink-0 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
           {label}

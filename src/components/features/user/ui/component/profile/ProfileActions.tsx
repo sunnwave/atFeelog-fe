@@ -24,7 +24,7 @@ export default function ProfileActions({ isMe, userId }: ProfileActionsProps) {
         <Button
           variant="solid"
           tone="primary"
-          size="default"
+          size="md"
           onClick={handleEditProfile}
         >
           프로필 수정

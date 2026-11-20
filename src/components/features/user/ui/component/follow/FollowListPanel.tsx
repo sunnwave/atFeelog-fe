@@ -4,6 +4,8 @@ import { useFetchFollowers, useFetchFollowing } from "../../../hooks";
 import { EmptyState, LoadingIndicator } from "@/components/ui/feedback";
 import { EMPTY_MESSAGES } from "@/shared/constants/messages";
 import Tabs from "@/components/ui/tabs/Tabs";
+import { X } from "lucide-react";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 interface FollowListPanelProps {
   userId: string;
@@ -46,21 +48,21 @@ export default function FollowListPanel({
   ];
 
   const tabHeader = (
-    <div className="flex border-b-[1.5px] border-foreground shrink-0">
+    <div className="flex border-b-[1.5px] items-center border-foreground shrink-0">
       <Tabs
         tabs={TABS}
         activeTab={openPanel ?? "followers"}
         onChange={onPanelChange}
         className="flex-1 border-y-0"
       />
-      <button
-        type="button"
-        onClick={onClose}
-        className="px-4 border-l-[1.5px] border-foreground text-foreground hover:bg-surface-soft transition-colors text-lg font-black"
+      <IconButton
         aria-label="닫기"
+        size="sm"
+        onClick={onClose}
+        className="self-stretch aspect-square h-auto w-auto"
       >
-        ×
-      </button>
+        <X />
+      </IconButton>
     </div>
   );
 

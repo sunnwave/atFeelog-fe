@@ -1,4 +1,5 @@
-import { X } from "lucide-react";
+import { IconButton } from "@/components/ui/button/IconButton";
+import { Icon, X } from "lucide-react";
 import Image from "next/image";
 
 export default function ImagePreview({
@@ -21,18 +22,16 @@ export default function ImagePreview({
         fill
         className="w-full h-full object-cover"
       />
-      <button
-        type="button"
-        onClick={() => handleRemove(index)}
-        className="
-                  absolute top-2 right-2 w-6 h-6 rounded-full
-                  bg-black/60 text-white
-                  flex items-center justify-center
-                "
+      <IconButton
         aria-label="이미지 제거"
+        onClick={() => handleRemove(index)}
+        className="absolute top-2 right-2"
+        variant="solid"
+        tone="neutral"
+        shape="pill"
       >
-        <X className="w-4 h-4" />
-      </button>
+        <X />
+      </IconButton>
       {index === 0 && (
         <div className="absolute bottom-2 left-2 px-2 py-1 rounded-lg bg-black/60 text-white text-xs font-medium">
           대표

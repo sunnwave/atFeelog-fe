@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button/Button";
+import { IconButton } from "@/components/ui/button/IconButton";
 import { Menu } from "lucide-react";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
@@ -16,13 +17,13 @@ export default function WriterMenu({
 
   return (
     <div className="relative">
-      <Button variant="ghost" onClick={() => setShowMenu(!showMenu)}>
-        {icon === "m" ? (
-          <Menu className="w-4 h-4 text-muted-foreground" />
-        ) : (
-          <MoreVertical className="w-4 h-4 text-muted-foreground" />
-        )}
-      </Button>
+      <IconButton
+        aria-label="메뉴 아이콘"
+        onClick={() => setShowMenu(!showMenu)}
+        size="xs"
+      >
+        {icon === "m" ? <Menu /> : <MoreVertical />}
+      </IconButton>
 
       {showMenu && (
         <>
@@ -30,25 +31,30 @@ export default function WriterMenu({
             className="fixed inset-0 z-10"
             onClick={() => setShowMenu(false)}
           />
-          <div className="absolute right-0 top-5 z-20 w-28 bg-card border border-border rounded-lg shadow-lg overflow-hidden">
-            <button
+          <div className="absolute right-0 top-5 flex flex-col z-20 w-24 bg-card border  shadow-lg">
+            <Button
               onClick={() => {
                 onEditClick();
                 setShowMenu(false);
               }}
-              className="w-full px-3 py-2 text-left hover:bg-muted transition-colors text-xs"
+              variant="ghost"
+              size="sm"
+              className="w-full font-normal "
             >
               수정하기
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => {
                 onDeleteClick();
                 setShowMenu(false);
               }}
-              className="w-full px-3 py-2 text-left hover:bg-muted transition-colors text-xs text-red-600"
+              variant="ghost"
+              tone="destructive"
+              size="sm"
+              className="w-full  font-normal"
             >
               삭제하기
-            </button>
+            </Button>
           </div>
         </>
       )}

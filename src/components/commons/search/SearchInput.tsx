@@ -1,3 +1,4 @@
+import { IconButton } from "@/components/ui/button/IconButton";
 import { Search, X } from "lucide-react";
 
 type Props = {
@@ -27,14 +28,13 @@ export default function SearchInput({
         className="min-w-0 flex-1 bg-transparent text-sm font-semibold text-foreground outline-none placeholder:text-muted-foreground"
       />
       {value && (
-        <button
-          type="button"
-          onClick={() => onReset ? onReset() : onChange("")}
+        <IconButton
           aria-label="검색어 초기화"
-          className="shrink-0 text-muted-foreground hover:text-foreground transition-colors"
+          onClick={onReset ? onReset : () => onChange("")}
+          size="sm"
         >
-          <X className="w-3.5 h-3.5" />
-        </button>
+          <X />
+        </IconButton>
       )}
     </>
   );

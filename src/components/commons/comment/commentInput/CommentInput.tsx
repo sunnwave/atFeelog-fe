@@ -1,5 +1,6 @@
-import { Send, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { IconButton } from "@/components/ui/button/IconButton";
 import { Button } from "@/components/ui/button/Button";
 
 interface CommentInputProps {
@@ -54,9 +55,9 @@ export default function CommentInput({
   }, [comment]);
 
   return (
-    <div className="pt-4 border-t border-border">
+    <div className="w-full pt-4 border-t border-border flex flex-1 flex-row items-start gap-2">
       <div
-        className={`flex items-stretch border transition-colors ${
+        className={`flex flex-1 items-stretch border-b transition-colors ${
           isFocused || comment ? "border-primary" : "border-border"
         }`}
       >
@@ -64,7 +65,7 @@ export default function CommentInput({
         <form
           id="comment-form"
           onSubmit={handleSubmit}
-          className="relative flex-1 min-w-0"
+          className="relative flex-1 min-w-0 items-start"
         >
           <textarea
             ref={textareaRef}
@@ -76,36 +77,33 @@ export default function CommentInput({
             rows={1}
             readOnly={!isLoggedIn}
             disabled={!isLoggedIn}
-            className="block w-full px-3 py-2 pr-10 rounded-none resize-none bg-white focus:outline-none text-sm placeholder:text-muted-foreground min-h-9 max-h-30"
+            className="block w-full p-1 pr-5 rounded-none resize-none focus:outline-none text-xs leading-5 placeholder:text-muted-foreground min-h-7 max-h-30"
           />
           {comment && (
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
-              tone="neutral"
+            <IconButton
+              aria-label="댓글 초기화"
               onClick={handleClear}
-              className="absolute right-1 top-1 w-7 h-7"
+              size="xs"
+              className="absolute right-0 top-1"
             >
-              <X className="w-3.5 h-3.5" />
-            </Button>
+              <X />
+            </IconButton>
           )}
         </form>
 
         {/* Submit 버튼: form 속성으로 form 외부에서 submit 연결 */}
-        <Button
-          form="comment-form"
-          type="submit"
-          size="icon"
-          disabled={!isLoggedIn || !comment.trim()}
-          variant={isLoggedIn && comment.trim() ? "solid" : "ghost"}
-          tone={isLoggedIn && comment.trim() ? "primary" : "neutral"}
-          className="self-stretch w-9 h-auto rounded-none border-l border-border shrink-0 px-0"
-          aria-label="Submit comment"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
       </div>
+      <Button
+        form="comment-form"
+        type="submit"
+        disabled={!isLoggedIn || !comment.trim()}
+        size="sm"
+        variant="solid"
+        tone="accent"
+        aria-label="댓글 전송"
+      >
+        등록
+      </Button>
     </div>
   );
 }

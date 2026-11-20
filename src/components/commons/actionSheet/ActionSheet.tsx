@@ -3,6 +3,7 @@ import { X } from "lucide-react";
 import { ActionSheetOption } from "./type";
 import ActionOption from "./ActionOption";
 import { Button } from "@/components/ui/button/Button";
+import { IconButton } from "@/components/ui/button/IconButton";
 
 interface ActionSheetProps {
   isOpen: boolean;
@@ -46,9 +47,10 @@ export function ActionSheet({
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-4 border-b border-border">
             <h3 className="text-lg font-semibold">{title}</h3>
-            <Button variant="ghost" size="icon" onClick={onClose}>
-              <X className="w-5 h-5" />
-            </Button>
+
+            <IconButton aria-label="닫기" onClick={onClose}>
+              <X />
+            </IconButton>
           </div>
 
           {/* Options */}
