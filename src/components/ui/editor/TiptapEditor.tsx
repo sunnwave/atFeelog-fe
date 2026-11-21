@@ -8,10 +8,8 @@ import {
   List,
   ListOrdered,
   Quote,
-  Minus,
   Undo,
   Redo,
-  Icon,
 } from "lucide-react";
 import { useEffect } from "react";
 import { IconButton } from "../button/IconButton";
@@ -57,6 +55,13 @@ export function TiptapEditor({
       attributes: {
         class: [
           "prose prose-sm max-w-none focus:outline-none min-h-[300px] px-4 py-3",
+          "[&_p.is-editor-empty:first-child]:before:content-[attr(data-placeholder)]",
+          "[&_p.is-editor-empty:first-child]:before:float-left",
+          "[&_p.is-editor-empty:first-child]:before:h-0",
+          "[&_p.is-editor-empty:first-child]:before:pointer-events-none",
+          "[&_p.is-editor-empty:first-child]:before:whitespace-pre-wrap",
+          "[&_p.is-editor-empty:first-child]:before:text-muted-foreground",
+          "[&_p.is-editor-empty:first-child]:before:text-sm",
           "[&_ul]:list-disc [&_ul]:pl-6",
           "[&_ol]:list-decimal [&_ol]:pl-6",
           "[&_blockquote]:border-l-4 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:text-muted-foreground",
