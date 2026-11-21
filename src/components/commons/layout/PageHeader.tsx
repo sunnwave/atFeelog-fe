@@ -7,12 +7,14 @@ interface Props {
   label: string;
   statusText?: string;
   fallbackHref?: string;
+  children?: React.ReactNode;
 }
 
 export default function PageHeader({
   label,
   statusText,
   fallbackHref = "/",
+  children,
 }: Props) {
   const router = useRouter();
 
@@ -37,6 +39,7 @@ export default function PageHeader({
           {statusText}
         </span>
       )}
+      {children}
     </div>
   );
 }

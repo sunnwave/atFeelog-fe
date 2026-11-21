@@ -1,8 +1,6 @@
 import PageHeader from "@/components/commons/layout/PageHeader";
 import RecordUpdateScreenSkeleton from "./RecordUpdateScreenSkeleton";
 import { RecordEditorForm } from "../../editor";
-import BottomActionBar from "@/components/commons/layout/BottomActionBar";
-import RecordUpdateActions from "./RecordUpdateActions";
 import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
 import { useRouter } from "next/router";
@@ -13,6 +11,7 @@ import { RecordEditFormValues } from "../../model";
 import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { ResponsiveLayout } from "@/components/commons/layout";
+import RecordEditorActions from "../../editor/ui/RecordEditorActions";
 
 export default function RecordUpdateScreen() {
   const formId = "record-update-form";
@@ -60,7 +59,8 @@ export default function RecordUpdateScreen() {
   const onTempSave = () => {
     const values = form.getValues();
     saveDraft(values);
-    success("텍스트 내용이 임시저장됐어요.\n(이미지는 저장되지 않아요😢)");
+    form.reset(values);
+    success("텍스트 내용이 임시저장됐어요.");
   };
 
   const disabled = isBusy || form.formState.isSubmitting;
@@ -70,20 +70,18 @@ export default function RecordUpdateScreen() {
   if (loading) return <RecordUpdateScreenSkeleton />;
   return (
     <div className="min-h-screen bg-background ">
-      <PageHeader label="Edit Record" fallbackHref="/feelog" />
-      {/* ✅ 버튼 바에 가리지 않게 pb 확보 */}
-      <ResponsiveLayout className="px-4">
-        <RecordEditorForm formId={formId} form={form} {...editorProps} />
-      </ResponsiveLayout>
-
-      <BottomActionBar>
-        <RecordUpdateActions
+      <PageHeader label="Edit Record" fallbackHref="/feelog">
+        <RecordEditorActions
           formId={formId}
           disabled={disabled}
           isDirty={isDirty}
+          submitLabel="수정하기"
           onTempSave={onTempSave}
         />
-      </BottomActionBar>
+      </PageHeader>
+      <ResponsiveLayout className="px-4">
+        <RecordEditorForm formId={formId} form={form} {...editorProps} />
+      </ResponsiveLayout>
     </div>
   );
 }
