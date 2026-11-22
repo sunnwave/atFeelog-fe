@@ -4,8 +4,6 @@ import {
   RecordEditFormValues,
   RecordEditorForm,
 } from "@/components/features/record";
-import BottomActionBar from "@/components/commons/layout/BottomActionBar";
-import RecordWriteActions from "./RecordWriteActions";
 import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
 import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
 import { useDraftStorage } from "@/shared/hooks/record/useDraftStorage";
@@ -14,6 +12,7 @@ import { useToast } from "@/components/commons/toast/ToastProvider";
 import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { useEffect } from "react";
 import { ResponsiveLayout } from "@/components/commons/layout/ResponsiveLayout";
+import RecordEditorActions from "../../editor/ui/RecordEditorActions";
 
 export default function RecordWriteScreen() {
   const formId = "record-write-form";
@@ -30,7 +29,8 @@ export default function RecordWriteScreen() {
   const onTempSave = () => {
     const values = form.getValues();
     saveDraft(values);
-    success("텍스트 내용이 임시저장됐어요.\n(이미지는 저장되지 않아요😢)");
+    form.reset(values);
+    success("텍스트 내용이 임시저장됐어요.");
   };
 
   const disabled = isBusy || form.formState.isSubmitting;
@@ -54,25 +54,20 @@ export default function RecordWriteScreen() {
   return (
     <div className="min-h-screen bg-background">
       <div>
-        <PageHeader
-          label="New Record"
-          statusText={isDirty ? "저장 안 됨" : "임시 저장됨"}
-          fallbackHref="/feelog"
-        />
+        <PageHeader label="New Record" fallbackHref="/feelog">
+          <RecordEditorActions
+            formId={formId}
+            disabled={disabled}
+            isDirty={isDirty}
+            submitLabel="저장하기"
+            onTempSave={onTempSave}
+          />
+        </PageHeader>
 
         <ResponsiveLayout className="px-4">
           <RecordEditorForm formId={formId} form={form} {...editorProps} />
         </ResponsiveLayout>
       </div>
-
-      <BottomActionBar>
-        <RecordWriteActions
-          formId={formId}
-          disabled={disabled}
-          isDirty={isDirty}
-          onTempSave={onTempSave}
-        />
-      </BottomActionBar>
     </div>
   );
 }
