@@ -65,6 +65,16 @@ describe("draftStorage", () => {
     expect(await draftStorage.load("draft-b")).toEqual({ title: "B" });
   });
 
+  it("같은 키로 이전 요청이 겹쳐도 한 번만 추가하고 먼저 저장된 값을 유지한다", async () => {
+    const results = await Promise.all([
+      draftStorage.saveIfAbsent("draft-a", { title: "A" }),
+      draftStorage.saveIfAbsent("draft-a", { title: "B" }),
+    ]);
+
+    expect(results.filter(Boolean)).toHaveLength(1);
+    expect(await draftStorage.load("draft-a")).toEqual({ title: results[0] ? "A" : "B" });
+  });
+
   it("해당 key만 삭제하고 없는 key를 삭제해도 실패하지 않는다", async () => {
     await draftStorage.save("draft-a", { title: "A" });
     await draftStorage.save("draft-b", { title: "B" });

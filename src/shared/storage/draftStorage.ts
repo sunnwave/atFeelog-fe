@@ -70,6 +70,16 @@ export const draftStorage = {
     await runTransaction("readwrite", (store) => store.put(value, key));
   },
 
+  async saveIfAbsent(key: string, value: unknown): Promise<boolean> {
+    try {
+      await runTransaction("readwrite", (store) => store.add(value, key));
+      return true;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "ConstraintError") return false;
+      throw error;
+    }
+  },
+
   async load(key: string): Promise<unknown> {
     return runTransaction("readonly", (store) => store.get(key));
   },
