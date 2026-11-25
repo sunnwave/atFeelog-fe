@@ -9,7 +9,7 @@ import {
   useRecordDraft,
   useRecordEditorForm,
 } from "../../editor";
-import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
+import { useRecordSubmit } from "../../editor/hooks/useRecordSubmit";
 import { useRouter } from "next/router";
 import { useRecordUpdateInit } from "../hooks/useRecordUpdateInit";
 import { DRAFT_KEY } from "@/shared/constants/draftKeys";
@@ -24,12 +24,11 @@ export default function RecordUpdateScreen() {
       ? router.query.recordId
       : undefined;
 
-  const { onSubmitValid, isBusy } = useRecordUpdateSubmit();
+  const { onSubmitValid, isBusy } = useRecordSubmit({ mode: "update", recordId });
   const draftKey = me?.id && recordId ? DRAFT_KEY.record.update(me.id, recordId) : null;
-  const { form, ...editorProps } = useRecordEditorForm((values) => {
-    if (!recordId) return;
-    return onSubmitValid(values, recordId, clearDraft);
-  });
+  const { form, ...editorProps } = useRecordEditorForm((values) =>
+    onSubmitValid(values, clearDraft),
+  );
 
   const { record, loading, error, ready } = useRecordUpdateInit(recordId, form, draftKey);
   const { onTempSave, hasUnsavedChanges, isSavingDraft, isCheckingDraft, clearDraft } =

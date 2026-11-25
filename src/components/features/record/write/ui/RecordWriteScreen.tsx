@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { loggedInUserState } from "@/shared/stores";
 import PageHeader from "@/components/commons/layout/PageHeader";
-import useRecordWriteSubmit from "../hooks/useRecordWriteSubmit";
+import { useRecordSubmit } from "../../editor/hooks/useRecordSubmit";
 import {
   RecordEditorActions,
   RecordEditorForm,
@@ -16,7 +16,7 @@ export default function RecordWriteScreen() {
   const userId = me?.id;
   const formId = "record-write-form";
 
-  const { onSubmitValid, isBusy } = useRecordWriteSubmit();
+  const { onSubmitValid, isBusy } = useRecordSubmit({ mode: "write" });
   const draftKey = userId ? DRAFT_KEY.record.write(userId) : null;
   const { form, ...editorProps } = useRecordEditorForm((values) =>
     onSubmitValid(values, clearDraft),
