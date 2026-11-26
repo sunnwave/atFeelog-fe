@@ -11,12 +11,13 @@ import type { Performance, PerformanceDetail } from "@/shared/types/performance"
 import { kopisDateToFormDate } from "@/shared/utils/date";
 
 export function useRecordEditorForm(
-  onSubmitValid: (v: RecordEditFormValues) => Promise<void> | void
+  onSubmitValid: (v: RecordEditFormValues) => Promise<void> | void,
+  defaultValues?: Partial<RecordEditFormValues>,
 ) {
   const form = useForm<RecordEditFormValues>({
     resolver: yupResolver(recordWriteSchema),
     mode: "onChange",
-    defaultValues: RECORD_WRITE_DEFAULTS,
+    defaultValues: { ...RECORD_WRITE_DEFAULTS, ...defaultValues },
   });
 
   const [isPlaceSearchOpen, setIsPlaceSearchOpen] = useState(false);

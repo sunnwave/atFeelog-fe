@@ -4,7 +4,7 @@ import type { OpenArgs } from "@/shared/hooks/ui/useConfirmModal";
 import { CONFIRM_PRESETS, ConfirmPresetKey } from "@/shared/constants";
 
 export function useConfirmPreset() {
-  const { openConfirm } = useConfirmModal();
+  const { openConfirm, closeConfirm } = useConfirmModal();
 
   const openConfirmPreset = useCallback(
     (
@@ -26,5 +26,5 @@ export function useConfirmPreset() {
     [openConfirm]
   );
 
-  return { openConfirmPreset };
+  return { openConfirmPreset, closeConfirm };
 }

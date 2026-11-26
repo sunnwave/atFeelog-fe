@@ -14,8 +14,8 @@ export type ConfirmPreset = {
 
 export const CONFIRM_PRESETS = {
   loginRequired: {
-    title: "작성하려면 로그인해요✋🏻🤚🏻",
-    description: "로그인하고 필로그와 거래글을 작성해보세요",
+    title: "작성하려면 로그인해요",
+    description: "로그인하고 필로그를 작성하고 후기를 남겨보세요.",
     variant: "primary",
     cancelText: "취소",
     confirmText: "로그인",
@@ -51,7 +51,7 @@ export const CONFIRM_PRESETS = {
 
   loadDraft: {
     title: "임시 저장된 내용이 있어요",
-    description: "이어서 작성할까요?\n(이미지는 복구되지 않아요.)",
+    description: "이어서 작성할까요?",
     variant: "primary",
     confirmText: "이어서 작성",
     cancelText: "새로 작성",

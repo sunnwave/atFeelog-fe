@@ -1,19 +1,22 @@
+import { useRecoilValue } from "recoil";
+import { loggedInUserState } from "@/shared/stores";
 import PageHeader from "@/components/commons/layout/PageHeader";
-import RecordUpdateScreenSkeleton from "./RecordUpdateScreenSkeleton";
-import { RecordEditorForm } from "../../editor";
-import useRecordUpdateSubmit from "../hooks/useRecordUpdateSubmit";
-import { useRecordEditorForm } from "../../editor/hooks/useRecordEditorForm";
+import { PageFallback } from "@/components/ui/feedback";
+import {
+  RecordEditorActions,
+  RecordEditorForm,
+  RecordEditorFormSkeleton,
+  useRecordDraft,
+  useRecordEditorForm,
+} from "../../editor";
+import { useRecordSubmit } from "../../editor/hooks/useRecordSubmit";
 import { useRouter } from "next/router";
 import { useRecordUpdateInit } from "../hooks/useRecordUpdateInit";
-import { useDraftStorage } from "@/shared/hooks/record/useDraftStorage";
 import { DRAFT_KEY } from "@/shared/constants/draftKeys";
-import { RecordEditFormValues } from "../../model";
-import { useToast } from "@/components/commons/toast/ToastProvider";
-import { useConfirmPreset } from "@/shared/hooks/ui/useConfirmPreset";
 import { ResponsiveLayout } from "@/components/commons/layout";
-import RecordEditorActions from "../../editor/ui/RecordEditorActions";
 
 export default function RecordUpdateScreen() {
+  const me = useRecoilValue(loggedInUserState);
   const formId = "record-update-form";
   const router = useRouter();
   const recordId =
@@ -21,66 +24,55 @@ export default function RecordUpdateScreen() {
       ? router.query.recordId
       : undefined;
 
-  const { onSubmitValid, isBusy } = useRecordUpdateSubmit();
-  const { saveDraft, loadDraft, clearDraft } =
-    useDraftStorage<RecordEditFormValues>(
-      DRAFT_KEY.record.update(recordId ?? ""),
-    );
-
-  const { success, error } = useToast();
-
-  const { openConfirmPreset } = useConfirmPreset();
-  const { form, ...editorProps } = useRecordEditorForm((values) => {
-    if (!recordId) return;
-    return onSubmitValid(values, recordId!);
-  });
-
-  const { loading, error: initError } = useRecordUpdateInit(
-    recordId,
-    form,
-    () => {
-      const draft = loadDraft();
-      if (!draft) return;
-      if (initError) {
-        error("기록을 불러오는 중 에러가 발생했어요");
-        return;
-      }
-
-      openConfirmPreset("loadDraft", {
-        onConfirm: () => {
-          form.reset({ ...draft });
-          success("임시 저장된 내용을 불러왔어요.");
-        },
-        onCancel: () => clearDraft(),
-      });
-    },
+  const { onSubmitValid, isBusy } = useRecordSubmit({ mode: "update", recordId });
+  const draftKey = me?.id && recordId ? DRAFT_KEY.record.update(me.id, recordId) : null;
+  const { form, ...editorProps } = useRecordEditorForm((values) =>
+    onSubmitValid(values, clearDraft),
   );
 
-  const onTempSave = () => {
-    const values = form.getValues();
-    saveDraft(values);
-    form.reset(values);
-    success("텍스트 내용이 임시저장됐어요.");
-  };
+  const { record, loading, error, ready } = useRecordUpdateInit(recordId, form, draftKey);
+  const { onTempSave, hasUnsavedChanges, isSavingDraft, isCheckingDraft, clearDraft } =
+    useRecordDraft({ form, draftKey, ready });
+  const disabled = !draftKey || isCheckingDraft || isBusy || form.formState.isSubmitting;
+  const isFormLoading = !router.isReady || loading || (!!draftKey && !ready);
 
-  const disabled = isBusy || form.formState.isSubmitting;
-  const isDirty = form.formState.isDirty;
-
-  if (!recordId) return <div>잘못된 접근입니다.</div>;
-  if (loading) return <RecordUpdateScreenSkeleton />;
+  if (router.isReady && !recordId) {
+    return (
+      <PageFallback
+        label="Edit Record"
+        fallbackHref="/feelog"
+        message="잘못된 접근이에요"
+      />
+    );
+  }
+  if (router.isReady && !loading && !ready && (error || record?.id !== recordId)) {
+    return (
+      <PageFallback
+        label="Edit Record"
+        fallbackHref="/feelog"
+        message={error ? "기록을 불러오지 못했어요" : "기록을 찾을 수 없어요"}
+      />
+    );
+  }
   return (
     <div className="min-h-screen bg-background ">
       <PageHeader label="Edit Record" fallbackHref="/feelog">
         <RecordEditorActions
           formId={formId}
           disabled={disabled}
-          isDirty={isDirty}
+          isFormLoading={isFormLoading}
+          isDirty={hasUnsavedChanges}
+          isSavingDraft={isSavingDraft}
           submitLabel="수정하기"
           onTempSave={onTempSave}
         />
       </PageHeader>
       <ResponsiveLayout className="px-4">
-        <RecordEditorForm formId={formId} form={form} {...editorProps} />
+        {isFormLoading ? (
+          <RecordEditorFormSkeleton />
+        ) : (
+          <RecordEditorForm formId={formId} form={form} {...editorProps} />
+        )}
       </ResponsiveLayout>
     </div>
   );

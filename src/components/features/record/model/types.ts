@@ -49,3 +49,9 @@ export type RecordMeta = {
   x?: string; // longitude
   y?: string; // latitude
 };
+
+export type RecordDraft = {
+  version: 1;
+  savedAt: number;
+  values: RecordEditFormValues;
+};
